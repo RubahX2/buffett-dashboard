@@ -1,0 +1,3113 @@
+{
+  "meta": {
+    "generatedAt": "2026-06-26T08:00:00",
+    "generatedAtHuman": "vrijdag 26 juni 2026 om 08:00",
+    "isFriday": true,
+    "isWeekend": false,
+    "version": "4.0",
+    "sampleData": true,
+    "fundamentalsNote": "VOORBEELDDATA — echte data komt van GitHub Actions."
+  },
+  "stocks": {
+    "WM": {
+      "name": "WM",
+      "ticker": "WM",
+      "fund": {
+        "pe": 29.2,
+        "roe": 29.9,
+        "fcfYield": 3.0,
+        "debtEquity": 2.28,
+        "netMargin": 11.0,
+        "divYield": 1.69,
+        "revenueGrowth": 6.1,
+        "eps": 7.72,
+        "mktCap": "$90B",
+        "beta": 0.46,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 29.2,
+        "peg": 4.79,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 78.4,
+        "verdict": "Duur (PEG > 3.5)",
+        "verdictColor": "red",
+        "notes": []
+      },
+      "timing": {
+        "score": 80,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 74,
+        "entryScore": 88,
+        "trendDaily": 10,
+        "trendWeekly": 90,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 54,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 30% (sterk)"
+        ],
+        "qualityFails": [],
+        "valuation": 8,
+        "timing": 80,
+        "composite": 51
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.382 — steunzone: $221.35 (0.1% weg)",
+          "detail": "Prijs $221.10 raakt Fibonacci 0.382. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1D",
+          "icon": "👀",
+          "title": "RSI daily nadert oversold (34)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "BB",
+          "tf": "1D",
+          "icon": "📊",
+          "title": "Nadert Bollinger onderband ($220.23)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.236 steunzone: $226.16 (2.3% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.500 steunzone: $217.46 (1.6% weg)"
+        }
+      ],
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 221.1,
+        "rsiDaily": 34.2,
+        "rsiWeekly": 57.1,
+        "ema8d": 223.02,
+        "ema21d": 225.14,
+        "ema8w": 226.12,
+        "ema21w": 222.38,
+        "ma50": 225.64,
+        "ma200": 217.56,
+        "macdLine": -1.3092,
+        "macdSignal": -0.3334,
+        "macdLineW": 3.6044,
+        "macdSigW": 3.2658,
+        "bollUpper": 232.95,
+        "bollLower": 220.23,
+        "volRatio": 1.19,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 226.16,
+            "0.382": 221.35,
+            "0.500": 217.46,
+            "0.618": 213.58,
+            "0.786": 208.04,
+            "0.886": 204.75
+          },
+          "extensions": {
+            "1.000": 233.93,
+            "1.272": 242.89,
+            "1.414": 247.57,
+            "1.618": 254.29,
+            "1.818": 260.87
+          },
+          "swingHigh": 233.93,
+          "swingLow": 200.99
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "PLTR": {
+      "name": "PLTR",
+      "ticker": "PLTR",
+      "fund": {
+        "pe": 117.6,
+        "roe": 32.6,
+        "fcfYield": 1.0,
+        "debtEquity": 0.02,
+        "netMargin": 43.7,
+        "divYield": 0,
+        "revenueGrowth": 67.7,
+        "eps": 0.96,
+        "mktCap": "$271B",
+        "beta": 1.52,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 117.6,
+        "peg": 1.74,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 62.4,
+        "verdict": "Neutraal (PEG 1.5–2.5)",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 70,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 51,
+        "entryScore": 98,
+        "trendDaily": 10,
+        "trendWeekly": 25,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 90,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 33% (sterk)",
+          "Marge 44% (sterk)",
+          "Lage schuld",
+          "Groei +68%"
+        ],
+        "qualityFails": [],
+        "valuation": 62,
+        "timing": 70,
+        "composite": 74
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "RSI",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📉",
+          "title": "RSI daily oversold (25) (laag volume)",
+          "detail": "RSI 25.1 — historisch koopniveau."
+        },
+        {
+          "type": "SELL",
+          "cat": "EMA",
+          "tf": "1W",
+          "weight": 4,
+          "icon": "🔀",
+          "title": "8 EMA kruist onder 21 EMA (WEEKLY) ⭐",
+          "detail": "EMA8 $98.31 | EMA21 $98.46 — krachtig bearish."
+        },
+        {
+          "type": "BUY",
+          "cat": "BB",
+          "tf": "1D",
+          "weight": 2,
+          "icon": "🎯",
+          "title": "Prijs raakt Bollinger onderband ($94.49) (laag volume)",
+          "detail": "Statistische oversold conditie."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.500 — steunzone: $93.05 (0.8% weg)",
+          "detail": "Prijs $93.80 raakt Fibonacci 0.500. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.382 steunzone: $95.81 (2.1% weg)"
+        }
+      ],
+      "overall": "STERK KOOP",
+      "buyWeight": 8,
+      "sellWeight": 4,
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
+      "indicators": {
+        "last": 93.8,
+        "rsiDaily": 25.1,
+        "rsiWeekly": 45.1,
+        "ema8d": 95.71,
+        "ema21d": 96.93,
+        "ema8w": 98.31,
+        "ema21w": 98.46,
+        "ma50": 98.56,
+        "ma200": 96.68,
+        "macdLine": -1.0044,
+        "macdSignal": -0.6764,
+        "macdLineW": 0.6499,
+        "macdSigW": 1.4921,
+        "bollUpper": 99.54,
+        "bollLower": 94.49,
+        "volRatio": 0.89,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 99.21,
+            "0.382": 95.81,
+            "0.500": 93.05,
+            "0.618": 90.3,
+            "0.786": 86.38,
+            "0.886": 84.05
+          },
+          "extensions": {
+            "1.000": 104.72,
+            "1.272": 111.06,
+            "1.414": 114.38,
+            "1.618": 119.14,
+            "1.818": 123.8
+          },
+          "swingHigh": 104.72,
+          "swingLow": 81.39
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "CAT": {
+      "name": "CAT",
+      "ticker": "CAT",
+      "fund": {
+        "pe": 47.1,
+        "roe": 51.3,
+        "fcfYield": 1.7,
+        "debtEquity": 2.31,
+        "netMargin": 13.3,
+        "divYield": 1.1,
+        "revenueGrowth": 11.9,
+        "eps": 8.12,
+        "mktCap": "$176B",
+        "beta": 1.6,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 47.1,
+        "peg": 3.96,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 94.4,
+        "verdict": "Duur (PEG > 3.5)",
+        "verdictColor": "red",
+        "notes": []
+      },
+      "timing": {
+        "score": 80,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 74,
+        "entryScore": 88,
+        "trendDaily": 10,
+        "trendWeekly": 90,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 61,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 51% (sterk)"
+        ],
+        "qualityFails": [],
+        "valuation": 18,
+        "timing": 80,
+        "composite": 56
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.236 — steunzone: $439.44 (0.2% weg)",
+          "detail": "Prijs $438.50 raakt Fibonacci 0.236. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1D",
+          "icon": "👀",
+          "title": "RSI daily nadert oversold (40)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1W",
+          "icon": "⚠️",
+          "title": "RSI weekly nadert overbought (61)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "BB",
+          "tf": "1D",
+          "icon": "📊",
+          "title": "Nadert Bollinger onderband ($437.12)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.382 steunzone: $429.00 (2.2% weg)"
+        }
+      ],
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 438.5,
+        "rsiDaily": 39.7,
+        "rsiWeekly": 61.1,
+        "ema8d": 441.24,
+        "ema21d": 442.45,
+        "ema8w": 441.37,
+        "ema21w": 433.26,
+        "ma50": 441.07,
+        "ma200": 421.32,
+        "macdLine": -0.1744,
+        "macdSignal": 0.9654,
+        "macdLineW": 8.063,
+        "macdSigW": 7.4945,
+        "bollUpper": 450.95,
+        "bollLower": 437.12,
+        "volRatio": 0.91,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 439.44,
+            "0.382": 429.0,
+            "0.500": 420.56,
+            "0.618": 412.13,
+            "0.786": 400.11,
+            "0.886": 392.96
+          },
+          "extensions": {
+            "1.000": 456.32,
+            "1.272": 475.77,
+            "1.414": 485.92,
+            "1.618": 500.51,
+            "1.818": 514.81
+          },
+          "swingHigh": 456.32,
+          "swingLow": 384.81
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "ASML": {
+      "name": "ASML",
+      "ticker": "ASML",
+      "fund": {
+        "pe": 54.5,
+        "roe": 52.2,
+        "fcfYield": 1.7,
+        "debtEquity": 0.13,
+        "netMargin": 29.7,
+        "divYield": 0.7,
+        "revenueGrowth": 18.0,
+        "eps": 18.1,
+        "mktCap": "$379B",
+        "beta": 1.37,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 54.5,
+        "peg": 3.03,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 8.2,
+        "verdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "verdictColor": "orange",
+        "notes": []
+      },
+      "timing": {
+        "score": 42,
+        "label": "Zwakke setup",
+        "color": "orange",
+        "trendScore": 17,
+        "entryScore": 80,
+        "trendDaily": 10,
+        "trendWeekly": 30,
+        "trendMonthly": 10,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 90,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 52% (sterk)",
+          "Marge 30% (sterk)",
+          "Lage schuld",
+          "Groei +18%"
+        ],
+        "qualityFails": [],
+        "valuation": 30,
+        "timing": 42,
+        "composite": 53
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "SELL",
+          "cat": "EMA",
+          "tf": "1W",
+          "weight": 4,
+          "icon": "🔀",
+          "title": "8 EMA kruist onder 21 EMA (WEEKLY) ⭐",
+          "detail": "EMA8 $548.28 | EMA21 $548.48 — krachtig bearish."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.786 — steunzone: $529.46 (0.5% weg)",
+          "detail": "Prijs $532.18 raakt Fibonacci 0.786. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1D",
+          "icon": "👀",
+          "title": "RSI daily nadert oversold (35)"
+        }
+      ],
+      "overall": "VERKOOP",
+      "buyWeight": 3,
+      "sellWeight": 4,
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 1 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
+      "indicators": {
+        "last": 532.18,
+        "rsiDaily": 34.5,
+        "rsiWeekly": 43.1,
+        "ema8d": 535.33,
+        "ema21d": 541.93,
+        "ema8w": 548.28,
+        "ema21w": 548.48,
+        "ma50": 555.94,
+        "ma200": 551.61,
+        "macdLine": -6.5208,
+        "macdSignal": -6.2114,
+        "macdLineW": -2.8728,
+        "macdSigW": -5.0672,
+        "bollUpper": 562.07,
+        "bollLower": 522.95,
+        "volRatio": 1.08,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 631.68,
+            "0.382": 604.54,
+            "0.500": 582.61,
+            "0.618": 560.68,
+            "0.786": 529.46,
+            "0.886": 510.88
+          },
+          "extensions": {
+            "1.000": 675.54,
+            "1.272": 726.08,
+            "1.414": 752.47,
+            "1.618": 790.39,
+            "1.818": 827.56
+          },
+          "swingHigh": 675.54,
+          "swingLow": 489.69
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "ASMI": {
+      "name": "ASMI",
+      "ticker": "ASM.AS",
+      "fund": {
+        "pe": 44.9,
+        "roe": 21.6,
+        "fcfYield": 2.9,
+        "debtEquity": 0.01,
+        "netMargin": 23.9,
+        "divYield": 0.3,
+        "revenueGrowth": 12.0,
+        "eps": 23.75,
+        "mktCap": "$52B",
+        "beta": 1.5,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 44.9,
+        "peg": 3.74,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 82.3,
+        "verdict": "Duur (PEG > 3.5)",
+        "verdictColor": "red",
+        "notes": []
+      },
+      "timing": {
+        "score": 70,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 73,
+        "entryScore": 65,
+        "trendDaily": 49,
+        "trendWeekly": 90,
+        "trendMonthly": 70,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 89,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 22% (sterk)",
+          "Marge 24% (sterk)",
+          "Lage schuld"
+        ],
+        "qualityFails": [],
+        "valuation": 18,
+        "timing": 70,
+        "composite": 60
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.382 — steunzone: $1041.75 (0.1% weg)",
+          "detail": "Prijs $1043.00 raakt Fibonacci 0.382. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.236 steunzone: $1062.66 (1.9% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.500 steunzone: $1024.84 (1.7% weg)"
+        }
+      ],
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 1043.0,
+        "rsiDaily": 50.3,
+        "rsiWeekly": 55.2,
+        "ema8d": 1043.98,
+        "ema21d": 1043.86,
+        "ema8w": 1038.73,
+        "ema21w": 1027.99,
+        "ma50": 1035.23,
+        "ma200": 1016.46,
+        "macdLine": 1.4504,
+        "macdSignal": 2.7117,
+        "macdLineW": 7.813,
+        "macdSigW": 4.0896,
+        "bollUpper": 1059.51,
+        "bollLower": 1034.55,
+        "volRatio": 1.08,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 1062.66,
+            "0.382": 1041.75,
+            "0.500": 1024.84,
+            "0.618": 1007.94,
+            "0.786": 983.88,
+            "0.886": 969.56
+          },
+          "extensions": {
+            "1.000": 1096.46,
+            "1.272": 1135.42,
+            "1.414": 1155.76,
+            "1.618": 1184.98,
+            "1.818": 1213.62
+          },
+          "swingHigh": 1096.46,
+          "swingLow": 953.23
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "MU": {
+      "name": "MU",
+      "ticker": "MU",
+      "fund": {
+        "pe": 25.3,
+        "roe": 66.6,
+        "fcfYield": 2.1,
+        "debtEquity": 0.06,
+        "netMargin": 55.9,
+        "divYield": 0.05,
+        "revenueGrowth": 125.0,
+        "eps": 44.8,
+        "mktCap": "$1280B",
+        "beta": 2.17,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 25.3,
+        "peg": 0.2,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 94.4,
+        "verdict": "Aantrekkelijk (PEG < 1)",
+        "verdictColor": "green",
+        "notes": []
+      },
+      "timing": {
+        "score": 61,
+        "label": "Gunstige setup",
+        "color": "green",
+        "trendScore": 59,
+        "entryScore": 63,
+        "trendDaily": 25,
+        "trendWeekly": 65,
+        "trendMonthly": 70,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 95,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 67% (sterk)",
+          "Marge 56% (sterk)",
+          "Lage schuld",
+          "Groei +125%"
+        ],
+        "qualityFails": [],
+        "valuation": 90,
+        "timing": 61,
+        "composite": 80
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.236 — steunzone: $1342.05 (1.4% weg)",
+          "detail": "Prijs $1324.10 raakt Fibonacci 0.236. Potentiële koopzone."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.382 — steunzone: $1325.09 (0.1% weg)",
+          "detail": "Prijs $1324.10 raakt Fibonacci 0.382. Potentiële koopzone."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.500 — steunzone: $1311.39 (1.0% weg)",
+          "detail": "Prijs $1324.10 raakt Fibonacci 0.500. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.618 steunzone: $1297.68 (2.0% weg)"
+        }
+      ],
+      "overall": "STERK KOOP",
+      "buyWeight": 9,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 1324.1,
+        "rsiDaily": 47.8,
+        "rsiWeekly": 52.2,
+        "ema8d": 1326.33,
+        "ema21d": 1326.9,
+        "ema8w": 1326.18,
+        "ema21w": 1322.58,
+        "ma50": 1321.9,
+        "ma200": 1317.25,
+        "macdLine": 0.5377,
+        "macdSignal": 1.82,
+        "macdLineW": 4.6716,
+        "macdSigW": 5.1722,
+        "bollUpper": 1344.36,
+        "bollLower": 1310.55,
+        "volRatio": 0.94,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 1342.05,
+            "0.382": 1325.09,
+            "0.500": 1311.39,
+            "0.618": 1297.68,
+            "0.786": 1278.16,
+            "0.886": 1266.55
+          },
+          "extensions": {
+            "1.000": 1369.47,
+            "1.272": 1401.06,
+            "1.414": 1417.56,
+            "1.618": 1441.26,
+            "1.818": 1464.49
+          },
+          "swingHigh": 1369.47,
+          "swingLow": 1253.3
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "GOOGL": {
+      "name": "GOOGL",
+      "ticker": "GOOGL",
+      "fund": {
+        "pe": 19.8,
+        "roe": 31.5,
+        "fcfYield": 4.2,
+        "debtEquity": 0.07,
+        "netMargin": 28.6,
+        "divYield": 0.5,
+        "revenueGrowth": 14.0,
+        "eps": 9.15,
+        "mktCap": "$2200B",
+        "beta": 1.05,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 19.8,
+        "peg": 1.41,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 83.6,
+        "verdict": "Redelijk (PEG 1–1.5)",
+        "verdictColor": "green",
+        "notes": []
+      },
+      "timing": {
+        "score": 50,
+        "label": "Neutrale setup",
+        "color": "neutral",
+        "trendScore": 37,
+        "entryScore": 70,
+        "trendDaily": 10,
+        "trendWeekly": 10,
+        "trendMonthly": 70,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 94,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 32% (sterk)",
+          "Marge 29% (sterk)",
+          "Lage schuld"
+        ],
+        "qualityFails": [],
+        "valuation": 75,
+        "timing": 50,
+        "composite": 71
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "SELL",
+          "cat": "EMA",
+          "tf": "1W",
+          "weight": 4,
+          "icon": "🔀",
+          "title": "8 EMA kruist onder 21 EMA (WEEKLY) ⭐",
+          "detail": "EMA8 $183.08 | EMA21 $183.33 — krachtig bearish."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.382 — steunzone: $183.79 (1.5% weg)",
+          "detail": "Prijs $181.11 raakt Fibonacci 0.382. Potentiële koopzone."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.500 — steunzone: $180.55 (0.3% weg)",
+          "detail": "Prijs $181.11 raakt Fibonacci 0.500. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.618 steunzone: $177.31 (2.1% weg)"
+        }
+      ],
+      "overall": "KOOP",
+      "buyWeight": 6,
+      "sellWeight": 4,
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 2 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
+      "indicators": {
+        "last": 181.11,
+        "rsiDaily": 43.5,
+        "rsiWeekly": 44.5,
+        "ema8d": 181.27,
+        "ema21d": 182.25,
+        "ema8w": 183.08,
+        "ema21w": 183.33,
+        "ma50": 183.33,
+        "ma200": 184.2,
+        "macdLine": -0.7757,
+        "macdSignal": -0.5009,
+        "macdLineW": -0.0033,
+        "macdSigW": 0.2112,
+        "bollUpper": 185.47,
+        "bollLower": 179.59,
+        "volRatio": 1.16,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 187.8,
+            "0.382": 183.79,
+            "0.500": 180.55,
+            "0.618": 177.31,
+            "0.786": 172.7,
+            "0.886": 169.95
+          },
+          "extensions": {
+            "1.000": 194.29,
+            "1.272": 201.76,
+            "1.414": 205.66,
+            "1.618": 211.26,
+            "1.818": 216.75
+          },
+          "swingHigh": 194.29,
+          "swingLow": 166.82
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "AMZN": {
+      "name": "AMZN",
+      "ticker": "AMZN",
+      "fund": {
+        "pe": 27.2,
+        "roe": 24.3,
+        "fcfYield": 2.8,
+        "debtEquity": 0.53,
+        "netMargin": 12.2,
+        "divYield": 0,
+        "revenueGrowth": 11.0,
+        "eps": 8.36,
+        "mktCap": "$2440B",
+        "beta": 1.44,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 27.2,
+        "peg": 2.47,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 75.2,
+        "verdict": "Neutraal (PEG 1.5–2.5)",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 75,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 60,
+        "entryScore": 98,
+        "trendDaily": 10,
+        "trendWeekly": 49,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 77,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 24% (sterk)"
+        ],
+        "qualityFails": [],
+        "valuation": 50,
+        "timing": 75,
+        "composite": 68
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "RSI",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📉",
+          "title": "RSI daily oversold (24) (laag volume)",
+          "detail": "RSI 24.2 — historisch koopniveau."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.382 — steunzone: $225.79 (0.7% weg)",
+          "detail": "Prijs $224.24 raakt Fibonacci 0.382. Potentiële koopzone."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.500 — steunzone: $221.27 (1.3% weg)",
+          "detail": "Prijs $224.24 raakt Fibonacci 0.500. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "BB",
+          "tf": "1D",
+          "icon": "📊",
+          "title": "Nadert Bollinger onderband ($222.37)"
+        }
+      ],
+      "overall": "STERK KOOP",
+      "buyWeight": 9,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 224.24,
+        "rsiDaily": 24.2,
+        "rsiWeekly": 49.7,
+        "ema8d": 225.69,
+        "ema21d": 228.28,
+        "ema8w": 230.72,
+        "ema21w": 229.13,
+        "ma50": 231.8,
+        "ma200": 225.47,
+        "macdLine": -2.2234,
+        "macdSignal": -1.7032,
+        "macdLineW": 2.5044,
+        "macdSigW": 3.35,
+        "bollUpper": 235.75,
+        "bollLower": 222.37,
+        "volRatio": 1.01,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 231.38,
+            "0.382": 225.79,
+            "0.500": 221.27,
+            "0.618": 216.75,
+            "0.786": 210.32,
+            "0.886": 206.49
+          },
+          "extensions": {
+            "1.000": 240.41,
+            "1.272": 250.83,
+            "1.414": 256.27,
+            "1.618": 264.08,
+            "1.818": 271.74
+          },
+          "swingHigh": 240.41,
+          "swingLow": 202.12
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "ORCL": {
+      "name": "ORCL",
+      "ticker": "ORCL",
+      "fund": {
+        "pe": 31.6,
+        "roe": 53.4,
+        "fcfYield": 4.2,
+        "debtEquity": 3.63,
+        "netMargin": 25.2,
+        "divYield": 1.3,
+        "revenueGrowth": 15.0,
+        "eps": 5.83,
+        "mktCap": "$438B",
+        "beta": 1.65,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 31.6,
+        "peg": 2.11,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 94.6,
+        "verdict": "Neutraal (PEG 1.5–2.5)",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 70,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 82,
+        "entryScore": 51,
+        "trendDaily": 85,
+        "trendWeekly": 70,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 80,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 53% (sterk)",
+          "Marge 25% (sterk)",
+          "Groei +15%"
+        ],
+        "qualityFails": [],
+        "valuation": 50,
+        "timing": 70,
+        "composite": 67
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1W",
+          "icon": "⚠️",
+          "title": "RSI weekly nadert overbought (60)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.236 steunzone: $157.47 (2.0% weg)"
+        }
+      ],
+      "overall": "NEUTRAAL",
+      "buyWeight": 0,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 160.67,
+        "rsiDaily": 53.3,
+        "rsiWeekly": 60.4,
+        "ema8d": 160.21,
+        "ema21d": 160.11,
+        "ema8w": 159.57,
+        "ema21w": 157.47,
+        "ma50": 160.1,
+        "ma200": 155.15,
+        "macdLine": 0.0237,
+        "macdSignal": -0.0985,
+        "macdLineW": 2.6833,
+        "macdSigW": 3.0573,
+        "bollUpper": 161.56,
+        "bollLower": 157.95,
+        "volRatio": 1.03,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 157.47,
+            "0.382": 152.06,
+            "0.500": 147.7,
+            "0.618": 143.33,
+            "0.786": 137.11,
+            "0.886": 133.41
+          },
+          "extensions": {
+            "1.000": 166.2,
+            "1.272": 176.27,
+            "1.414": 181.52,
+            "1.618": 189.07,
+            "1.818": 196.48
+          },
+          "swingHigh": 166.2,
+          "swingLow": 129.19
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "KO": {
+      "name": "KO",
+      "ticker": "KO",
+      "fund": {
+        "pe": 25.5,
+        "roe": 43.4,
+        "fcfYield": 3.3,
+        "debtEquity": 1.25,
+        "netMargin": 27.8,
+        "divYield": 3.0,
+        "revenueGrowth": 3.5,
+        "eps": 2.91,
+        "mktCap": "$320B",
+        "beta": 0.36,
+        "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 25.5,
+        "peg": 7.29,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 85.2,
+        "verdict": "Duur (PEG > 3.5)",
+        "verdictColor": "red",
+        "notes": []
+      },
+      "timing": {
+        "score": 46,
+        "label": "Neutrale setup",
+        "color": "neutral",
+        "trendScore": 55,
+        "entryScore": 33,
+        "trendDaily": 90,
+        "trendWeekly": 15,
+        "trendMonthly": 70,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 63,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 43% (sterk)",
+          "Marge 28% (sterk)"
+        ],
+        "qualityFails": [],
+        "valuation": 8,
+        "timing": 46,
+        "composite": 40
+      },
+      "bagger": null,
+      "isBagger": false,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.500 — steunzone: $81.25 (0.1% weg)",
+          "detail": "Prijs $81.33 raakt Fibonacci 0.500. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1D",
+          "icon": "⚠️",
+          "title": "RSI daily nadert overbought (64)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "BB",
+          "tf": "1D",
+          "icon": "📊",
+          "title": "Nadert Bollinger bovenband ($81.48)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.382 steunzone: $82.61 (1.6% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.618 steunzone: $79.90 (1.8% weg)"
+        }
+      ],
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 81.33,
+        "rsiDaily": 64.4,
+        "rsiWeekly": 48.1,
+        "ema8d": 80.58,
+        "ema21d": 80.17,
+        "ema8w": 80.33,
+        "ema21w": 81.34,
+        "ma50": 80.39,
+        "ma200": 82.51,
+        "macdLine": 0.18,
+        "macdSignal": -0.0949,
+        "macdLineW": -0.7156,
+        "macdSigW": -0.3843,
+        "bollUpper": 81.48,
+        "bollLower": 77.86,
+        "volRatio": 0.65,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 84.29,
+            "0.382": 82.61,
+            "0.500": 81.25,
+            "0.618": 79.9,
+            "0.786": 77.96,
+            "0.886": 76.82
+          },
+          "extensions": {
+            "1.000": 87.0,
+            "1.272": 90.12,
+            "1.414": 91.76,
+            "1.618": 94.1,
+            "1.818": 96.4
+          },
+          "swingHigh": 87.0,
+          "swingLow": 75.51
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "LHX": {
+      "name": "LHX",
+      "ticker": "LHX",
+      "fund": {
+        "pe": 24.5,
+        "roe": 11.2,
+        "fcfYield": 4.8,
+        "debtEquity": 0.7,
+        "netMargin": 9.8,
+        "divYield": 1.9,
+        "revenueGrowth": 9.5,
+        "eps": 13.1,
+        "mktCap": "$47B",
+        "beta": 0.9,
+        "lastUpdated": "2026-01",
+        "grossMargin": 27.0,
+        "grossMarginTrend": 0.8,
+        "revenueGrowthPrev": 7.0,
+        "cashRunwayMonths": null
+      },
+      "valuation": {
+        "currentPE": 24.5,
+        "peg": 2.58,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 74.5,
+        "verdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "verdictColor": "orange",
+        "notes": []
+      },
+      "timing": {
+        "score": 50,
+        "label": "Neutrale setup",
+        "color": "neutral",
+        "trendScore": 37,
+        "entryScore": 70,
+        "trendDaily": 10,
+        "trendWeekly": 10,
+        "trendMonthly": 70,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 61,
+        "qualityGate": false,
+        "qualityReasons": [],
+        "qualityFails": [
+          "ROE < 12%"
+        ],
+        "valuation": 40,
+        "timing": 50,
+        "composite": 50
+      },
+      "bagger": {
+        "score": 17,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "reasons": [],
+        "flags": [
+          "Onder markt (-12%)"
+        ],
+        "risk": "gemiddeld",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": -11.8
+      },
+      "isBagger": true,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.786 — steunzone: $213.80 (0.7% weg)",
+          "detail": "Prijs $212.37 raakt Fibonacci 0.786. Potentiële koopzone."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.886 — steunzone: $210.74 (0.8% weg)",
+          "detail": "Prijs $212.37 raakt Fibonacci 0.886. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1W",
+          "icon": "👀",
+          "title": "RSI weekly nadert oversold (37)"
+        }
+      ],
+      "overall": "KOOP",
+      "buyWeight": 6,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 212.37,
+        "rsiDaily": 40.5,
+        "rsiWeekly": 36.7,
+        "ema8d": 212.59,
+        "ema21d": 214.24,
+        "ema8w": 215.64,
+        "ema21w": 218.0,
+        "ma50": 217.0,
+        "ma200": 221.25,
+        "macdLine": -1.6448,
+        "macdSignal": -1.5595,
+        "macdLineW": -1.8734,
+        "macdSigW": -1.2473,
+        "bollUpper": 220.09,
+        "bollLower": 209.11,
+        "volRatio": 1.23,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 230.66,
+            "0.382": 226.18,
+            "0.500": 222.57,
+            "0.618": 218.95,
+            "0.786": 213.8,
+            "0.886": 210.74
+          },
+          "extensions": {
+            "1.000": 237.89,
+            "1.272": 246.22,
+            "1.414": 250.57,
+            "1.618": 256.82,
+            "1.818": 262.95
+          },
+          "swingHigh": 237.89,
+          "swingLow": 207.25
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "MOGA": {
+      "name": "MOGA",
+      "ticker": "MOG-A",
+      "fund": {
+        "pe": 22.0,
+        "roe": 13.5,
+        "fcfYield": 3.5,
+        "debtEquity": 0.85,
+        "netMargin": 7.5,
+        "divYield": 1.1,
+        "revenueGrowth": 11.0,
+        "eps": 8.6,
+        "mktCap": "$6B",
+        "beta": 1.15,
+        "lastUpdated": "2026-01",
+        "grossMargin": 28.5,
+        "grossMarginTrend": 1.2,
+        "revenueGrowthPrev": 8.0,
+        "cashRunwayMonths": null
+      },
+      "valuation": {
+        "currentPE": 22.0,
+        "peg": 2.0,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 99.8,
+        "verdict": "Neutraal (PEG 1.5–2.5)",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 54,
+        "label": "Neutrale setup",
+        "color": "neutral",
+        "trendScore": 90,
+        "entryScore": 0,
+        "trendDaily": 90,
+        "trendWeekly": 90,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 48,
+        "qualityGate": false,
+        "qualityReasons": [],
+        "qualityFails": [
+          "marge < 8%"
+        ],
+        "valuation": 50,
+        "timing": 54,
+        "composite": 51
+      },
+      "bagger": {
+        "score": 30,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "reasons": [
+          "Brutomarge stijgt (+1.2pp)"
+        ],
+        "flags": [],
+        "risk": "gemiddeld",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": 7.8
+      },
+      "isBagger": true,
+      "signals": [
+        {
+          "type": "SELL",
+          "cat": "RSI",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📈",
+          "title": "RSI daily overbought (77) (laag volume)",
+          "detail": "RSI 77.2 — overbought."
+        },
+        {
+          "type": "SELL",
+          "cat": "RSI",
+          "tf": "1W",
+          "weight": 4,
+          "icon": "📈",
+          "title": "RSI WEEKLY overbought (85)",
+          "detail": "Sterk verkoopsignaal op hogere timeframe."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 1.000 take-profit zone: $226.95 (1.6% weg)"
+        }
+      ],
+      "overall": "VERKOOP",
+      "buyWeight": 0,
+      "sellWeight": 7,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 223.38,
+        "rsiDaily": 77.2,
+        "rsiWeekly": 85.1,
+        "ema8d": 222.03,
+        "ema21d": 218.83,
+        "ema8w": 214.51,
+        "ema21w": 208.09,
+        "ma50": 213.06,
+        "ma200": 200.11,
+        "macdLine": 3.1173,
+        "macdSignal": 2.8229,
+        "macdLineW": 6.4924,
+        "macdSigW": 6.0453,
+        "bollUpper": 225.83,
+        "bollLower": 210.92,
+        "volRatio": 1.01,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 211.42,
+            "0.382": 201.8,
+            "0.500": 194.04,
+            "0.618": 186.27,
+            "0.786": 175.21,
+            "0.886": 168.62
+          },
+          "extensions": {
+            "1.000": 226.95,
+            "1.272": 244.86,
+            "1.414": 254.21,
+            "1.618": 267.64,
+            "1.818": 280.8
+          },
+          "swingHigh": 226.95,
+          "swingLow": 161.12
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "TDG": {
+      "name": "TDG",
+      "ticker": "TDG",
+      "fund": {
+        "pe": 38.0,
+        "roe": 45.0,
+        "fcfYield": 2.7,
+        "debtEquity": 5.2,
+        "netMargin": 18.5,
+        "divYield": 0,
+        "revenueGrowth": 12.5,
+        "eps": 33.0,
+        "mktCap": "$78B",
+        "beta": 1.2,
+        "lastUpdated": "2026-01",
+        "grossMargin": 59.0,
+        "grossMarginTrend": 0.5,
+        "revenueGrowthPrev": 11.0,
+        "cashRunwayMonths": null
+      },
+      "valuation": {
+        "currentPE": 38.0,
+        "peg": 3.04,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 95.5,
+        "verdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "verdictColor": "orange",
+        "notes": []
+      },
+      "timing": {
+        "score": 75,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 73,
+        "entryScore": 78,
+        "trendDaily": 49,
+        "trendWeekly": 90,
+        "trendMonthly": 70,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 63,
+        "qualityGate": false,
+        "qualityReasons": [
+          "ROE 45% (sterk)"
+        ],
+        "qualityFails": [
+          "schuld te hoog (D/E > 4)"
+        ],
+        "valuation": 30,
+        "timing": 75,
+        "composite": 58
+      },
+      "bagger": {
+        "score": 20,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "reasons": [],
+        "flags": [
+          "Onder markt (-7%)"
+        ],
+        "risk": "gemiddeld",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": -6.6
+      },
+      "isBagger": true,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.236 — steunzone: $1620.94 (0.9% weg)",
+          "detail": "Prijs $1606.42 raakt Fibonacci 0.236. Potentiële koopzone."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.382 — steunzone: $1598.45 (0.5% weg)",
+          "detail": "Prijs $1606.42 raakt Fibonacci 0.382. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "BB",
+          "tf": "1D",
+          "icon": "📊",
+          "title": "Nadert Bollinger onderband ($1602.44)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.500 steunzone: $1580.28 (1.6% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.618 steunzone: $1562.10 (2.8% weg)"
+        }
+      ],
+      "overall": "KOOP",
+      "buyWeight": 6,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 1606.42,
+        "rsiDaily": 47.7,
+        "rsiWeekly": 58.9,
+        "ema8d": 1611.73,
+        "ema21d": 1611.72,
+        "ema8w": 1600.0,
+        "ema21w": 1581.54,
+        "ma50": 1594.85,
+        "ma200": 1573.21,
+        "macdLine": 3.4915,
+        "macdSignal": 7.0666,
+        "macdLineW": 13.3092,
+        "macdSigW": 6.4034,
+        "bollUpper": 1636.75,
+        "bollLower": 1602.44,
+        "volRatio": 0.81,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 1620.94,
+            "0.382": 1598.45,
+            "0.500": 1580.28,
+            "0.618": 1562.1,
+            "0.786": 1536.22,
+            "0.886": 1520.82
+          },
+          "extensions": {
+            "1.000": 1657.3,
+            "1.272": 1699.2,
+            "1.414": 1721.07,
+            "1.618": 1752.49,
+            "1.818": 1783.3
+          },
+          "swingHigh": 1657.3,
+          "swingLow": 1503.26
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "KTOS": {
+      "name": "KTOS",
+      "ticker": "KTOS",
+      "fund": {
+        "pe": 95.0,
+        "roe": 3.5,
+        "fcfYield": 0.4,
+        "debtEquity": 0.25,
+        "netMargin": 3.2,
+        "divYield": 0,
+        "revenueGrowth": 22.0,
+        "eps": 0.55,
+        "mktCap": "$9B",
+        "beta": 1.4,
+        "lastUpdated": "2026-01",
+        "grossMargin": 25.0,
+        "grossMarginTrend": 1.5,
+        "revenueGrowthPrev": 12.0,
+        "cashRunwayMonths": null
+      },
+      "valuation": {
+        "currentPE": 95.0,
+        "peg": 4.32,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 94.4,
+        "verdict": "Duur (PEG > 3.5)",
+        "verdictColor": "red",
+        "notes": []
+      },
+      "timing": {
+        "score": 73,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 75,
+        "entryScore": 70,
+        "trendDaily": 15,
+        "trendWeekly": 90,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 45,
+        "qualityGate": false,
+        "qualityReasons": [
+          "Lage schuld",
+          "Groei +22%"
+        ],
+        "qualityFails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ],
+        "valuation": 18,
+        "timing": 73,
+        "composite": 48
+      },
+      "bagger": {
+        "score": 44,
+        "label": "Zwak bagger-profiel",
+        "color": "orange",
+        "reasons": [
+          "Groei versnelt (+10pp)",
+          "Brutomarge stijgt (+1.5pp)"
+        ],
+        "flags": [],
+        "risk": "gemiddeld",
+        "positionSizing": "zeer klein (speculatief)",
+        "relStrength": 2.4
+      },
+      "isBagger": true,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.236 — steunzone: $29.48 (0.6% weg)",
+          "detail": "Prijs $29.30 raakt Fibonacci 0.236. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1W",
+          "icon": "⚠️",
+          "title": "RSI weekly nadert overbought (60)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.382 steunzone: $28.77 (1.8% weg)"
+        }
+      ],
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 29.3,
+        "rsiDaily": 45.4,
+        "rsiWeekly": 60.5,
+        "ema8d": 29.34,
+        "ema21d": 29.44,
+        "ema8w": 29.36,
+        "ema21w": 28.64,
+        "ma50": 29.39,
+        "ma200": 27.82,
+        "macdLine": -0.0377,
+        "macdSignal": 0.027,
+        "macdLineW": 0.6664,
+        "macdSigW": 0.5588,
+        "bollUpper": 29.86,
+        "bollLower": 29.13,
+        "volRatio": 0.89,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 29.48,
+            "0.382": 28.77,
+            "0.500": 28.19,
+            "0.618": 27.62,
+            "0.786": 26.8,
+            "0.886": 26.31
+          },
+          "extensions": {
+            "1.000": 30.64,
+            "1.272": 31.96,
+            "1.414": 32.66,
+            "1.618": 33.65,
+            "1.818": 34.63
+          },
+          "swingHigh": 30.64,
+          "swingLow": 25.75
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "RKLB": {
+      "name": "RKLB",
+      "ticker": "RKLB",
+      "fund": {
+        "pe": null,
+        "roe": -18.0,
+        "fcfYield": -3.0,
+        "debtEquity": 0.6,
+        "netMargin": -28.0,
+        "divYield": 0,
+        "revenueGrowth": 58.0,
+        "eps": -0.28,
+        "mktCap": "$14B",
+        "beta": 2.1,
+        "lastUpdated": "2026-01",
+        "grossMargin": 28.0,
+        "grossMarginTrend": 4.0,
+        "revenueGrowthPrev": 40.0,
+        "cashRunwayMonths": 30
+      },
+      "valuation": {
+        "currentPE": null,
+        "peg": null,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 97.3,
+        "verdict": "Onvoldoende data",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 65,
+        "label": "Gunstige setup",
+        "color": "green",
+        "trendScore": 82,
+        "entryScore": 40,
+        "trendDaily": 49,
+        "trendWeekly": 90,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 34,
+        "qualityGate": false,
+        "qualityReasons": [
+          "Groei +58%"
+        ],
+        "qualityFails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ],
+        "valuation": 50,
+        "timing": 65,
+        "composite": 51
+      },
+      "bagger": {
+        "score": 74,
+        "label": "Sterk bagger-profiel",
+        "color": "green",
+        "reasons": [
+          "Omzetgroei +58% (hoog)",
+          "Groei versnelt sterk (+18pp)",
+          "Brutomarge stijgt sterk (+4.0pp)"
+        ],
+        "flags": [],
+        "risk": "gemiddeld",
+        "positionSizing": "klein-tot-gemiddeld",
+        "relStrength": 11.7
+      },
+      "isBagger": true,
+      "signals": [
+        {
+          "type": "SELL",
+          "cat": "RSI",
+          "tf": "1W",
+          "weight": 4,
+          "icon": "📈",
+          "title": "RSI WEEKLY overbought (82)",
+          "detail": "Sterk verkoopsignaal op hogere timeframe."
+        },
+        {
+          "type": "SELL",
+          "cat": "MACD",
+          "tf": "1D",
+          "weight": 2,
+          "icon": "🔴",
+          "title": "MACD bearish crossover (daily) (laag volume)",
+          "detail": "MACD 0.175 kruist onder signaal 0.187."
+        }
+      ],
+      "alerts": [],
+      "overall": "VERKOOP",
+      "buyWeight": 0,
+      "sellWeight": 6,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 21.5,
+        "rsiDaily": 51.3,
+        "rsiWeekly": 81.7,
+        "ema8d": 21.69,
+        "ema21d": 21.54,
+        "ema8w": 21.23,
+        "ema21w": 20.33,
+        "ma50": 21.25,
+        "ma200": 19.32,
+        "macdLine": 0.1748,
+        "macdSignal": 0.1874,
+        "macdLineW": 0.9027,
+        "macdSigW": 0.8505,
+        "bollUpper": 22.04,
+        "bollLower": 21.0,
+        "volRatio": 1.32,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 20.64,
+            "0.382": 19.63,
+            "0.500": 18.82,
+            "0.618": 18.0,
+            "0.786": 16.84,
+            "0.886": 16.15
+          },
+          "extensions": {
+            "1.000": 22.27,
+            "1.272": 24.15,
+            "1.414": 25.13,
+            "1.618": 26.54,
+            "1.818": 27.93
+          },
+          "swingHigh": 22.27,
+          "swingLow": 15.36
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "OPEN": {
+      "name": "OPEN",
+      "ticker": "OPEN",
+      "fund": {
+        "pe": null,
+        "roe": -22.0,
+        "fcfYield": -5.0,
+        "debtEquity": 3.1,
+        "netMargin": -6.5,
+        "divYield": 0,
+        "revenueGrowth": 45.0,
+        "eps": -0.35,
+        "mktCap": "$3B",
+        "beta": 2.6,
+        "lastUpdated": "2026-01",
+        "grossMargin": 8.5,
+        "grossMarginTrend": 1.0,
+        "revenueGrowthPrev": -30.0,
+        "cashRunwayMonths": 18
+      },
+      "valuation": {
+        "currentPE": null,
+        "peg": null,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 95.8,
+        "verdict": "Onvoldoende data",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 68,
+        "label": "Gunstige setup",
+        "color": "green",
+        "trendScore": 75,
+        "entryScore": 58,
+        "trendDaily": 51,
+        "trendWeekly": 70,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 20,
+        "qualityGate": false,
+        "qualityReasons": [
+          "Groei +45%"
+        ],
+        "qualityFails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ],
+        "valuation": 50,
+        "timing": 68,
+        "composite": 48
+      },
+      "bagger": {
+        "score": 63,
+        "label": "Interessant bagger-profiel",
+        "color": "green",
+        "reasons": [
+          "Omzetgroei +45% (hoog)",
+          "Groei versnelt sterk (+75pp)",
+          "Brutomarge stijgt (+1.0pp)"
+        ],
+        "flags": [
+          "Cash runway ~18 mnd"
+        ],
+        "risk": "hoog",
+        "positionSizing": "klein",
+        "relStrength": 4.1
+      },
+      "isBagger": true,
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "MACD",
+          "tf": "1D",
+          "weight": 2,
+          "icon": "🟢",
+          "title": "MACD bullish crossover (daily) (laag volume)",
+          "detail": "MACD -0.004 kruist boven signaal -0.005."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.236 — steunzone: $1.88 (0.6% weg)",
+          "detail": "Prijs $1.89 raakt Fibonacci 0.236. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1W",
+          "icon": "⚠️",
+          "title": "RSI weekly nadert overbought (61)"
+        }
+      ],
+      "overall": "KOOP",
+      "buyWeight": 5,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 1.89,
+        "rsiDaily": 50.3,
+        "rsiWeekly": 61.0,
+        "ema8d": 1.88,
+        "ema21d": 1.89,
+        "ema8w": 1.89,
+        "ema21w": 1.85,
+        "ma50": 1.89,
+        "ma200": 1.76,
+        "macdLine": -0.0042,
+        "macdSignal": -0.0045,
+        "macdLineW": 0.0497,
+        "macdSigW": 0.0569,
+        "bollUpper": 1.92,
+        "bollLower": 1.85,
+        "volRatio": 0.82,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 1.88,
+            "0.382": 1.8,
+            "0.500": 1.74,
+            "0.618": 1.68,
+            "0.786": 1.6,
+            "0.886": 1.55
+          },
+          "extensions": {
+            "1.000": 1.99,
+            "1.272": 2.13,
+            "1.414": 2.2,
+            "1.618": 2.3,
+            "1.818": 2.4
+          },
+          "swingHigh": 1.99,
+          "swingLow": 1.49
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "SDGR": {
+      "name": "SDGR",
+      "ticker": "SDGR",
+      "fund": {
+        "pe": null,
+        "roe": -15.0,
+        "fcfYield": -4.0,
+        "debtEquity": 0.05,
+        "netMargin": -32.0,
+        "divYield": 0,
+        "revenueGrowth": 32.0,
+        "eps": -1.6,
+        "mktCap": "$2B",
+        "beta": 1.7,
+        "lastUpdated": "2026-01",
+        "grossMargin": 52.0,
+        "grossMarginTrend": 2.5,
+        "revenueGrowthPrev": 18.0,
+        "cashRunwayMonths": 36
+      },
+      "valuation": {
+        "currentPE": null,
+        "peg": null,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 97.1,
+        "verdict": "Onvoldoende data",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 70,
+        "label": "Sterke instap-setup",
+        "color": "green",
+        "trendScore": 86,
+        "entryScore": 47,
+        "trendDaily": 70,
+        "trendWeekly": 90,
+        "trendMonthly": 90,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 40,
+        "qualityGate": false,
+        "qualityReasons": [
+          "Lage schuld",
+          "Groei +32%"
+        ],
+        "qualityFails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ],
+        "valuation": 50,
+        "timing": 70,
+        "composite": 55
+      },
+      "bagger": {
+        "score": 55,
+        "label": "Interessant bagger-profiel",
+        "color": "green",
+        "reasons": [
+          "Omzetgroei +32%",
+          "Groei versnelt (+14pp)",
+          "Brutomarge stijgt (+2.5pp)"
+        ],
+        "flags": [],
+        "risk": "gemiddeld",
+        "positionSizing": "klein",
+        "relStrength": 6.4
+      },
+      "isBagger": true,
+      "signals": [
+        {
+          "type": "SELL",
+          "cat": "RSI",
+          "tf": "1W",
+          "weight": 4,
+          "icon": "📈",
+          "title": "RSI WEEKLY overbought (85)",
+          "detail": "Sterk verkoopsignaal op hogere timeframe."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.236 steunzone: $21.92 (2.5% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 1.000 take-profit zone: $23.07 (2.6% weg)"
+        }
+      ],
+      "overall": "VERKOOP",
+      "buyWeight": 0,
+      "sellWeight": 4,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 22.48,
+        "rsiDaily": 58.9,
+        "rsiWeekly": 85.5,
+        "ema8d": 22.51,
+        "ema21d": 22.38,
+        "ema8w": 21.98,
+        "ema21w": 21.08,
+        "ma50": 21.73,
+        "ma200": 20.18,
+        "macdLine": 0.2146,
+        "macdSignal": 0.286,
+        "macdLineW": 0.7609,
+        "macdSigW": 0.5528,
+        "bollUpper": 22.76,
+        "bollLower": 22.3,
+        "volRatio": 1.11,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 21.92,
+            "0.382": 21.21,
+            "0.500": 20.63,
+            "0.618": 20.06,
+            "0.786": 19.24,
+            "0.886": 18.76
+          },
+          "extensions": {
+            "1.000": 23.07,
+            "1.272": 24.39,
+            "1.414": 25.08,
+            "1.618": 26.07,
+            "1.818": 27.04
+          },
+          "swingHigh": 23.07,
+          "swingLow": 18.2
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    },
+    "BNGO": {
+      "name": "BNGO",
+      "ticker": "BNGO",
+      "fund": {
+        "pe": null,
+        "roe": -85.0,
+        "fcfYield": -40.0,
+        "debtEquity": 0.4,
+        "netMargin": -180.0,
+        "divYield": 0,
+        "revenueGrowth": 15.0,
+        "eps": -2.5,
+        "mktCap": "$0.05B",
+        "beta": 3.2,
+        "lastUpdated": "2026-01",
+        "grossMargin": 32.0,
+        "grossMarginTrend": -1.0,
+        "revenueGrowthPrev": 55.0,
+        "cashRunwayMonths": 9
+      },
+      "valuation": {
+        "currentPE": null,
+        "peg": null,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 2.6,
+        "verdict": "Onvoldoende data",
+        "verdictColor": "neutral",
+        "notes": []
+      },
+      "timing": {
+        "score": 36,
+        "label": "Zwakke setup",
+        "color": "orange",
+        "trendScore": 14,
+        "entryScore": 70,
+        "trendDaily": 30,
+        "trendWeekly": 10,
+        "trendMonthly": 10,
+        "hasMonthly": true
+      },
+      "scores": {
+        "quality": 40,
+        "qualityGate": false,
+        "qualityReasons": [
+          "Lage schuld",
+          "Groei +15%"
+        ],
+        "qualityFails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ],
+        "valuation": 50,
+        "timing": 36,
+        "composite": 41
+      },
+      "bagger": {
+        "score": 12,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "reasons": [
+          "Groei vertraagt (-40pp)"
+        ],
+        "flags": [
+          "Brutomarge daalt (-1.0pp)",
+          "Onder markt (-10%)",
+          "Cash runway kort (~9 mnd) — verwateringsrisico",
+          "Microcap — hoog faillissements-/volatiliteitsrisico"
+        ],
+        "risk": "zeer hoog",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": -9.6
+      },
+      "isBagger": true,
+      "signals": [],
+      "alerts": [
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.500 steunzone: $0.16 (1.7% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.618 steunzone: $0.16 (1.7% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.786 steunzone: $0.16 (1.7% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.886 steunzone: $0.16 (1.7% weg)"
+        }
+      ],
+      "overall": "NEUTRAAL",
+      "buyWeight": 0,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 0.16,
+        "rsiDaily": 43.7,
+        "rsiWeekly": 44.9,
+        "ema8d": 0.16,
+        "ema21d": 0.16,
+        "ema8w": 0.16,
+        "ema21w": 0.16,
+        "ma50": 0.16,
+        "ma200": 0.16,
+        "macdLine": -0.0002,
+        "macdSignal": -0.0002,
+        "macdLineW": -0.0015,
+        "macdSigW": -0.0014,
+        "bollUpper": 0.16,
+        "bollLower": 0.16,
+        "volRatio": 1.11,
+        "volKnown": true,
+        "highVolume": false,
+        "fib": {
+          "retracements": {
+            "0.236": 0.17,
+            "0.382": 0.17,
+            "0.500": 0.16,
+            "0.618": 0.16,
+            "0.786": 0.16,
+            "0.886": 0.16
+          },
+          "extensions": {
+            "1.000": 0.17,
+            "1.272": 0.18,
+            "1.414": 0.18,
+            "1.618": 0.19,
+            "1.818": 0.19
+          },
+          "swingHigh": 0.17,
+          "swingLow": 0.15
+        },
+        "isFriday": true,
+        "hasWeekly": true
+      }
+    }
+  },
+  "errors": [],
+  "allocation": {
+    "generatedForMonth": "juni 2026",
+    "primaryPick": {
+      "ticker": "MU",
+      "name": "MU",
+      "composite": 80,
+      "quality": 95,
+      "valuation": 90,
+      "timing": 61,
+      "valuationVerdict": "Aantrekkelijk (PEG < 1)",
+      "timingLabel": "Gunstige setup",
+      "price": 1324.1
+    },
+    "reasoning": "MU combineert kwaliteit (95/100), waardering (90/100: Aantrekkelijk (PEG < 1)) en timing (61/100: Gunstige setup) tot de hoogste composietscore (80/100).",
+    "candidates": [
+      {
+        "ticker": "MU",
+        "name": "MU",
+        "composite": 80,
+        "quality": 95,
+        "valuation": 90,
+        "timing": 61,
+        "valuationVerdict": "Aantrekkelijk (PEG < 1)",
+        "timingLabel": "Gunstige setup",
+        "price": 1324.1
+      },
+      {
+        "ticker": "PLTR",
+        "name": "PLTR",
+        "composite": 74,
+        "quality": 90,
+        "valuation": 62,
+        "timing": 70,
+        "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 93.8
+      },
+      {
+        "ticker": "GOOGL",
+        "name": "GOOGL",
+        "composite": 71,
+        "quality": 94,
+        "valuation": 75,
+        "timing": 50,
+        "valuationVerdict": "Redelijk (PEG 1–1.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 181.11
+      },
+      {
+        "ticker": "AMZN",
+        "name": "AMZN",
+        "composite": 68,
+        "quality": 77,
+        "valuation": 50,
+        "timing": 75,
+        "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 224.24
+      },
+      {
+        "ticker": "ORCL",
+        "name": "ORCL",
+        "composite": 67,
+        "quality": 80,
+        "valuation": 50,
+        "timing": 70,
+        "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 160.67
+      },
+      {
+        "ticker": "ASMI",
+        "name": "ASMI",
+        "composite": 60,
+        "quality": 89,
+        "valuation": 18,
+        "timing": 70,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 1043.0
+      },
+      {
+        "ticker": "CAT",
+        "name": "CAT",
+        "composite": 56,
+        "quality": 61,
+        "valuation": 18,
+        "timing": 80,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 438.5
+      },
+      {
+        "ticker": "ASML",
+        "name": "ASML",
+        "composite": 53,
+        "quality": 90,
+        "valuation": 30,
+        "timing": 42,
+        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "timingLabel": "Zwakke setup",
+        "price": 532.18
+      },
+      {
+        "ticker": "WM",
+        "name": "WM",
+        "composite": 51,
+        "quality": 54,
+        "valuation": 8,
+        "timing": 80,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 221.1
+      },
+      {
+        "ticker": "KO",
+        "name": "KO",
+        "composite": 40,
+        "quality": 63,
+        "valuation": 8,
+        "timing": 46,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 81.33
+      }
+    ],
+    "gateFailed": [
+      {
+        "ticker": "LHX",
+        "name": "LHX",
+        "composite": 50,
+        "quality": 61,
+        "valuation": 40,
+        "timing": 50,
+        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 212.37,
+        "fails": [
+          "ROE < 12%"
+        ]
+      },
+      {
+        "ticker": "MOGA",
+        "name": "MOGA",
+        "composite": 51,
+        "quality": 48,
+        "valuation": 50,
+        "timing": 54,
+        "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 223.38,
+        "fails": [
+          "marge < 8%"
+        ]
+      },
+      {
+        "ticker": "TDG",
+        "name": "TDG",
+        "composite": 58,
+        "quality": 63,
+        "valuation": 30,
+        "timing": 75,
+        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 1606.42,
+        "fails": [
+          "schuld te hoog (D/E > 4)"
+        ]
+      },
+      {
+        "ticker": "KTOS",
+        "name": "KTOS",
+        "composite": 48,
+        "quality": 45,
+        "valuation": 18,
+        "timing": 73,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Sterke instap-setup",
+        "price": 29.3,
+        "fails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ]
+      },
+      {
+        "ticker": "RKLB",
+        "name": "RKLB",
+        "composite": 51,
+        "quality": 34,
+        "valuation": 50,
+        "timing": 65,
+        "valuationVerdict": "Onvoldoende data",
+        "timingLabel": "Gunstige setup",
+        "price": 21.5,
+        "fails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ]
+      },
+      {
+        "ticker": "OPEN",
+        "name": "OPEN",
+        "composite": 48,
+        "quality": 20,
+        "valuation": 50,
+        "timing": 68,
+        "valuationVerdict": "Onvoldoende data",
+        "timingLabel": "Gunstige setup",
+        "price": 1.89,
+        "fails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ]
+      },
+      {
+        "ticker": "SDGR",
+        "name": "SDGR",
+        "composite": 55,
+        "quality": 40,
+        "valuation": 50,
+        "timing": 70,
+        "valuationVerdict": "Onvoldoende data",
+        "timingLabel": "Sterke instap-setup",
+        "price": 22.48,
+        "fails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ]
+      },
+      {
+        "ticker": "BNGO",
+        "name": "BNGO",
+        "composite": 41,
+        "quality": 40,
+        "valuation": 50,
+        "timing": 36,
+        "valuationVerdict": "Onvoldoende data",
+        "timingLabel": "Zwakke setup",
+        "price": 0.16,
+        "fails": [
+          "ROE < 12%",
+          "marge < 8%"
+        ]
+      }
+    ],
+    "weights": {
+      "quality": 0.3,
+      "valuation": 0.3,
+      "timing": 0.4
+    },
+    "note": "Kwaliteitspoort-passers gerangschikt op composietscore."
+  },
+  "baggers": {
+    "generatedForMonth": "juni 2026",
+    "candidates": [
+      {
+        "ticker": "RKLB",
+        "name": "RKLB",
+        "score": 74,
+        "label": "Sterk bagger-profiel",
+        "color": "green",
+        "risk": "gemiddeld",
+        "positionSizing": "klein-tot-gemiddeld",
+        "relStrength": 11.7,
+        "reasons": [
+          "Omzetgroei +58% (hoog)",
+          "Groei versnelt sterk (+18pp)",
+          "Brutomarge stijgt sterk (+4.0pp)"
+        ],
+        "flags": [],
+        "price": 21.5,
+        "revenueGrowth": 58.0,
+        "grossMarginTrend": 4.0,
+        "passesQualityGate": false
+      },
+      {
+        "ticker": "OPEN",
+        "name": "OPEN",
+        "score": 63,
+        "label": "Interessant bagger-profiel",
+        "color": "green",
+        "risk": "hoog",
+        "positionSizing": "klein",
+        "relStrength": 4.1,
+        "reasons": [
+          "Omzetgroei +45% (hoog)",
+          "Groei versnelt sterk (+75pp)",
+          "Brutomarge stijgt (+1.0pp)"
+        ],
+        "flags": [
+          "Cash runway ~18 mnd"
+        ],
+        "price": 1.89,
+        "revenueGrowth": 45.0,
+        "grossMarginTrend": 1.0,
+        "passesQualityGate": false
+      },
+      {
+        "ticker": "SDGR",
+        "name": "SDGR",
+        "score": 55,
+        "label": "Interessant bagger-profiel",
+        "color": "green",
+        "risk": "gemiddeld",
+        "positionSizing": "klein",
+        "relStrength": 6.4,
+        "reasons": [
+          "Omzetgroei +32%",
+          "Groei versnelt (+14pp)",
+          "Brutomarge stijgt (+2.5pp)"
+        ],
+        "flags": [],
+        "price": 22.48,
+        "revenueGrowth": 32.0,
+        "grossMarginTrend": 2.5,
+        "passesQualityGate": false
+      },
+      {
+        "ticker": "KTOS",
+        "name": "KTOS",
+        "score": 44,
+        "label": "Zwak bagger-profiel",
+        "color": "orange",
+        "risk": "gemiddeld",
+        "positionSizing": "zeer klein (speculatief)",
+        "relStrength": 2.4,
+        "reasons": [
+          "Groei versnelt (+10pp)",
+          "Brutomarge stijgt (+1.5pp)"
+        ],
+        "flags": [],
+        "price": 29.3,
+        "revenueGrowth": 22.0,
+        "grossMarginTrend": 1.5,
+        "passesQualityGate": false
+      },
+      {
+        "ticker": "MOGA",
+        "name": "MOGA",
+        "score": 30,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "risk": "gemiddeld",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": 7.8,
+        "reasons": [
+          "Brutomarge stijgt (+1.2pp)"
+        ],
+        "flags": [],
+        "price": 223.38,
+        "revenueGrowth": 11.0,
+        "grossMarginTrend": 1.2,
+        "passesQualityGate": false
+      },
+      {
+        "ticker": "TDG",
+        "name": "TDG",
+        "score": 20,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "risk": "gemiddeld",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": -6.6,
+        "reasons": [],
+        "flags": [
+          "Onder markt (-7%)"
+        ],
+        "price": 1606.42,
+        "revenueGrowth": 12.5,
+        "grossMarginTrend": 0.5,
+        "passesQualityGate": false
+      },
+      {
+        "ticker": "LHX",
+        "name": "LHX",
+        "score": 17,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "risk": "gemiddeld",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": -11.8,
+        "reasons": [],
+        "flags": [
+          "Onder markt (-12%)"
+        ],
+        "price": 212.37,
+        "revenueGrowth": 9.5,
+        "grossMarginTrend": 0.8,
+        "passesQualityGate": false
+      },
+      {
+        "ticker": "BNGO",
+        "name": "BNGO",
+        "score": 12,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "risk": "zeer hoog",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": -9.6,
+        "reasons": [
+          "Groei vertraagt (-40pp)"
+        ],
+        "flags": [
+          "Brutomarge daalt (-1.0pp)",
+          "Onder markt (-10%)",
+          "Cash runway kort (~9 mnd) — verwateringsrisico",
+          "Microcap — hoog faillissements-/volatiliteitsrisico"
+        ],
+        "price": 0.16,
+        "revenueGrowth": 15.0,
+        "grossMarginTrend": -1.0,
+        "passesQualityGate": false
+      }
+    ],
+    "note": "Apart spoor voor asymmetrisch potentieel — waardering telt hier NIET. Kleine positiegroottes.",
+    "methodNote": "Score op omzetgroei, groei-versnelling, brutomarge-trend en relatieve sterkte."
+  },
+  "weekly": {
+    "generatedAt": "2026-06-26T08:00:00",
+    "generatedAtHuman": "vrijdag 26 juni 2026 om 08:00",
+    "periodLabel": "sinds ~1 week geleden",
+    "changes": [
+      {
+        "ticker": "CAT",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 49 ↑ 56"
+          }
+        ]
+      },
+      {
+        "ticker": "MU",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 73 ↑ 80"
+          }
+        ]
+      },
+      {
+        "ticker": "AMZN",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 62 ↑ 68"
+          }
+        ]
+      },
+      {
+        "ticker": "ORCL",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 62 ↑ 67"
+          }
+        ]
+      },
+      {
+        "ticker": "KO",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 33 ↑ 40"
+          }
+        ]
+      },
+      {
+        "ticker": "MOGA",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 45 ↑ 51"
+          }
+        ]
+      },
+      {
+        "ticker": "KTOS",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 43 ↑ 48"
+          }
+        ]
+      },
+      {
+        "ticker": "RKLB",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 46 ↑ 51"
+          }
+        ]
+      },
+      {
+        "ticker": "OPEN",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 41 ↑ 48"
+          }
+        ]
+      },
+      {
+        "ticker": "SDGR",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 49 ↑ 55"
+          }
+        ]
+      }
+    ],
+    "changedCount": 10,
+    "note": "Toont enkel wat veranderde."
+  }
+}

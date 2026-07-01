@@ -1,0 +1,1482 @@
+#!/usr/bin/env python3
+"""
+BUFFETT+ Signal Analyzer  —  v2 (fundament)
+=============================================
+Verbeteringen t.o.v. v1:
+  • RSI exact volgens Wilder's RMA (matcht TradingView)
+  • NaN-guards overal: aandelen met te weinig historie falen niet stil
+  • Onvolledige (lopende) weekcandle wordt weggegooid
+  • Batch-download via yfinance (sneller, minder rate-limit risico)
+  • Data sanity-checks (geen negatieve prijzen, plausibele dag-op-dag bewegingen)
+  • Historische opslag: snapshots in history/ + doorlopende timeline.json
+  • Robuustere crossover-detectie (kijkt naar tekenwissel, niet enkel 1 candle)
+
+Schrijft atomisch naar:
+  signals.json          → huidige staat
+  timeline.json         → doorlopende kernmetrieken per aandeel over tijd
+  history/YYYY-MM-DD.json → dagsnapshot (voor 'wat is veranderd')
+"""
+
+import json
+import os
+import sys
+import time
+import traceback
+import statistics
+import urllib.request
+import urllib.error
+from datetime import datetime, date, timedelta
+from typing import Optional, Tuple
+
+import pandas as pd
+from zoneinfo import ZoneInfo  # stdlib (Python 3.9+), geen externe install nodig
+
+try:
+    import yfinance as yf
+    import numpy as np
+except ImportError as e:
+    print(f"FOUT: Ontbrekende package: {e}")
+    print("Installeer via: pip3 install yfinance pandas numpy")
+    sys.exit(1)
+
+# ── CONFIG ────────────────────────────────────────────────────────────────────
+BRUSSELS_TZ = ZoneInfo("Europe/Brussels")
+NOW         = datetime.now(BRUSSELS_TZ)
+TODAY       = NOW.date()
+IS_FRIDAY   = TODAY.weekday() == 4
+IS_WEEKEND  = TODAY.weekday() >= 5
+
+OUTPUT_FILE   = "signals.json"
+TIMELINE_FILE = "timeline.json"
+WEEKLY_FILE   = "weekly.json"
+TRACK_FILE    = "track_record.json"
+HISTORY_DIR   = "history"
+
+# Benchmark voor relatieve return (beter dan de index?). yfinance ticker voor S&P 500.
+BENCHMARK_TICKER = "^GSPC"
+BENCHMARK_NAME   = "S&P 500"
+
+# Horizons (weken) waarop we forward return meten. Passen bij een lange beleggingshorizon.
+TRACK_HORIZONS_WEEKS = [1, 4, 13, 26]
+# Minimum aantal AFGERONDE observaties voor we een accuraatheidscijfer tonen (anti-ruis).
+TRACK_MIN_OBSERVATIONS = 20
+
+# Hoeveel historische datapunten bewaren we per aandeel in timeline.json
+TIMELINE_MAX_POINTS = 400  # ~1.5 jaar werkdagen
+
+# FMP voor echte historische P/E (optioneel — werkt in GitHub Actions, niet in browser).
+# Zet FMP_API_KEY als GitHub Secret. Zonder key valt het systeem terug op PEG.
+FMP_API_KEY = os.environ.get("FMP_API_KEY", "").strip()
+FMP_BASE    = "https://financialmodelingprep.com/api/v3"
+
+# Tickers: (dashboard_naam, primaire_ticker, fallback_ticker)
+# Kern-watchlist (kwaliteit + waardering + timing)
+WATCHLIST = [
+    ("WM",    "WM",      None),
+    ("PLTR",  "PLTR",    None),
+    ("CAT",   "CAT",     None),
+    ("ASML",  "ASML",    None),
+    ("ASMI",  "ASM.AS",  "ASMIY"),
+    ("MU",    "MU",      None),
+    ("GOOGL", "GOOGL",   None),
+    ("AMZN",  "AMZN",    None),
+    ("ORCL",  "ORCL",    None),
+    ("KO",    "KO",      None),
+    # ── Bagger-testkandidaten (hoog groei/risico; apart spoor) ──
+    ("LHX",   "LHX",     None),      # L3Harris — volwassen defensie (kan kernpoort halen)
+    ("MOGA",  "MOG-A",   "MOG.A"),   # Moog klasse A — puntnotatie onbetrouwbaar in yfinance
+    ("TDG",   "TDG",     None),      # TransDigm — volwassen, hoge marge
+    ("KTOS",  "KTOS",    None),      # Kratos — defensie-groei
+    ("RKLB",  "RKLB",    None),      # Rocket Lab — ruimtevaart, verlieslatend
+    ("OPEN",  "OPEN",    None),      # Opendoor — controletest buiten sector
+    ("SDGR",  "SDGR",    None),      # Schrödinger — computational drug discovery
+    ("BNGO",  "BNGO",    None),      # Bionano Genomics — hoog-risico microcap
+]
+
+# Welke tickers worden (ook) in het bagger-spoor beoordeeld?
+BAGGER_TICKERS = {"LHX", "MOGA", "TDG", "KTOS", "RKLB", "OPEN", "SDGR", "BNGO"}
+
+# Fundamentals — handmatig bijgehouden per kwartaal. Laatste update: juni 2026.
+FUNDAMENTALS = {
+    "WM":    {"pe":29.2,  "roe":29.9, "fcfYield":3.0,  "debtEquity":2.28, "netMargin":11.0, "divYield":1.69, "revenueGrowth":6.1,   "eps":7.72,  "mktCap":"$90B",   "beta":0.46, "lastUpdated":"2026-06"},
+    "PLTR":  {"pe":117.6, "roe":32.6, "fcfYield":1.0,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":67.7,  "eps":0.96,  "mktCap":"$271B",  "beta":1.52, "lastUpdated":"2026-06"},
+    "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.7,  "debtEquity":2.31, "netMargin":13.3, "divYield":1.1,  "revenueGrowth":11.9,  "eps":8.12,  "mktCap":"$176B",  "beta":1.60, "lastUpdated":"2026-06"},
+    "ASML":  {"pe":54.5,  "roe":52.2, "fcfYield":1.7,  "debtEquity":0.13, "netMargin":29.7, "divYield":0.7,  "revenueGrowth":18.0,  "eps":18.10, "mktCap":"$379B",  "beta":1.37, "lastUpdated":"2026-06"},
+    "ASMI":  {"pe":44.9,  "roe":21.6, "fcfYield":2.9,  "debtEquity":0.01, "netMargin":23.9, "divYield":0.3,  "revenueGrowth":12.0,  "eps":23.75, "mktCap":"$52B",   "beta":1.50, "lastUpdated":"2026-06"},
+    "MU":    {"pe":25.3,  "roe":66.6, "fcfYield":2.1,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.05, "revenueGrowth":125.0, "eps":44.80, "mktCap":"$1280B", "beta":2.17, "lastUpdated":"2026-06"},
+    "GOOGL": {"pe":19.8,  "roe":31.5, "fcfYield":4.2,  "debtEquity":0.07, "netMargin":28.6, "divYield":0.5,  "revenueGrowth":14.0,  "eps":9.15,  "mktCap":"$2200B", "beta":1.05, "lastUpdated":"2026-06"},
+    "AMZN":  {"pe":27.2,  "roe":24.3, "fcfYield":2.8,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":11.0,  "eps":8.36,  "mktCap":"$2440B", "beta":1.44, "lastUpdated":"2026-06"},
+    "ORCL":  {"pe":31.6,  "roe":53.4, "fcfYield":4.2,  "debtEquity":3.63, "netMargin":25.2, "divYield":1.3,  "revenueGrowth":15.0,  "eps":5.83,  "mktCap":"$438B",  "beta":1.65, "lastUpdated":"2026-06"},
+    "KO":    {"pe":25.5,  "roe":43.4, "fcfYield":3.3,  "debtEquity":1.25, "netMargin":27.8, "divYield":3.0,  "revenueGrowth":3.5,   "eps":2.91,  "mktCap":"$320B",  "beta":0.36, "lastUpdated":"2026-06"},
+    # ── Bagger-kandidaten ── Extra velden: grossMargin, grossMarginTrend (pp YoY),
+    #    revenueGrowthPrev (voor versnelling), cashRunwayMonths (None = winstgevend/n.v.t.).
+    #    Cijfers indicatief per begin 2026 — VERIFIEER en werk per kwartaal bij.
+    "LHX":   {"pe":24.5, "roe":11.2, "fcfYield":4.8, "debtEquity":0.70, "netMargin":9.8,  "divYield":1.9, "revenueGrowth":9.5,   "eps":13.10, "mktCap":"$47B",  "beta":0.90, "lastUpdated":"2026-01",
+              "grossMargin":27.0, "grossMarginTrend":0.8, "revenueGrowthPrev":7.0,  "cashRunwayMonths":None},
+    "MOGA":  {"pe":22.0, "roe":13.5, "fcfYield":3.5, "debtEquity":0.85, "netMargin":7.5,  "divYield":1.1, "revenueGrowth":11.0,  "eps":8.60,  "mktCap":"$6B",   "beta":1.15, "lastUpdated":"2026-01",
+              "grossMargin":28.5, "grossMarginTrend":1.2, "revenueGrowthPrev":8.0,  "cashRunwayMonths":None},
+    "TDG":   {"pe":38.0, "roe":45.0, "fcfYield":2.7, "debtEquity":5.20, "netMargin":18.5, "divYield":0,   "revenueGrowth":12.5,  "eps":33.00, "mktCap":"$78B",  "beta":1.20, "lastUpdated":"2026-01",
+              "grossMargin":59.0, "grossMarginTrend":0.5, "revenueGrowthPrev":11.0, "cashRunwayMonths":None},
+    "KTOS":  {"pe":95.0, "roe":3.5,  "fcfYield":0.4, "debtEquity":0.25, "netMargin":3.2,  "divYield":0,   "revenueGrowth":22.0,  "eps":0.55,  "mktCap":"$9B",   "beta":1.40, "lastUpdated":"2026-01",
+              "grossMargin":25.0, "grossMarginTrend":1.5, "revenueGrowthPrev":12.0, "cashRunwayMonths":None},
+    "RKLB":  {"pe":None, "roe":-18.0,"fcfYield":-3.0,"debtEquity":0.60, "netMargin":-28.0,"divYield":0,   "revenueGrowth":58.0,  "eps":-0.28, "mktCap":"$14B",  "beta":2.10, "lastUpdated":"2026-01",
+              "grossMargin":28.0, "grossMarginTrend":4.0, "revenueGrowthPrev":40.0, "cashRunwayMonths":30},
+    "OPEN":  {"pe":None, "roe":-22.0,"fcfYield":-5.0,"debtEquity":3.10, "netMargin":-6.5, "divYield":0,   "revenueGrowth":45.0,  "eps":-0.35, "mktCap":"$3B",   "beta":2.60, "lastUpdated":"2026-01",
+              "grossMargin":8.5,  "grossMarginTrend":1.0, "revenueGrowthPrev":-30.0,"cashRunwayMonths":18},
+    "SDGR":  {"pe":None, "roe":-15.0,"fcfYield":-4.0,"debtEquity":0.05, "netMargin":-32.0,"divYield":0,   "revenueGrowth":32.0,  "eps":-1.60, "mktCap":"$2B",   "beta":1.70, "lastUpdated":"2026-01",
+              "grossMargin":52.0, "grossMarginTrend":2.5, "revenueGrowthPrev":18.0, "cashRunwayMonths":36},
+    "BNGO":  {"pe":None, "roe":-85.0,"fcfYield":-40.0,"debtEquity":0.40,"netMargin":-180.0,"divYield":0,  "revenueGrowth":15.0,  "eps":-2.50, "mktCap":"$0.05B","beta":3.20, "lastUpdated":"2026-01",
+              "grossMargin":32.0, "grossMarginTrend":-1.0,"revenueGrowthPrev":55.0, "cashRunwayMonths":9},
+}
+
+# ── TECHNISCHE INDICATOREN ────────────────────────────────────────────────────
+def wilder_rma(values: pd.Series, period: int) -> pd.Series:
+    """
+    Wilder's RMA met correcte SMA-seed (eerste waarde = simpel gemiddelde van
+    de eerste `period` punten, daarna recursief gladgestreken).
+    Dit matcht TradingView's RSI/ATR exact, ook op kortere reeksen.
+    """
+    v = values.values
+    out = np.full(len(v), np.nan)
+    if len(v) < period:
+        return pd.Series(out, index=values.index)
+    out[period - 1] = np.nanmean(v[:period])  # SMA-seed
+    alpha = 1.0 / period
+    for i in range(period, len(v)):
+        prev, cur = out[i - 1], v[i]
+        out[i] = prev if np.isnan(cur) else prev * (1 - alpha) + cur * alpha
+    return pd.Series(out, index=values.index)
+
+def calc_rsi(series: pd.Series, period: int = 14) -> pd.Series:
+    """RSI met Wilder's RMA — matcht TradingView's standaard RSI."""
+    delta = series.diff()
+    gain = delta.clip(lower=0.0).fillna(0.0).iloc[1:]
+    loss = (-delta).clip(lower=0.0).fillna(0.0).iloc[1:]
+    avg_gain = wilder_rma(gain, period)
+    avg_loss = wilder_rma(loss, period)
+    rs  = avg_gain / avg_loss.replace(0, np.nan)
+    rsi = 100 - (100 / (1 + rs))
+    rsi = rsi.where(avg_loss != 0, 100.0)  # enkel stijging → RSI 100
+    return rsi.reindex(series.index)
+
+def calc_ema(series: pd.Series, period: int) -> pd.Series:
+    return series.ewm(span=period, adjust=False, min_periods=period).mean()
+
+def calc_macd(series: pd.Series):
+    ema12  = calc_ema(series, 12)
+    ema26  = calc_ema(series, 26)
+    line   = ema12 - ema26
+    signal = line.ewm(span=9, adjust=False, min_periods=9).mean()
+    hist   = line - signal
+    return line, signal, hist
+
+def calc_bollinger(series: pd.Series, period: int = 20, mult: float = 2.0):
+    mid = series.rolling(period).mean()
+    std = series.rolling(period).std(ddof=0)  # population std, zoals TradingView
+    return mid + mult * std, mid, mid - mult * std
+
+def calc_fibonacci(swing_low: float, swing_high: float) -> dict:
+    rng = swing_high - swing_low
+    if rng <= 0:
+        return {"retracements": {}, "extensions": {}, "swingHigh": swing_high, "swingLow": swing_low}
+    retr = {lbl: round(swing_high - pct * rng, 2) for lbl, pct in
+            [("0.236",0.236),("0.382",0.382),("0.500",0.500),
+             ("0.618",0.618),("0.786",0.786),("0.886",0.886)]}
+    ext  = {lbl: round(swing_low + pct * rng, 2) for lbl, pct in
+            [("1.000",1.000),("1.272",1.272),("1.414",1.414),
+             ("1.618",1.618),("1.818",1.818)]}
+    return {"retracements": retr, "extensions": ext,
+            "swingHigh": round(swing_high, 2), "swingLow": round(swing_low, 2)}
+
+def safe_last(series: pd.Series, default=None):
+    """Laatste niet-NaN waarde, of default. Voorkomt stille NaN-fouten."""
+    if series is None or len(series) == 0:
+        return default
+    s = series.dropna()
+    if len(s) == 0:
+        return default
+    return float(s.iloc[-1])
+
+def crossed_up(line: pd.Series, ref: pd.Series) -> bool:
+    """
+    True als 'line' boven 'ref' kruiste op de LAATSTE candle (tekenwissel).
+    Matcht TradingView's crossover(): vuurt enkel op de candle waar de wissel gebeurt.
+    Gaten (feestdagen/weekends) worden opgevangen door de laatste twee GELDIGE
+    vergelijkingspunten te nemen na uitlijning en dropna.
+    """
+    l = line.dropna()
+    r = ref.reindex(l.index).dropna()
+    common = l.index.intersection(r.index)
+    if len(common) < 2:
+        return False
+    diff = (l.loc[common] - r.loc[common])
+    return bool(diff.iloc[-1] > 0 and diff.iloc[-2] <= 0)
+
+def crossed_down(line: pd.Series, ref: pd.Series) -> bool:
+    """True als 'line' onder 'ref' kruiste op de laatste candle (tekenwissel)."""
+    l = line.dropna()
+    r = ref.reindex(l.index).dropna()
+    common = l.index.intersection(r.index)
+    if len(common) < 2:
+        return False
+    diff = (l.loc[common] - r.loc[common])
+    return bool(diff.iloc[-1] < 0 and diff.iloc[-2] >= 0)
+
+def prox_pct(price: float, level: float) -> float:
+    if price == 0:
+        return 999.0
+    return abs((price - level) / price * 100)
+
+# ── DATA OPHALEN (batch) ──────────────────────────────────────────────────────
+def sanity_check(df: pd.DataFrame, name: str) -> Tuple[bool, str]:
+    """Controleer of de prijsdata plausibel is."""
+    if df is None or df.empty:
+        return False, "lege dataset"
+    if len(df) < 60:
+        return False, f"te weinig candles ({len(df)})"
+    closes = df["Close"].dropna()
+    if (closes <= 0).any():
+        return False, "negatieve of nul-prijzen gevonden"
+    # Dag-op-dag beweging > 60% is verdacht (behalve bekende splits, maar auto_adjust vangt die)
+    pct_change = closes.pct_change().abs()
+    if (pct_change > 0.60).sum() > 0:
+        n = int((pct_change > 0.60).sum())
+        # Niet hard falen — waarschuwen, kan legitiem zijn bij extreme volatiliteit
+        return True, f"⚠ {n} dag(en) met >60% beweging (mogelijk data-artefact)"
+    return True, "ok"
+
+def fetch_all(watchlist) -> dict:
+    """
+    Batch-download alle tickers in één yfinance-call.
+    Geeft dict terug: dashboard_naam -> {"daily": df, "weekly": df, "ticker": used}
+    """
+    # Bouw mapping van alle te proberen tickers
+    primary_map = {name: prim for (name, prim, _fb) in watchlist}
+    fallback_map = {name: fb for (name, _p, fb) in watchlist if fb}
+
+    # Benchmark meebestellen in dezelfde batch (efficiënt)
+    all_tickers = list(primary_map.values()) + [BENCHMARK_TICKER]
+    result = {}
+
+    print(f"Batch-download van {len(all_tickers)} tickers (incl. benchmark {BENCHMARK_TICKER})...")
+    try:
+        data = yf.download(
+            all_tickers,
+            period="5y",
+            interval="1d",
+            auto_adjust=True,
+            group_by="ticker",
+            progress=False,
+            threads=True,
+            timeout=60,
+        )
+    except Exception as e:
+        print(f"  ✗ Batch-download faalde: {e}")
+        data = None
+
+    for (name, primary, fallback) in watchlist:
+        df = None
+        used = None
+
+        # Probeer primaire ticker uit batch
+        if data is not None:
+            try:
+                if len(all_tickers) == 1:
+                    candidate = data.copy()
+                else:
+                    candidate = data[primary].copy()
+                candidate = candidate.dropna(how="all")
+                ok, msg = sanity_check(candidate, name)
+                if ok:
+                    df, used = candidate, primary
+                    if "⚠" in msg:
+                        print(f"  {name} ({primary}): {msg}")
+            except (KeyError, Exception):
+                pass
+
+        # Fallback: aparte download
+        if df is None and fallback:
+            print(f"  {name}: primaire ticker faalde, probeer fallback {fallback}...")
+            try:
+                candidate = yf.download(fallback, period="5y", interval="1d",
+                                        auto_adjust=True, progress=False, timeout=30)
+                if isinstance(candidate.columns, pd.MultiIndex):
+                    candidate.columns = candidate.columns.get_level_values(0)
+                candidate = candidate.dropna(how="all")
+                ok, msg = sanity_check(candidate, name)
+                if ok:
+                    df, used = candidate, fallback
+            except Exception as e:
+                print(f"  ✗ {name} fallback faalde: {e}")
+
+        if df is None:
+            print(f"  ✗ {name}: geen bruikbare data")
+            result[name] = None
+            continue
+
+        # Normaliseer kolommen
+        df = df[["Open", "High", "Low", "Close", "Volume"]].copy()
+        df.index = pd.to_datetime(df.index)
+        df = df.sort_index()
+
+        # Weekly resample, en gooi de LAATSTE (lopende, onvolledige) week weg
+        weekly = df.resample("W-FRI").agg({
+            "Open":"first","High":"max","Low":"min","Close":"last","Volume":"sum"
+        }).dropna()
+        if len(weekly) > 0 and weekly.index[-1].date() >= TODAY:
+            weekly = weekly.iloc[:-1]  # lopende week is onvolledig
+
+        # Monthly resample (ME = month-end), gooi de lopende onvolledige maand weg.
+        monthly = df.resample("ME").agg({
+            "Open":"first","High":"max","Low":"min","Close":"last","Volume":"sum"
+        }).dropna()
+        if len(monthly) > 0:
+            # De laatste maandcandle is onvolledig tenzij we de laatste handelsdag
+            # van de maand voorbij zijn. Veilig: vergelijk maand van laatste candle met huidige maand.
+            last_month = (monthly.index[-1].year, monthly.index[-1].month)
+            if last_month == (TODAY.year, TODAY.month):
+                monthly = monthly.iloc[:-1]
+
+        print(f"  ✓ {name} ({used}): {len(df)} dag, {len(weekly)} week, {len(monthly)} maand candles")
+        result[name] = {"daily": df, "weekly": weekly, "monthly": monthly, "ticker": used}
+
+    # Benchmark-serie apart bewaren (alleen slotkoersen nodig)
+    bench = None
+    if data is not None:
+        try:
+            bench_df = data[BENCHMARK_TICKER].copy() if len(all_tickers) > 1 else data.copy()
+            bench_df = bench_df.dropna(how="all")
+            if not bench_df.empty and "Close" in bench_df.columns:
+                bench = bench_df["Close"].copy()
+                bench.index = pd.to_datetime(bench.index)
+                bench = bench.sort_index()
+                print(f"  ✓ Benchmark {BENCHMARK_TICKER}: {len(bench)} slotkoersen")
+        except (KeyError, Exception) as e:
+            print(f"  ⚠ Benchmark ophalen faalde: {e}")
+    result["__benchmark__"] = bench
+
+    return result
+
+# ── SIGNAAL ENGINE ────────────────────────────────────────────────────────────
+def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame) -> dict:
+    signals, alerts = [], []
+
+    close_d = daily["Close"]
+    vol_d   = daily["Volume"]
+    last    = safe_last(close_d)
+    if last is None:
+        return {"error": "geen geldige slotkoers", "signals": [], "alerts": []}
+
+    # Daily indicatoren
+    rsi_d   = calc_rsi(close_d, 14)
+    ema8_d  = calc_ema(close_d, 8)
+    ema21_d = calc_ema(close_d, 21)
+    ma50_d  = close_d.rolling(50).mean()
+    ma200_d = close_d.rolling(200).mean()
+    bb_u, bb_m, bb_l = calc_bollinger(close_d, 20)
+    macd_l, macd_s, macd_h = calc_macd(close_d)
+
+    # Volume met NaN-guard
+    vol_avg20 = vol_d.rolling(20).mean()
+    last_vol_avg = safe_last(vol_avg20)
+    last_vol = safe_last(vol_d)
+    if last_vol_avg and last_vol_avg > 0 and last_vol is not None:
+        vol_ratio = last_vol / last_vol_avg
+        vol_known = True
+    else:
+        vol_ratio = 1.0
+        vol_known = False
+    high_volume = vol_known and vol_ratio > 1.5
+
+    # Laatste waarden met guards
+    last_rsi_d  = safe_last(rsi_d, 50.0)
+    last_ema8d  = safe_last(ema8_d, last)
+    last_ema21d = safe_last(ema21_d, last)
+    last_ma50   = safe_last(ma50_d)   # kan None zijn
+    last_ma200  = safe_last(ma200_d)  # kan None zijn
+    last_bb_u   = safe_last(bb_u, last * 1.05)
+    last_bb_l   = safe_last(bb_l, last * 0.95)
+    last_macd_l = safe_last(macd_l, 0.0)
+    last_macd_s = safe_last(macd_s, 0.0)
+
+    # Weekly indicatoren met guards
+    has_weekly = weekly is not None and len(weekly) >= 30
+    if has_weekly:
+        close_w = weekly["Close"]
+        rsi_w   = calc_rsi(close_w, 14)
+        ema8_w  = calc_ema(close_w, 8)
+        ema21_w = calc_ema(close_w, 21)
+        macd_wl, macd_ws, _ = calc_macd(close_w)
+        last_rsi_w   = safe_last(rsi_w, 50.0)
+        last_ema8w   = safe_last(ema8_w, last)
+        last_ema21w  = safe_last(ema21_w, last)
+        last_macd_wl = safe_last(macd_wl, 0.0)
+        last_macd_ws = safe_last(macd_ws, 0.0)
+    else:
+        close_w = None
+        last_rsi_w = last_ema8w = last_ema21w = None
+        last_macd_wl = last_macd_ws = None
+
+    # Fibonacci op 52-week swing
+    cutoff   = daily.index[-1] - pd.DateOffset(weeks=52)
+    year_df  = daily[daily.index >= cutoff]
+    swing_hi = float(year_df["High"].max())
+    swing_lo = float(year_df["Low"].min())
+    fib      = calc_fibonacci(swing_lo, swing_hi)
+
+    vol_note = " ✓ hoog volume" if high_volume else (" (laag volume)" if vol_known else "")
+
+    # ── 1. RSI DAILY ──
+    if last_rsi_d <= 30:
+        signals.append({"type":"BUY","cat":"RSI","tf":"1D","weight":3,"icon":"📉",
+            "title":f"RSI daily oversold ({last_rsi_d:.0f}){vol_note}",
+            "detail":f"RSI {last_rsi_d:.1f} — historisch koopniveau."})
+    elif last_rsi_d <= 40:
+        alerts.append({"type":"WATCH","cat":"RSI","tf":"1D","icon":"👀",
+            "title":f"RSI daily nadert oversold ({last_rsi_d:.0f})"})
+    elif last_rsi_d >= 70:
+        signals.append({"type":"SELL","cat":"RSI","tf":"1D","weight":3,"icon":"📈",
+            "title":f"RSI daily overbought ({last_rsi_d:.0f}){vol_note}",
+            "detail":f"RSI {last_rsi_d:.1f} — overbought."})
+    elif last_rsi_d >= 60:
+        alerts.append({"type":"WATCH","cat":"RSI","tf":"1D","icon":"⚠️",
+            "title":f"RSI daily nadert overbought ({last_rsi_d:.0f})"})
+
+    # ── 2. RSI WEEKLY ──
+    if has_weekly:
+        if last_rsi_w <= 30:
+            signals.append({"type":"BUY","cat":"RSI","tf":"1W","weight":4,"icon":"📉",
+                "title":f"RSI WEEKLY oversold ({last_rsi_w:.0f})",
+                "detail":"Sterk koopsignaal op hogere timeframe."})
+        elif last_rsi_w <= 40:
+            alerts.append({"type":"WATCH","cat":"RSI","tf":"1W","icon":"👀",
+                "title":f"RSI weekly nadert oversold ({last_rsi_w:.0f})"})
+        elif last_rsi_w >= 70:
+            signals.append({"type":"SELL","cat":"RSI","tf":"1W","weight":4,"icon":"📈",
+                "title":f"RSI WEEKLY overbought ({last_rsi_w:.0f})",
+                "detail":"Sterk verkoopsignaal op hogere timeframe."})
+        elif last_rsi_w >= 60:
+            alerts.append({"type":"WATCH","cat":"RSI","tf":"1W","icon":"⚠️",
+                "title":f"RSI weekly nadert overbought ({last_rsi_w:.0f})"})
+
+    # ── 3. MACD DAILY (robuuste crossover) ──
+    if crossed_up(macd_l, macd_s):
+        signals.append({"type":"BUY","cat":"MACD","tf":"1D","weight":2,"icon":"🟢",
+            "title":f"MACD bullish crossover (daily){vol_note}",
+            "detail":f"MACD {last_macd_l:.3f} kruist boven signaal {last_macd_s:.3f}."})
+    elif crossed_down(macd_l, macd_s):
+        signals.append({"type":"SELL","cat":"MACD","tf":"1D","weight":2,"icon":"🔴",
+            "title":f"MACD bearish crossover (daily){vol_note}",
+            "detail":f"MACD {last_macd_l:.3f} kruist onder signaal {last_macd_s:.3f}."})
+
+    # ── 4. MACD WEEKLY — alleen vrijdag, volledige candle ──
+    if has_weekly and IS_FRIDAY:
+        if crossed_up(macd_wl, macd_ws):
+            signals.append({"type":"BUY","cat":"MACD","tf":"1W","weight":4,"icon":"🟢",
+                "title":"MACD bullish crossover (WEEKLY) ⭐",
+                "detail":f"Weekly MACD {last_macd_wl:.3f} kruist boven {last_macd_ws:.3f}. Krachtig."})
+        elif crossed_down(macd_wl, macd_ws):
+            signals.append({"type":"SELL","cat":"MACD","tf":"1W","weight":4,"icon":"🔴",
+                "title":"MACD bearish crossover (WEEKLY) ⭐",
+                "detail":f"Weekly MACD {last_macd_wl:.3f} kruist onder {last_macd_ws:.3f}. Krachtig."})
+    elif has_weekly and not IS_FRIDAY and last_macd_wl is not None:
+        direction = "bullish" if last_macd_wl > last_macd_ws else "bearish"
+        alerts.append({"type":"INFO","cat":"MACD","tf":"1W","icon":"ℹ️",
+            "title":f"MACD weekly momenteel {direction} (crossover enkel vrijdag geëvalueerd)",
+            "detail":f"MACD: {last_macd_wl:.3f} | Signaal: {last_macd_ws:.3f}"})
+
+    # ── 5. EMA 8/21 DAILY ──
+    if crossed_up(ema8_d, ema21_d):
+        signals.append({"type":"BUY","cat":"EMA","tf":"1D","weight":3,"icon":"🔀",
+            "title":f"8 EMA kruist boven 21 EMA (daily){vol_note}",
+            "detail":f"EMA8 ${last_ema8d:.2f} | EMA21 ${last_ema21d:.2f} — bullish momentum."})
+    elif crossed_down(ema8_d, ema21_d):
+        signals.append({"type":"SELL","cat":"EMA","tf":"1D","weight":3,"icon":"🔀",
+            "title":f"8 EMA kruist onder 21 EMA (daily){vol_note}",
+            "detail":f"EMA8 ${last_ema8d:.2f} | EMA21 ${last_ema21d:.2f} — bearish momentum."})
+
+    # ── 6. EMA 8/21 WEEKLY — alleen vrijdag ──
+    if has_weekly and IS_FRIDAY:
+        if crossed_up(ema8_w, ema21_w):
+            signals.append({"type":"BUY","cat":"EMA","tf":"1W","weight":4,"icon":"🔀",
+                "title":"8 EMA kruist boven 21 EMA (WEEKLY) ⭐",
+                "detail":f"EMA8 ${last_ema8w:.2f} | EMA21 ${last_ema21w:.2f} — krachtig bullish."})
+        elif crossed_down(ema8_w, ema21_w):
+            signals.append({"type":"SELL","cat":"EMA","tf":"1W","weight":4,"icon":"🔀",
+                "title":"8 EMA kruist onder 21 EMA (WEEKLY) ⭐",
+                "detail":f"EMA8 ${last_ema8w:.2f} | EMA21 ${last_ema21w:.2f} — krachtig bearish."})
+
+    # ── 7. GOLDEN / DEATH CROSS — alleen als MA200 bestaat ──
+    if last_ma50 is not None and last_ma200 is not None:
+        if crossed_up(ma50_d, ma200_d):
+            signals.append({"type":"BUY","cat":"MA","tf":"1D","weight":4,"icon":"✨",
+                "title":"Golden Cross (MA50 boven MA200)",
+                "detail":"Klassiek bull-marktsignaal. Historisch betrouwbaar."})
+        elif crossed_down(ma50_d, ma200_d):
+            signals.append({"type":"SELL","cat":"MA","tf":"1D","weight":4,"icon":"💀",
+                "title":"Death Cross (MA50 onder MA200)",
+                "detail":"Klassiek bear-marktsignaal."})
+    else:
+        alerts.append({"type":"INFO","cat":"MA","tf":"1D","icon":"ℹ️",
+            "title":"MA50/MA200 niet beschikbaar (te weinig historie)",
+            "detail":"Golden/Death cross vereist 200+ dagen data."})
+
+    # ── 8. BOLLINGER BANDS ──
+    bb_range = last_bb_u - last_bb_l
+    if bb_range > 0:
+        bb_pos = (last - last_bb_l) / bb_range
+        if last <= last_bb_l:
+            signals.append({"type":"BUY","cat":"BB","tf":"1D","weight":2,"icon":"🎯",
+                "title":f"Prijs raakt Bollinger onderband (${last_bb_l:.2f}){vol_note}",
+                "detail":"Statistische oversold conditie."})
+        elif last >= last_bb_u:
+            signals.append({"type":"SELL","cat":"BB","tf":"1D","weight":2,"icon":"🎯",
+                "title":f"Prijs raakt Bollinger bovenband (${last_bb_u:.2f}){vol_note}",
+                "detail":"Statistische overbought conditie."})
+        elif bb_pos < 0.15:
+            alerts.append({"type":"WATCH","cat":"BB","tf":"1D","icon":"📊",
+                "title":f"Nadert Bollinger onderband (${last_bb_l:.2f})"})
+        elif bb_pos > 0.85:
+            alerts.append({"type":"WATCH","cat":"BB","tf":"1D","icon":"📊",
+                "title":f"Nadert Bollinger bovenband (${last_bb_u:.2f})"})
+
+    # ── 9. FIBONACCI ──
+    PROX, NEAR = 1.5, 3.0
+    all_fib = list(fib["retracements"].items()) + list(fib["extensions"].items())
+    ext_keys = set(fib["extensions"].keys())
+    for label, level in all_fib:
+        dist = prox_pct(last, level)
+        is_ext = label in ext_keys
+        styp = "SELL" if is_ext else "BUY"
+        zone = "take-profit zone" if is_ext else "steunzone"
+        if dist <= PROX:
+            signals.append({"type":styp,"cat":"FIB","tf":"1D","weight":3,"icon":"📐",
+                "title":f"Fib {label} — {zone}: ${level:.2f} ({dist:.1f}% weg)",
+                "detail":f"Prijs ${last:.2f} raakt Fibonacci {label}. "
+                         f"{'Overweeg winstneming.' if is_ext else 'Potentiële koopzone.'}"})
+        elif dist <= NEAR:
+            alerts.append({"type":"WATCH","cat":"FIB","tf":"1D","icon":"📐",
+                "title":f"Nadert Fib {label} {zone}: ${level:.2f} ({dist:.1f}% weg)"})
+
+    # ── Conflict + score ──
+    buy_sigs  = [s for s in signals if s["type"] == "BUY"]
+    sell_sigs = [s for s in signals if s["type"] == "SELL"]
+    conflict  = len(buy_sigs) > 0 and len(sell_sigs) > 0
+    conflict_note = ""
+    if conflict:
+        conflict_note = (f"⚠️ CONFLICT: {len(buy_sigs)} koop vs {len(sell_sigs)} verkoop. "
+                         "Gebruik hogere timeframe als beslissend of wacht op bevestiging.")
+
+    buy_w  = sum(s.get("weight",1) for s in buy_sigs)
+    sell_w = sum(s.get("weight",1) for s in sell_sigs)
+    if   buy_w >= 8:   overall = "STERK KOOP"
+    elif buy_w >= 4:   overall = "KOOP"
+    elif buy_w > sell_w: overall = "LICHT KOOP"
+    elif sell_w >= 8:  overall = "STERK VERKOOP"
+    elif sell_w >= 4:  overall = "VERKOOP"
+    elif sell_w > buy_w: overall = "LICHT VERKOOP"
+    else:              overall = "NEUTRAAL"
+
+    return {
+        "signals": signals, "alerts": alerts, "overall": overall,
+        "buyWeight": buy_w, "sellWeight": sell_w,
+        "conflict": conflict, "conflictNote": conflict_note,
+        "indicators": {
+            "last": round(last, 2),
+            "rsiDaily": round(last_rsi_d, 1),
+            "rsiWeekly": round(last_rsi_w, 1) if last_rsi_w is not None else None,
+            "ema8d": round(last_ema8d, 2), "ema21d": round(last_ema21d, 2),
+            "ema8w": round(last_ema8w, 2) if last_ema8w is not None else None,
+            "ema21w": round(last_ema21w, 2) if last_ema21w is not None else None,
+            "ma50": round(last_ma50, 2) if last_ma50 is not None else None,
+            "ma200": round(last_ma200, 2) if last_ma200 is not None else None,
+            "macdLine": round(last_macd_l, 4), "macdSignal": round(last_macd_s, 4),
+            "macdLineW": round(last_macd_wl, 4) if last_macd_wl is not None else None,
+            "macdSigW": round(last_macd_ws, 4) if last_macd_ws is not None else None,
+            "bollUpper": round(last_bb_u, 2), "bollLower": round(last_bb_l, 2),
+            "volRatio": round(vol_ratio, 2), "volKnown": vol_known, "highVolume": high_volume,
+            "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
+        },
+    }
+
+# ── WAARDERINGSLAAG ───────────────────────────────────────────────────────────
+# Doel: "staat dit kwaliteitsaandeel nu goedkoop of duur?" — beschermt tegen te duur kopen.
+#
+# Eerlijke meet-filosofie:
+#   • PEG-ratio (P/E / groei) is de PRIMAIRE maatstaf — groei-gecorrigeerd, echte cijfers.
+#   • Echte historische P/E-percentiel ALLEEN met echte data (FMP). We fabriceren GEEN
+#     P/E-historie via groei-reconstructie — dat maakt groeiaandelen systematisch vals goedkoop.
+#   • Prijspositie in 5-jaars range = context, eerlijk gelabeld (geen waardering).
+
+def fetch_historical_pe_fmp(ticker: str, timeout: int = 15):
+    """
+    Haalt historische kwartaal-P/E via FMP. Werkt in GitHub Actions (server), niet in browser.
+    Returnt lijst P/E-waarden of None bij geen key/fout/Euronext-ticker.
+    """
+    if not FMP_API_KEY:
+        return None
+    if "." in ticker:  # bv. ASM.AS — FMP dekt Euronext vaak onbetrouwbaar
+        return None
+    url = f"{FMP_BASE}/ratios/{ticker}?period=quarter&limit=20&apikey={FMP_API_KEY}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "buffett-dashboard"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        if not isinstance(data, list):
+            return None
+        pe = [float(r["priceEarningsRatio"]) for r in data
+              if r.get("priceEarningsRatio") is not None and r["priceEarningsRatio"] > 0]
+        return pe if len(pe) >= 8 else None
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, KeyError, TimeoutError, OSError) as e:
+        print(f"    ⚠ FMP P/E ophalen faalde voor {ticker}: {e}")
+        return None
+
+def percentile_rank(values, target):
+    """Welk percentiel neemt `target` in binnen `values`? 0-100 (midpoint bij ties)."""
+    if not values:
+        return None
+    below = sum(1 for v in values if v < target)
+    equal = sum(1 for v in values if v == target)
+    return round((below + 0.5 * equal) / len(values) * 100, 1)
+
+def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=None) -> dict:
+    """Bereken waarderingspositie met eerlijke, niet-circulaire methodes."""
+    close = daily["Close"]
+    current_price = float(close.iloc[-1])
+    current_pe = fund.get("pe")
+    growth     = fund.get("revenueGrowth")
+
+    out = {
+        "currentPE": current_pe, "peg": None,
+        "pePercentile": None, "peMin": None, "peMedian": None, "peMax": None,
+        "peSource": None, "priceRangePosition": None,
+        "verdict": None, "verdictColor": None, "notes": [],
+    }
+
+    # PEG — primaire groei-gecorrigeerde maatstaf (Lynch)
+    if current_pe and growth and growth > 0:
+        out["peg"] = round(current_pe / growth, 2)
+
+    # Prijspositie in 5-jaars range (eerlijke context, géén waardering)
+    lo, hi = float(close.min()), float(close.max())
+    if hi > lo:
+        out["priceRangePosition"] = round((current_price - lo) / (hi - lo) * 100, 1)
+
+    # Echte historische P/E-percentiel — ALLEEN met echte FMP-data
+    if hist_pe_fmp and len(hist_pe_fmp) >= 8 and current_pe:
+        clean = [v for v in hist_pe_fmp if v > 0]
+        if len(clean) >= 8:
+            out["pePercentile"] = percentile_rank(clean, current_pe)
+            out["peMin"]    = round(min(clean), 1)
+            out["peMedian"] = round(statistics.median(clean), 1)
+            out["peMax"]    = round(max(clean), 1)
+            out["peSource"] = "fmp_historical"
+            out["notes"].append("Echte historische P/E (FMP, 20 kwartalen)")
+
+    # ── VERDICT ──  PEG leidend; verfijnd met echte P/E-percentiel indien beschikbaar.
+    pct, peg = out["pePercentile"], out["peg"]
+    verdict, color = "Onvoldoende data", "neutral"
+
+    if peg is not None:
+        if   peg < 1.0: verdict, color = "Aantrekkelijk (PEG < 1)", "green"
+        elif peg < 1.5: verdict, color = "Redelijk (PEG 1–1.5)", "green"
+        elif peg < 2.5: verdict, color = "Neutraal (PEG 1.5–2.5)", "neutral"
+        elif peg < 3.5: verdict, color = "Aan de dure kant (PEG 2.5–3.5)", "orange"
+        else:           verdict, color = "Duur (PEG > 3.5)", "red"
+        if pct is not None:
+            if pct < 25 and color in ("neutral", "orange"):
+                verdict += f" · maar P/E in onderste {pct:.0f}% van eigen historie"
+                color = "green" if color == "neutral" else "orange"
+            elif pct > 80 and color in ("green", "neutral"):
+                verdict += f" · let op: P/E in bovenste {100-pct:.0f}% van historie"
+                color = "orange" if color == "green" else color
+    elif pct is not None:
+        if   pct < 30: verdict, color = f"Goedkoop vs eigen historie (P{pct:.0f})", "green"
+        elif pct > 75: verdict, color = f"Duur vs eigen historie (P{pct:.0f})", "red"
+        elif pct > 60: verdict, color = f"Aan de dure kant (P{pct:.0f})", "orange"
+        else:          verdict, color = f"Redelijk vs eigen historie (P{pct:.0f})", "neutral"
+    elif current_pe is not None:
+        if   current_pe < 15: verdict, color = "Lage P/E (absoluut)", "green"
+        elif current_pe < 25: verdict, color = "Gemiddelde P/E (absoluut)", "neutral"
+        elif current_pe < 40: verdict, color = "Hoge P/E (absoluut)", "orange"
+        else:                 verdict, color = "Zeer hoge P/E (absoluut)", "red"
+        out["notes"].append("Geen groeicijfer — oordeel op absolute P/E")
+
+    out["verdict"], out["verdictColor"] = verdict, color
+    return out
+
+# ── MULTI-TIMEFRAME TIMING ────────────────────────────────────────────────────
+# Filosofie voor een maandelijkse kwaliteitsbelegger:
+#   • TREND-score: is dit een uptrend? — zwaarder op monthly/weekly (geen vallend mes vangen)
+#   • ENTRY-score: is NU een goed instapmoment? — zwaarder op daily (pullback naar steun/oversold)
+#   • timingScore = 0.6·trend + 0.4·entry
+# Zo wordt de ideale setup beloond: kwaliteit in uptrend die net is teruggevallen.
+
+def _tf_trend_score(close):
+    """0-100: hoe bullish is de trend op dit timeframe? None bij te weinig data."""
+    if close is None or len(close) < 25:
+        return None
+    last = float(close.iloc[-1])
+    ema8  = safe_last(calc_ema(close, 8), last)
+    ema21 = safe_last(calc_ema(close, 21), last)
+    macd_l, macd_s, _ = calc_macd(close)
+    ml, ms = safe_last(macd_l, 0.0), safe_last(macd_s, 0.0)
+    rsi = safe_last(calc_rsi(close, 14), 50.0)
+    s = 50
+    s += 12 if ema8 > ema21 else -12   # EMA-alignment = trendrichting
+    s += 8  if last > ema21 else -8    # prijs boven/onder middellange EMA
+    s += 10 if ml > ms else -10        # MACD-richting
+    s += 5  if ml > 0 else -5          # MACD boven/onder nul
+    s += 5  if rsi >= 55 else (-5 if rsi <= 45 else 0)  # momentum-tilt
+    return max(0, min(100, s))
+
+def _entry_score(close, fib_daily=None):
+    """0-100: hoe goed is NU de instap (pullback/oversold)? None bij te weinig data."""
+    if close is None or len(close) < 25:
+        return None
+    last = float(close.iloc[-1])
+    rsi = safe_last(calc_rsi(close, 14), 50.0)
+    bb_u, _, bb_l = calc_bollinger(close, 20)
+    u, l = safe_last(bb_u, last*1.05), safe_last(bb_l, last*0.95)
+    bb_pos = (last - l) / (u - l) if u > l else 0.5
+    s = 50
+    # RSI: lager = betere instap (oversold pullback); overbought = wachten
+    if   rsi < 30: s += 25
+    elif rsi < 40: s += 15
+    elif rsi < 50: s += 5
+    elif rsi > 70: s -= 25
+    elif rsi > 60: s -= 10
+    # Bollinger-positie: bij onderband = goede instap, bij bovenband = slecht
+    if   bb_pos < 0.20: s += 15
+    elif bb_pos < 0.40: s += 7
+    elif bb_pos > 0.80: s -= 15
+    elif bb_pos > 0.60: s -= 7
+    # Fibonacci-steun nabij (alleen daily fib)
+    if fib_daily:
+        for _lbl, level in fib_daily.get("retracements", {}).items():
+            if prox_pct(last, level) < 2.0:
+                s += 8
+                break
+    return max(0, min(100, s))
+
+def compute_timing(daily, weekly, monthly, fib_daily) -> dict:
+    """Combineer trend (multi-TF) en entry (vooral daily) tot één timing-score."""
+    close_d = daily["Close"]
+    close_w = weekly["Close"]  if weekly  is not None and len(weekly)  >= 25 else None
+    close_m = monthly["Close"] if monthly is not None and len(monthly) >= 25 else None
+
+    trend_d = _tf_trend_score(close_d)
+    trend_w = _tf_trend_score(close_w)
+    trend_m = _tf_trend_score(close_m)
+
+    # Gewogen trend: hogere timeframes wegen zwaarder (geen vallend mes vangen)
+    parts = []
+    if trend_m is not None: parts.append((trend_m, 0.45))
+    if trend_w is not None: parts.append((trend_w, 0.35))
+    if trend_d is not None: parts.append((trend_d, 0.20))
+    trend_score = round(sum(s*w for s, w in parts) / sum(w for _, w in parts)) if parts else 50
+
+    # Entry: daily primair, weekly als bevestiging
+    entry = _entry_score(close_d, fib_daily)
+    entry_score = entry if entry is not None else 50
+    if close_w is not None:
+        rsi_w = safe_last(calc_rsi(close_w, 14), 50.0)
+        if   rsi_w < 35: entry_score = min(100, entry_score + 10)
+        elif rsi_w > 70: entry_score = max(0,   entry_score - 10)
+
+    timing_score = round(0.6 * trend_score + 0.4 * entry_score)
+
+    if   timing_score >= 70: label, color = "Sterke instap-setup", "green"
+    elif timing_score >= 58: label, color = "Gunstige setup", "green"
+    elif timing_score >= 45: label, color = "Neutrale setup", "neutral"
+    elif timing_score >= 32: label, color = "Zwakke setup", "orange"
+    else:                    label, color = "Slechte instap (wachten)", "red"
+
+    return {
+        "score": timing_score, "label": label, "color": color,
+        "trendScore": trend_score, "entryScore": entry_score,
+        "trendDaily": trend_d, "trendWeekly": trend_w, "trendMonthly": trend_m,
+        "hasMonthly": close_m is not None,
+    }
+
+# ── KWALITEIT (Buffett-poort) ─────────────────────────────────────────────────
+def compute_quality(fund: dict) -> dict:
+    """
+    Kwaliteitsscore 0-100 + harde poort. Alleen poort-passers zijn koopkandidaten
+    in de kern-allocatie (baggers vormen een apart spoor — volgende stap).
+    """
+    roe    = fund.get("roe")
+    margin = fund.get("netMargin")
+    de     = fund.get("debtEquity")
+    growth = fund.get("revenueGrowth")
+    fcf    = fund.get("fcfYield")
+
+    s, reasons = 0, []
+    # ROE (max 25)
+    if   roe is not None and roe >= 20: s += 25; reasons.append(f"ROE {roe:.0f}% (sterk)")
+    elif roe is not None and roe >= 15: s += 18; reasons.append(f"ROE {roe:.0f}% (goed)")
+    elif roe is not None and roe >= 10: s += 10
+    # Netto marge (max 20)
+    if   margin is not None and margin >= 20: s += 20; reasons.append(f"Marge {margin:.0f}% (sterk)")
+    elif margin is not None and margin >= 12: s += 14
+    elif margin is not None and margin >= 8:  s += 8
+    # Debt/Equity (max 20, lager = beter)
+    if   de is not None and de < 0.5: s += 20; reasons.append("Lage schuld")
+    elif de is not None and de < 1.0: s += 14
+    elif de is not None and de < 2.0: s += 8
+    elif de is not None and de < 3.0: s += 3
+    # Omzetgroei (max 20)
+    if   growth is not None and growth >= 15: s += 20; reasons.append(f"Groei +{growth:.0f}%")
+    elif growth is not None and growth >= 8:  s += 14
+    elif growth is not None and growth >= 4:  s += 8
+    # FCF yield (max 15)
+    if   fcf is not None and fcf >= 4: s += 15
+    elif fcf is not None and fcf >= 2: s += 10
+    elif fcf is not None and fcf > 0:  s += 5
+
+    score = min(100, max(0, s))
+
+    # Harde poort: minimale kwaliteit om investeerbaar te zijn in de kern
+    gate = True
+    fails = []
+    if roe is None or roe < 12:        gate = False; fails.append("ROE < 12%")
+    if margin is None or margin < 8:   gate = False; fails.append("marge < 8%")
+    if de is not None and de > 4:      gate = False; fails.append("schuld te hoog (D/E > 4)")
+
+    return {"score": score, "gate": gate, "reasons": reasons, "gateFails": fails}
+
+def valuation_to_score(valuation: dict) -> int:
+    """Zet waardering om naar 0-100 (goedkoper = hoger). PEG primair, percentiel verfijnt."""
+    peg = valuation.get("peg")
+    pct = valuation.get("pePercentile")
+    score = 50
+    if peg is not None:
+        if   peg < 1.0: score = 90
+        elif peg < 1.5: score = 75
+        elif peg < 2.0: score = 62
+        elif peg < 2.5: score = 50
+        elif peg < 3.0: score = 40
+        elif peg < 3.5: score = 30
+        elif peg < 4.5: score = 18
+        else:           score = 8
+    if pct is not None:
+        pct_score = 100 - pct  # laag percentiel = goedkoop = hoge score
+        score = round(0.6 * score + 0.4 * pct_score) if peg is not None else round(pct_score)
+    return int(max(0, min(100, score)))
+
+def compute_composite(quality_score, valuation_score, timing_score) -> int:
+    """
+    Composietscore voor de maandelijkse allocatie.
+    Gewichten: timing 40% (Rubens nadruk), kwaliteit 30%, waardering 30%.
+    """
+    return round(0.30 * quality_score + 0.30 * valuation_score + 0.40 * timing_score)
+
+# ── BAGGER-SPOOR (apart raamwerk; waardering speelt GEEN rol) ─────────────────
+# Zoekt kenmerken van vroege multibaggers: hoge groei, groei-versnelling, operating
+# leverage (stijgende brutomarge), relatieve sterkte. Kleine positie want het
+# faillissementsrisico is reëel. Een aandeel kan zowel hier als in de kern staan.
+
+def compute_relative_strength(stock_close, bench_close, lookback_days=126):
+    """Relatieve sterkte: aandeelrendement min benchmarkrendement over ~6 mnd (%)."""
+    if stock_close is None or bench_close is None:
+        return None
+    if len(stock_close) < lookback_days or len(bench_close) < lookback_days:
+        return None
+    s_ret = (float(stock_close.iloc[-1]) / float(stock_close.iloc[-lookback_days]) - 1) * 100
+    b_ret = (float(bench_close.iloc[-1]) / float(bench_close.iloc[-lookback_days]) - 1) * 100
+    return round(s_ret - b_ret, 1)
+
+def compute_bagger_score(fund: dict, rel_strength) -> dict:
+    """Bagger-potentieelscore 0-100 + risico-flags + positiegrootte-advies. Geen waardering."""
+    growth      = fund.get("revenueGrowth")
+    growth_prev = fund.get("revenueGrowthPrev")
+    gm          = fund.get("grossMargin")
+    gm_trend    = fund.get("grossMarginTrend")
+    runway      = fund.get("cashRunwayMonths")
+    mktcap_str  = fund.get("mktCap", "")
+
+    s, reasons, flags = 0, [], []
+
+    # 1. Omzetgroei (max 30) — kern van elke bagger
+    if   growth is not None and growth >= 60: s += 30; reasons.append(f"Omzetgroei +{growth:.0f}% (explosief)")
+    elif growth is not None and growth >= 40: s += 24; reasons.append(f"Omzetgroei +{growth:.0f}% (hoog)")
+    elif growth is not None and growth >= 25: s += 16; reasons.append(f"Omzetgroei +{growth:.0f}%")
+    elif growth is not None and growth >= 15: s += 8
+
+    # 2. Groei-versnelling (max 20)
+    if growth is not None and growth_prev is not None:
+        accel = growth - growth_prev
+        if   accel >= 15: s += 20; reasons.append(f"Groei versnelt sterk (+{accel:.0f}pp)")
+        elif accel >= 5:  s += 13; reasons.append(f"Groei versnelt (+{accel:.0f}pp)")
+        elif accel >= 0:  s += 7
+        else: reasons.append(f"Groei vertraagt ({accel:.0f}pp)")
+
+    # 3. Brutomarge-trend (max 20) — operating leverage
+    if gm_trend is not None:
+        if   gm_trend >= 3: s += 20; reasons.append(f"Brutomarge stijgt sterk (+{gm_trend:.1f}pp)")
+        elif gm_trend >= 1: s += 13; reasons.append(f"Brutomarge stijgt (+{gm_trend:.1f}pp)")
+        elif gm_trend >= 0: s += 6
+        else: flags.append(f"Brutomarge daalt ({gm_trend:.1f}pp)")
+
+    # 4. Brutomarge-niveau (max 10) — schaalbaarheid
+    if gm is not None:
+        if   gm >= 60: s += 10
+        elif gm >= 40: s += 7
+        elif gm >= 25: s += 4
+
+    # 5. Relatieve sterkte vs markt (max 20)
+    if rel_strength is not None:
+        if   rel_strength >= 40: s += 20; reasons.append(f"Sterk boven markt (+{rel_strength:.0f}%)")
+        elif rel_strength >= 15: s += 13; reasons.append(f"Boven markt (+{rel_strength:.0f}%)")
+        elif rel_strength >= 0:  s += 6
+        else: flags.append(f"Onder markt ({rel_strength:.0f}%)")
+
+    score = min(100, max(0, s))
+
+    # Risico-flags → bepalen positiegrootte-advies, niet de score
+    risk = "gemiddeld"
+    if runway is not None:
+        if runway <= 12:
+            flags.append(f"Cash runway kort (~{runway} mnd) — verwateringsrisico"); risk = "zeer hoog"
+        elif runway <= 24:
+            flags.append(f"Cash runway ~{runway} mnd"); risk = "hoog"
+    if "$0.0" in mktcap_str or "$0." in mktcap_str:
+        flags.append("Microcap — hoog faillissements-/volatiliteitsrisico"); risk = "zeer hoog"
+
+    if   score >= 70 and risk in ("gemiddeld", "hoog"): pos = "klein-tot-gemiddeld"
+    elif score >= 55: pos = "klein"
+    elif score >= 40: pos = "zeer klein (speculatief)"
+    else:             pos = "vermijden / afwachten"
+
+    if   score >= 70: label, color = "Sterk bagger-profiel", "green"
+    elif score >= 55: label, color = "Interessant bagger-profiel", "green"
+    elif score >= 40: label, color = "Zwak bagger-profiel", "orange"
+    else:             label, color = "Geen bagger-profiel nu", "red"
+
+    return {
+        "score": score, "label": label, "color": color,
+        "reasons": reasons, "flags": flags, "risk": risk,
+        "positionSizing": pos, "relStrength": rel_strength,
+    }
+
+# ── HISTORISCHE OPSLAG ────────────────────────────────────────────────────────
+def load_timeline() -> dict:
+    if os.path.exists(TIMELINE_FILE):
+        try:
+            with open(TIMELINE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            print("  ⚠ timeline.json onleesbaar, start opnieuw")
+    return {"_meta": {"created": NOW.isoformat()}, "stocks": {}}
+
+def update_timeline(timeline: dict, name: str, ind: dict):
+    """Voeg de kernmetrieken van vandaag toe aan de tijdreeks van dit aandeel."""
+    stocks = timeline.setdefault("stocks", {})
+    series = stocks.setdefault(name, [])
+    point = {
+        "date":      TODAY.isoformat(),
+        "price":     ind.get("last"),
+        "rsiDaily":  ind.get("rsiDaily"),
+        "rsiWeekly": ind.get("rsiWeekly"),
+        "overall":   None,       # ingevuld door caller
+        "composite": None,       # ingevuld door caller
+        "timing":    None,       # ingevuld door caller
+        "qualityGate": None,     # ingevuld door caller
+        "valuationVerdict": None,# ingevuld door caller
+    }
+    # Vervang als er al een punt voor vandaag is (idempotent bij dubbele run)
+    series = [p for p in series if p.get("date") != TODAY.isoformat()]
+    series.append(point)
+    # Begrens lengte
+    if len(series) > TIMELINE_MAX_POINTS:
+        series = series[-TIMELINE_MAX_POINTS:]
+    stocks[name] = series
+    return point
+
+def atomic_write(path: str, data: dict):
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False, default=str)
+    os.replace(tmp, path)
+
+# ── WEKELIJKSE CHANGELOG ──────────────────────────────────────────────────────
+# Vergelijkt vandaag met ~1 week geleden (uit timeline.json) en toont wat VERANDERDE.
+def _find_prior_point(series, today_iso, target_days=7, tolerance=4):
+    """Vind het datapunt het dichtst bij `target_days` geleden (binnen marge)."""
+    if not series or len(series) < 2:
+        return None
+    today = date.fromisoformat(today_iso)
+    target = today - timedelta(days=target_days)
+    best, best_diff = None, None
+    for p in series:
+        if p.get("date") == today_iso:
+            continue
+        try:
+            d = date.fromisoformat(p["date"])
+        except (ValueError, KeyError, TypeError):
+            continue
+        diff = abs((d - target).days)
+        if best_diff is None or diff < best_diff:
+            best, best_diff = p, diff
+    if best is not None and best_diff is not None and best_diff <= target_days + tolerance:
+        return best
+    return None
+
+def build_changelog(timeline: dict, today_iso: str) -> list:
+    """Produceer per aandeel de veranderingen sinds ~1 week geleden."""
+    changes = []
+    for name, series in timeline.get("stocks", {}).items():
+        if not series:
+            continue
+        today_pt = next((p for p in series if p.get("date") == today_iso), series[-1])
+        prior = _find_prior_point(series, today_pt.get("date", today_iso))
+        if prior is None:
+            continue
+
+        sc = []
+        c_now, c_old = today_pt.get("composite"), prior.get("composite")
+        if c_now is not None and c_old is not None and abs(c_now - c_old) >= 5:
+            up = c_now > c_old
+            sc.append({"type":"composite","dir":"up" if up else "down",
+                       "text":f"Composiet {c_old} {'↑' if up else '↓'} {c_now}"})
+
+        g_now, g_old = today_pt.get("qualityGate"), prior.get("qualityGate")
+        if g_now is not None and g_old is not None and g_now != g_old:
+            sc.append({"type":"gate","dir":"up" if g_now else "down",
+                       "text":"In kwaliteitspoort ✓" if g_now else "Uit kwaliteitspoort ✗"})
+
+        v_now, v_old = today_pt.get("valuationVerdict"), prior.get("valuationVerdict")
+        if v_now and v_old and v_now != v_old:
+            sc.append({"type":"valuation","dir":"neutral","text":f"Waardering: {v_old} → {v_now}"})
+
+        o_now, o_old = today_pt.get("overall"), prior.get("overall")
+        if o_now and o_old and o_now != o_old:
+            up = ("KOOP" in o_now) and ("KOOP" not in o_old)
+            down = ("VERKOOP" in o_now) and ("VERKOOP" not in o_old)
+            sc.append({"type":"signal","dir":"up" if up else ("down" if down else "neutral"),
+                       "text":f"Signaal: {o_old} → {o_now}"})
+
+        r_now, r_old = today_pt.get("rsiWeekly"), prior.get("rsiWeekly")
+        if r_now is not None and r_old is not None:
+            if r_now <= 30 and r_old > 30:
+                sc.append({"type":"rsi","dir":"up","text":f"RSI weekly oversold ({r_now:.0f})"})
+            elif r_now >= 70 and r_old < 70:
+                sc.append({"type":"rsi","dir":"down","text":f"RSI weekly overbought ({r_now:.0f})"})
+
+        p_now, p_old = today_pt.get("price"), prior.get("price")
+        if p_now and p_old and p_old > 0:
+            pct = (p_now - p_old) / p_old * 100
+            if abs(pct) >= 8:
+                sc.append({"type":"price","dir":"up" if pct > 0 else "down",
+                           "text":f"Koers {pct:+.1f}% deze week (${p_old:.0f}→${p_now:.0f})"})
+
+        if sc:
+            changes.append({
+                "ticker": name,
+                "daysAgo": (date.fromisoformat(today_pt["date"]) - date.fromisoformat(prior["date"])).days,
+                "changes": sc,
+            })
+    # Sorteer: meeste veranderingen eerst
+    changes.sort(key=lambda x: len(x["changes"]), reverse=True)
+    return changes
+
+# ── TRACKRECORD (observatie, geen auto-optimalisatie) ─────────────────────────
+# Legt elke aanbeveling vast met tijdstempel en meet forward return op meerdere
+# horizons, telkens RELATIEF tot de benchmark (beter dan de index?). Bewust
+# mens-in-de-lus: toont data, past nooit zelf gewichten aan.
+
+def _price_on_or_after(close_series, target_date, max_gap_days=7):
+    """Slotkoers op of net na target_date. None als voorbij data of te groot gat."""
+    if close_series is None or len(close_series) == 0:
+        return None, None
+    idx = pd.to_datetime(close_series.index)
+    mask = idx.date >= target_date
+    candidates = close_series[mask]
+    if len(candidates) == 0:
+        return None, None
+    first_date = pd.to_datetime(candidates.index[0]).date()
+    if (first_date - target_date).days > max_gap_days:
+        return None, None
+    return float(candidates.iloc[0]), first_date.isoformat()
+
+def _record_key(ticker, date_iso, rec_type):
+    return f"{rec_type}:{ticker}:{date_iso}"
+
+def record_recommendations(track, today_iso, allocation, stocks, prices, bench_close):
+    """Leg vandaag's aanbevelingen vast (idempotent): maandpick + sterke signalen."""
+    records = track.setdefault("records", {})
+    bench_entry = float(bench_close.iloc[-1]) if bench_close is not None and len(bench_close) else None
+
+    def add(ticker, rec_type, direction, entry_price, snapshot):
+        if entry_price is None:
+            return
+        key = _record_key(ticker, today_iso, rec_type)
+        if key in records:
+            return  # idempotent
+        records[key] = {
+            "ticker": ticker, "type": rec_type, "direction": direction,
+            "date": today_iso, "entryPrice": entry_price, "benchEntry": bench_entry,
+            "snapshot": snapshot, "outcomes": {},
+        }
+
+    if allocation and allocation.get("primaryPick"):
+        p = allocation["primaryPick"]
+        add(p["ticker"], "monthly_pick", "BUY", prices.get(p["ticker"]), {
+            "composite": p.get("composite"), "quality": p.get("quality"),
+            "valuation": p.get("valuation"), "timing": p.get("timing"),
+        })
+
+    for t, s in stocks.items():
+        overall = s.get("overall")
+        sc = s.get("scores", {})
+        if overall == "STERK KOOP":
+            add(t, "strong_signal", "BUY", prices.get(t),
+                {"overall": overall, "composite": sc.get("composite"), "timing": sc.get("timing")})
+        elif overall == "STERK VERKOOP":
+            add(t, "strong_signal", "SELL", prices.get(t),
+                {"overall": overall, "composite": sc.get("composite"), "timing": sc.get("timing")})
+
+def evaluate_outcomes(track, today, price_data, bench_close, horizons_weeks):
+    """Vul verstreken horizons in met forward return (absoluut + relatief vs benchmark)."""
+    for rec in track.get("records", {}).values():
+        entry_date = date.fromisoformat(rec["date"])
+        entry_price = rec.get("entryPrice")
+        bench_entry = rec.get("benchEntry")
+        if not entry_price or entry_price <= 0:
+            continue
+        close_series = price_data.get(rec["ticker"])
+        dir_mult = 1 if rec["direction"] == "BUY" else -1
+        for wk in horizons_weeks:
+            hkey = f"{wk}w"
+            if hkey in rec["outcomes"]:
+                continue
+            target = entry_date + timedelta(weeks=wk)
+            if target > today:
+                continue
+            exit_price, exit_date = _price_on_or_after(close_series, target)
+            if exit_price is None:
+                continue
+            eff_ret = (exit_price - entry_price) / entry_price * 100 * dir_mult
+            rel = None
+            if bench_entry and bench_close is not None:
+                bexit, _ = _price_on_or_after(bench_close, target)
+                if bexit:
+                    rel = eff_ret - ((bexit - bench_entry) / bench_entry * 100)
+            rec["outcomes"][hkey] = {
+                "exitDate": exit_date, "exitPrice": round(exit_price, 2),
+                "return": round(eff_ret, 2),
+                "relativeReturn": round(rel, 2) if rel is not None else None,
+                "success": (rel > 0) if rel is not None else (eff_ret > 0),
+            }
+
+def compute_accuracy_stats(track, min_observations, horizons_weeks):
+    """Aggregeer afgeronde observaties — verberg percentage bij te weinig data (anti-ruis)."""
+    records = track.get("records", {})
+    stats = {}
+    for rec_type in ["monthly_pick", "strong_signal"]:
+        type_recs = [r for r in records.values() if r["type"] == rec_type]
+        per_horizon = {}
+        for wk in horizons_weeks:
+            hkey = f"{wk}w"
+            outcomes = [r["outcomes"][hkey] for r in type_recs if hkey in r["outcomes"]]
+            n = len(outcomes)
+            if n == 0:
+                per_horizon[hkey] = {"n": 0, "status": "geen data", "accuracyShown": False}
+                continue
+            wins = sum(1 for o in outcomes if o["success"])
+            rels = [o["relativeReturn"] for o in outcomes if o["relativeReturn"] is not None]
+            entry = {
+                "n": n,
+                "avgReturn": round(statistics.mean([o["return"] for o in outcomes]), 2),
+                "avgRelativeReturn": round(statistics.mean(rels), 2) if rels else None,
+            }
+            if n < min_observations:
+                entry["status"] = f"te weinig data ({n}/{min_observations})"
+                entry["accuracyShown"] = False
+            else:
+                entry["accuracy"] = round(wins / n * 100, 1)
+                entry["status"] = "ok"
+                entry["accuracyShown"] = True
+            per_horizon[hkey] = entry
+        stats[rec_type] = per_horizon
+    return stats
+
+def load_track_record():
+    if os.path.exists(TRACK_FILE):
+        try:
+            with open(TRACK_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            print("  ⚠ track_record.json onleesbaar, start opnieuw")
+    return {"_meta": {"created": NOW.isoformat()}, "records": {}}
+
+# ── MAIN ──────────────────────────────────────────────────────────────────────
+def main():
+    print(f"\n{'='*60}")
+    print(f"BUFFETT+ v2 — {NOW.strftime('%A %d %B %Y %H:%M')} Brussels")
+    print(f"Vrijdag (weekly signals actief): {IS_FRIDAY} | Weekend: {IS_WEEKEND}")
+    print(f"{'='*60}\n")
+
+    if IS_WEEKEND:
+        print("Weekend — beurs gesloten. Bestaande data blijft geldig. Analyse overgeslagen.")
+        sys.exit(0)
+
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+    timeline = load_timeline()
+
+    results = {
+        "meta": {
+            "generatedAt": NOW.isoformat(),
+            "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
+            "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
+            "version": "2.0",
+            "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
+        },
+        "stocks": {}, "errors": [],
+    }
+
+    # Batch ophalen
+    fetched = fetch_all(WATCHLIST)
+    bench_close = fetched.get("__benchmark__")
+
+    # Prijsreeksen per ticker verzamelen (voor trackrecord-evaluatie)
+    price_data = {}
+    for (nm, _p, _fb) in WATCHLIST:
+        entry_x = fetched.get(nm)
+        if entry_x and entry_x.get("daily") is not None:
+            price_data[nm] = entry_x["daily"]["Close"]
+
+    print(f"\n{'='*60}\nSignalen berekenen...\n{'='*60}")
+    for (name, primary, fallback) in WATCHLIST:
+        print(f"\n[{name}]")
+        entry = fetched.get(name)
+        if entry is None:
+            msg = f"{name}: data ophalen mislukt"
+            print(f"  ✗ {msg}")
+            results["errors"].append(msg)
+            results["stocks"][name] = {"error": msg, "fund": FUNDAMENTALS.get(name, {})}
+            continue
+        try:
+            analysis = generate_signals(name, entry["daily"], entry["weekly"])
+            if "error" in analysis:
+                results["errors"].append(f"{name}: {analysis['error']}")
+
+            # Waardering: echte historische P/E via FMP (indien key), anders PEG-gebaseerd
+            fund = FUNDAMENTALS.get(name, {})
+            hist_pe = fetch_historical_pe_fmp(entry["ticker"])
+            valuation = compute_valuation(name, entry["daily"], fund, hist_pe)
+
+            # Multi-timeframe timing (daily/weekly/monthly) + kwaliteit + composiet
+            fib_daily = analysis.get("indicators", {}).get("fib")
+            timing = compute_timing(entry["daily"], entry["weekly"], entry["monthly"], fib_daily)
+            quality = compute_quality(fund)
+            val_score = valuation_to_score(valuation)
+            composite = compute_composite(quality["score"], val_score, timing["score"])
+
+            scores = {
+                "quality": quality["score"], "qualityGate": quality["gate"],
+                "qualityReasons": quality["reasons"], "qualityFails": quality["gateFails"],
+                "valuation": val_score, "timing": timing["score"],
+                "composite": composite,
+            }
+
+            # Bagger-spoor (apart): alleen voor aangewezen tickers
+            bagger = None
+            if name in BAGGER_TICKERS:
+                rel_str = compute_relative_strength(entry["daily"]["Close"], bench_close)
+                bagger = compute_bagger_score(fund, rel_str)
+
+            results["stocks"][name] = {
+                "name": name, "ticker": entry["ticker"],
+                "fund": fund, "valuation": valuation,
+                "timing": timing, "scores": scores, "bagger": bagger,
+                "isBagger": name in BAGGER_TICKERS, **analysis,
+            }
+            # Timeline bijwerken
+            if "indicators" in analysis:
+                pt = update_timeline(timeline, name, analysis["indicators"])
+                pt["overall"] = analysis.get("overall")
+                pt["valuationColor"] = valuation.get("verdictColor")
+                pt["composite"] = composite
+                pt["timing"] = timing["score"]
+                pt["qualityGate"] = quality["gate"]
+                pt["valuationVerdict"] = valuation.get("verdict")
+                ind = analysis["indicators"]
+                rw = f"{ind['rsiWeekly']:.0f}" if ind.get("rsiWeekly") is not None else "n/b"
+                gate_str = "✓poort" if quality["gate"] else "✗poort"
+                print(f"  ${ind['last']:.2f} | RSI-D {ind['rsiDaily']:.0f} | RSI-W {rw} | {analysis['overall']}")
+                print(f"  Kwaliteit {quality['score']} ({gate_str}) | Waardering {val_score} | "
+                      f"Timing {timing['score']} ({timing['label']}) | COMPOSIET {composite}")
+                if analysis.get("conflict"):
+                    print(f"  ⚠️ {analysis['conflictNote'][:70]}...")
+        except Exception as e:
+            msg = f"{name}: onverwachte fout — {e}"
+            print(f"  ✗ {msg}")
+            print(traceback.format_exc())
+            results["errors"].append(msg)
+
+    # ── MAANDELIJKSE ALLOCATIE-AANBEVELING ─────────────────────────────────────
+    # Alleen kwaliteitspoort-passers zijn kandidaten. Gerangschikt op composietscore.
+    print(f"\n{'='*60}\nAllocatie-aanbeveling opbouwen...\n{'='*60}")
+    candidates = []
+    gate_failed = []
+    for name, s in results["stocks"].items():
+        sc = s.get("scores")
+        if not sc:
+            continue
+        row = {
+            "ticker": name, "name": name,
+            "composite": sc["composite"], "quality": sc["quality"],
+            "valuation": sc["valuation"], "timing": sc["timing"],
+            "valuationVerdict": s.get("valuation", {}).get("verdict"),
+            "timingLabel": s.get("timing", {}).get("label"),
+            "price": s.get("indicators", {}).get("last"),
+        }
+        if sc["qualityGate"]:
+            candidates.append(row)
+        else:
+            row["fails"] = sc.get("qualityFails", [])
+            gate_failed.append(row)
+
+    candidates.sort(key=lambda x: x["composite"], reverse=True)
+
+    primary = candidates[0] if candidates else None
+    reasoning = None
+    if primary:
+        reasoning = (
+            f"{primary['ticker']} combineert kwaliteit ({primary['quality']}/100), "
+            f"waardering ({primary['valuation']}/100: {primary['valuationVerdict']}) en "
+            f"timing ({primary['timing']}/100: {primary['timingLabel']}) tot de hoogste "
+            f"composietscore ({primary['composite']}/100) van de kwaliteitsaandelen deze maand."
+        )
+
+    results["allocation"] = {
+        "generatedForMonth": NOW.strftime("%B %Y"),
+        "primaryPick": primary,
+        "reasoning": reasoning,
+        "candidates": candidates,
+        "gateFailed": gate_failed,
+        "weights": {"quality": 0.30, "valuation": 0.30, "timing": 0.40},
+        "note": ("Kwaliteitspoort-passers gerangschikt op composietscore (kwaliteit + waardering "
+                 "+ multi-timeframe timing). Geen financieel advies — combineer met eigen oordeel."),
+    }
+    if primary:
+        print(f"  🎯 Deze maand: {primary['ticker']} (composiet {primary['composite']})")
+        print(f"     Top 3: " + ", ".join(f"{c['ticker']}({c['composite']})" for c in candidates[:3]))
+    print(f"     Poort gefaald: " + (", ".join(c['ticker'] for c in gate_failed) or "geen"))
+
+    # ── BAGGER-SPOOR RANGSCHIKKING ─────────────────────────────────────────────
+    print(f"\n{'='*60}\nBagger-spoor opbouwen...")
+    bagger_list = []
+    for name, s in results["stocks"].items():
+        b = s.get("bagger")
+        if not b:
+            continue
+        bagger_list.append({
+            "ticker": name, "name": name,
+            "score": b["score"], "label": b["label"], "color": b["color"],
+            "risk": b["risk"], "positionSizing": b["positionSizing"],
+            "relStrength": b["relStrength"], "reasons": b["reasons"], "flags": b["flags"],
+            "price": s.get("indicators", {}).get("last"),
+            "revenueGrowth": s.get("fund", {}).get("revenueGrowth"),
+            "grossMarginTrend": s.get("fund", {}).get("grossMarginTrend"),
+            "passesQualityGate": s.get("scores", {}).get("qualityGate", False),
+        })
+    bagger_list.sort(key=lambda x: x["score"], reverse=True)
+
+    results["baggers"] = {
+        "generatedForMonth": NOW.strftime("%B %Y"),
+        "candidates": bagger_list,
+        "note": ("Apart spoor voor asymmetrisch potentieel — waardering telt hier NIET. "
+                 "Kleine positiegroottes: het faillissementsrisico is reëel. Geen financieel advies."),
+        "methodNote": ("Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) "
+                       "en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."),
+    }
+    if bagger_list:
+        top = bagger_list[0]
+        print(f"  Sterkste profiel: {top['ticker']} (score {top['score']}, {top['positionSizing']})")
+        print(f"  Rangschikking: " + ", ".join(f"{b['ticker']}({b['score']})" for b in bagger_list))
+        overlap = [b['ticker'] for b in bagger_list if b['passesQualityGate']]
+        if overlap:
+            print(f"  Ook in kwaliteitspoort: {', '.join(overlap)}")
+
+    # ── WEKELIJKSE CHANGELOG ───────────────────────────────────────────────────
+    # Timeline is nu bijgewerkt met de punten van vandaag; bouw de vergelijking.
+    print(f"\n{'='*60}\nWekelijkse changelog opbouwen...")
+    changelog = build_changelog(timeline, TODAY.isoformat())
+    weekly = {
+        "generatedAt": NOW.isoformat(),
+        "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
+        "periodLabel": "sinds ~1 week geleden",
+        "changes": changelog,
+        "changedCount": len(changelog),
+        "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week.",
+    }
+    results["weekly"] = weekly
+    total_changes = sum(len(c["changes"]) for c in changelog)
+    print(f"  {len(changelog)} aandelen met wijzigingen, {total_changes} veranderingen totaal")
+    for c in changelog[:5]:
+        print(f"    {c['ticker']}: " + "; ".join(ch["text"] for ch in c["changes"]))
+
+    # ── TRACKRECORD ────────────────────────────────────────────────────────────
+    # Leg aanbevelingen vast + evalueer verstreken horizons vs benchmark.
+    print(f"\n{'='*60}\nTrackrecord bijwerken...")
+    track = load_track_record()
+    prices_today = {nm: results["stocks"][nm].get("indicators", {}).get("last")
+                    for nm in results["stocks"] if "indicators" in results["stocks"][nm]}
+    # 1. Vandaag's aanbevelingen vastleggen (idempotent)
+    record_recommendations(track, TODAY.isoformat(), results["allocation"],
+                           results["stocks"], prices_today, bench_close)
+    # 2. Verstreken horizons invullen
+    evaluate_outcomes(track, TODAY, price_data, bench_close, TRACK_HORIZONS_WEEKS)
+    # 3. Accuraatheid aggregeren (met anti-ruis drempel)
+    accuracy = compute_accuracy_stats(track, TRACK_MIN_OBSERVATIONS, TRACK_HORIZONS_WEEKS)
+    track["_meta"]["lastUpdate"] = NOW.isoformat()
+    track["accuracy"] = accuracy
+    track["benchmarkName"] = BENCHMARK_NAME
+    track["minObservations"] = TRACK_MIN_OBSERVATIONS
+    track["horizonsWeeks"] = TRACK_HORIZONS_WEEKS
+
+    n_records = len(track.get("records", {}))
+    n_evaluated = sum(1 for r in track["records"].values() if r["outcomes"])
+    print(f"  {n_records} vastgelegde aanbevelingen, {n_evaluated} met ≥1 afgeronde horizon")
+    mp_4w = accuracy.get("monthly_pick", {}).get("4w", {})
+    if mp_4w.get("accuracyShown"):
+        print(f"  Maandpick 4w accuraatheid: {mp_4w['accuracy']}% (n={mp_4w['n']})")
+    elif mp_4w.get("n", 0) > 0:
+        print(f"  Maandpick 4w: {mp_4w['status']} (gem. relatief {mp_4w.get('avgRelativeReturn')}%)")
+
+    # signals.json krijgt een compacte samenvatting mee (dashboard leest track_record.json apart)
+    results["trackSummary"] = {
+        "totalRecords": n_records, "evaluated": n_evaluated,
+        "benchmarkName": BENCHMARK_NAME, "accuracy": accuracy,
+    }
+
+    # Wegschrijven
+    print(f"\n{'='*60}\nWegschrijven...")
+    try:
+        atomic_write(OUTPUT_FILE, results)
+        print(f"  ✓ {OUTPUT_FILE}")
+        timeline["_meta"]["lastUpdate"] = NOW.isoformat()
+        atomic_write(TIMELINE_FILE, timeline)
+        print(f"  ✓ {TIMELINE_FILE}")
+        atomic_write(WEEKLY_FILE, weekly)
+        print(f"  ✓ {WEEKLY_FILE}")
+        atomic_write(TRACK_FILE, track)
+        print(f"  ✓ {TRACK_FILE}")
+        snapshot_path = os.path.join(HISTORY_DIR, f"{TODAY.isoformat()}.json")
+        atomic_write(snapshot_path, results)
+        print(f"  ✓ {snapshot_path}")
+    except Exception as e:
+        print(f"  ✗ KRITIEKE FOUT bij wegschrijven: {e}")
+        sys.exit(1)
+
+    print(f"\nFouten: {len(results['errors'])}")
+    for e in results["errors"]:
+        print(f"  ✗ {e}")
+    print(f"{'='*60}\n")
+    if results["errors"]:
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
