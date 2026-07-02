@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "created": "2026-07-02T21:36:20.214972+02:00",
+    "lastUpdate": "2026-07-02T21:36:20.214972+02:00"
+  },
+  "records": {
+    "monthly_pick:MU:2026-07-02": {
+      "ticker": "MU",
+      "type": "monthly_pick",
+      "direction": "BUY",
+      "date": "2026-07-02",
+      "entryPrice": 961.81,
+      "benchEntry": 7456.39013671875,
+      "snapshot": {
+        "composite": 84,
+        "quality": 95,
+        "valuation": 90,
+        "timing": 70
+      },
+      "outcomes": {}
+    }
+  },
+  "accuracy": {
+    "monthly_pick": {
+      "1w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      },
+      "4w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      },
+      "13w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      },
+      "26w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      }
+    },
+    "strong_signal": {
+      "1w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      },
+      "4w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      },
+      "13w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      },
+      "26w": {
+        "n": 0,
+        "status": "geen data",
+        "accuracyShown": false
+      }
+    }
+  },
+  "benchmarkName": "S&P 500",
+  "minObservations": 20,
+  "horizonsWeeks": [
+    1,
+    4,
+    13,
+    26
+  ]
+}
