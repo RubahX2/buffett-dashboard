@@ -61,6 +61,22 @@ TRACK_HORIZONS_WEEKS = [1, 4, 13, 26]
 # Minimum aantal AFGERONDE observaties voor we een accuraatheidscijfer tonen (anti-ruis).
 TRACK_MIN_OBSERVATIONS = 20
 
+# ── MARKTREGIME & CONTEXT ─────────────────────────────────────────────────────
+# Extra reeksen voor het marktregime (SPX komt al binnen als benchmark).
+MARKET_TICKERS = {
+    "NDX":    "^IXIC",     # NASDAQ Composite
+    "DXY":    "DX-Y.NYB",  # Dollar-index (context, géén score-invloed)
+    "GOLD":   "GLD",       # SPDR Gold Shares (grootste goud-ETF; EU-koopbaar: SGLD/IGLN)
+    "COPPER": "CPER",      # US Copper Index Fund ("Dr. Copper"; EU-koopbaar: COPA)
+    "OIL":    "USO",       # US Oil Fund, WTI (EU-koopbaar: CRUD)
+    "SPY":    "SPY",       # Voor sector-relatieve-sterkte
+    "XLK":"XLK", "SMH":"SMH", "XLI":"XLI", "ITA":"ITA", "XLV":"XLV", "XLE":"XLE", "XLF":"XLF",
+}
+SECTOR_LABELS = {"XLK":"Technologie","SMH":"Halfgeleiders","XLI":"Industrie",
+                 "ITA":"Defensie & Ruimtevaart","XLV":"Gezondheidszorg","XLE":"Energie","XLF":"Financials"}
+# Maximale invloed van het marktregime op de timing-score (mild, begrensd, zichtbaar).
+MARKET_ADJ_MAX = 8
+
 # Hoeveel historische datapunten bewaren we per aandeel in timeline.json
 TIMELINE_MAX_POINTS = 400  # ~1.5 jaar werkdagen
 
@@ -75,7 +91,7 @@ WATCHLIST = [
     ("WM",    "WM",      None),
     ("PLTR",  "PLTR",    None),
     ("CAT",   "CAT",     None),
-    ("ASML",  "ASML",    None),
+    ("ASML",  "ASML.AS", "ASML"),   # Euronext Amsterdam (€); Nasdaq als data-fallback
     ("ASMI",  "ASM.AS",  "ASMIY"),
     ("MU",    "MU",      None),
     ("GOOGL", "GOOGL",   None),
@@ -91,17 +107,77 @@ WATCHLIST = [
     ("OPEN",  "OPEN",    None),      # Opendoor — controletest buiten sector
     ("SDGR",  "SDGR",    None),      # Schrödinger — computational drug discovery
     ("BNGO",  "BNGO",    None),      # Bionano Genomics — hoog-risico microcap
+    # ── Uitbreiding juli 2026: kern-kwaliteit wereldwijd ──
+    ("GAW",      "GAW.L",   None),   # Games Workshop (LSE, pence!)
+    ("MNST",     "MNST",    None),   # Monster Beverage
+    ("V",        "V",       None),   # Visa
+    ("KPG",      "KPG.AX",  None),   # Kelly Partners (ASX)
+    ("ADM",      "ADM.L",   None),   # Admiral Group (LSE, pence!)
+    ("AON",      "AON",     None),   # Aon plc
+    ("MELI",     "MELI",    None),   # MercadoLibre
+    ("III",      "III.L",   None),   # 3i Group (LSE, pence!)
+    ("SHOP",     "SHOP",    None),   # Shopify
+    ("NET",      "NET",     None),   # Cloudflare
+    ("CRWV",     "CRWV",    None),   # CoreWeave (ook bagger-spoor)
+    ("MSFT",     "MSFT",    None),   # Microsoft
+    ("MTLS",     "MTLS",    None),   # Materialise
+    ("SNAP",     "SNAP",    None),   # Snap
+    ("NVDA",     "NVDA",    None),   # Nvidia
+    ("NKE",      "NKE",     None),   # Nike
+    ("DIE",      "DIE.BR",  None),   # D'Ieteren (Euronext Brussel)
+    ("SOF",      "SOF.BR",  None),   # Sofina (Euronext Brussel)
+    ("AIR",      "AIR.PA",  None),   # Airbus (Euronext Parijs)
+    ("ALFEN",    "ALFEN.AS",None),   # Alfen (Euronext Amsterdam)
+    ("LOTB",     "LOTB.BR", None),   # Lotus Bakeries (Euronext Brussel)
+    ("MSTR",     "MSTR",    None),   # Strategy (bitcoin-proxy — poort zal falen, bewust)
+    ("AAPL",     "AAPL",    None),   # Apple
+    ("NFLX",     "NFLX",    None),   # Netflix
+    ("DIS",      "DIS",     None),   # Disney
+    ("BLK",      "BLK",     None),   # BlackRock
+    ("BABA",     "BABA",    None),   # Alibaba (NYSE ADR)
+    # ── Robotics: Buffett-moat namen ──
+    ("NABTESCO", "6268.T",  None),   # Nabtesco (Tokio, ¥)
+    ("HARMONIC", "6324.T",  "HSYDF"),# Harmonic Drive (Tokio, ¥)
+    ("KEYENCE",  "6861.T",  "KYCCF"),# Keyence (Tokio, ¥)
+    ("FANUC",    "6954.T",  "FANUY"),# Fanuc (Tokio, ¥)
+    ("YASKAWA",  "6506.T",  "YASKY"),# Yaskawa (Tokio, ¥)
+    ("ABB",      "ABB",     None),   # ABB (NYSE-notering, $)
+    ("SOFTBANK", "9984.T",  "SFTBY"),# SoftBank Group (Tokio, ¥)
+    ("ROK",      "ROK",     None),   # Rockwell Automation
+    ("TER",      "TER",     None),   # Teradyne
+    ("ISRG",     "ISRG",    None),   # Intuitive Surgical
+    ("CGNX",     "CGNX",    None),   # Cognex
+    ("NOVT",     "NOVT",    None),   # Novanta
+    # ── Quantum: 100x-bagger testkandidaten ──
+    ("IONQ",     "IONQ",    None),   # IonQ
+    ("RGTI",     "RGTI",    None),   # Rigetti
+    ("QBTS",     "QBTS",    None),   # D-Wave
+    # ── Robotics: speculatieve bagger-kandidaten ──
+    ("UBTECH",   "9880.HK", None),   # UBTECH (Hong Kong, HK$)
+    ("SYM",      "SYM",     None),   # Symbotic
+    ("SERV",     "SERV",    None),   # Serve Robotics
+    ("RR",       "RR",      None),   # Richtech Robotics
+    ("PL",       "PL",      None),   # Planet Labs — aardobservatie (bagger-kandidaat)
 ]
 
 # Welke tickers worden (ook) in het bagger-spoor beoordeeld?
-BAGGER_TICKERS = {"LHX", "MOGA", "TDG", "KTOS", "RKLB", "OPEN", "SDGR", "BNGO"}
+BAGGER_TICKERS = {"LHX", "MOGA", "TDG", "KTOS", "RKLB", "OPEN", "SDGR", "BNGO",
+                  "CRWV", "IONQ", "RGTI", "QBTS", "UBTECH", "SYM", "SERV", "RR", "PL"}
+
+# Valuta per aandeel (weergave). "p" = Britse pence (LSE noteert in pence!).
+CURRENCY = {
+    "ASML":"€", "ASMI":"€", "DIE":"€", "SOF":"€", "AIR":"€", "ALFEN":"€", "LOTB":"€",
+    "GAW":"p", "ADM":"p", "III":"p",
+    "NABTESCO":"¥", "HARMONIC":"¥", "KEYENCE":"¥", "FANUC":"¥", "YASKAWA":"¥", "SOFTBANK":"¥",
+    "UBTECH":"HK$", "KPG":"A$",
+}  # alles zonder vermelding: "$"
 
 # Fundamentals — handmatig bijgehouden per kwartaal. Laatste update: juni 2026.
 FUNDAMENTALS = {
     "WM":    {"pe":29.2,  "roe":29.9, "fcfYield":3.0,  "debtEquity":2.28, "netMargin":11.0, "divYield":1.69, "revenueGrowth":6.1,   "eps":7.72,  "mktCap":"$90B",   "beta":0.46, "lastUpdated":"2026-06"},
     "PLTR":  {"pe":117.6, "roe":32.6, "fcfYield":1.0,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":67.7,  "eps":0.96,  "mktCap":"$271B",  "beta":1.52, "lastUpdated":"2026-06"},
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.7,  "debtEquity":2.31, "netMargin":13.3, "divYield":1.1,  "revenueGrowth":11.9,  "eps":8.12,  "mktCap":"$176B",  "beta":1.60, "lastUpdated":"2026-06"},
-    "ASML":  {"pe":54.5,  "roe":52.2, "fcfYield":1.7,  "debtEquity":0.13, "netMargin":29.7, "divYield":0.7,  "revenueGrowth":18.0,  "eps":18.10, "mktCap":"$379B",  "beta":1.37, "lastUpdated":"2026-06"},
+    "ASML":  {"pe":58.8,  "roe":55.0, "fcfYield":1.9,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":12.0,  "eps":27.80, "mktCap":"€640B",  "beta":1.37, "lastUpdated":"2026-07 (geverifieerd)"},
     "ASMI":  {"pe":44.9,  "roe":21.6, "fcfYield":2.9,  "debtEquity":0.01, "netMargin":23.9, "divYield":0.3,  "revenueGrowth":12.0,  "eps":23.75, "mktCap":"$52B",   "beta":1.50, "lastUpdated":"2026-06"},
     "MU":    {"pe":25.3,  "roe":66.6, "fcfYield":2.1,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.05, "revenueGrowth":125.0, "eps":44.80, "mktCap":"$1280B", "beta":2.17, "lastUpdated":"2026-06"},
     "GOOGL": {"pe":19.8,  "roe":31.5, "fcfYield":4.2,  "debtEquity":0.07, "netMargin":28.6, "divYield":0.5,  "revenueGrowth":14.0,  "eps":9.15,  "mktCap":"$2200B", "beta":1.05, "lastUpdated":"2026-06"},
@@ -127,6 +203,67 @@ FUNDAMENTALS = {
               "grossMargin":52.0, "grossMarginTrend":2.5, "revenueGrowthPrev":18.0, "cashRunwayMonths":36},
     "BNGO":  {"pe":None, "roe":-85.0,"fcfYield":-40.0,"debtEquity":0.40,"netMargin":-180.0,"divYield":0,  "revenueGrowth":15.0,  "eps":-2.50, "mktCap":"$0.05B","beta":3.20, "lastUpdated":"2026-01",
               "grossMargin":32.0, "grossMarginTrend":-1.0,"revenueGrowthPrev":55.0, "cashRunwayMonths":9},
+    # ── Uitbreiding juli 2026 — INDICATIEF per 2026-01 (CRWV: 2026-05), VERIFIEER per kwartaal ──
+    # Let op eenheden: eps in noteringsvaluta (LSE in PENCE, Tokio in ¥, Brussel/Parijs/Adam in €, HK in HK$)
+    "GAW":   {"pe":24.0, "roe":60.0, "fcfYield":4.0, "debtEquity":0.02, "netMargin":32.0, "divYield":4.2, "revenueGrowth":12.0, "eps":620,   "mktCap":"£5.2B",  "beta":0.50, "lastUpdated":"2026-01"},
+    "MNST":  {"pe":34.0, "roe":23.0, "fcfYield":2.8, "debtEquity":0.03, "netMargin":21.5, "divYield":0,   "revenueGrowth":7.0,  "eps":1.68,  "mktCap":"$56B",   "beta":0.75, "lastUpdated":"2026-01"},
+    "V":     {"pe":29.0, "roe":51.0, "fcfYield":3.4, "debtEquity":0.62, "netMargin":53.0, "divYield":0.75,"revenueGrowth":10.0, "eps":10.9,  "mktCap":"$640B",  "beta":0.95, "lastUpdated":"2026-01"},
+    "KPG":   {"pe":55.0, "roe":35.0, "fcfYield":1.8, "debtEquity":2.40, "netMargin":9.0,  "divYield":1.0, "revenueGrowth":26.0, "eps":0.21,  "mktCap":"A$1.6B", "beta":0.90, "lastUpdated":"2026-01"},
+    "ADM":   {"pe":19.0, "roe":45.0, "fcfYield":5.5, "debtEquity":0.40, "netMargin":17.0, "divYield":4.6, "revenueGrowth":12.0, "eps":160,   "mktCap":"£9B",    "beta":0.60, "lastUpdated":"2026-01"},
+    "AON":   {"pe":25.0, "roe":70.0, "fcfYield":4.2, "debtEquity":3.40, "netMargin":19.0, "divYield":0.8, "revenueGrowth":9.0,  "eps":15.2,  "mktCap":"$77B",   "beta":0.90, "lastUpdated":"2026-01"},
+    "MELI":  {"pe":52.0, "roe":38.0, "fcfYield":2.5, "debtEquity":1.10, "netMargin":9.5,  "divYield":0,   "revenueGrowth":34.0, "eps":42.0,  "mktCap":"$115B",  "beta":1.50, "lastUpdated":"2026-01"},
+    "III":   {"pe":9.0,  "roe":22.0, "fcfYield":2.0, "debtEquity":0.30, "netMargin":60.0, "divYield":1.9, "revenueGrowth":16.0, "eps":450,   "mktCap":"£40B",   "beta":1.05, "lastUpdated":"2026-01"},
+    "SHOP":  {"pe":85.0, "roe":13.0, "fcfYield":1.2, "debtEquity":0.08, "netMargin":13.0, "divYield":0,   "revenueGrowth":26.0, "eps":1.45,  "mktCap":"$155B",  "beta":2.20, "lastUpdated":"2026-01"},
+    "NET":   {"pe":None, "roe":3.0,  "fcfYield":0.8, "debtEquity":0.90, "netMargin":1.5,  "divYield":0,   "revenueGrowth":28.0, "eps":0.08,  "mktCap":"$70B",   "beta":1.90, "lastUpdated":"2026-01"},
+    "CRWV":  {"pe":None, "roe":-40.7,"fcfYield":-19.0,"debtEquity":5.20,"netMargin":-25.6,"divYield":0,   "revenueGrowth":105.0,"eps":-2.72, "mktCap":"$45B",   "beta":2.80, "lastUpdated":"2026-05",
+              "grossMargin":73.0, "grossMarginTrend":-1.0, "revenueGrowthPrev":168.0, "cashRunwayMonths":None},
+    "MSFT":  {"pe":34.0, "roe":34.0, "fcfYield":2.4, "debtEquity":0.30, "netMargin":36.0, "divYield":0.7, "revenueGrowth":15.0, "eps":13.4,  "mktCap":"$3.7T",  "beta":0.90, "lastUpdated":"2026-01"},
+    "MTLS":  {"pe":48.0, "roe":6.0,  "fcfYield":1.0, "debtEquity":0.15, "netMargin":4.0,  "divYield":0,   "revenueGrowth":6.0,  "eps":0.13,  "mktCap":"$0.4B",  "beta":1.30, "lastUpdated":"2026-01"},
+    "SNAP":  {"pe":None, "roe":-12.0,"fcfYield":1.5, "debtEquity":0.90, "netMargin":-8.0, "divYield":0,   "revenueGrowth":12.0, "eps":-0.30, "mktCap":"$16B",   "beta":1.90, "lastUpdated":"2026-01"},
+    "NVDA":  {"pe":42.0, "roe":95.0, "fcfYield":2.2, "debtEquity":0.12, "netMargin":54.0, "divYield":0.03,"revenueGrowth":55.0, "eps":4.4,   "mktCap":"$4.5T",  "beta":1.70, "lastUpdated":"2026-01"},
+    "NKE":   {"pe":32.0, "roe":28.0, "fcfYield":2.8, "debtEquity":0.65, "netMargin":8.5,  "divYield":2.1, "revenueGrowth":-3.0, "eps":2.2,   "mktCap":"$105B",  "beta":1.10, "lastUpdated":"2026-01"},
+    "DIE":   {"pe":13.0, "roe":16.0, "fcfYield":5.0, "debtEquity":1.70, "netMargin":8.0,  "divYield":1.5, "revenueGrowth":7.0,  "eps":15.5,  "mktCap":"€11B",   "beta":1.00, "lastUpdated":"2026-01"},
+    "SOF":   {"pe":13.0, "roe":8.0,  "fcfYield":1.0, "debtEquity":0.10, "netMargin":40.0, "divYield":1.4, "revenueGrowth":5.0,  "eps":19.0,  "mktCap":"€8B",    "beta":0.90, "lastUpdated":"2026-01"},
+    "AIR":   {"pe":30.0, "roe":27.0, "fcfYield":3.0, "debtEquity":0.40, "netMargin":7.0,  "divYield":1.2, "revenueGrowth":12.0, "eps":6.4,   "mktCap":"€150B",  "beta":1.20, "lastUpdated":"2026-01"},
+    "ALFEN": {"pe":20.0, "roe":8.0,  "fcfYield":2.0, "debtEquity":0.60, "netMargin":3.0,  "divYield":0,   "revenueGrowth":-5.0, "eps":0.55,  "mktCap":"€0.25B", "beta":1.80, "lastUpdated":"2026-01"},
+    "LOTB":  {"pe":48.0, "roe":27.0, "fcfYield":1.5, "debtEquity":0.35, "netMargin":14.5, "divYield":0.9, "revenueGrowth":11.0, "eps":210.0, "mktCap":"€8.5B",  "beta":0.50, "lastUpdated":"2026-01"},
+    "MSTR":  {"pe":None, "roe":-5.0, "fcfYield":-1.0,"debtEquity":0.90, "netMargin":-30.0,"divYield":0,   "revenueGrowth":2.0,  "eps":-1.0,  "mktCap":"$80B",   "beta":3.50, "lastUpdated":"2026-01"},
+    "AAPL":  {"pe":36.0, "roe":150.0,"fcfYield":3.0, "debtEquity":1.60, "netMargin":25.0, "divYield":0.45,"revenueGrowth":7.0,  "eps":7.4,   "mktCap":"$4.0T",  "beta":1.10, "lastUpdated":"2026-01"},
+    "NFLX":  {"pe":42.0, "roe":38.0, "fcfYield":2.0, "debtEquity":0.70, "netMargin":25.0, "divYield":0,   "revenueGrowth":14.0, "eps":26.0,  "mktCap":"$470B",  "beta":1.20, "lastUpdated":"2026-01"},
+    "DIS":   {"pe":22.0, "roe":9.0,  "fcfYield":3.5, "debtEquity":0.45, "netMargin":9.0,  "divYield":1.0, "revenueGrowth":4.0,  "eps":5.4,   "mktCap":"$210B",  "beta":1.20, "lastUpdated":"2026-01"},
+    "BLK":   {"pe":24.0, "roe":15.0, "fcfYield":3.8, "debtEquity":0.50, "netMargin":31.0, "divYield":2.0, "revenueGrowth":13.0, "eps":45.0,  "mktCap":"$170B",  "beta":1.20, "lastUpdated":"2026-01"},
+    "BABA":  {"pe":18.0, "roe":11.0, "fcfYield":5.5, "debtEquity":0.35, "netMargin":13.0, "divYield":1.1, "revenueGrowth":7.0,  "eps":8.8,   "mktCap":"$280B",  "beta":1.30, "lastUpdated":"2026-01"},
+    # Robotics moat (¥/$ — eps in noteringsvaluta)
+    "NABTESCO":{"pe":21.0,"roe":8.5, "fcfYield":3.0, "debtEquity":0.25, "netMargin":7.5,  "divYield":3.0, "revenueGrowth":5.0,  "eps":135,   "mktCap":"¥350B",  "beta":0.80, "lastUpdated":"2026-01"},
+    "HARMONIC":{"pe":55.0,"roe":6.0, "fcfYield":0.5, "debtEquity":0.30, "netMargin":9.0,  "divYield":0.8, "revenueGrowth":15.0, "eps":65,    "mktCap":"¥340B",  "beta":1.40, "lastUpdated":"2026-01"},
+    "KEYENCE":{"pe":37.0, "roe":13.5,"fcfYield":2.0, "debtEquity":0.00, "netMargin":37.0, "divYield":0.7, "revenueGrowth":9.0,  "eps":1850,  "mktCap":"¥16.5T", "beta":0.95, "lastUpdated":"2026-01"},
+    "FANUC": {"pe":27.0, "roe":8.0,  "fcfYield":2.5, "debtEquity":0.00, "netMargin":16.0, "divYield":2.2, "revenueGrowth":5.0,  "eps":160,   "mktCap":"¥4.3T",  "beta":0.90, "lastUpdated":"2026-01"},
+    "YASKAWA":{"pe":26.0, "roe":11.0,"fcfYield":2.0, "debtEquity":0.20, "netMargin":8.5,  "divYield":1.6, "revenueGrowth":6.0,  "eps":165,   "mktCap":"¥1.1T",  "beta":1.20, "lastUpdated":"2026-01"},
+    "ABB":   {"pe":29.0, "roe":29.0, "fcfYield":3.2, "debtEquity":0.50, "netMargin":14.5, "divYield":1.7, "revenueGrowth":6.0,  "eps":2.1,   "mktCap":"$115B",  "beta":1.10, "lastUpdated":"2026-01"},
+    "SOFTBANK":{"pe":14.0,"roe":14.0,"fcfYield":0.5, "debtEquity":1.60, "netMargin":18.0, "divYield":0.4, "revenueGrowth":8.0,  "eps":1300,  "mktCap":"¥17T",   "beta":2.20, "lastUpdated":"2026-01"},
+    "ROK":   {"pe":31.0, "roe":33.0, "fcfYield":3.0, "debtEquity":1.00, "netMargin":13.5, "divYield":1.5, "revenueGrowth":4.0,  "eps":10.5,  "mktCap":"$37B",   "beta":1.20, "lastUpdated":"2026-01"},
+    "TER":   {"pe":36.0, "roe":21.0, "fcfYield":2.2, "debtEquity":0.05, "netMargin":19.0, "divYield":0.4, "revenueGrowth":12.0, "eps":3.6,   "mktCap":"$21B",   "beta":1.50, "lastUpdated":"2026-01"},
+    "ISRG":  {"pe":66.0, "roe":17.5, "fcfYield":1.4, "debtEquity":0.00, "netMargin":28.5, "divYield":0,   "revenueGrowth":16.0, "eps":8.2,   "mktCap":"$190B",  "beta":1.30, "lastUpdated":"2026-01"},
+    "CGNX":  {"pe":44.0, "roe":11.0, "fcfYield":2.0, "debtEquity":0.05, "netMargin":13.0, "divYield":0.8, "revenueGrowth":7.0,  "eps":0.95,  "mktCap":"$7B",    "beta":1.50, "lastUpdated":"2026-01"},
+    "NOVT":  {"pe":42.0, "roe":13.0, "fcfYield":2.3, "debtEquity":0.50, "netMargin":11.0, "divYield":0,   "revenueGrowth":6.0,  "eps":3.3,   "mktCap":"$5B",    "beta":1.30, "lastUpdated":"2026-01"},
+    # Quantum baggers (waardering irrelevant; bagger-velden leidend)
+    "IONQ":  {"pe":None, "roe":-35.0,"fcfYield":-8.0, "debtEquity":0.10, "netMargin":-180.0,"divYield":0, "revenueGrowth":85.0, "eps":-1.4,  "mktCap":"$12B",   "beta":3.50, "lastUpdated":"2026-01",
+              "grossMargin":55.0, "grossMarginTrend":3.0,  "revenueGrowthPrev":95.0,  "cashRunwayMonths":40},
+    "RGTI":  {"pe":None, "roe":-25.0,"fcfYield":-15.0,"debtEquity":0.15, "netMargin":-350.0,"divYield":0, "revenueGrowth":20.0, "eps":-0.15, "mktCap":"$4B",    "beta":4.00, "lastUpdated":"2026-01",
+              "grossMargin":50.0, "grossMarginTrend":-5.0, "revenueGrowthPrev":10.0,  "cashRunwayMonths":30},
+    "QBTS":  {"pe":None, "roe":-40.0,"fcfYield":-12.0,"debtEquity":0.20, "netMargin":-400.0,"divYield":0, "revenueGrowth":110.0,"eps":-0.25, "mktCap":"$3.5B",  "beta":4.20, "lastUpdated":"2026-01",
+              "grossMargin":62.0, "grossMarginTrend":5.0,  "revenueGrowthPrev":65.0,  "cashRunwayMonths":30},
+    # Robotics speculatief (baggers)
+    "UBTECH":{"pe":None, "roe":-20.0,"fcfYield":-10.0,"debtEquity":0.50, "netMargin":-30.0, "divYield":0, "revenueGrowth":32.0, "eps":-2.2,  "mktCap":"HK$55B", "beta":2.50, "lastUpdated":"2026-01",
+              "grossMargin":30.0, "grossMarginTrend":1.5,  "revenueGrowthPrev":25.0,  "cashRunwayMonths":15},
+    "SYM":   {"pe":None, "roe":2.0,  "fcfYield":1.0,  "debtEquity":0.10, "netMargin":0.5,   "divYield":0, "revenueGrowth":28.0, "eps":0.05,  "mktCap":"$23B",   "beta":2.30, "lastUpdated":"2026-01",
+              "grossMargin":17.0, "grossMarginTrend":1.5,  "revenueGrowthPrev":35.0,  "cashRunwayMonths":None},
+    "SERV":  {"pe":None, "roe":-60.0,"fcfYield":-20.0,"debtEquity":0.10, "netMargin":-900.0,"divYield":0, "revenueGrowth":150.0,"eps":-0.90, "mktCap":"$1.5B",  "beta":3.80, "lastUpdated":"2026-01",
+              "grossMargin":35.0, "grossMarginTrend":4.0,  "revenueGrowthPrev":200.0, "cashRunwayMonths":24},
+    "RR":    {"pe":None, "roe":-30.0,"fcfYield":-15.0,"debtEquity":0.05, "netMargin":-120.0,"divYield":0, "revenueGrowth":60.0, "eps":-0.10, "mktCap":"$0.4B",  "beta":3.50, "lastUpdated":"2026-01",
+              "grossMargin":45.0, "grossMarginTrend":2.0,  "revenueGrowthPrev":90.0,  "cashRunwayMonths":20},
+    "PL":    {"pe":None, "roe":-8.0, "fcfYield":-1.0, "debtEquity":0.05, "netMargin":-10.0, "divYield":0, "revenueGrowth":18.0, "eps":-0.08, "mktCap":"$3.8B",  "beta":2.30, "lastUpdated":"2026-01",
+              "grossMargin":58.0, "grossMarginTrend":4.0,  "revenueGrowthPrev":11.0,  "cashRunwayMonths":None},
 }
 
 # ── TECHNISCHE INDICATOREN ────────────────────────────────────────────────────
@@ -255,7 +392,7 @@ def fetch_all(watchlist) -> dict:
     fallback_map = {name: fb for (name, _p, fb) in watchlist if fb}
 
     # Benchmark meebestellen in dezelfde batch (efficiënt)
-    all_tickers = list(primary_map.values()) + [BENCHMARK_TICKER]
+    all_tickers = list(primary_map.values()) + [BENCHMARK_TICKER] + list(MARKET_TICKERS.values())
     result = {}
 
     print(f"Batch-download van {len(all_tickers)} tickers (incl. benchmark {BENCHMARK_TICKER})...")
@@ -354,6 +491,21 @@ def fetch_all(watchlist) -> dict:
         except (KeyError, Exception) as e:
             print(f"  ⚠ Benchmark ophalen faalde: {e}")
     result["__benchmark__"] = bench
+
+    # Markt-reeksen (alleen slotkoersen) apart bewaren
+    market = {}
+    if data is not None:
+        for key, tk in MARKET_TICKERS.items():
+            try:
+                mdf = data[tk].dropna(how="all")
+                if not mdf.empty and "Close" in mdf.columns:
+                    s = mdf["Close"].copy()
+                    s.index = pd.to_datetime(s.index)
+                    market[key] = s.sort_index()
+            except (KeyError, Exception):
+                pass
+    print(f"  ✓ Markt-reeksen: {len(market)}/{len(MARKET_TICKERS)} beschikbaar")
+    result["__market__"] = market
 
     return result
 
@@ -644,7 +796,15 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
     close = daily["Close"]
     current_price = float(close.iloc[-1])
     current_pe = fund.get("pe")
+    current_eps = fund.get("eps")
     growth     = fund.get("revenueGrowth")
+
+    # P/E live berekenen: koers (live) ÷ laatst bekende EPS. Zo beweegt de waardering
+    # mee met de koers en veroudert alleen de EPS (kwartaal-update) — niet de hele P/E.
+    pe_live = False
+    if current_eps and current_eps > 0 and current_price > 0:
+        current_pe = round(current_price / current_eps, 1)
+        pe_live = True
 
     out = {
         "currentPE": current_pe, "peg": None,
@@ -652,6 +812,8 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
         "peSource": None, "priceRangePosition": None,
         "verdict": None, "verdictColor": None, "notes": [],
     }
+    if pe_live:
+        out["notes"].append("P/E live: koers ÷ laatst bekende EPS")
 
     # PEG — primaire groei-gecorrigeerde maatstaf (Lynch)
     if current_pe and growth and growth > 0:
@@ -943,6 +1105,21 @@ def compute_bagger_score(fund: dict, rel_strength) -> dict:
     if "$0.0" in mktcap_str or "$0." in mktcap_str:
         flags.append("Microcap — hoog faillissements-/volatiliteitsrisico"); risk = "zeer hoog"
 
+    # 100x-realisme: de wiskunde van marktkap. Een 100x vanaf $10B = $1 biljoen.
+    # Echte 100-baggers starten vrijwel altijd klein (<$1B) en onopgemerkt.
+    cap_usd = None
+    s = (mktcap_str or "").strip()
+    if s.startswith("$") and (s.endswith("B") or s.endswith("T")):
+        try:
+            v = float(s[1:-1]); cap_usd = v * 1000 if s.endswith("T") else v
+        except ValueError:
+            pass
+    if cap_usd is not None:
+        if cap_usd >= 40:
+            flags.append(f"Marktkap ~${cap_usd:.0f}B — 100x wiskundig uitgesloten; dit is een momentum-positie, geen bagger-lot")
+        elif cap_usd >= 10:
+            flags.append(f"Marktkap ~${cap_usd:.0f}B — 100x vergt biljoenen-waardering; realistisch plafond eerder 5–10x")
+
     if   score >= 70 and risk in ("gemiddeld", "hoog"): pos = "klein-tot-gemiddeld"
     elif score >= 55: pos = "klein"
     elif score >= 40: pos = "zeer klein (speculatief)"
@@ -957,6 +1134,89 @@ def compute_bagger_score(fund: dict, rel_strength) -> dict:
         "score": score, "label": label, "color": color,
         "reasons": reasons, "flags": flags, "risk": risk,
         "positionSizing": pos, "relStrength": rel_strength,
+    }
+
+# ── MARKTREGIME (SPX/NDX) + CONTEXT (DXY, grondstoffen) + SECTOR-ROTATIE ──────
+# Filosofie: het regime is een BESCHRIJVER van de brede markt, geen top-voorspeller.
+# Invloed op timing is mild (±MARKET_ADJ_MAX), begrensd en volledig zichtbaar in de UI.
+# DXY/goud/koper/olie zijn pure context (instabiele correlaties → géén score-invloed).
+
+def _index_regime_score(close):
+    """Gewogen multi-timeframe trendscore voor een index (zelfde toolkit als aandelen)."""
+    if close is None or len(close) < 300:
+        return None, {}
+    d = close
+    w = close.resample("W-FRI").last().dropna()
+    if len(w) and w.index[-1].date() >= TODAY: w = w.iloc[:-1]
+    m = close.resample("ME").last().dropna()
+    if len(m) and (m.index[-1].year, m.index[-1].month) == (TODAY.year, TODAY.month): m = m.iloc[:-1]
+    parts, detail = [], {}
+    for lbl, ser, wt in (("monthly", m, 0.45), ("weekly", w, 0.35), ("daily", d, 0.20)):
+        sc = _tf_trend_score(ser)
+        detail[lbl] = sc
+        if sc is not None: parts.append((sc, wt))
+    if not parts: return None, detail
+    score = round(sum(s*t for s, t in parts) / sum(t for _, t in parts))
+    ma200 = safe_last(d.rolling(200).mean())
+    detail["vsMA200"] = round((float(d.iloc[-1])/ma200 - 1)*100, 1) if ma200 else None
+    return score, detail
+
+def _pct_change(close, days):
+    if close is None or len(close) <= days: return None
+    return round((float(close.iloc[-1]) / float(close.iloc[-days]) - 1) * 100, 1)
+
+def compute_market_context(spx_close, market: dict) -> dict:
+    """Bouw het regime + context + sector-rotatie. Faalt zacht (adj=0) zonder data."""
+    spx_score, spx_d = _index_regime_score(spx_close)
+    ndx_score, ndx_d = _index_regime_score(market.get("NDX"))
+    scores = [s for s in (spx_score, ndx_score) if s is not None]
+    if spx_score is not None and ndx_score is not None:
+        regime = round(0.6*spx_score + 0.4*ndx_score)
+    elif scores:
+        regime = scores[0]
+    else:
+        regime = None
+
+    if   regime is None: label, color = "Onbekend (geen data)", "neutral"
+    elif regime >= 65:   label, color = "Risk-on — brede uptrend", "green"
+    elif regime >= 52:   label, color = "Licht positief", "green"
+    elif regime >= 45:   label, color = "Neutraal", "neutral"
+    elif regime >= 35:   label, color = "Voorzichtig — trend verzwakt", "orange"
+    else:                label, color = "Risk-off — brede neerwaartse druk", "red"
+
+    adj = 0
+    if regime is not None:
+        adj = round(max(-1.0, min(1.0, (regime - 50) / 50.0)) * MARKET_ADJ_MAX)
+
+    # Context: 3-maands beweging (63 handelsdagen)
+    context = {}
+    for key, naam in (("DXY","Dollar-index"),("GOLD","Goud (GLD)"),("COPPER","Koper (CPER)"),("OIL","Olie (USO)")):
+        ch = _pct_change(market.get(key), 63)
+        if ch is not None:
+            context[key] = {"name": naam, "change3m": ch}
+
+    # Sector-rotatie: relatieve sterkte vs SPY (63d en 126d)
+    sectors = []
+    spy = market.get("SPY")
+    if spy is not None:
+        for etf, naam in SECTOR_LABELS.items():
+            s = market.get(etf)
+            r63  = _pct_change(s, 63);  b63  = _pct_change(spy, 63)
+            r126 = _pct_change(s, 126); b126 = _pct_change(spy, 126)
+            if r63 is not None and b63 is not None:
+                sectors.append({"etf": etf, "name": naam,
+                                "rs63": round(r63 - b63, 1),
+                                "rs126": round(r126 - b126, 1) if (r126 is not None and b126 is not None) else None})
+        sectors.sort(key=lambda x: x["rs63"], reverse=True)
+
+    return {
+        "regimeScore": regime, "regimeLabel": label, "regimeColor": color,
+        "timingAdjustment": adj, "adjMax": MARKET_ADJ_MAX,
+        "spx": {"score": spx_score, **spx_d}, "ndx": {"score": ndx_score, **ndx_d},
+        "context": context, "sectors": sectors,
+        "note": ("Regime beschrijft de brede markt (geen top-voorspelling). Invloed op timing is "
+                 f"begrensd tot ±{MARKET_ADJ_MAX} punten en apart zichtbaar. DXY en grondstoffen zijn "
+                 "pure context zonder score-invloed."),
     }
 
 # ── HISTORISCHE OPSLAG ────────────────────────────────────────────────────────
@@ -1116,6 +1376,7 @@ def record_recommendations(track, today_iso, allocation, stocks, prices, bench_c
         records[key] = {
             "ticker": ticker, "type": rec_type, "direction": direction,
             "date": today_iso, "entryPrice": entry_price, "benchEntry": bench_entry,
+            "currency": CURRENCY.get(ticker, "$"),
             "snapshot": snapshot, "outcomes": {},
         }
 
@@ -1229,7 +1490,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "2.0",
+            "version": "5.0",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -1238,6 +1499,17 @@ def main():
     # Batch ophalen
     fetched = fetch_all(WATCHLIST)
     bench_close = fetched.get("__benchmark__")
+    market_series = fetched.get("__market__", {}) or {}
+
+    # ── MARKTREGIME ────────────────────────────────────────────────────────────
+    print(f"\n{'='*60}\nMarktregime bepalen...")
+    market_ctx = compute_market_context(bench_close, market_series)
+    market_adj = market_ctx.get("timingAdjustment", 0) or 0
+    results["market"] = market_ctx
+    print(f"  {market_ctx['regimeLabel']} (regime {market_ctx['regimeScore']}) → timing-aanpassing {market_adj:+d}")
+    if market_ctx.get("sectors"):
+        top = market_ctx["sectors"][0]; bot = market_ctx["sectors"][-1]
+        print(f"  Sector-rotatie 3m: sterkst {top['name']} ({top['rs63']:+.1f}%), zwakst {bot['name']} ({bot['rs63']:+.1f}%)")
 
     # Prijsreeksen per ticker verzamelen (voor trackrecord-evaluatie)
     price_data = {}
@@ -1271,12 +1543,15 @@ def main():
             timing = compute_timing(entry["daily"], entry["weekly"], entry["monthly"], fib_daily)
             quality = compute_quality(fund)
             val_score = valuation_to_score(valuation)
-            composite = compute_composite(quality["score"], val_score, timing["score"])
+            # Marktregime past de timing mild aan (begrensd, apart zichtbaar)
+            timing_eff = max(0, min(100, timing["score"] + market_adj))
+            composite = compute_composite(quality["score"], val_score, timing_eff)
 
             scores = {
                 "quality": quality["score"], "qualityGate": quality["gate"],
                 "qualityReasons": quality["reasons"], "qualityFails": quality["gateFails"],
                 "valuation": val_score, "timing": timing["score"],
+                "marketAdj": market_adj, "timingEffective": timing_eff,
                 "composite": composite,
             }
 
@@ -1290,7 +1565,8 @@ def main():
                 "name": name, "ticker": entry["ticker"],
                 "fund": fund, "valuation": valuation,
                 "timing": timing, "scores": scores, "bagger": bagger,
-                "isBagger": name in BAGGER_TICKERS, **analysis,
+                "isBagger": name in BAGGER_TICKERS,
+                "currency": CURRENCY.get(name, "$"), **analysis,
             }
             # Timeline bijwerken
             if "indicators" in analysis:
@@ -1331,6 +1607,8 @@ def main():
             "valuationVerdict": s.get("valuation", {}).get("verdict"),
             "timingLabel": s.get("timing", {}).get("label"),
             "price": s.get("indicators", {}).get("last"),
+            "currency": CURRENCY.get(name, "$"),
+            "marketAdj": sc.get("marketAdj", 0),
         }
         if sc["qualityGate"]:
             candidates.append(row)
@@ -1349,6 +1627,8 @@ def main():
             f"timing ({primary['timing']}/100: {primary['timingLabel']}) tot de hoogste "
             f"composietscore ({primary['composite']}/100) van de kwaliteitsaandelen deze maand."
         )
+        if market_adj:
+            reasoning += f" Het marktregime telt {market_adj:+d} mee in de timing van alle kandidaten."
 
     results["allocation"] = {
         "generatedForMonth": NOW.strftime("%B %Y"),
@@ -1378,6 +1658,7 @@ def main():
             "risk": b["risk"], "positionSizing": b["positionSizing"],
             "relStrength": b["relStrength"], "reasons": b["reasons"], "flags": b["flags"],
             "price": s.get("indicators", {}).get("last"),
+            "currency": CURRENCY.get(name, "$"),
             "revenueGrowth": s.get("fund", {}).get("revenueGrowth"),
             "grossMarginTrend": s.get("fund", {}).get("grossMarginTrend"),
             "passesQualityGate": s.get("scores", {}).get("qualityGate", False),

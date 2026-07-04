@@ -120,6 +120,16 @@ Een aandeel kan in **beide sporen** staan: een kwaliteitsbedrijf dat óók hard 
 
 De bagger-kandidaten (LHX, MOG.A, TDG, KTOS, RKLB, OPEN, SDGR, BNGO) hebben extra fundamentele velden nodig: `grossMargin`, `grossMarginTrend` (pp YoY), `revenueGrowthPrev` (voor versnelling) en `cashRunwayMonths`. Deze staan in de `FUNDAMENTALS`-dict, indicatief per begin 2026.
 
+## Uitbreiding juli 2026 (v5)
+
+- **65 aandelen** in 5 groepen: kern-VS, kern-Europa (let op valuta!), robotics-moat (grotendeels Tokio, ¥), quantum-baggers en speculatieve robotics. **17 bagger-kandidaten** totaal.
+- **Valuta per aandeel**: prijzen tonen €, £-pence (p), ¥, HK$ of A$ waar van toepassing. Eps in `FUNDAMENTALS` staat in de noteringsvaluta (LSE in pence!). Portfolio-totalen tellen valuta's op zonder omrekening — het dashboard waarschuwt daarvoor.
+- **Marktregime-module**: SPX + NASDAQ bepalen een regime-score; die past de timing van álle aandelen mild aan (begrensd tot ±8, apart zichtbaar als `marketAdj`). DXY, goud (GLD), koper (CPER) en olie (USO) zijn context zonder score-invloed. Sector-rotatie (7 ETF's, relatieve sterkte vs S&P) staat op de marktkaart.
+- **100x-realisme-flag**: baggers met marktkap ≥$10 mrd krijgen automatisch de kanttekening dat 100x wiskundig (vrijwel) uitgesloten is.
+- **Sync-link**: portfolio via een deel-link (AirDrop) naar een ander apparaat overzetten — data blijft lokaal.
+- Voor Belgische kopers van de grondstof-ETF's: gebruik de UCITS-versies SGLD/IGLN (goud), COPA (koper), CRUD (olie) — de Amerikaanse zijn in de EU niet koopbaar.
+- **Fundamentals van de 47 nieuwe namen zijn indicatief per jan 2026** (CRWV per mei 2026). Extra onzeker: KPG, UBTECH, RR, ALFEN, MSTR, SOFTBANK — verifieer bij het eerstvolgende kwartaal.
+
 > **Belangrijk:** voor verlieslatende microcaps (vooral BNGO) veranderen deze cijfers snel. Verifieer en werk ze per kwartaal bij. Let ook op: MOG.A gebruikt de puntnotatie die yfinance onbetrouwbaar dekt — er is een fallback (MOG-A), maar controleer of de data binnenkomt.
 
 ## Signaaltypen

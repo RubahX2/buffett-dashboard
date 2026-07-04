@@ -2,6 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -24,8 +25,7 @@
 const { useState, useEffect } = React;
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
-// Relatief pad: dit dashboard wordt door GitHub Pages geserveerd vanaf dezelfde
-// map als de data. Repo-naam of hoofdletters maken dus niets meer uit.
+// Relatief pad: dashboard en data staan op hetzelfde adres (GitHub Pages).
 const SIGNALS_URL = "./signals.json";
 
 // ── FALLBACK fundamentals (statisch, als backup) ──────────────────────────────
@@ -33,7 +33,7 @@ const FALLBACK_FUND = {
   WM:    { pe:29.2,  roe:29.9, fcfYield:3.0,  debtEquity:2.28, netMargin:11.0, divYield:1.69, revenueGrowth:6.1,   eps:7.72,  mktCap:"$90B",   beta:0.46 },
   PLTR:  { pe:117.6, roe:32.6, fcfYield:1.0,  debtEquity:0.02, netMargin:43.7, divYield:0,    revenueGrowth:67.7,  eps:0.96,  mktCap:"$271B",  beta:1.52 },
   CAT:   { pe:47.1,  roe:51.3, fcfYield:1.7,  debtEquity:2.31, netMargin:13.3, divYield:1.1,  revenueGrowth:11.9,  eps:8.12,  mktCap:"$176B",  beta:1.60 },
-  ASML:  { pe:54.5,  roe:52.2, fcfYield:1.7,  debtEquity:0.13, netMargin:29.7, divYield:0.7,  revenueGrowth:18.0,  eps:18.10, mktCap:"$379B",  beta:1.37 },
+  ASML:  { pe:58.8,  roe:55.0, fcfYield:1.9,  debtEquity:0.12, netMargin:31.0, divYield:0.4,  revenueGrowth:12.0,  eps:27.80, mktCap:"€640B",  beta:1.37 },
   ASMI:  { pe:44.9,  roe:21.6, fcfYield:2.9,  debtEquity:0.01, netMargin:23.9, divYield:0.3,  revenueGrowth:12.0,  eps:23.75, mktCap:"$52B",   beta:1.50 },
   MU:    { pe:25.3,  roe:66.6, fcfYield:2.1,  debtEquity:0.06, netMargin:55.9, divYield:0.05, revenueGrowth:125.0, eps:44.80, mktCap:"$1280B", beta:2.17 },
   GOOGL: { pe:19.8,  roe:31.5, fcfYield:4.2,  debtEquity:0.07, netMargin:28.6, divYield:0.5,  revenueGrowth:14.0,  eps:9.15,  mktCap:"$2200B", beta:1.05 },
@@ -57,14 +57,37 @@ const STOCK_NAMES = {
   LHX:"L3Harris Technologies", MOGA:"Moog Inc. (A)", TDG:"TransDigm Group",
   KTOS:"Kratos Defense", RKLB:"Rocket Lab", OPEN:"Opendoor",
   SDGR:"Schrödinger", BNGO:"Bionano Genomics",
+  GAW:"Games Workshop", MNST:"Monster Beverage", V:"Visa", KPG:"Kelly Partners",
+  ADM:"Admiral Group", AON:"Aon plc", MELI:"MercadoLibre", III:"3i Group",
+  SHOP:"Shopify", NET:"Cloudflare", CRWV:"CoreWeave", MSFT:"Microsoft",
+  MTLS:"Materialise", SNAP:"Snap", NVDA:"Nvidia", NKE:"Nike",
+  DIE:"D'Ieteren", SOF:"Sofina", AIR:"Airbus", ALFEN:"Alfen", LOTB:"Lotus Bakeries",
+  MSTR:"Strategy", AAPL:"Apple", NFLX:"Netflix", DIS:"Disney", BLK:"BlackRock", BABA:"Alibaba",
+  NABTESCO:"Nabtesco", HARMONIC:"Harmonic Drive", KEYENCE:"Keyence", FANUC:"Fanuc",
+  YASKAWA:"Yaskawa Electric", ABB:"ABB Ltd", SOFTBANK:"SoftBank Group",
+  ROK:"Rockwell Automation", TER:"Teradyne", ISRG:"Intuitive Surgical",
+  CGNX:"Cognex", NOVT:"Novanta", IONQ:"IonQ", RGTI:"Rigetti Computing",
+  QBTS:"D-Wave Quantum", UBTECH:"UBTECH Robotics", SYM:"Symbotic",
+  SERV:"Serve Robotics", RR:"Richtech Robotics", PL:"Planet Labs",
 };
 
 const TV_LINKS = {
-  WM:"NYSE:WM", PLTR:"NASDAQ:PLTR", CAT:"NYSE:CAT", ASML:"NASDAQ:ASML",
+  WM:"NYSE:WM", PLTR:"NASDAQ:PLTR", CAT:"NYSE:CAT", ASML:"EURONEXT:ASML",
   ASMI:"EURONEXT:ASM", MU:"NASDAQ:MU", GOOGL:"NASDAQ:GOOGL",
   AMZN:"NASDAQ:AMZN", ORCL:"NYSE:ORCL", KO:"NYSE:KO",
   LHX:"NYSE:LHX", MOGA:"NYSE:MOG.A", TDG:"NYSE:TDG", KTOS:"NASDAQ:KTOS",
   RKLB:"NASDAQ:RKLB", OPEN:"NASDAQ:OPEN", SDGR:"NASDAQ:SDGR", BNGO:"NASDAQ:BNGO",
+  GAW:"LSE:GAW", MNST:"NASDAQ:MNST", V:"NYSE:V", KPG:"ASX:KPG", ADM:"LSE:ADM",
+  AON:"NYSE:AON", MELI:"NASDAQ:MELI", III:"LSE:III", SHOP:"NYSE:SHOP", NET:"NYSE:NET",
+  CRWV:"NASDAQ:CRWV", MSFT:"NASDAQ:MSFT", MTLS:"NASDAQ:MTLS", SNAP:"NYSE:SNAP",
+  NVDA:"NASDAQ:NVDA", NKE:"NYSE:NKE", DIE:"EURONEXT:DIE", SOF:"EURONEXT:SOF",
+  AIR:"EURONEXT:AIR", ALFEN:"EURONEXT:ALFEN", LOTB:"EURONEXT:LOTB", MSTR:"NASDAQ:MSTR",
+  AAPL:"NASDAQ:AAPL", NFLX:"NASDAQ:NFLX", DIS:"NYSE:DIS", BLK:"NYSE:BLK", BABA:"NYSE:BABA",
+  NABTESCO:"TSE:6268", HARMONIC:"TSE:6324", KEYENCE:"TSE:6861", FANUC:"TSE:6954",
+  YASKAWA:"TSE:6506", ABB:"NYSE:ABB", SOFTBANK:"TSE:9984", ROK:"NYSE:ROK",
+  TER:"NASDAQ:TER", ISRG:"NASDAQ:ISRG", CGNX:"NASDAQ:CGNX", NOVT:"NASDAQ:NOVT",
+  IONQ:"NYSE:IONQ", RGTI:"NASDAQ:RGTI", QBTS:"NYSE:QBTS", UBTECH:"HKEX:9880",
+  SYM:"NASDAQ:SYM", SERV:"NASDAQ:SERV", RR:"NASDAQ:RR", PL:"NYSE:PL",
 };
 
 // ── DESIGN TOKENS ─────────────────────────────────────────────────────────────
@@ -431,7 +454,7 @@ function TrackRecord({ track }) {
                   <div style={{color:C.muted,fontSize:9,marginTop:4}}>
                     Bij vastlegging: {r.snapshot.composite!=null?`composiet ${r.snapshot.composite}`:""}
                     {r.snapshot.timing!=null?` · timing ${r.snapshot.timing}`:""}
-                    {r.entryPrice?` · entry $${r.entryPrice}`:""}
+                    {r.entryPrice?` · entry ${r.currency||"$"}${r.entryPrice}`:""}
                   </div>
                 )}
               </div>
@@ -490,6 +513,7 @@ function BaggerTrack({ baggers, onSelect }) {
 
               {/* Key metrics */}
               <div style={{display:"flex",gap:12,marginTop:8,flexWrap:"wrap",fontSize:10}}>
+                {b.price!=null&&<span style={{color:C.text,fontWeight:700}}>{b.currency||"$"}{b.price.toFixed(2)}</span>}
                 {b.revenueGrowth!=null&&<span style={{color:C.textDim}}>Groei <b style={{color:b.revenueGrowth>=40?C.green:C.text}}>+{b.revenueGrowth}%</b></span>}
                 {b.grossMarginTrend!=null&&<span style={{color:C.textDim}}>Marge-trend <b style={{color:b.grossMarginTrend>0?C.green:C.red}}>{b.grossMarginTrend>0?"+":""}{b.grossMarginTrend}pp</b></span>}
                 {b.relStrength!=null&&<span style={{color:C.textDim}}>vs markt <b style={{color:b.relStrength>0?C.green:C.red}}>{b.relStrength>0?"+":""}{b.relStrength}%</b></span>}
@@ -521,6 +545,49 @@ function BaggerTrack({ baggers, onSelect }) {
       <div style={{marginTop:14,padding:"10px 12px",background:C.panel,borderRadius:8,fontSize:10,color:C.muted,lineHeight:1.6}}>
         <b style={{color:C.textDim}}>Methode:</b> {baggers.methodNote} {baggers.note}
       </div>
+    </div>
+  );
+}
+
+function MarketCard({ market }) {
+  if (!market) return null;
+  const col = {green:C.green,neutral:C.textDim,orange:C.orange,red:C.red}[market.regimeColor]||C.text;
+  return (
+    <div style={{background:C.panel,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:16}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
+        <div>
+          <div style={{color:C.textDim,fontSize:10,letterSpacing:1}}>MARKTREGIME</div>
+          <div style={{color:col,fontSize:15,fontWeight:800}}>{market.regimeLabel}</div>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <div style={{color:col,fontSize:22,fontWeight:900}}>{market.regimeScore??"—"}</div>
+          <div style={{color:C.muted,fontSize:9}}>timing {market.timingAdjustment>0?"+":""}{market.timingAdjustment} (max ±{market.adjMax})</div>
+        </div>
+      </div>
+      <div style={{display:"flex",gap:14,marginTop:8,fontSize:10,color:C.textDim,flexWrap:"wrap"}}>
+        <span>S&P 500 <b style={{color:C.text}}>{market.spx?.score??"—"}</b>
+          {market.spx?.vsMA200!=null&&<span style={{color:market.spx.vsMA200>=0?C.green:C.red}}> ({market.spx.vsMA200>0?"+":""}{market.spx.vsMA200}% vs MA200)</span>}
+        </span>
+        <span>NASDAQ <b style={{color:C.text}}>{market.ndx?.score??"—"}</b></span>
+      </div>
+      {market.context&&Object.keys(market.context).length>0&&(
+        <div style={{display:"flex",gap:12,marginTop:8,fontSize:10,color:C.textDim,flexWrap:"wrap"}}>
+          {Object.values(market.context).map((c,i)=>(
+            <span key={i}>{c.name} <b style={{color:c.change3m>=0?C.green:C.red}}>{c.change3m>0?"+":""}{c.change3m}%</b><span style={{color:C.muted}}> 3m</span></span>
+          ))}
+        </div>
+      )}
+      {market.sectors?.length>0&&(
+        <div style={{marginTop:10,paddingTop:8,borderTop:`1px solid ${C.border}`}}>
+          <div style={{color:C.textDim,fontSize:9,fontWeight:700,marginBottom:4}}>SECTOR-ROTATIE · relatieve sterkte vs S&P 500, 3 maanden</div>
+          <div style={{display:"flex",gap:"3px 12px",flexWrap:"wrap",fontSize:10}}>
+            {market.sectors.map(s=>(
+              <span key={s.etf} style={{color:s.rs63>=0?C.green:C.red}}>{s.name} {s.rs63>0?"+":""}{s.rs63}%</span>
+            ))}
+          </div>
+        </div>
+      )}
+      <div style={{marginTop:8,fontSize:9,color:C.muted,lineHeight:1.4}}>{market.note}</div>
     </div>
   );
 }
@@ -579,7 +646,7 @@ function MRow({ label, value, good, warn, fmt }) {
   );
 }
 
-function FibTable({ fib, currentPrice }) {
+function FibTable({ fib, currentPrice, cur="$" }) {
   if (!fib) return null;
   const { retracements, extensions, swingLow, swingHigh } = fib;
   const all = [
@@ -590,8 +657,8 @@ function FibTable({ fib, currentPrice }) {
   return (
     <div style={{background:C.bg,borderRadius:8,padding:12}}>
       <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:11}}>
-        <span style={{color:C.textDim}}>Swing High: <b style={{color:C.red}}>${swingHigh}</b></span>
-        <span style={{color:C.textDim}}>Swing Low: <b style={{color:C.green}}>${swingLow}</b></span>
+        <span style={{color:C.textDim}}>Swing High: <b style={{color:C.red}}>{cur}{swingHigh}</b></span>
+        <span style={{color:C.textDim}}>Swing Low: <b style={{color:C.green}}>{cur}{swingLow}</b></span>
       </div>
       <div style={{fontSize:9,color:C.muted,marginBottom:8}}>52-week swing · Retracements = steun (blauw) · Extensies = TP (oranje)</div>
       {all.map((f,i)=>{
@@ -614,7 +681,7 @@ function FibTable({ fib, currentPrice }) {
             <div style={{display:"flex",gap:8,alignItems:"center"}}>
               {isCurrent&&<span style={{fontSize:9,color:C.accent,fontWeight:700}}>← NU</span>}
               {isNear&&!isCurrent&&<span style={{fontSize:9,color:C.orange}}>{dist.toFixed(1)}%</span>}
-              <span style={{color:isNear?C.text:C.textDim,fontSize:12,fontWeight:isNear?700:400}}>${f.price}</span>
+              <span style={{color:isNear?C.text:C.textDim,fontSize:12,fontWeight:isNear?700:400}}>{cur}{f.price}</span>
             </div>
           </div>
         );
@@ -623,21 +690,21 @@ function FibTable({ fib, currentPrice }) {
   );
 }
 
-function IndicatorGrid({ ind }) {
+function IndicatorGrid({ ind, cur="$" }) {
   if (!ind) return null;
   const items = [
     {l:"RSI Daily",    v:ind.rsiDaily?.toFixed(1),   c:ind.rsiDaily<30?C.green:ind.rsiDaily>70?C.red:C.text},
     {l:"RSI Weekly",   v:ind.rsiWeekly?.toFixed(1),  c:ind.rsiWeekly<30?C.green:ind.rsiWeekly>70?C.red:C.text},
-    {l:"EMA 8 (D)",    v:`$${ind.ema8d?.toFixed(2)}`, c:ind.last>ind.ema8d?C.green:C.red},
-    {l:"EMA 21 (D)",   v:`$${ind.ema21d?.toFixed(2)}`,c:ind.last>ind.ema21d?C.green:C.red},
-    {l:"EMA 8 (W)",    v:`$${ind.ema8w?.toFixed(2)}`, c:ind.last>ind.ema8w?C.green:C.red},
-    {l:"EMA 21 (W)",   v:`$${ind.ema21w?.toFixed(2)}`,c:ind.last>ind.ema21w?C.green:C.red},
-    {l:"MA 50",        v:`$${ind.ma50?.toFixed(2)}`,  c:ind.last>ind.ma50?C.green:C.red},
-    {l:"MA 200",       v:`$${ind.ma200?.toFixed(2)}`,  c:ind.last>ind.ma200?C.green:C.red},
+    {l:"EMA 8 (D)",    v:`${cur}${ind.ema8d?.toFixed(2)}`, c:ind.last>ind.ema8d?C.green:C.red},
+    {l:"EMA 21 (D)",   v:`${cur}${ind.ema21d?.toFixed(2)}`,c:ind.last>ind.ema21d?C.green:C.red},
+    {l:"EMA 8 (W)",    v:`${cur}${ind.ema8w?.toFixed(2)}`, c:ind.last>ind.ema8w?C.green:C.red},
+    {l:"EMA 21 (W)",   v:`${cur}${ind.ema21w?.toFixed(2)}`,c:ind.last>ind.ema21w?C.green:C.red},
+    {l:"MA 50",        v:`${cur}${ind.ma50?.toFixed(2)}`,  c:ind.last>ind.ma50?C.green:C.red},
+    {l:"MA 200",       v:`${cur}${ind.ma200?.toFixed(2)}`,  c:ind.last>ind.ma200?C.green:C.red},
     {l:"MACD (D)",     v:ind.macdLine?.toFixed(3),    c:ind.macdLine>ind.macdSignal?C.green:C.red},
     {l:"MACD (W)",     v:ind.macdLineW?.toFixed(3),   c:ind.macdLineW>ind.macdSigW?C.green:C.red},
-    {l:"Boll. Hoog",   v:`$${ind.bollUpper?.toFixed(2)}`, c:C.text},
-    {l:"Boll. Laag",   v:`$${ind.bollLower?.toFixed(2)}`, c:C.text},
+    {l:"Boll. Hoog",   v:`${cur}${ind.bollUpper?.toFixed(2)}`, c:C.text},
+    {l:"Boll. Laag",   v:`${cur}${ind.bollLower?.toFixed(2)}`, c:C.text},
     {l:"Volume ratio", v:`${ind.volRatio?.toFixed(2)}x`, c:ind.highVolume?C.green:C.text},
     {l:"Weekly eval.", v:ind.isFriday?"Vrijdag ✓":"Weekdag (W signalen vrijdag)", c:ind.isFriday?C.green:C.orange},
   ];
@@ -656,10 +723,32 @@ function IndicatorGrid({ ind }) {
 function usePortfolio() {
   const [p,setP] = useState(()=>{try{return JSON.parse(localStorage.getItem("bplus_v9")||"[]")}catch{return[]}});
   const save = v=>{setP(v);try{localStorage.setItem("bplus_v9",JSON.stringify(v))}catch{}};
+  // Sync tussen apparaten: een #sync=... link importeert een portfolio op dít apparaat.
+  // Het #-deel van een URL wordt nooit naar een server gestuurd — dit blijft volledig lokaal.
+  useEffect(()=>{
+    const m = window.location.hash.match(/^#sync=(.+)$/);
+    if(!m) return;
+    try{
+      const data = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+      if(Array.isArray(data)&&data.every(x=>x&&x.ticker)){
+        save(data);
+        alert(`✓ Portfolio gesynchroniseerd: ${data.length} positie(s) overgenomen op dit apparaat.`);
+      }
+    }catch(e){ alert("Sync-link kon niet gelezen worden."); }
+    history.replaceState(null,"",window.location.pathname+window.location.search);
+  },[]);
+  const syncLink = ()=>{
+    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(p))));
+    const url = window.location.origin + window.location.pathname + "#sync=" + b64;
+    if(navigator.share){ navigator.share({title:"BUFFETT+ portfolio",url}).catch(()=>{}); }
+    else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url); alert("Sync-link gekopieerd — open hem in Safari op je andere apparaat."); }
+    else { prompt("Kopieer deze sync-link en open hem op je andere apparaat:", url); }
+  };
   return {
     portfolio:p,
     add:(ticker,shares,buyPrice,date)=>save([...p,{ticker,shares:+shares,buyPrice:+buyPrice,date}]),
     remove:i=>save(p.filter((_,j)=>j!==i)),
+    syncLink,
   };
 }
 
@@ -677,7 +766,8 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
   const tvLink= `https://www.tradingview.com/chart/?symbol=${TV_LINKS[ticker]||ticker}`;
 
   const pct=(v,d=1)=>v==null?"—":`${(+v).toFixed(d)}%`;
-  const usd=(v,d=2)=>v==null?"—":`$${(+v).toFixed(d)}`;
+  const cur = data?.currency||"$";
+  const usd=(v,d=2)=>v==null?"—":`${cur}${(+v).toFixed(d)}`;
 
   return (
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:100,
@@ -693,7 +783,7 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
             <div style={{color:C.accent,fontWeight:800,fontSize:22}}>{ticker}</div>
             <div style={{color:C.text,fontSize:13}}>{STOCK_NAMES[ticker]||ticker}</div>
             <div style={{display:"flex",gap:8,marginTop:6,alignItems:"center",flexWrap:"wrap"}}>
-              <span style={{color:C.text,fontSize:18,fontWeight:700}}>{last?`$${last.toFixed(2)}`:"—"}</span>
+              <span style={{color:C.text,fontSize:18,fontWeight:700}}>{last?`${cur}${last.toFixed(2)}`:"—"}</span>
               {data?.overall&&<OverallBadge signal={data.overall}/>}
               <a href={tvLink} target="_blank" rel="noopener noreferrer"
                 style={{color:C.accent,fontSize:11,textDecoration:"none"}}
@@ -823,11 +913,11 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
           </div>
         )}
 
-        {tab==="indicatoren"&&<IndicatorGrid ind={ind}/>}
+        {tab==="indicatoren"&&<IndicatorGrid ind={ind} cur={cur}/>}
 
         {tab==="fibonacci"&&(
           ind.fib
-            ?<FibTable fib={ind.fib} currentPrice={last}/>
+            ?<FibTable fib={ind.fib} currentPrice={last} cur={cur}/>
             :<div style={{color:C.textDim,textAlign:"center",padding:20}}>Nog geen live data beschikbaar.</div>
         )}
 
@@ -854,7 +944,7 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
             <MRow label="Netto winstmarge"  value={fund.netMargin}                         fmt={v=>`${(+v).toFixed(1)}%`}/>
             <MRow label="Dividend Yield"    value={fund.divYield}                          fmt={v=>`${(+v).toFixed(2)}%`}/>
             <MRow label="Revenue groei YoY" value={fund.revenueGrowth}                     fmt={v=>`${v>=0?"+":""}${(+v).toFixed(1)}%`}/>
-            <MRow label="EPS (TTM)"         value={fund.eps}                               fmt={v=>`$${(+v).toFixed(2)}`}/>
+            <MRow label="EPS (TTM)"         value={fund.eps}                               fmt={v=>`${cur}${(+v).toFixed(2)}`}/>
             <MRow label="Market Cap"        value={fund.mktCap}                            fmt={v=>String(v)}/>
             <MRow label="Beta"              value={fund.beta}                              fmt={v=>`${(+v).toFixed(2)}`}/>
           </div>
@@ -909,7 +999,11 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
 
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
 const TICKER_ORDER = ["WM","PLTR","CAT","ASML","ASMI","MU","GOOGL","AMZN","ORCL","KO",
-  "LHX","MOGA","TDG","KTOS","RKLB","OPEN","SDGR","BNGO"];
+  "MSFT","AAPL","NVDA","V","MNST","AON","MELI","SHOP","NET","CRWV","SNAP","NKE","MSTR",
+  "NFLX","DIS","BLK","BABA","MTLS","GAW","ADM","III","KPG","DIE","SOF","AIR","ALFEN","LOTB",
+  "NABTESCO","HARMONIC","KEYENCE","FANUC","YASKAWA","ABB","SOFTBANK","ROK","TER","ISRG","CGNX","NOVT",
+  "LHX","MOGA","TDG","KTOS","RKLB","OPEN","SDGR","BNGO","PL",
+  "IONQ","RGTI","QBTS","UBTECH","SYM","SERV","RR"];
 
 function App() {
   const [jsonData,  setJsonData]  = useState(null);
@@ -920,7 +1014,7 @@ function App() {
   const [sortBy,    setSortBy]    = useState("buyWeight");
   const [sortDir,   setSortDir]   = useState("desc");
   const [filterType,setFilter]    = useState("ALL");
-  const { portfolio, add, remove } = usePortfolio();
+  const { portfolio, add, remove, syncLink } = usePortfolio();
 
   // Cache-busting: voeg timestamp toe aan URL
   useEffect(()=>{
@@ -946,6 +1040,7 @@ function App() {
   const allocation = jsonData?.allocation || null;
   const weekly = jsonData?.weekly || null;
   const baggers = jsonData?.baggers || null;
+  const market = jsonData?.market || null;
   const errors = jsonData?.errors || [];
 
   // Combineer live data met fallback fundamentals
@@ -1087,6 +1182,7 @@ function App() {
             </div>
           ):(
             <>
+              <MarketCard market={market}/>
               {/* Primary pick hero */}
               {allocation.primaryPick&&(
                 <div style={{background:`linear-gradient(135deg,${C.panel2},${C.panel})`,
@@ -1099,7 +1195,7 @@ function App() {
                         <span style={{color:C.text,fontSize:14}}>{STOCK_NAMES[allocation.primaryPick.ticker]}</span>
                       </div>
                       <div style={{color:C.text,fontSize:13,marginTop:2}}>
-                        ${allocation.primaryPick.price?.toFixed(2)}
+                        {allocation.primaryPick.currency||"$"}{allocation.primaryPick.price?.toFixed(2)}
                       </div>
                     </div>
                     <div style={{textAlign:"center",background:C.bg,borderRadius:10,padding:"10px 16px"}}>
@@ -1112,7 +1208,7 @@ function App() {
                   <div style={{marginTop:14}}>
                     <ScoreBar label="Kwaliteit (Buffett-poort)" score={allocation.primaryPick.quality} hint="30%"/>
                     <ScoreBar label="Waardering (niet te duur)" score={allocation.primaryPick.valuation} hint="30%"/>
-                    <ScoreBar label="Timing (multi-timeframe chart)" score={allocation.primaryPick.timing} hint="40%"/>
+                    <ScoreBar label="Timing (multi-timeframe chart)" score={Math.max(0,Math.min(100,(allocation.primaryPick.timing||0)+(allocation.primaryPick.marketAdj||0)))} hint={allocation.primaryPick.marketAdj?`40% · incl. markt ${allocation.primaryPick.marketAdj>0?"+":""}${allocation.primaryPick.marketAdj}`:"40%"}/>
                   </div>
                   {allocation.reasoning&&(
                     <div style={{marginTop:10,padding:"8px 10px",background:C.bg,borderRadius:6,fontSize:11,color:C.textDim,lineHeight:1.5}}>
@@ -1154,6 +1250,7 @@ function App() {
                     </div>
                     <div style={{textAlign:"right"}}>
                       <div style={{color:i===0?C.accent:C.text,fontSize:20,fontWeight:800}}>{c.composite}</div>
+                      <div style={{color:C.textDim,fontSize:10}}>{c.price!=null?`${c.currency||"$"}${c.price.toFixed(2)}`:""}</div>
                     </div>
                   </div>
                 ))}
@@ -1175,7 +1272,7 @@ function App() {
                           <span style={{color:C.textDim,fontWeight:700}}>{c.ticker}</span>
                           <span style={{color:C.red,fontSize:10}}>✗ {(c.fails||[]).join(", ")}</span>
                         </div>
-                        <span style={{color:C.muted,fontSize:11}}>K {c.quality}</span>
+                        <span style={{color:C.muted,fontSize:11}}>{c.price!=null?`${c.currency||"$"}${c.price.toFixed(2)} · `:""}K {c.quality}</span>
                       </div>
                     ))}
                   </div>
@@ -1226,6 +1323,9 @@ function App() {
                 <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
                   <span style={{color:C.accent,fontWeight:700,fontSize:15}}>{g.ticker}</span>
                   <span style={{color:C.textDim,fontSize:11}}>{STOCK_NAMES[g.ticker]}</span>
+                  {stocks[g.ticker]?.indicators?.last!=null&&(
+                    <span style={{color:C.text,fontSize:12,fontWeight:700}}>{stocks[g.ticker]?.currency||"$"}{stocks[g.ticker].indicators.last.toFixed(2)}</span>
+                  )}
                   {stocks[g.ticker]?.overall&&<OverallBadge signal={stocks[g.ticker].overall}/>}
                   {stocks[g.ticker]?.conflict&&<span style={{color:C.orange,fontSize:10}}>⚠️ Conflict</span>}
                 </div>
@@ -1293,7 +1393,7 @@ function App() {
                         <div style={{color:C.textDim,fontSize:10}}>{STOCK_NAMES[ticker]}</div>
                       </div>
                       <div style={{textAlign:"right"}}>
-                        <div style={{color:C.text,fontWeight:700,fontSize:15}}>{ind.last?`$${ind.last.toFixed(2)}`:"—"}</div>
+                        <div style={{color:C.text,fontWeight:700,fontSize:15}}>{ind.last?`${data?.currency||"$"}${ind.last.toFixed(2)}`:"—"}</div>
                         {data?.overall&&<OverallBadge signal={data.overall}/>}
                       </div>
                     </div>
@@ -1376,6 +1476,17 @@ function App() {
               </div>
             ))}
           </div>
+          {portfolio.some(p=>(stocks[p.ticker]?.currency||"$")!=="$")&&(
+            <div style={{color:C.orange,fontSize:10,marginBottom:12}}>
+              ⚠ Posities in meerdere valuta's — de totalen hierboven tellen bedragen op zonder omrekening.
+            </div>
+          )}
+          {portfolio.length>0&&(
+            <button onClick={syncLink} style={{background:"none",color:C.accent,border:`1px solid ${C.accent}`,
+              borderRadius:6,padding:"8px 14px",fontSize:12,fontWeight:700,cursor:"pointer",marginBottom:16}}>
+              📲 Sync naar ander apparaat
+            </button>
+          )}
           {portItems.length===0
             ?<div style={{textAlign:"center",color:C.textDim,padding:40}}>Nog geen posities. Klik een aandeel → tab "Portfolio".</div>
             :<div style={{display:"grid",gap:8}}>
