@@ -396,20 +396,42 @@ def fetch_all(watchlist) -> dict:
     result = {}
 
     print(f"Batch-download van {len(all_tickers)} tickers (incl. benchmark {BENCHMARK_TICKER})...")
+    # Download in blokken: één probleemticker of netwerk-hik kost hooguit zijn eigen blok,
+    # en dat blok krijgt daarna nog een individuele herkansing per ticker.
+    CHUNK = 20
+    data_parts = []
+    for i in range(0, len(all_tickers), CHUNK):
+        chunk = all_tickers[i:i+CHUNK]
+        try:
+            part = yf.download(chunk, period="5y", interval="1d", auto_adjust=True,
+                               group_by="ticker", progress=False, threads=True, timeout=60)
+            if part is not None and not part.empty:
+                if not isinstance(part.columns, pd.MultiIndex):
+                    part = pd.concat({chunk[0]: part}, axis=1)
+                data_parts.append(part)
+                print(f"  ✓ blok {i//CHUNK+1} ({len(chunk)} tickers) binnen")
+            else:
+                raise ValueError("leeg resultaat")
+        except Exception as e:
+            print(f"  ⚠ blok {i//CHUNK+1} faalde ({type(e).__name__}: {e}) — tickers individueel...")
+            for tk in chunk:
+                try:
+                    p1 = yf.download(tk, period="5y", interval="1d", auto_adjust=True,
+                                     progress=False, timeout=30)
+                    if p1 is not None and not p1.empty:
+                        if isinstance(p1.columns, pd.MultiIndex):
+                            p1.columns = p1.columns.get_level_values(-1)
+                        data_parts.append(pd.concat({tk: p1}, axis=1))
+                except Exception as e2:
+                    print(f"    ✗ {tk}: {e2}")
     try:
-        data = yf.download(
-            all_tickers,
-            period="5y",
-            interval="1d",
-            auto_adjust=True,
-            group_by="ticker",
-            progress=False,
-            threads=True,
-            timeout=60,
-        )
+        data = pd.concat(data_parts, axis=1) if data_parts else None
     except Exception as e:
-        print(f"  ✗ Batch-download faalde: {e}")
+        print(f"  ✗ Samenvoegen van blokken faalde: {e}")
         data = None
+    if data is not None:
+        # Dubbele kolommen (zelfde ticker 2×) veilig verwijderen
+        data = data.loc[:, ~data.columns.duplicated()]
 
     for (name, primary, fallback) in watchlist:
         df = None
@@ -1760,8 +1782,15 @@ def main():
     for e in results["errors"]:
         print(f"  ✗ {e}")
     print(f"{'='*60}\n")
-    if results["errors"]:
+    # Exit-beleid: alleen falen als vrijwel niets lukte. Gedeeltelijke data is
+    # waardevol en moet gecommit worden — een enkele kapotte exoot mag de run
+    # niet rood kleuren en de commit-stap blokkeren.
+    ok_count = sum(1 for s in results["stocks"].values() if "indicators" in s)
+    if ok_count < max(1, round(len(WATCHLIST) * 0.3)):
+        print(f"✗ Slechts {ok_count}/{len(WATCHLIST)} aandelen gelukt — run faalt.")
         sys.exit(1)
+    if results["errors"]:
+        print(f"⚠ {ok_count}/{len(WATCHLIST)} aandelen gelukt; {len(results['errors'])} fouten (zie boven) — run slaagt met waarschuwingen.")
 
 if __name__ == "__main__":
     main()
