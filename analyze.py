@@ -312,24 +312,47 @@ def calc_bollinger(series: pd.Series, period: int = 20, mult: float = 2.0):
     std = series.rolling(period).std(ddof=0)  # population std, zoals TradingView
     return mid + mult * std, mid, mid - mult * std
 
-def calc_fibonacci(swing_low: float, swing_high: float) -> dict:
+def calc_fibonacci(swing_low: float, swing_high: float,
+                   ext_low: float = None, ext_high: float = None) -> dict:
+    """Twee onafhankelijke fib-sets met eigen swings:
+
+    RETRACEMENTS (entry-zoeker) — swing bodem→recente top. We nemen aan dat de top
+      net gezet is; niveaus 0.236–0.886 zijn steunzones ONDER de top waar je een
+      instap zoekt, met de golden pocket (0.618–0.705) als premium entry.
+      Hoog niveau = ondiepe pullback = prijs vlak onder de top.
+
+    EXTENSIES (winstnemer) — aparte swing (bij voorkeur weekly top→bodem), omhoog
+      geprojecteerd naar take-profit-zones BOVEN de huidige prijs: 1.272–2.618.
+
+    Als ext_low/ext_high niet gegeven zijn, valt de extensieset terug op dezelfde swing.
+    """
     rng = swing_high - swing_low
     if rng <= 0:
-        return {"retracements": {}, "extensions": {}, "swingHigh": swing_high, "swingLow": swing_low}
-    # Standaard-set met OTE (0.705) — de "golden pocket" 0.618–0.705 is de kern-instapzone.
-    # Genoteerd van net onder 1 (0.886) aflopend naar 0, zoals op een chart van boven naar beneden.
+        return {"retracements": {}, "extensions": {}, "goldenPocket": None,
+                "swingHigh": swing_high, "swingLow": swing_low,
+                "extSwingHigh": ext_high, "extSwingLow": ext_low}
+
+    # ── Retracementset: prijs = high - pct*range (hoog pct → lage prijs, diepe pullback) ──
     retr = {lbl: round(swing_high - pct * rng, 2) for lbl, pct in
-            [("0.886",0.886),("0.786",0.786),("0.705",0.705),("0.618",0.618),
-             ("0.500",0.500),("0.382",0.382),("0.236",0.236),("0.000",0.000)]}
-    ext  = {lbl: round(swing_low + pct * rng, 2) for lbl, pct in
-            [("1.000",1.000),("1.272",1.272),("1.414",1.414),
-             ("1.618",1.618),("2.000",2.000),("2.618",2.618)]}
-    # Golden pocket expliciet (voor de entry-score): tussen 0.618 en 0.705
-    gp_low  = round(swing_high - 0.705 * rng, 2)
-    gp_high = round(swing_high - 0.618 * rng, 2)
+            [("0.000",0.000),("0.236",0.236),("0.382",0.382),("0.500",0.500),
+             ("0.618",0.618),("0.705",0.705),("0.786",0.786),("0.886",0.886),("1.000",1.000)]}
+    gp_low  = round(swing_high - 0.705 * rng, 2)   # dieper (lagere prijs)
+    gp_high = round(swing_high - 0.618 * rng, 2)   # ondieper (hogere prijs)
+
+    # ── Extensieset: eigen swing. Projecteert boven de top naar TP-zones ──
+    e_lo = ext_low  if ext_low  is not None else swing_low
+    e_hi = ext_high if ext_high is not None else swing_high
+    e_rng = e_hi - e_lo
+    if e_rng <= 0:
+        e_lo, e_hi, e_rng = swing_low, swing_high, rng
+    ext = {lbl: round(e_lo + pct * e_rng, 2) for lbl, pct in
+           [("1.000",1.000),("1.272",1.272),("1.414",1.414),
+            ("1.618",1.618),("1.818",1.818),("2.000",2.000),("2.618",2.618)]}
+
     return {"retracements": retr, "extensions": ext,
             "goldenPocket": {"low": gp_low, "high": gp_high},
-            "swingHigh": round(swing_high, 2), "swingLow": round(swing_low, 2)}
+            "swingHigh": round(swing_high, 2), "swingLow": round(swing_low, 2),
+            "extSwingHigh": round(e_hi, 2), "extSwingLow": round(e_lo, 2)}
 
 def safe_last(series: pd.Series, default=None):
     """Laatste niet-NaN waarde, of default. Voorkomt stille NaN-fouten."""
@@ -597,12 +620,24 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame) -> di
         last_rsi_w = last_ema8w = last_ema21w = None
         last_macd_wl = last_macd_ws = None
 
-    # Fibonacci op 52-week swing
+    # ── Twee fib-swings ──
+    # Retracement (entry): bodem → recente top over 52 weken. Aanname: top net gezet.
     cutoff   = daily.index[-1] - pd.DateOffset(weeks=52)
     year_df  = daily[daily.index >= cutoff]
     swing_hi = float(year_df["High"].max())
     swing_lo = float(year_df["Low"].min())
-    fib      = calc_fibonacci(swing_lo, swing_hi)
+    # De recente top: hoogste high; de retracement meet vanaf daar terug.
+    # Extensie (TP): laatste grote weekly-swing (top→bodem), omhoog geprojecteerd.
+    # Praktisch: neem het hoogste punt en de laagste low ná die top als de correctie-swing;
+    # valt die weg (top = allerlaatste candle), dan zelfde 52w-swing als terugval.
+    hi_idx = year_df["High"].idxmax()
+    after_top = year_df[year_df.index >= hi_idx]
+    if len(after_top) >= 3:
+        ext_hi = float(after_top["High"].max())
+        ext_lo = float(after_top["Low"].min())
+    else:
+        ext_hi, ext_lo = swing_hi, swing_lo
+    fib      = calc_fibonacci(swing_lo, swing_hi, ext_low=ext_lo, ext_high=ext_hi)
 
     vol_note = " ✓ hoog volume" if high_volume else (" (laag volume)" if vol_known else "")
 

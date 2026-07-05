@@ -646,46 +646,62 @@ function MRow({ label, value, good, warn, fmt }) {
   );
 }
 
+function FibLevelRows({ entries, currentPrice, cur, accent }) {
+  return entries.map((f,i)=>{
+    const dist = Math.abs((currentPrice-f.price)/currentPrice*100);
+    const isNear = dist < 3, isCurrent = dist < 1.5;
+    const inGP = f.gp;
+    return (
+      <div key={i} style={{
+        display:"flex",justifyContent:"space-between",alignItems:"center",
+        padding:"4px 7px",borderRadius:4,marginBottom:3,
+        background:isCurrent?(accent==="green"?"#052e16":"#450a0a"):inGP?"#1c2610":isNear?"#1a1f2e":"transparent",
+        border:`1px solid ${isCurrent?(accent==="green"?C.green:C.red):inGP?C.gold||"#a3852f":C.border}`,
+      }}>
+        <div style={{display:"flex",gap:6,alignItems:"center"}}>
+          <span style={{color:accent==="green"?C.teal:C.orange,fontSize:11,fontWeight:700,minWidth:42}}>{f.label}</span>
+          {inGP&&<span style={{fontSize:8,color:C.gold||"#c9a227",fontWeight:700}}>GOLDEN</span>}
+        </div>
+        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+          {isCurrent&&<span style={{fontSize:9,color:C.accent,fontWeight:700}}>← NU</span>}
+          {isNear&&!isCurrent&&<span style={{fontSize:9,color:C.orange}}>{dist.toFixed(1)}%</span>}
+          <span style={{color:isNear?C.text:C.textDim,fontSize:12,fontWeight:isNear?700:400}}>{cur}{f.price}</span>
+        </div>
+      </div>
+    );
+  });
+}
+
 function FibTable({ fib, currentPrice, cur="$" }) {
   if (!fib) return null;
-  const { retracements, extensions, swingLow, swingHigh } = fib;
-  const all = [
-    ...Object.entries(retracements).map(([k,v])=>({label:k,price:v,type:"retrace",lvl:parseFloat(k)})),
-    ...Object.entries(extensions).map(([k,v])=>({label:k,price:v,type:"ext",lvl:parseFloat(k)})),
-  ].sort((a,b)=>b.lvl-a.lvl);  // fib-niveau aflopend: extensies boven, 0.000 onderaan
-
+  const { retracements, extensions, goldenPocket, swingLow, swingHigh, extSwingLow, extSwingHigh } = fib;
+  const gpLo = goldenPocket?.low, gpHi = goldenPocket?.high;
+  // Retracements: hoogste prijs boven (0.000 = top), aflopend naar 1.000 (bodem)
+  const retr = Object.entries(retracements||{})
+    .map(([k,v])=>({label:k,price:v,gp:(v>=gpLo&&v<=gpHi)}))
+    .sort((a,b)=>b.price-a.price);
+  // Extensies: hoogste TP boven, aflopend
+  const ext = Object.entries(extensions||{})
+    .map(([k,v])=>({label:k,price:v,gp:false}))
+    .sort((a,b)=>b.price-a.price);
   return (
-    <div style={{background:C.bg,borderRadius:8,padding:12}}>
-      <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:11}}>
-        <span style={{color:C.textDim}}>Swing High: <b style={{color:C.red}}>{cur}{swingHigh}</b></span>
-        <span style={{color:C.textDim}}>Swing Low: <b style={{color:C.green}}>{cur}{swingLow}</b></span>
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      {/* SET 1 — Retracement / entry */}
+      <div style={{background:C.bg,borderRadius:8,padding:12}}>
+        <div style={{color:C.teal,fontSize:11,fontWeight:800,marginBottom:2}}>RETRACEMENT · instapzones</div>
+        <div style={{fontSize:9,color:C.muted,marginBottom:6}}>
+          Swing {cur}{swingLow} → {cur}{swingHigh} (bodem→top) · aanname: top net gezet · golden pocket 0.618–0.705 = premium entry
+        </div>
+        <FibLevelRows entries={retr} currentPrice={currentPrice} cur={cur} accent="green"/>
       </div>
-      <div style={{fontSize:9,color:C.muted,marginBottom:8}}>52-week swing · Golden pocket 0.618–0.705 = premium entry · Extensies = winst nemen</div>
-      {all.map((f,i)=>{
-        const dist = Math.abs((currentPrice-f.price)/currentPrice*100);
-        const isNear = dist < 3;
-        const isCurrent = dist < 1.5;
-        return (
-          <div key={i} style={{
-            display:"flex",justifyContent:"space-between",alignItems:"center",
-            padding:"4px 7px",borderRadius:4,marginBottom:3,
-            background:isCurrent?(f.type==="retrace"?"#052e16":"#450a0a"):isNear?"#1a1f2e":"transparent",
-            border:`1px solid ${isCurrent?(f.type==="retrace"?C.green:C.red):C.border}`,
-          }}>
-            <div style={{display:"flex",gap:6,alignItems:"center"}}>
-              <span style={{color:f.type==="retrace"?C.teal:C.orange,fontSize:11,fontWeight:700,minWidth:38}}>
-                {f.label}
-              </span>
-              <span style={{fontSize:9,color:C.muted}}>{f.type==="retrace"?"steun":"TP"}</span>
-            </div>
-            <div style={{display:"flex",gap:8,alignItems:"center"}}>
-              {isCurrent&&<span style={{fontSize:9,color:C.accent,fontWeight:700}}>← NU</span>}
-              {isNear&&!isCurrent&&<span style={{fontSize:9,color:C.orange}}>{dist.toFixed(1)}%</span>}
-              <span style={{color:isNear?C.text:C.textDim,fontSize:12,fontWeight:isNear?700:400}}>{cur}{f.price}</span>
-            </div>
-          </div>
-        );
-      })}
+      {/* SET 2 — Extensie / take-profit */}
+      <div style={{background:C.bg,borderRadius:8,padding:12}}>
+        <div style={{color:C.orange,fontSize:11,fontWeight:800,marginBottom:2}}>EXTENSIE · winstnemingszones</div>
+        <div style={{fontSize:9,color:C.muted,marginBottom:6}}>
+          Swing {cur}{extSwingLow ?? swingLow} → {cur}{extSwingHigh ?? swingHigh} · geprojecteerd boven de top · 1.618 = kern-TP
+        </div>
+        <FibLevelRows entries={ext} currentPrice={currentPrice} cur={cur} accent="red"/>
+      </div>
     </div>
   );
 }
