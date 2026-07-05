@@ -561,7 +561,7 @@ def fetch_all(watchlist) -> dict:
     return result
 
 # ── SIGNAAL ENGINE ────────────────────────────────────────────────────────────
-def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame) -> dict:
+def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, monthly: pd.DataFrame = None) -> dict:
     signals, alerts = [], []
 
     close_d = daily["Close"]
@@ -620,18 +620,17 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame) -> di
         last_rsi_w = last_ema8w = last_ema21w = None
         last_macd_wl = last_macd_ws = None
 
-    # ── Twee fib-swings ──
-    # Retracement (entry): bodem → recente top over 52 weken. Aanname: top net gezet.
-    cutoff   = daily.index[-1] - pd.DateOffset(weeks=52)
-    year_df  = daily[daily.index >= cutoff]
-    swing_hi = float(year_df["High"].max())
-    swing_lo = float(year_df["Low"].min())
-    # De recente top: hoogste high; de retracement meet vanaf daar terug.
-    # Extensie (TP): laatste grote weekly-swing (top→bodem), omhoog geprojecteerd.
-    # Praktisch: neem het hoogste punt en de laagste low ná die top als de correctie-swing;
-    # valt die weg (top = allerlaatste candle), dan zelfde 52w-swing als terugval.
-    hi_idx = year_df["High"].idxmax()
-    after_top = year_df[year_df.index >= hi_idx]
+    # ── Twee fib-swings (optie 3: grote meerjarige swing) ──
+    # Retracement (entry): diepste bodem in de VOLLEDIGE dataperiode (~5 jaar) →
+    #   hoogste top SINDSDIEN. Zo vangen we de hele bull-cyclus (bv. NFLX $16→$130),
+    #   niet slechts het laatste jaar. Aanname: die top is (net) gezet, prijs zoekt steun.
+    lo_idx   = daily["Low"].idxmin()                     # diepste punt in ~5j
+    since_lo = daily[daily.index >= lo_idx]
+    swing_lo = float(since_lo["Low"].min())
+    swing_hi = float(since_lo["High"].max())             # hoogste top ná de bodem
+    # Extensie (TP): de correctie ná die top, omhoog geprojecteerd naar nieuwe TP-zones.
+    hi_idx = since_lo["High"].idxmax()
+    after_top = since_lo[since_lo.index >= hi_idx]
     if len(after_top) >= 3:
         ext_hi = float(after_top["High"].max())
         ext_lo = float(after_top["Low"].min())
@@ -773,6 +772,52 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame) -> di
             alerts.append({"type":"WATCH","cat":"FIB","tf":"1D","icon":"📐",
                 "title":f"Nadert Fib {label} {zone}: ${level:.2f} ({dist:.1f}% weg)"})
 
+    # ── 10. MONTHLY MACD (zwaarste momentum-signaal) ──
+    # Monthly weegt het zwaarst: een bearish/bullish MACD-stand op maandbasis is
+    # een krachtig trendsignaal. We tonen de STAND (niet enkel de crossover-candle),
+    # want maandcandles zijn zeldzaam en de stand is het bruikbare signaal.
+    if monthly is not None and len(monthly) >= 35:
+        close_m = monthly["Close"]
+        macd_ml, macd_ms, _ = calc_macd(close_m)
+        mm_l, mm_s = safe_last(macd_ml), safe_last(macd_ms)
+        if mm_l is not None and mm_s is not None:
+            if mm_l < mm_s:
+                signals.append({"type":"SELL","cat":"MACD","tf":"1M","weight":6,"icon":"🔴",
+                    "title":"MACD bearish (MONTHLY) ⭐⭐",
+                    "detail":f"MACD {mm_l:.2f} onder signaal {mm_s:.2f} op maandbasis — "
+                             "zwaarste momentum-tegenwind. Hoogste timeframe."})
+            else:
+                signals.append({"type":"BUY","cat":"MACD","tf":"1M","weight":6,"icon":"🟢",
+                    "title":"MACD bullish (MONTHLY) ⭐⭐",
+                    "detail":f"MACD {mm_l:.2f} boven signaal {mm_s:.2f} op maandbasis — "
+                             "zwaarste momentum-rugwind. Hoogste timeframe."})
+
+    # ── 11. TRENDRICHTING als expliciet signaal (multi-timeframe) ──
+    # De trend zat tot nu alleen in de timing-SCORE; nu ook als zichtbaar koop/verkoopsignaal.
+    # Downtrend op hogere timeframes = zwaar verkoopsignaal (weegt zwaarder dan daily-ruis).
+    tr_w = _tf_trend_score(weekly["Close"]) if weekly is not None and len(weekly) >= 25 else None
+    tr_m = _tf_trend_score(monthly["Close"]) if monthly is not None and len(monthly) >= 25 else None
+    if tr_w is not None:
+        if tr_w <= 35:
+            signals.append({"type":"SELL","cat":"TREND","tf":"1W","weight":5,"icon":"📉",
+                "title":"Downtrend (WEEKLY) ⭐",
+                "detail":f"Weekly trendscore {tr_w}/100 — structureel dalend. "
+                         "Weegt zwaarder dan daily koopsignalen."})
+        elif tr_w >= 65:
+            signals.append({"type":"BUY","cat":"TREND","tf":"1W","weight":5,"icon":"📈",
+                "title":"Uptrend (WEEKLY) ⭐",
+                "detail":f"Weekly trendscore {tr_w}/100 — structureel stijgend."})
+    if tr_m is not None:
+        if tr_m <= 35:
+            signals.append({"type":"SELL","cat":"TREND","tf":"1M","weight":6,"icon":"📉",
+                "title":"Downtrend (MONTHLY) ⭐⭐",
+                "detail":f"Monthly trendscore {tr_m}/100 — dalend op de hoogste timeframe. "
+                         "Zwaarste trendsignaal."})
+        elif tr_m >= 65:
+            signals.append({"type":"BUY","cat":"TREND","tf":"1M","weight":6,"icon":"📈",
+                "title":"Uptrend (MONTHLY) ⭐⭐",
+                "detail":f"Monthly trendscore {tr_m}/100 — stijgend op de hoogste timeframe."})
+
     # ── Conflict + score ──
     buy_sigs  = [s for s in signals if s["type"] == "BUY"]
     sell_sigs = [s for s in signals if s["type"] == "SELL"]
@@ -784,13 +829,17 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame) -> di
 
     buy_w  = sum(s.get("weight",1) for s in buy_sigs)
     sell_w = sum(s.get("weight",1) for s in sell_sigs)
-    if   buy_w >= 8:   overall = "STERK KOOP"
-    elif buy_w >= 4:   overall = "KOOP"
-    elif buy_w > sell_w: overall = "LICHT KOOP"
-    elif sell_w >= 8:  overall = "STERK VERKOOP"
-    elif sell_w >= 4:  overall = "VERKOOP"
-    elif sell_w > buy_w: overall = "LICHT VERKOOP"
-    else:              overall = "NEUTRAAL"
+    # Overall op NETTO gewicht: de dominante kant wint, met de sterkte van het
+    # verschil. Zo kan een aandeel met zwaar verkoop-overwicht nooit "KOOP" tonen
+    # omdat er toevallig één koopsignaal met gewicht ≥4 tussen zit.
+    net = buy_w - sell_w
+    if   net >=  8: overall = "STERK KOOP"
+    elif net >=  4: overall = "KOOP"
+    elif net >=  1: overall = "LICHT KOOP"
+    elif net <= -8: overall = "STERK VERKOOP"
+    elif net <= -4: overall = "VERKOOP"
+    elif net <= -1: overall = "LICHT VERKOOP"
+    else:           overall = "NEUTRAAL"
 
     return {
         "signals": signals, "alerts": alerts, "overall": overall,
@@ -1652,7 +1701,7 @@ def main():
             results["stocks"][name] = {"error": msg, "fund": FUNDAMENTALS.get(name, {})}
             continue
         try:
-            analysis = generate_signals(name, entry["daily"], entry["weekly"])
+            analysis = generate_signals(name, entry["daily"], entry["weekly"], entry.get("monthly"))
             if "error" in analysis:
                 results["errors"].append(f"{name}: {analysis['error']}")
 
