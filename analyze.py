@@ -316,13 +316,19 @@ def calc_fibonacci(swing_low: float, swing_high: float) -> dict:
     rng = swing_high - swing_low
     if rng <= 0:
         return {"retracements": {}, "extensions": {}, "swingHigh": swing_high, "swingLow": swing_low}
+    # Standaard-set met OTE (0.705) — de "golden pocket" 0.618–0.705 is de kern-instapzone.
+    # Genoteerd van net onder 1 (0.886) aflopend naar 0, zoals op een chart van boven naar beneden.
     retr = {lbl: round(swing_high - pct * rng, 2) for lbl, pct in
-            [("0.236",0.236),("0.382",0.382),("0.500",0.500),
-             ("0.618",0.618),("0.786",0.786),("0.886",0.886)]}
+            [("0.886",0.886),("0.786",0.786),("0.705",0.705),("0.618",0.618),
+             ("0.500",0.500),("0.382",0.382),("0.236",0.236),("0.000",0.000)]}
     ext  = {lbl: round(swing_low + pct * rng, 2) for lbl, pct in
             [("1.000",1.000),("1.272",1.272),("1.414",1.414),
-             ("1.618",1.618),("1.818",1.818)]}
+             ("1.618",1.618),("2.000",2.000),("2.618",2.618)]}
+    # Golden pocket expliciet (voor de entry-score): tussen 0.618 en 0.705
+    gp_low  = round(swing_high - 0.705 * rng, 2)
+    gp_high = round(swing_high - 0.618 * rng, 2)
     return {"retracements": retr, "extensions": ext,
+            "goldenPocket": {"low": gp_low, "high": gp_high},
             "swingHigh": round(swing_high, 2), "swingLow": round(swing_low, 2)}
 
 def safe_last(series: pd.Series, default=None):
@@ -768,7 +774,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame) -> di
             "macdLineW": round(last_macd_wl, 4) if last_macd_wl is not None else None,
             "macdSigW": round(last_macd_ws, 4) if last_macd_ws is not None else None,
             "bollUpper": round(last_bb_u, 2), "bollLower": round(last_bb_l, 2),
-            "volRatio": round(vol_ratio, 2), "volKnown": vol_known, "highVolume": high_volume,
+            "volRatio": round(vol_ratio, 2), "volKnown": vol_known, "highVolume": high_volume, "volNote": vol_note.strip(),
             "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
         },
     }
@@ -935,13 +941,59 @@ def _entry_score(close, fib_daily=None):
     elif bb_pos < 0.40: s += 7
     elif bb_pos > 0.80: s -= 15
     elif bb_pos > 0.60: s -= 7
-    # Fibonacci-steun nabij (alleen daily fib)
+    # Fibonacci: golden pocket (0.618–0.705) = premium instapzone; extensies >1.0 = winstnemen.
     if fib_daily:
-        for _lbl, level in fib_daily.get("retracements", {}).items():
-            if prox_pct(last, level) < 2.0:
-                s += 8
-                break
+        gp = fib_daily.get("goldenPocket")
+        if gp and gp["low"] <= last <= gp["high"]:
+            s += 18   # in de golden pocket → sterke instap
+        else:
+            # nabij een retracement-steun onder 1.0 = mild positief
+            for lbl, level in fib_daily.get("retracements", {}).items():
+                if lbl not in ("0.000","1.000") and prox_pct(last, level) < 2.0:
+                    s += 8; break
+        # In of boven een extensie (>1.0) = winstnemingszone, geen instap → straf
+        exts = fib_daily.get("extensions", {})
+        if exts:
+            ext_1618 = exts.get("1.618")
+            if ext_1618 and last >= ext_1618:
+                s -= 20   # ver in winstnemingsgebied (jouw MU-signaal)
+            elif exts.get("1.272") and last >= exts["1.272"]:
+                s -= 10
     return max(0, min(100, s))
+
+def _overextension_penalty(close_w, close_m):
+    """Straf voor prijs die te ver van de 8-EMA staat (mean-reversion-risico).
+    Meet weekly én monthly: hoe verder boven de 8-EMA, hoe groter de kans op terugval.
+    Retourneert (penalty 0..~25, detail-dict) — puur aftrek, nooit bonus."""
+    pen, detail = 0, {}
+    for lbl, close, cap in (("weekly", close_w, 12), ("monthly", close_m, 15)):
+        if close is None or len(close) < 10:
+            continue
+        ema8 = calc_ema(close, 8)
+        e = safe_last(ema8)
+        last = float(close.iloc[-1])
+        if e and e > 0:
+            dist_pct = (last - e) / e * 100
+            detail[lbl] = round(dist_pct, 1)
+            if dist_pct > 0:  # alleen bóven de EMA = overextensie-risico
+                # >20% boven 8-EMA telt vol; lineair opgebouwd, begrensd per timeframe
+                pen += min(cap, dist_pct / 20 * cap)
+    return round(pen), detail
+
+def _macd_rolling_over(close_d, close_w, close_m):
+    """True-telling van timeframes waar MACD-histogram naar beneden krult
+    (momentum draait). Puur richting, geen niveau."""
+    turning = []
+    for lbl, close in (("daily", close_d), ("weekly", close_w), ("monthly", close_m)):
+        if close is None or len(close) < 35:
+            continue
+        macd_line, signal_line, _ = calc_macd(close)
+        hist = (macd_line - signal_line).dropna()
+        if len(hist) >= 2:
+            # histogram daalt en piek is voorbij = naar beneden krullen
+            if hist.iloc[-1] < hist.iloc[-2]:
+                turning.append(lbl)
+    return turning
 
 def compute_timing(daily, weekly, monthly, fib_daily) -> dict:
     """Combineer trend (multi-TF) en entry (vooral daily) tot één timing-score."""
@@ -968,7 +1020,15 @@ def compute_timing(daily, weekly, monthly, fib_daily) -> dict:
         if   rsi_w < 35: entry_score = min(100, entry_score + 10)
         elif rsi_w > 70: entry_score = max(0,   entry_score - 10)
 
-    timing_score = round(0.6 * trend_score + 0.4 * entry_score)
+    base_timing = round(0.6 * trend_score + 0.4 * entry_score)
+
+    # Overextensie-rem: prijs ver boven 8-EMA (weekly/monthly) → mean-reversion-risico
+    overext_pen, overext_detail = _overextension_penalty(close_w, close_m)
+    # MACD-draai: momentum kantelt op meerdere timeframes → extra voorzichtigheid
+    macd_turning = _macd_rolling_over(close_d, close_w, close_m)
+    macd_pen = 5 * len(macd_turning)   # 5 per timeframe die naar beneden krult
+
+    timing_score = max(0, min(100, base_timing - overext_pen - macd_pen))
 
     if   timing_score >= 70: label, color = "Sterke instap-setup", "green"
     elif timing_score >= 58: label, color = "Gunstige setup", "green"
@@ -981,6 +1041,8 @@ def compute_timing(daily, weekly, monthly, fib_daily) -> dict:
         "trendScore": trend_score, "entryScore": entry_score,
         "trendDaily": trend_d, "trendWeekly": trend_w, "trendMonthly": trend_m,
         "hasMonthly": close_m is not None,
+        "overextPenalty": overext_pen, "overextDetail": overext_detail,
+        "macdTurning": macd_turning, "baseTimin": base_timing,
     }
 
 # ── KWALITEIT (Buffett-poort) ─────────────────────────────────────────────────

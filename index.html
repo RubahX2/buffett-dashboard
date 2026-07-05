@@ -660,7 +660,7 @@ function FibTable({ fib, currentPrice, cur="$" }) {
         <span style={{color:C.textDim}}>Swing High: <b style={{color:C.red}}>{cur}{swingHigh}</b></span>
         <span style={{color:C.textDim}}>Swing Low: <b style={{color:C.green}}>{cur}{swingLow}</b></span>
       </div>
-      <div style={{fontSize:9,color:C.muted,marginBottom:8}}>52-week swing · Retracements = steun (blauw) · Extensies = TP (oranje)</div>
+      <div style={{fontSize:9,color:C.muted,marginBottom:8}}>52-week swing · Golden pocket 0.618–0.705 = premium entry · Extensies = winst nemen</div>
       {all.map((f,i)=>{
         const dist = Math.abs((currentPrice-f.price)/currentPrice*100);
         const isNear = dist < 3;
