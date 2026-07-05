@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-05T10:49:16.030993+02:00",
-  "generatedAtHuman": "Sunday 05 July 2026 om 10:49",
+  "generatedAt": "2026-07-05T11:24:10.015792+02:00",
+  "generatedAtHuman": "Sunday 05 July 2026 om 11:24",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -20,7 +20,7 @@
         {
           "type": "signal",
           "dir": "up",
-          "text": "Signaal: NEUTRAAL → VERKOOP"
+          "text": "Signaal: NEUTRAAL → STERK KOOP"
         },
         {
           "type": "rsi",
@@ -46,23 +46,7 @@
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: LICHT KOOP → NEUTRAAL"
-        }
-      ]
-    },
-    {
-      "ticker": "MU",
-      "daysAgo": 3,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 85 ↓ 77"
-        },
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: VERKOOP → LICHT KOOP"
+          "text": "Signaal: LICHT KOOP → STERK KOOP"
         }
       ]
     },
@@ -79,6 +63,32 @@
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Redelijk (PEG 1–1.5) → Aan de dure kant (PEG 2.5–3.5)"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP → STERK KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "AMZN",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 63 ↓ 58"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Neutraal (PEG 1.5–2.5) → Aan de dure kant (PEG 2.5–3.5)"
+        },
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL → STERK KOOP"
         }
       ]
     },
@@ -95,6 +105,11 @@
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Neutraal (PEG 1.5–2.5) → Duur (PEG > 3.5)"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: VERKOOP → STERK KOOP"
         }
       ]
     },
@@ -106,28 +121,27 @@
           "type": "composite",
           "dir": "down",
           "text": "Composiet 50 ↓ 38"
-        }
-      ]
-    },
-    {
-      "ticker": "AMZN",
-      "daysAgo": 3,
-      "changes": [
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Neutraal (PEG 1.5–2.5) → Aan de dure kant (PEG 2.5–3.5)"
-        }
-      ]
-    },
-    {
-      "ticker": "KO",
-      "daysAgo": 3,
-      "changes": [
+        },
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: LICHT VERKOOP → NEUTRAAL"
+          "text": "Signaal: VERKOOP → STERK KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "MU",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 85 ↓ 77"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: VERKOOP → STERK KOOP"
         }
       ]
     },
@@ -139,6 +153,11 @@
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Aan de dure kant (PEG 2.5–3.5) → Neutraal (PEG 1.5–2.5)"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP → STERK KOOP"
         }
       ]
     },
@@ -150,10 +169,114 @@
           "type": "composite",
           "dir": "down",
           "text": "Composiet 49 ↓ 43"
+        },
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL → STERK KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "WM",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "down",
+          "text": "Signaal: LICHT KOOP → LICHT VERKOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "PLTR",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "down",
+          "text": "Signaal: KOOP → VERKOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "ORCL",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "down",
+          "text": "Signaal: LICHT KOOP → VERKOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "KO",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT VERKOOP → STERK KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "TDG",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP → KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "KTOS",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "down",
+          "text": "Signaal: LICHT KOOP → STERK VERKOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "OPEN",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL → KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "SDGR",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL → KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "BNGO",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL → LICHT VERKOOP"
         }
       ]
     }
   ],
-  "changedCount": 10,
+  "changedCount": 18,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
