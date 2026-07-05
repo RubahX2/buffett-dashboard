@@ -650,9 +650,9 @@ function FibTable({ fib, currentPrice, cur="$" }) {
   if (!fib) return null;
   const { retracements, extensions, swingLow, swingHigh } = fib;
   const all = [
-    ...Object.entries(retracements).map(([k,v])=>({label:k,price:v,type:"retrace"})),
-    ...Object.entries(extensions).map(([k,v])=>({label:k,price:v,type:"ext"})),
-  ].sort((a,b)=>b.price-a.price);
+    ...Object.entries(retracements).map(([k,v])=>({label:k,price:v,type:"retrace",lvl:parseFloat(k)})),
+    ...Object.entries(extensions).map(([k,v])=>({label:k,price:v,type:"ext",lvl:parseFloat(k)})),
+  ].sort((a,b)=>b.lvl-a.lvl);  // fib-niveau aflopend: extensies boven, 0.000 onderaan
 
   return (
     <div style={{background:C.bg,borderRadius:8,padding:12}}>
@@ -705,7 +705,7 @@ function IndicatorGrid({ ind, cur="$" }) {
     {l:"MACD (W)",     v:ind.macdLineW?.toFixed(3),   c:ind.macdLineW>ind.macdSigW?C.green:C.red},
     {l:"Boll. Hoog",   v:`${cur}${ind.bollUpper?.toFixed(2)}`, c:C.text},
     {l:"Boll. Laag",   v:`${cur}${ind.bollLower?.toFixed(2)}`, c:C.text},
-    {l:"Volume ratio", v:`${ind.volRatio?.toFixed(2)}x`, c:ind.highVolume?C.green:C.text},
+    {l:"Volume ratio", v:`${ind.volRatio?.toFixed(2)}x${ind.volNote?` (${ind.volNote.replace(/[✓]/g,"").trim()})`:""}`, c:ind.highVolume?C.green:C.text},
     {l:"Weekly eval.", v:ind.isFriday?"Vrijdag ✓":"Weekdag (W signalen vrijdag)", c:ind.isFriday?C.green:C.orange},
   ];
   return (
