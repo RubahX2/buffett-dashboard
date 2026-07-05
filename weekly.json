@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-05T00:47:18.831600+02:00",
-  "generatedAtHuman": "Sunday 05 July 2026 om 00:47",
+  "generatedAt": "2026-07-05T10:08:41.093047+02:00",
+  "generatedAtHuman": "Sunday 05 July 2026 om 10:08",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -10,7 +10,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 66 ↓ 56"
+          "text": "Composiet 66 ↓ 46"
         },
         {
           "type": "valuation",
@@ -34,6 +34,11 @@
       "daysAgo": 3,
       "changes": [
         {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 63 ↓ 57"
+        },
+        {
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Duur (PEG > 3.5) → Aan de dure kant (PEG 2.5–3.5)"
@@ -46,34 +51,34 @@
       ]
     },
     {
+      "ticker": "MU",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 85 ↓ 77"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: VERKOOP → LICHT KOOP"
+        }
+      ]
+    },
+    {
       "ticker": "GOOGL",
       "daysAgo": 3,
       "changes": [
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 76 ↓ 69"
+          "text": "Composiet 76 ↓ 63"
         },
         {
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Redelijk (PEG 1–1.5) → Aan de dure kant (PEG 2.5–3.5)"
-        }
-      ]
-    },
-    {
-      "ticker": "LHX",
-      "daysAgo": 3,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 51 ↑ 56"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Aan de dure kant (PEG 2.5–3.5) → Neutraal (PEG 1.5–2.5)"
         }
       ]
     },
@@ -84,7 +89,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 54 ↓ 46"
+          "text": "Composiet 54 ↓ 34"
         },
         {
           "type": "valuation",
@@ -94,13 +99,13 @@
       ]
     },
     {
-      "ticker": "MU",
+      "ticker": "CAT",
       "daysAgo": 3,
       "changes": [
         {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: VERKOOP → LICHT KOOP"
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 50 ↓ 38"
         }
       ]
     },
@@ -114,8 +119,41 @@
           "text": "Waardering: Neutraal (PEG 1.5–2.5) → Aan de dure kant (PEG 2.5–3.5)"
         }
       ]
+    },
+    {
+      "ticker": "KO",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT VERKOOP → NEUTRAAL"
+        }
+      ]
+    },
+    {
+      "ticker": "LHX",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Aan de dure kant (PEG 2.5–3.5) → Neutraal (PEG 1.5–2.5)"
+        }
+      ]
+    },
+    {
+      "ticker": "RKLB",
+      "daysAgo": 3,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 49 ↓ 43"
+        }
+      ]
     }
   ],
-  "changedCount": 7,
+  "changedCount": 10,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }

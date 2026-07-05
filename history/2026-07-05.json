@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-07-05T00:47:18.831600+02:00",
-    "generatedAtHuman": "Sunday 05 July 2026 om 00:47",
+    "generatedAt": "2026-07-05T10:08:41.093047+02:00",
+    "generatedAtHuman": "Sunday 05 July 2026 om 10:08",
     "isFriday": false,
     "isWeekend": true,
     "version": "5.0",
@@ -40,7 +40,7 @@
         ]
       },
       "timing": {
-        "score": 49,
+        "score": 47,
         "label": "Neutrale setup",
         "color": "neutral",
         "trendScore": 60,
@@ -48,7 +48,14 @@
         "trendDaily": 90,
         "trendWeekly": 36,
         "trendMonthly": 65,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 2,
+        "overextDetail": {
+          "weekly": 3.6,
+          "monthly": 0.3
+        },
+        "macdTurning": [],
+        "baseTimin": 49
       },
       "scores": {
         "quality": 54,
@@ -58,10 +65,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 49,
+        "timing": 47,
         "marketAdj": 5,
-        "timingEffective": 54,
-        "composite": 40
+        "timingEffective": 52,
+        "composite": 39
       },
       "bagger": null,
       "isBagger": false,
@@ -134,21 +141,29 @@
         "volRatio": 0.84,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 233.26,
-            "0.382": 225.33,
-            "0.500": 218.92,
-            "0.618": 212.51,
+            "0.886": 197.96,
             "0.786": 203.39,
-            "0.886": 197.96
+            "0.705": 207.79,
+            "0.618": 212.51,
+            "0.500": 218.92,
+            "0.382": 225.33,
+            "0.236": 233.26,
+            "0.000": 246.08
           },
           "extensions": {
             "1.000": 246.08,
             "1.272": 260.85,
             "1.414": 268.57,
             "1.618": 279.65,
-            "1.818": 290.51
+            "2.000": 300.4,
+            "2.618": 333.96
+          },
+          "goldenPocket": {
+            "low": 207.79,
+            "high": 212.51
           },
           "swingHigh": 246.08,
           "swingLow": 191.77
@@ -158,7 +173,8 @@
       }
     },
     "PLTR": {
-      "error": "PLTR: data ophalen mislukt",
+      "name": "PLTR",
+      "ticker": "PLTR",
       "fund": {
         "pe": 117.6,
         "roe": 32.6,
@@ -171,6 +187,144 @@
         "mktCap": "$271B",
         "beta": 1.52,
         "lastUpdated": "2026-06"
+      },
+      "valuation": {
+        "currentPE": 134.7,
+        "peg": 1.99,
+        "pePercentile": null,
+        "peMin": null,
+        "peMedian": null,
+        "peMax": null,
+        "peSource": null,
+        "priceRangePosition": 61.3,
+        "verdict": "Neutraal (PEG 1.5–2.5)",
+        "verdictColor": "neutral",
+        "notes": [
+          "P/E live: koers ÷ laatst bekende EPS"
+        ]
+      },
+      "timing": {
+        "score": 41,
+        "label": "Zwakke setup",
+        "color": "orange",
+        "trendScore": 38,
+        "entryScore": 58,
+        "trendDaily": 51,
+        "trendWeekly": 15,
+        "trendMonthly": 49,
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -1.2,
+          "monthly": -18.3
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 46
+      },
+      "scores": {
+        "quality": 90,
+        "qualityGate": true,
+        "qualityReasons": [
+          "ROE 33% (sterk)",
+          "Marge 44% (sterk)",
+          "Lage schuld",
+          "Groei +68%"
+        ],
+        "qualityFails": [],
+        "valuation": 62,
+        "timing": 41,
+        "marketAdj": 5,
+        "timingEffective": 46,
+        "composite": 64
+      },
+      "bagger": null,
+      "isBagger": false,
+      "currency": "$",
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "MACD",
+          "tf": "1D",
+          "weight": 2,
+          "icon": "🟢",
+          "title": "MACD bullish crossover (daily) (laag volume)",
+          "detail": "MACD -4.845 kruist boven signaal -5.348."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.786 — steunzone: $128.02 (1.0% weg)",
+          "detail": "Prijs $129.30 raakt Fibonacci 0.786. Potentiële koopzone."
+        }
+      ],
+      "alerts": [
+        {
+          "type": "INFO",
+          "cat": "MACD",
+          "tf": "1W",
+          "icon": "ℹ️",
+          "title": "MACD weekly momenteel bearish (crossover enkel vrijdag geëvalueerd)",
+          "detail": "MACD: -7.710 | Signaal: -6.135"
+        }
+      ],
+      "overall": "KOOP",
+      "buyWeight": 5,
+      "sellWeight": 0,
+      "conflict": false,
+      "conflictNote": "",
+      "indicators": {
+        "last": 129.3,
+        "rsiDaily": 51.5,
+        "rsiWeekly": 45.0,
+        "ema8d": 121.59,
+        "ema21d": 125.78,
+        "ema8w": 130.81,
+        "ema21w": 139.71,
+        "ma50": 134.58,
+        "ma200": 157.91,
+        "macdLine": -4.8455,
+        "macdSignal": -5.348,
+        "macdLineW": -7.7095,
+        "macdSigW": -6.1347,
+        "bollUpper": 144.4,
+        "bollLower": 107.54,
+        "volRatio": 1.39,
+        "volKnown": true,
+        "highVolume": false,
+        "volNote": "(laag volume)",
+        "fib": {
+          "retracements": {
+            "0.886": 117.9,
+            "0.786": 128.02,
+            "0.705": 136.21,
+            "0.618": 145.01,
+            "0.500": 156.95,
+            "0.382": 168.88,
+            "0.236": 183.65,
+            "0.000": 207.52
+          },
+          "extensions": {
+            "1.000": 207.52,
+            "1.272": 235.03,
+            "1.414": 249.4,
+            "1.618": 270.03,
+            "2.000": 308.67,
+            "2.618": 371.18
+          },
+          "goldenPocket": {
+            "low": 136.21,
+            "high": 145.01
+          },
+          "swingHigh": 207.52,
+          "swingLow": 106.37
+        },
+        "isFriday": false,
+        "hasWeekly": true
       }
     },
     "CAT": {
@@ -205,15 +359,25 @@
         ]
       },
       "timing": {
-        "score": 65,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 38,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 82,
         "entryScore": 40,
         "trendDaily": 49,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 17,
+        "overextDetail": {
+          "weekly": 3.7,
+          "monthly": 34.4
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 65
       },
       "scores": {
         "quality": 61,
@@ -223,10 +387,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 65,
+        "timing": 38,
         "marketAdj": 5,
-        "timingEffective": 70,
-        "composite": 49
+        "timingEffective": 43,
+        "composite": 38
       },
       "bagger": null,
       "isBagger": false,
@@ -285,21 +449,29 @@
         "volRatio": 0.9,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 910.73,
-            "0.382": 810.06,
-            "0.500": 728.7,
-            "0.618": 647.33,
+            "0.886": 462.54,
             "0.786": 531.49,
-            "0.886": 462.54
+            "0.705": 587.34,
+            "0.618": 647.33,
+            "0.500": 728.7,
+            "0.382": 810.06,
+            "0.236": 910.73,
+            "0.000": 1073.46
           },
           "extensions": {
             "1.000": 1073.46,
             "1.272": 1261.01,
             "1.414": 1358.92,
             "1.618": 1499.59,
-            "1.818": 1637.49
+            "2.000": 1762.99,
+            "2.618": 2189.11
+          },
+          "goldenPocket": {
+            "low": 587.34,
+            "high": 647.33
           },
           "swingHigh": 1073.46,
           "swingLow": 383.93
@@ -340,15 +512,24 @@
         ]
       },
       "timing": {
-        "score": 65,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 40,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 86,
         "entryScore": 33,
         "trendDaily": 70,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 20,
+        "overextDetail": {
+          "weekly": 7.5,
+          "monthly": 36.8
+        },
+        "macdTurning": [
+          "weekly"
+        ],
+        "baseTimin": 65
       },
       "scores": {
         "quality": 84,
@@ -360,10 +541,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 65,
+        "timing": 40,
         "marketAdj": 5,
-        "timingEffective": 70,
-        "composite": 56
+        "timingEffective": 45,
+        "composite": 46
       },
       "bagger": null,
       "isBagger": false,
@@ -413,21 +594,29 @@
         "volRatio": 0.31,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 1468.11,
-            "0.382": 1299.29,
-            "0.500": 1162.84,
-            "0.618": 1026.4,
+            "0.886": 716.51,
             "0.786": 832.14,
-            "0.886": 716.51
+            "0.705": 925.8,
+            "0.618": 1026.4,
+            "0.500": 1162.84,
+            "0.382": 1299.29,
+            "0.236": 1468.11,
+            "0.000": 1741.0
           },
           "extensions": {
             "1.000": 1741.0,
             "1.272": 2055.52,
             "1.414": 2219.71,
             "1.618": 2455.6,
-            "1.818": 2686.87
+            "2.000": 2897.31,
+            "2.618": 3611.92
+          },
+          "goldenPocket": {
+            "low": 925.8,
+            "high": 1026.4
           },
           "swingHigh": 1741.0,
           "swingLow": 584.69
@@ -468,15 +657,24 @@
         ]
       },
       "timing": {
-        "score": 71,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 49,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 85,
         "entryScore": 50,
         "trendDaily": 65,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 17,
+        "overextDetail": {
+          "weekly": 3.8,
+          "monthly": 30.3
+        },
+        "macdTurning": [
+          "weekly"
+        ],
+        "baseTimin": 71
       },
       "scores": {
         "quality": 89,
@@ -488,10 +686,10 @@
         ],
         "qualityFails": [],
         "valuation": 30,
-        "timing": 71,
+        "timing": 49,
         "marketAdj": 5,
-        "timingEffective": 76,
-        "composite": 66
+        "timingEffective": 54,
+        "composite": 57
       },
       "bagger": null,
       "isBagger": false,
@@ -538,21 +736,29 @@
         "volRatio": 0.51,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 928.7,
-            "0.382": 827.37,
-            "0.500": 745.47,
-            "0.618": 663.58,
+            "0.886": 477.57,
             "0.786": 546.98,
-            "0.886": 477.57
+            "0.705": 603.19,
+            "0.618": 663.58,
+            "0.500": 745.47,
+            "0.382": 827.37,
+            "0.236": 928.7,
+            "0.000": 1092.5
           },
           "extensions": {
             "1.000": 1092.5,
             "1.272": 1281.28,
             "1.414": 1379.84,
             "1.618": 1521.42,
-            "1.818": 1660.23
+            "2.000": 1786.55,
+            "2.618": 2215.48
+          },
+          "goldenPocket": {
+            "low": 603.19,
+            "high": 663.58
           },
           "swingHigh": 1092.5,
           "swingLow": 398.45
@@ -593,15 +799,25 @@
         ]
       },
       "timing": {
-        "score": 77,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 49,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 82,
         "entryScore": 70,
         "trendDaily": 49,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 18,
+        "overextDetail": {
+          "weekly": 4.5,
+          "monthly": 82.9
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 77
       },
       "scores": {
         "quality": 95,
@@ -614,10 +830,10 @@
         ],
         "qualityFails": [],
         "valuation": 90,
-        "timing": 77,
+        "timing": 49,
         "marketAdj": 5,
-        "timingEffective": 82,
-        "composite": 88
+        "timingEffective": 54,
+        "composite": 77
       },
       "bagger": null,
       "isBagger": false,
@@ -674,21 +890,29 @@
         "volRatio": 1.04,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 983.18,
-            "0.382": 815.02,
-            "0.500": 679.12,
-            "0.618": 543.21,
+            "0.886": 234.53,
             "0.786": 349.71,
-            "0.886": 234.53
+            "0.705": 443.0,
+            "0.618": 543.21,
+            "0.500": 679.12,
+            "0.382": 815.02,
+            "0.236": 983.18,
+            "0.000": 1255.0
           },
           "extensions": {
             "1.000": 1255.0,
             "1.272": 1568.28,
             "1.414": 1731.83,
             "1.618": 1966.79,
-            "1.818": 2197.15
+            "2.000": 2406.77,
+            "2.618": 3118.56
+          },
+          "goldenPocket": {
+            "low": 443.0,
+            "high": 543.21
           },
           "swingHigh": 1255.0,
           "swingLow": 103.23
@@ -729,15 +953,25 @@
         ]
       },
       "timing": {
-        "score": 67,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 51,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 75,
         "entryScore": 55,
         "trendDaily": 51,
         "trendWeekly": 70,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 6,
+        "overextDetail": {
+          "weekly": -0.0,
+          "monthly": 8.3
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 67
       },
       "scores": {
         "quality": 94,
@@ -749,10 +983,10 @@
         ],
         "qualityFails": [],
         "valuation": 40,
-        "timing": 67,
+        "timing": 51,
         "marketAdj": 5,
-        "timingEffective": 72,
-        "composite": 69
+        "timingEffective": 56,
+        "composite": 63
       },
       "bagger": null,
       "isBagger": false,
@@ -809,21 +1043,29 @@
         "volRatio": 0.68,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 352.65,
-            "0.382": 318.18,
-            "0.500": 290.32,
-            "0.618": 262.46,
+            "0.886": 199.19,
             "0.786": 222.8,
-            "0.886": 199.19
+            "0.705": 241.92,
+            "0.618": 262.46,
+            "0.500": 290.32,
+            "0.382": 318.18,
+            "0.236": 352.65,
+            "0.000": 408.37
           },
           "extensions": {
             "1.000": 408.37,
             "1.272": 472.58,
             "1.414": 506.11,
             "1.618": 554.27,
-            "1.818": 601.49
+            "2.000": 644.45,
+            "2.618": 790.36
+          },
+          "goldenPocket": {
+            "low": 241.92,
+            "high": 262.46
           },
           "swingHigh": 408.37,
           "swingLow": 172.28
@@ -864,15 +1106,25 @@
         ]
       },
       "timing": {
-        "score": 66,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 56,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 73,
         "entryScore": 56,
         "trendDaily": 51,
         "trendWeekly": 65,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -1.1,
+          "monthly": -0.4
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 66
       },
       "scores": {
         "quality": 77,
@@ -882,10 +1134,10 @@
         ],
         "qualityFails": [],
         "valuation": 40,
-        "timing": 66,
+        "timing": 56,
         "marketAdj": 5,
-        "timingEffective": 71,
-        "composite": 64
+        "timingEffective": 61,
+        "composite": 60
       },
       "bagger": null,
       "isBagger": false,
@@ -905,14 +1157,14 @@
           "cat": "FIB",
           "tf": "1D",
           "icon": "📐",
-          "title": "Nadert Fib 0.382 steunzone: $247.02 (1.8% weg)"
+          "title": "Nadert Fib 0.500 steunzone: $237.28 (2.2% weg)"
         },
         {
           "type": "WATCH",
           "cat": "FIB",
           "tf": "1D",
           "icon": "📐",
-          "title": "Nadert Fib 0.500 steunzone: $237.28 (2.2% weg)"
+          "title": "Nadert Fib 0.382 steunzone: $247.02 (1.8% weg)"
         }
       ],
       "overall": "NEUTRAAL",
@@ -939,21 +1191,29 @@
         "volRatio": 0.76,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 259.08,
-            "0.382": 247.02,
-            "0.500": 237.28,
-            "0.618": 227.54,
+            "0.886": 205.41,
             "0.786": 213.67,
-            "0.886": 205.41
+            "0.705": 220.36,
+            "0.618": 227.54,
+            "0.500": 237.28,
+            "0.382": 247.02,
+            "0.236": 259.08,
+            "0.000": 278.56
           },
           "extensions": {
             "1.000": 278.56,
             "1.272": 301.02,
             "1.414": 312.74,
             "1.618": 329.58,
-            "1.818": 346.09
+            "2.000": 361.12,
+            "2.618": 412.14
+          },
+          "goldenPocket": {
+            "low": 220.36,
+            "high": 227.54
           },
           "swingHigh": 278.56,
           "swingLow": 196.0
@@ -994,15 +1254,25 @@
         ]
       },
       "timing": {
-        "score": 53,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 43,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 28,
         "entryScore": 90,
         "trendDaily": 10,
         "trendWeekly": 10,
         "trendMonthly": 49,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -18.5,
+          "monthly": -17.7
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 53
       },
       "scores": {
         "quality": 80,
@@ -1014,10 +1284,10 @@
         ],
         "qualityFails": [],
         "valuation": 62,
-        "timing": 53,
+        "timing": 43,
         "marketAdj": 5,
-        "timingEffective": 58,
-        "composite": 66
+        "timingEffective": 48,
+        "composite": 62
       },
       "bagger": null,
       "isBagger": false,
@@ -1081,21 +1351,29 @@
         "volRatio": 1.37,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 293.82,
-            "0.382": 263.39,
-            "0.500": 238.79,
-            "0.618": 214.2,
+            "0.886": 158.33,
             "0.786": 179.18,
-            "0.886": 158.33
+            "0.705": 196.06,
+            "0.618": 214.2,
+            "0.500": 238.79,
+            "0.382": 263.39,
+            "0.236": 293.82,
+            "0.000": 343.01
           },
           "extensions": {
             "1.000": 343.01,
             "1.272": 399.71,
             "1.414": 429.31,
             "1.618": 471.83,
-            "1.818": 513.52
+            "2.000": 551.46,
+            "2.618": 680.27
+          },
+          "goldenPocket": {
+            "low": 196.06,
+            "high": 214.2
           },
           "swingHigh": 343.01,
           "swingLow": 134.57
@@ -1136,15 +1414,22 @@
         ]
       },
       "timing": {
-        "score": 64,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 57,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 90,
         "entryScore": 25,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 7,
+        "overextDetail": {
+          "weekly": 3.9,
+          "monthly": 6.5
+        },
+        "macdTurning": [],
+        "baseTimin": 64
       },
       "scores": {
         "quality": 63,
@@ -1155,15 +1440,24 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 64,
+        "timing": 57,
         "marketAdj": 5,
-        "timingEffective": 69,
-        "composite": 49
+        "timingEffective": 62,
+        "composite": 46
       },
       "bagger": null,
       "isBagger": false,
       "currency": "$",
       "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.000 — steunzone: $84.14 (0.0% weg)",
+          "detail": "Prijs $84.14 raakt Fibonacci 0.000. Potentiële koopzone."
+        },
         {
           "type": "SELL",
           "cat": "FIB",
@@ -1205,11 +1499,11 @@
           "title": "Nadert Bollinger bovenband ($84.19)"
         }
       ],
-      "overall": "LICHT VERKOOP",
-      "buyWeight": 0,
+      "overall": "NEUTRAAL",
+      "buyWeight": 3,
       "sellWeight": 3,
-      "conflict": false,
-      "conflictNote": "",
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 1 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
       "indicators": {
         "last": 84.14,
         "rsiDaily": 65.0,
@@ -1222,28 +1516,36 @@
         "ma200": 73.46,
         "macdLine": 0.8298,
         "macdSignal": 0.6205,
-        "macdLineW": 2.631,
+        "macdLineW": 2.6309,
         "macdSigW": 2.3355,
         "bollUpper": 84.19,
         "bollLower": 77.37,
         "volRatio": 0.86,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 79.4,
-            "0.382": 76.46,
-            "0.500": 74.09,
-            "0.618": 71.72,
+            "0.886": 66.33,
             "0.786": 68.34,
-            "0.886": 66.33
+            "0.705": 69.97,
+            "0.618": 71.72,
+            "0.500": 74.09,
+            "0.382": 76.46,
+            "0.236": 79.4,
+            "0.000": 84.14
           },
           "extensions": {
             "1.000": 84.14,
             "1.272": 89.61,
             "1.414": 92.46,
             "1.618": 96.56,
-            "1.818": 100.58
+            "2.000": 104.24,
+            "2.618": 116.67
+          },
+          "goldenPocket": {
+            "low": 69.97,
+            "high": 71.72
           },
           "swingHigh": 84.14,
           "swingLow": 64.04
@@ -1288,7 +1590,7 @@
         ]
       },
       "timing": {
-        "score": 52,
+        "score": 47,
         "label": "Neutrale setup",
         "color": "neutral",
         "trendScore": 54,
@@ -1296,7 +1598,16 @@
         "trendDaily": 51,
         "trendWeekly": 10,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -0.9,
+          "monthly": -5.9
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 52
       },
       "scores": {
         "quality": 61,
@@ -1306,10 +1617,10 @@
           "ROE < 12%"
         ],
         "valuation": 50,
-        "timing": 52,
+        "timing": 47,
         "marketAdj": 5,
-        "timingEffective": 57,
-        "composite": 56
+        "timingEffective": 52,
+        "composite": 54
       },
       "bagger": {
         "score": 17,
@@ -1378,21 +1689,29 @@
         "volRatio": 0.91,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 345.62,
-            "0.382": 326.59,
-            "0.500": 311.21,
-            "0.618": 295.83,
+            "0.886": 260.89,
             "0.786": 273.93,
-            "0.886": 260.89
+            "0.705": 284.49,
+            "0.618": 295.83,
+            "0.500": 311.21,
+            "0.382": 326.59,
+            "0.236": 345.62,
+            "0.000": 376.39
           },
           "extensions": {
             "1.000": 376.39,
             "1.272": 411.85,
             "1.414": 430.36,
             "1.618": 456.95,
-            "1.818": 483.02
+            "2.000": 506.75,
+            "2.618": 587.31
+          },
+          "goldenPocket": {
+            "low": 284.49,
+            "high": 295.83
           },
           "swingHigh": 376.39,
           "swingLow": 246.03
@@ -1437,15 +1756,25 @@
         ]
       },
       "timing": {
-        "score": 61,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 31,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 86,
         "entryScore": 23,
         "trendDaily": 70,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 20,
+        "overextDetail": {
+          "weekly": 8.7,
+          "monthly": 32.2
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 61
       },
       "scores": {
         "quality": 48,
@@ -1455,10 +1784,10 @@
           "marge < 8%"
         ],
         "valuation": 18,
-        "timing": 61,
+        "timing": 31,
         "marketAdj": 5,
-        "timingEffective": 66,
-        "composite": 46
+        "timingEffective": 36,
+        "composite": 34
       },
       "bagger": {
         "score": 44,
@@ -1527,21 +1856,29 @@
         "volRatio": 1.04,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 370.33,
-            "0.382": 333.09,
-            "0.500": 302.99,
-            "0.618": 272.9,
+            "0.886": 204.54,
             "0.786": 230.05,
-            "0.886": 204.54
+            "0.705": 250.71,
+            "0.618": 272.9,
+            "0.500": 302.99,
+            "0.382": 333.09,
+            "0.236": 370.33,
+            "0.000": 430.52
           },
           "extensions": {
             "1.000": 430.52,
             "1.272": 499.89,
             "1.414": 536.11,
             "1.618": 588.14,
-            "1.818": 639.15
+            "2.000": 685.57,
+            "2.618": 843.2
+          },
+          "goldenPocket": {
+            "low": 250.71,
+            "high": 272.9
           },
           "swingHigh": 430.52,
           "swingLow": 175.47
@@ -1586,15 +1923,22 @@
         ]
       },
       "timing": {
-        "score": 62,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 56,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 81,
         "entryScore": 33,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 70,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 6,
+        "overextDetail": {
+          "weekly": 5.0,
+          "monthly": 3.9
+        },
+        "macdTurning": [],
+        "baseTimin": 62
       },
       "scores": {
         "quality": 63,
@@ -1606,10 +1950,10 @@
           "schuld te hoog (D/E > 4)"
         ],
         "valuation": 30,
-        "timing": 62,
+        "timing": 56,
         "marketAdj": 5,
-        "timingEffective": 67,
-        "composite": 55
+        "timingEffective": 61,
+        "composite": 52
       },
       "bagger": {
         "score": 20,
@@ -1692,21 +2036,29 @@
         "volRatio": 0.9,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 1425.96,
-            "0.382": 1368.18,
-            "0.500": 1321.48,
-            "0.618": 1274.79,
+            "0.886": 1168.73,
             "0.786": 1208.3,
-            "0.886": 1168.73
+            "0.705": 1240.36,
+            "0.618": 1274.79,
+            "0.500": 1321.48,
+            "0.382": 1368.18,
+            "0.236": 1425.96,
+            "0.000": 1519.36
           },
           "extensions": {
             "1.000": 1519.36,
             "1.272": 1627.0,
             "1.414": 1683.2,
             "1.618": 1763.93,
-            "1.818": 1843.08
+            "2.000": 1915.1,
+            "2.618": 2159.68
+          },
+          "goldenPocket": {
+            "low": 1240.36,
+            "high": 1274.79
           },
           "swingHigh": 1519.36,
           "swingLow": 1123.61
@@ -1751,7 +2103,7 @@
         ]
       },
       "timing": {
-        "score": 42,
+        "score": 37,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 36,
@@ -1759,7 +2111,16 @@
         "trendDaily": 51,
         "trendWeekly": 10,
         "trendMonthly": 49,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -2.0,
+          "monthly": -25.2
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 42
       },
       "scores": {
         "quality": 45,
@@ -1773,10 +2134,10 @@
           "marge < 8%"
         ],
         "valuation": 8,
-        "timing": 42,
+        "timing": 37,
         "marketAdj": 5,
-        "timingEffective": 47,
-        "composite": 35
+        "timingEffective": 42,
+        "composite": 33
       },
       "bagger": {
         "score": 38,
@@ -1840,21 +2201,29 @@
         "volRatio": 1.17,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 112.48,
-            "0.382": 99.17,
-            "0.500": 88.41,
-            "0.618": 77.64,
+            "0.886": 53.21,
             "0.786": 62.32,
-            "0.886": 53.21
+            "0.705": 69.71,
+            "0.618": 77.64,
+            "0.500": 88.41,
+            "0.382": 99.17,
+            "0.236": 112.48,
+            "0.000": 134.0
           },
           "extensions": {
             "1.000": 134.0,
             "1.272": 158.8,
             "1.414": 171.75,
             "1.618": 190.36,
-            "1.818": 208.59
+            "2.000": 225.19,
+            "2.618": 281.55
+          },
+          "goldenPocket": {
+            "low": 69.71,
+            "high": 77.64
           },
           "swingHigh": 134.0,
           "swingLow": 42.81
@@ -1897,15 +2266,25 @@
         "notes": []
       },
       "timing": {
-        "score": 62,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 39,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 66,
         "entryScore": 55,
         "trendDaily": 15,
         "trendWeekly": 65,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 13,
+        "overextDetail": {
+          "weekly": -2.0,
+          "monthly": 17.4
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 62
       },
       "scores": {
         "quality": 34,
@@ -1918,10 +2297,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 62,
+        "timing": 39,
         "marketAdj": 5,
-        "timingEffective": 67,
-        "composite": 52
+        "timingEffective": 44,
+        "composite": 43
       },
       "bagger": {
         "score": 81,
@@ -1977,21 +2356,29 @@
         "volRatio": 0.74,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 123.68,
-            "0.382": 106.78,
-            "0.500": 93.12,
-            "0.618": 79.47,
+            "0.886": 48.45,
             "0.786": 60.02,
-            "0.886": 48.45
+            "0.705": 69.4,
+            "0.618": 79.47,
+            "0.500": 93.12,
+            "0.382": 106.78,
+            "0.236": 123.68,
+            "0.000": 151.0
           },
           "extensions": {
             "1.000": 151.0,
             "1.272": 182.48,
             "1.414": 198.92,
             "1.618": 222.53,
-            "1.818": 245.68
+            "2.000": 266.75,
+            "2.618": 338.28
+          },
+          "goldenPocket": {
+            "low": 69.4,
+            "high": 79.47
           },
           "swingHigh": 151.0,
           "swingLow": 35.25
@@ -2034,15 +2421,24 @@
         "notes": []
       },
       "timing": {
-        "score": 50,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 42,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 60,
         "entryScore": 35,
         "trendDaily": 80,
         "trendWeekly": 15,
         "trendMonthly": 85,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 3,
+        "overextDetail": {
+          "weekly": 5.0,
+          "monthly": -8.2
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 50
       },
       "scores": {
         "quality": 20,
@@ -2055,10 +2451,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 50,
+        "timing": 42,
         "marketAdj": 5,
-        "timingEffective": 55,
-        "composite": 43
+        "timingEffective": 47,
+        "composite": 40
       },
       "bagger": {
         "score": 57,
@@ -2121,21 +2517,29 @@
         "volRatio": 1.66,
         "volKnown": true,
         "highVolume": true,
+        "volNote": "✓ hoog volume",
         "fib": {
           "retracements": {
-            "0.236": 8.44,
-            "0.382": 6.93,
-            "0.500": 5.72,
-            "0.618": 4.5,
+            "0.886": 1.74,
             "0.786": 2.77,
-            "0.886": 1.74
+            "0.705": 3.61,
+            "0.618": 4.5,
+            "0.500": 5.72,
+            "0.382": 6.93,
+            "0.236": 8.44,
+            "0.000": 10.87
           },
           "extensions": {
             "1.000": 10.87,
             "1.272": 13.67,
             "1.414": 15.14,
             "1.618": 17.24,
-            "1.818": 19.3
+            "2.000": 21.17,
+            "2.618": 27.54
+          },
+          "goldenPocket": {
+            "low": 3.61,
+            "high": 4.5
           },
           "swingHigh": 10.87,
           "swingLow": 0.57
@@ -2178,15 +2582,22 @@
         "notes": []
       },
       "timing": {
-        "score": 48,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 36,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 63,
         "entryScore": 25,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 30,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 12,
+        "overextDetail": {
+          "weekly": 11.1,
+          "monthly": 6.6
+        },
+        "macdTurning": [],
+        "baseTimin": 48
       },
       "scores": {
         "quality": 40,
@@ -2200,10 +2611,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 48,
+        "timing": 36,
         "marketAdj": 5,
-        "timingEffective": 53,
-        "composite": 48
+        "timingEffective": 41,
+        "composite": 43
       },
       "bagger": {
         "score": 49,
@@ -2286,21 +2697,29 @@
         "volRatio": 0.98,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 20.73,
-            "0.382": 18.86,
-            "0.500": 17.35,
-            "0.618": 15.84,
+            "0.886": 12.4,
             "0.786": 13.69,
-            "0.886": 12.4
+            "0.705": 14.72,
+            "0.618": 15.84,
+            "0.500": 17.35,
+            "0.382": 18.86,
+            "0.236": 20.73,
+            "0.000": 23.75
           },
           "extensions": {
             "1.000": 23.75,
             "1.272": 27.23,
             "1.414": 29.05,
             "1.618": 31.66,
-            "1.818": 34.22
+            "2.000": 36.56,
+            "2.618": 44.47
+          },
+          "goldenPocket": {
+            "low": 14.72,
+            "high": 15.84
           },
           "swingHigh": 23.75,
           "swingLow": 10.94
@@ -2343,15 +2762,25 @@
         "notes": []
       },
       "timing": {
-        "score": 41,
-        "label": "Zwakke setup",
-        "color": "orange",
+        "score": 31,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 31,
         "entryScore": 55,
         "trendDaily": 35,
         "trendWeekly": 30,
         "trendMonthly": 30,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -1.6,
+          "monthly": -38.4
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 41
       },
       "scores": {
         "quality": 40,
@@ -2365,10 +2794,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 41,
+        "timing": 31,
         "marketAdj": 5,
-        "timingEffective": 46,
-        "composite": 45
+        "timingEffective": 36,
+        "composite": 41
       },
       "bagger": {
         "score": 12,
@@ -2428,24 +2857,32 @@
         "macdSigW": -0.2872,
         "bollUpper": 1.22,
         "bollLower": 1.1,
-        "volRatio": 1.42,
+        "volRatio": 1.41,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 4.45,
-            "0.382": 3.8,
-            "0.500": 3.28,
-            "0.618": 2.76,
+            "0.886": 1.57,
             "0.786": 2.01,
-            "0.886": 1.57
+            "0.705": 2.37,
+            "0.618": 2.76,
+            "0.500": 3.28,
+            "0.382": 3.8,
+            "0.236": 4.45,
+            "0.000": 5.5
           },
           "extensions": {
             "1.000": 5.5,
             "1.272": 6.71,
             "1.414": 7.34,
             "1.618": 8.24,
-            "1.818": 9.13
+            "2.000": 9.94,
+            "2.618": 12.68
+          },
+          "goldenPocket": {
+            "low": 2.37,
+            "high": 2.76
           },
           "swingHigh": 5.5,
           "swingLow": 1.06
@@ -2486,15 +2923,25 @@
         ]
       },
       "timing": {
-        "score": 74,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 51,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 90,
         "entryScore": 51,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 13,
+        "overextDetail": {
+          "weekly": 3.6,
+          "monthly": 14.1
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 74
       },
       "scores": {
         "quality": 94,
@@ -2506,10 +2953,10 @@
         ],
         "qualityFails": [],
         "valuation": 40,
-        "timing": 74,
+        "timing": 51,
         "marketAdj": 5,
-        "timingEffective": 79,
-        "composite": 72
+        "timingEffective": 56,
+        "composite": 63
       },
       "bagger": null,
       "isBagger": false,
@@ -2566,24 +3013,32 @@
         "volRatio": 0.58,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 21200.56,
-            "0.382": 19753.89,
-            "0.500": 18584.66,
-            "0.618": 17415.43,
+            "0.886": 14759.89,
             "0.786": 15750.76,
-            "0.886": 14759.89
+            "0.705": 16553.37,
+            "0.618": 17415.43,
+            "0.500": 18584.66,
+            "0.382": 19753.89,
+            "0.236": 21200.56,
+            "0.000": 23539.02
           },
           "extensions": {
             "1.000": 23539.02,
             "1.272": 26234.19,
             "1.414": 27641.23,
             "1.618": 29662.61,
-            "1.818": 31644.35
+            "2.000": 33447.74,
+            "2.618": 39571.33
+          },
+          "goldenPocket": {
+            "low": 16553.37,
+            "high": 17415.43
           },
           "swingHigh": 23539.02,
-          "swingLow": 13630.29
+          "swingLow": 13630.3
         },
         "isFriday": false,
         "hasWeekly": true
@@ -2621,15 +3076,24 @@
         ]
       },
       "timing": {
-        "score": 54,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 31,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 90,
         "entryScore": 0,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 18,
+        "overextDetail": {
+          "weekly": 6.9,
+          "monthly": 17.9
+        },
+        "macdTurning": [
+          "daily"
+        ],
+        "baseTimin": 54
       },
       "scores": {
         "quality": 83,
@@ -2641,10 +3105,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 54,
+        "timing": 31,
         "marketAdj": 5,
-        "timingEffective": 59,
-        "composite": 51
+        "timingEffective": 36,
+        "composite": 42
       },
       "bagger": null,
       "isBagger": false,
@@ -2667,6 +3131,15 @@
           "icon": "📈",
           "title": "RSI WEEKLY overbought (75)",
           "detail": "Sterk verkoopsignaal op hogere timeframe."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.000 — steunzone: $98.93 (1.4% weg)",
+          "detail": "Prijs $97.60 raakt Fibonacci 0.000. Potentiële koopzone."
         },
         {
           "type": "SELL",
@@ -2696,10 +3169,10 @@
         }
       ],
       "overall": "STERK VERKOOP",
-      "buyWeight": 0,
+      "buyWeight": 3,
       "sellWeight": 10,
-      "conflict": false,
-      "conflictNote": "",
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 1 koop vs 3 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
       "indicators": {
         "last": 97.6,
         "rsiDaily": 71.9,
@@ -2719,21 +3192,29 @@
         "volRatio": 0.94,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 89.29,
-            "0.382": 83.33,
-            "0.500": 78.51,
-            "0.618": 73.69,
+            "0.886": 62.75,
             "0.786": 66.83,
-            "0.886": 62.75
+            "0.705": 70.14,
+            "0.618": 73.69,
+            "0.500": 78.51,
+            "0.382": 83.33,
+            "0.236": 89.29,
+            "0.000": 98.93
           },
           "extensions": {
             "1.000": 98.93,
             "1.272": 110.04,
             "1.414": 115.84,
             "1.618": 124.17,
-            "1.818": 132.34
+            "2.000": 139.77,
+            "2.618": 165.01
+          },
+          "goldenPocket": {
+            "low": 70.14,
+            "high": 73.69
           },
           "swingHigh": 98.93,
           "swingLow": 58.09
@@ -2774,7 +3255,7 @@
         ]
       },
       "timing": {
-        "score": 53,
+        "score": 45,
         "label": "Neutrale setup",
         "color": "neutral",
         "trendScore": 81,
@@ -2782,7 +3263,14 @@
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 70,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 8,
+        "overextDetail": {
+          "weekly": 8.4,
+          "monthly": 3.9
+        },
+        "macdTurning": [],
+        "baseTimin": 53
       },
       "scores": {
         "quality": 83,
@@ -2793,10 +3281,10 @@
         ],
         "qualityFails": [],
         "valuation": 30,
-        "timing": 53,
+        "timing": 45,
         "marketAdj": 5,
-        "timingEffective": 58,
-        "composite": 57
+        "timingEffective": 50,
+        "composite": 54
       },
       "bagger": null,
       "isBagger": false,
@@ -2819,6 +3307,15 @@
           "icon": "🎯",
           "title": "Prijs raakt Bollinger bovenband ($352.77) (laag volume)",
           "detail": "Statistische overbought conditie."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.000 — steunzone: $362.13 (0.0% weg)",
+          "detail": "Prijs $362.13 raakt Fibonacci 0.000. Potentiële koopzone."
         },
         {
           "type": "SELL",
@@ -2848,10 +3345,10 @@
         }
       ],
       "overall": "STERK VERKOOP",
-      "buyWeight": 0,
+      "buyWeight": 3,
       "sellWeight": 8,
-      "conflict": false,
-      "conflictNote": "",
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 1 koop vs 3 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
       "indicators": {
         "last": 362.13,
         "rsiDaily": 76.8,
@@ -2871,21 +3368,29 @@
         "volRatio": 1.08,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 345.88,
-            "0.382": 335.83,
-            "0.500": 327.71,
-            "0.618": 319.58,
+            "0.886": 301.13,
             "0.786": 308.02,
-            "0.886": 301.13
+            "0.705": 313.59,
+            "0.618": 319.58,
+            "0.500": 327.71,
+            "0.382": 335.83,
+            "0.236": 345.88,
+            "0.000": 362.13
           },
           "extensions": {
             "1.000": 362.13,
             "1.272": 380.86,
             "1.414": 390.63,
             "1.618": 404.68,
-            "1.818": 418.45
+            "2.000": 430.98,
+            "2.618": 473.53
+          },
+          "goldenPocket": {
+            "low": 313.59,
+            "high": 319.58
           },
           "swingHigh": 362.13,
           "swingLow": 293.28
@@ -2926,7 +3431,7 @@
         ]
       },
       "timing": {
-        "score": 34,
+        "score": 33,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 26,
@@ -2934,7 +3439,14 @@
         "trendDaily": 56,
         "trendWeekly": 30,
         "trendMonthly": 10,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 1,
+        "overextDetail": {
+          "weekly": 1.4,
+          "monthly": -32.7
+        },
+        "macdTurning": [],
+        "baseTimin": 34
       },
       "scores": {
         "quality": 61,
@@ -2945,10 +3457,10 @@
         ],
         "qualityFails": [],
         "valuation": 90,
-        "timing": 34,
+        "timing": 33,
         "marketAdj": 5,
-        "timingEffective": 39,
-        "composite": 61
+        "timingEffective": 38,
+        "composite": 60
       },
       "bagger": null,
       "isBagger": false,
@@ -3002,21 +3514,29 @@
         "volRatio": 1.19,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 9.84,
-            "0.382": 8.6,
-            "0.500": 7.6,
-            "0.618": 6.6,
+            "0.886": 4.32,
             "0.786": 5.17,
-            "0.886": 4.32
+            "0.705": 5.86,
+            "0.618": 6.6,
+            "0.500": 7.6,
+            "0.382": 8.6,
+            "0.236": 9.84,
+            "0.000": 11.85
           },
           "extensions": {
             "1.000": 11.85,
             "1.272": 14.16,
             "1.414": 15.37,
             "1.618": 17.1,
-            "1.818": 18.8
+            "2.000": 20.35,
+            "2.618": 25.6
+          },
+          "goldenPocket": {
+            "low": 5.86,
+            "high": 6.6
           },
           "swingHigh": 11.85,
           "swingLow": 3.35
@@ -3057,15 +3577,22 @@
         ]
       },
       "timing": {
-        "score": 58,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 47,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 90,
         "entryScore": 10,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 11,
+        "overextDetail": {
+          "weekly": 6.8,
+          "monthly": 8.8
+        },
+        "macdTurning": [],
+        "baseTimin": 58
       },
       "scores": {
         "quality": 88,
@@ -3076,10 +3603,10 @@
         ],
         "qualityFails": [],
         "valuation": 62,
-        "timing": 58,
+        "timing": 47,
         "marketAdj": 5,
-        "timingEffective": 63,
-        "composite": 70
+        "timingEffective": 52,
+        "composite": 66
       },
       "bagger": null,
       "isBagger": false,
@@ -3093,6 +3620,15 @@
           "icon": "📈",
           "title": "RSI daily overbought (71) (laag volume)",
           "detail": "RSI 71.0 — overbought."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.000 — steunzone: $3683.81 (0.5% weg)",
+          "detail": "Prijs $3666.00 raakt Fibonacci 0.000. Potentiële koopzone."
         },
         {
           "type": "SELL",
@@ -3129,10 +3665,10 @@
         }
       ],
       "overall": "VERKOOP",
-      "buyWeight": 0,
+      "buyWeight": 3,
       "sellWeight": 6,
-      "conflict": false,
-      "conflictNote": "",
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 1 koop vs 2 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
       "indicators": {
         "last": 3666.0,
         "rsiDaily": 71.0,
@@ -3152,21 +3688,29 @@
         "volRatio": 0.32,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 3433.53,
-            "0.382": 3278.69,
-            "0.500": 3153.55,
-            "0.618": 3028.41,
+            "0.886": 2744.19,
             "0.786": 2850.24,
-            "0.886": 2744.19
+            "0.705": 2936.15,
+            "0.618": 3028.41,
+            "0.500": 3153.55,
+            "0.382": 3278.69,
+            "0.236": 3433.53,
+            "0.000": 3683.81
           },
           "extensions": {
             "1.000": 3683.81,
             "1.272": 3972.27,
             "1.414": 4122.86,
             "1.618": 4339.2,
-            "1.818": 4551.3
+            "2.000": 4744.32,
+            "2.618": 5399.71
+          },
+          "goldenPocket": {
+            "low": 2936.15,
+            "high": 3028.41
           },
           "swingHigh": 3683.81,
           "swingLow": 2623.29
@@ -3207,15 +3751,22 @@
         ]
       },
       "timing": {
-        "score": 45,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 40,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 53,
         "entryScore": 33,
         "trendDaily": 90,
         "trendWeekly": 80,
         "trendMonthly": 15,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 5,
+        "overextDetail": {
+          "weekly": 7.8,
+          "monthly": 0.0
+        },
+        "macdTurning": [],
+        "baseTimin": 45
       },
       "scores": {
         "quality": 68,
@@ -3225,10 +3776,10 @@
         ],
         "qualityFails": [],
         "valuation": 40,
-        "timing": 45,
+        "timing": 40,
         "marketAdj": 5,
-        "timingEffective": 50,
-        "composite": 52
+        "timingEffective": 45,
+        "composite": 50
       },
       "bagger": null,
       "isBagger": false,
@@ -3301,21 +3852,29 @@
         "volRatio": 0.62,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 361.4,
-            "0.382": 350.39,
-            "0.500": 341.5,
-            "0.618": 332.6,
+            "0.886": 312.39,
             "0.786": 319.93,
-            "0.886": 312.39
+            "0.705": 326.04,
+            "0.618": 332.6,
+            "0.500": 341.5,
+            "0.382": 350.39,
+            "0.236": 361.4,
+            "0.000": 379.2
           },
           "extensions": {
             "1.000": 379.2,
             "1.272": 399.71,
             "1.414": 410.42,
             "1.618": 425.81,
-            "1.818": 440.89
+            "2.000": 454.61,
+            "2.618": 501.22
+          },
+          "goldenPocket": {
+            "low": 326.04,
+            "high": 332.6
           },
           "swingHigh": 379.2,
           "swingLow": 303.79
@@ -3356,7 +3915,7 @@
         ]
       },
       "timing": {
-        "score": 37,
+        "score": 34,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 45,
@@ -3364,7 +3923,14 @@
         "trendDaily": 90,
         "trendWeekly": 51,
         "trendMonthly": 20,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 3,
+        "overextDetail": {
+          "weekly": 4.8,
+          "monthly": -8.7
+        },
+        "macdTurning": [],
+        "baseTimin": 37
       },
       "scores": {
         "quality": 71,
@@ -3375,10 +3941,10 @@
         ],
         "qualityFails": [],
         "valuation": 75,
-        "timing": 37,
+        "timing": 34,
         "marketAdj": 5,
-        "timingEffective": 42,
-        "composite": 61
+        "timingEffective": 39,
+        "composite": 59
       },
       "bagger": null,
       "isBagger": false,
@@ -3416,6 +3982,13 @@
           "tf": "1D",
           "icon": "📐",
           "title": "Nadert Fib 0.786 steunzone: $1720.45 (2.4% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.705 steunzone: $1805.78 (2.4% weg)"
         }
       ],
       "overall": "LICHT VERKOOP",
@@ -3442,21 +4015,29 @@
         "volRatio": 0.84,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 2299.87,
-            "0.382": 2146.06,
-            "0.500": 2021.75,
-            "0.618": 1897.44,
+            "0.886": 1615.1,
             "0.786": 1720.45,
-            "0.886": 1615.1
+            "0.705": 1805.78,
+            "0.618": 1897.44,
+            "0.500": 2021.75,
+            "0.382": 2146.06,
+            "0.236": 2299.87,
+            "0.000": 2548.5
           },
           "extensions": {
             "1.000": 2548.5,
             "1.272": 2835.05,
             "1.414": 2984.65,
             "1.618": 3199.56,
-            "1.818": 3410.26
+            "2.000": 3602.0,
+            "2.618": 4253.06
+          },
+          "goldenPocket": {
+            "low": 1805.78,
+            "high": 1897.44
           },
           "swingHigh": 2548.5,
           "swingLow": 1495.0
@@ -3497,15 +4078,22 @@
         ]
       },
       "timing": {
-        "score": 31,
+        "score": 30,
         "label": "Slechte instap (wachten)",
         "color": "red",
         "trendScore": 35,
-        "entryScore": 25,
+        "entryScore": 33,
         "trendDaily": 90,
         "trendWeekly": 35,
         "trendMonthly": 10,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 4,
+        "overextDetail": {
+          "weekly": 7.0,
+          "monthly": -12.9
+        },
+        "macdTurning": [],
+        "baseTimin": 34
       },
       "scores": {
         "quality": 95,
@@ -3518,15 +4106,25 @@
         ],
         "qualityFails": [],
         "valuation": 90,
-        "timing": 31,
+        "timing": 30,
         "marketAdj": 5,
-        "timingEffective": 36,
+        "timingEffective": 35,
         "composite": 70
       },
       "bagger": null,
       "isBagger": false,
       "currency": "p",
-      "signals": [],
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.705 — steunzone: $2612.55 (0.1% weg)",
+          "detail": "Prijs $2611.00 raakt Fibonacci 0.705. Potentiële koopzone."
+        }
+      ],
       "alerts": [
         {
           "type": "WATCH",
@@ -3551,8 +4149,8 @@
           "title": "Nadert Bollinger bovenband ($2639.09)"
         }
       ],
-      "overall": "NEUTRAAL",
-      "buyWeight": 0,
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
       "sellWeight": 0,
       "conflict": false,
       "conflictNote": "",
@@ -3575,21 +4173,29 @@
         "volRatio": 0.47,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 3865.22,
-            "0.382": 3475.26,
-            "0.500": 3160.09,
-            "0.618": 2844.92,
+            "0.886": 2129.11,
             "0.786": 2396.2,
-            "0.886": 2129.11
+            "0.705": 2612.55,
+            "0.618": 2844.92,
+            "0.500": 3160.09,
+            "0.382": 3475.26,
+            "0.236": 3865.22,
+            "0.000": 4495.56
           },
           "extensions": {
             "1.000": 4495.56,
             "1.272": 5222.05,
             "1.414": 5601.33,
             "1.618": 6146.2,
-            "1.818": 6680.38
+            "2.000": 7166.49,
+            "2.618": 8817.13
+          },
+          "goldenPocket": {
+            "low": 2612.55,
+            "high": 2844.92
           },
           "swingHigh": 4495.56,
           "swingLow": 1824.62
@@ -3630,15 +4236,24 @@
         ]
       },
       "timing": {
-        "score": 49,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 44,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 58,
-        "entryScore": 35,
+        "entryScore": 43,
         "trendDaily": 90,
         "trendWeekly": 51,
         "trendMonthly": 49,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 3,
+        "overextDetail": {
+          "weekly": 4.6,
+          "monthly": -8.4
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 52
       },
       "scores": {
         "quality": 69,
@@ -3649,15 +4264,25 @@
         ],
         "qualityFails": [],
         "valuation": 30,
-        "timing": 49,
+        "timing": 44,
         "marketAdj": 5,
-        "timingEffective": 54,
-        "composite": 51
+        "timingEffective": 49,
+        "composite": 49
       },
       "bagger": null,
       "isBagger": false,
       "currency": "$",
-      "signals": [],
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.705 — steunzone: $120.02 (0.5% weg)",
+          "detail": "Prijs $119.46 raakt Fibonacci 0.705. Potentiële koopzone."
+        }
+      ],
       "alerts": [
         {
           "type": "INFO",
@@ -3675,8 +4300,8 @@
           "title": "Nadert Bollinger bovenband ($120.01)"
         }
       ],
-      "overall": "NEUTRAAL",
-      "buyWeight": 0,
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
       "sellWeight": 0,
       "conflict": false,
       "conflictNote": "",
@@ -3699,21 +4324,29 @@
         "volRatio": 0.77,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 161.38,
-            "0.382": 148.5,
-            "0.500": 138.1,
-            "0.618": 127.69,
+            "0.886": 104.05,
             "0.786": 112.87,
-            "0.886": 104.05
+            "0.705": 120.02,
+            "0.618": 127.69,
+            "0.500": 138.1,
+            "0.382": 148.5,
+            "0.236": 161.38,
+            "0.000": 182.19
           },
           "extensions": {
             "1.000": 182.19,
             "1.272": 206.18,
             "1.414": 218.7,
             "1.618": 236.69,
-            "1.818": 254.33
+            "2.000": 270.38,
+            "2.618": 324.88
+          },
+          "goldenPocket": {
+            "low": 120.02,
+            "high": 127.69
           },
           "swingHigh": 182.19,
           "swingLow": 94.0
@@ -3754,15 +4387,22 @@
         ]
       },
       "timing": {
-        "score": 71,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 57,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 90,
         "entryScore": 43,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 14,
+        "overextDetail": {
+          "weekly": 5.6,
+          "monthly": 14.6
+        },
+        "macdTurning": [],
+        "baseTimin": 71
       },
       "scores": {
         "quality": 39,
@@ -3775,10 +4415,10 @@
           "marge < 8%"
         ],
         "valuation": 8,
-        "timing": 71,
+        "timing": 57,
         "marketAdj": 5,
-        "timingEffective": 76,
-        "composite": 44
+        "timingEffective": 62,
+        "composite": 39
       },
       "bagger": null,
       "isBagger": false,
@@ -3825,21 +4465,29 @@
         "volRatio": 0.8,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 248.97,
-            "0.382": 231.74,
-            "0.500": 217.82,
-            "0.618": 203.9,
+            "0.886": 172.28,
             "0.786": 184.08,
-            "0.886": 172.28
+            "0.705": 193.64,
+            "0.618": 203.9,
+            "0.500": 217.82,
+            "0.382": 231.74,
+            "0.236": 248.97,
+            "0.000": 276.82
           },
           "extensions": {
             "1.000": 276.82,
             "1.272": 308.91,
             "1.414": 325.66,
             "1.618": 349.73,
-            "1.818": 373.33
+            "2.000": 394.8,
+            "2.618": 467.71
+          },
+          "goldenPocket": {
+            "low": 193.64,
+            "high": 203.9
           },
           "swingHigh": 276.82,
           "swingLow": 158.83
@@ -3882,15 +4530,24 @@
         "notes": []
       },
       "timing": {
-        "score": 51,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 41,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 32,
         "entryScore": 80,
         "trendDaily": 10,
         "trendWeekly": 44,
         "trendMonthly": null,
-        "hasMonthly": false
+        "hasMonthly": false,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -17.9
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 51
       },
       "scores": {
         "quality": 20,
@@ -3904,10 +4561,10 @@
           "schuld te hoog (D/E > 4)"
         ],
         "valuation": 50,
-        "timing": 51,
+        "timing": 41,
         "marketAdj": 5,
-        "timingEffective": 56,
-        "composite": 43
+        "timingEffective": 46,
+        "composite": 39
       },
       "bagger": {
         "score": 46,
@@ -3976,24 +4633,32 @@
         "macdSigW": 2.6561,
         "bollUpper": 119.99,
         "bollLower": 83.39,
-        "volRatio": 1.05,
+        "volRatio": 1.04,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 142.05,
-            "0.382": 127.1,
-            "0.500": 115.01,
-            "0.618": 102.92,
+            "0.886": 75.48,
             "0.786": 85.72,
-            "0.886": 75.48
+            "0.705": 94.01,
+            "0.618": 102.92,
+            "0.500": 115.01,
+            "0.382": 127.1,
+            "0.236": 142.05,
+            "0.000": 166.22
           },
           "extensions": {
             "1.000": 166.22,
             "1.272": 194.08,
             "1.414": 208.62,
             "1.618": 229.52,
-            "1.818": 250.0
+            "2.000": 268.64,
+            "2.618": 331.94
+          },
+          "goldenPocket": {
+            "low": 94.01,
+            "high": 102.92
           },
           "swingHigh": 166.22,
           "swingLow": 63.8
@@ -4034,7 +4699,7 @@
         ]
       },
       "timing": {
-        "score": 43,
+        "score": 38,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 30,
@@ -4042,7 +4707,16 @@
         "trendDaily": 51,
         "trendWeekly": 30,
         "trendMonthly": 20,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -1.5,
+          "monthly": -11.2
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 43
       },
       "scores": {
         "quality": 95,
@@ -4055,10 +4729,10 @@
         ],
         "qualityFails": [],
         "valuation": 62,
-        "timing": 43,
+        "timing": 38,
         "marketAdj": 5,
-        "timingEffective": 48,
-        "composite": 66
+        "timingEffective": 43,
+        "composite": 64
       },
       "bagger": null,
       "isBagger": false,
@@ -4110,28 +4784,36 @@
         "ma200": 443.78,
         "macdLine": -9.7953,
         "macdSignal": -10.8486,
-        "macdLineW": -13.8177,
+        "macdLineW": -13.8178,
         "macdSigW": -13.8225,
         "bollUpper": 423.97,
         "bollLower": 349.94,
         "volRatio": 0.86,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 503.41,
-            "0.382": 473.94,
-            "0.500": 450.12,
-            "0.618": 426.31,
+            "0.886": 372.21,
             "0.786": 392.4,
-            "0.886": 372.21
+            "0.705": 408.75,
+            "0.618": 426.31,
+            "0.500": 450.12,
+            "0.382": 473.94,
+            "0.236": 503.41,
+            "0.000": 551.05
           },
           "extensions": {
             "1.000": 551.05,
             "1.272": 605.95,
             "1.414": 634.61,
             "1.618": 675.79,
-            "1.818": 716.16
+            "2.000": 752.9,
+            "2.618": 877.64
+          },
+          "goldenPocket": {
+            "low": 408.75,
+            "high": 426.31
           },
           "swingHigh": 551.05,
           "swingLow": 349.2
@@ -4172,15 +4854,24 @@
         ]
       },
       "timing": {
-        "score": 51,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 26,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 75,
         "entryScore": 15,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 56,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 20,
+        "overextDetail": {
+          "weekly": 8.7,
+          "monthly": 21.9
+        },
+        "macdTurning": [
+          "daily"
+        ],
+        "baseTimin": 51
       },
       "scores": {
         "quality": 33,
@@ -4193,10 +4884,10 @@
           "marge < 8%"
         ],
         "valuation": 8,
-        "timing": 51,
+        "timing": 26,
         "marketAdj": 5,
-        "timingEffective": 56,
-        "composite": 35
+        "timingEffective": 31,
+        "composite": 25
       },
       "bagger": null,
       "isBagger": false,
@@ -4260,21 +4951,29 @@
         "volRatio": 0.57,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 6.86,
-            "0.382": 6.46,
-            "0.500": 6.14,
-            "0.618": 5.82,
+            "0.886": 5.09,
             "0.786": 5.36,
-            "0.886": 5.09
+            "0.705": 5.58,
+            "0.618": 5.82,
+            "0.500": 6.14,
+            "0.382": 6.46,
+            "0.236": 6.86,
+            "0.000": 7.5
           },
           "extensions": {
             "1.000": 7.5,
             "1.272": 8.24,
             "1.414": 8.63,
             "1.618": 9.18,
-            "1.818": 9.72
+            "2.000": 10.22,
+            "2.618": 11.9
+          },
+          "goldenPocket": {
+            "low": 5.58,
+            "high": 5.82
           },
           "swingHigh": 7.5,
           "swingLow": 4.78
@@ -4313,15 +5012,25 @@
         "notes": []
       },
       "timing": {
-        "score": 38,
-        "label": "Zwakke setup",
-        "color": "orange",
+        "score": 28,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 27,
         "entryScore": 55,
         "trendDaily": 15,
         "trendWeekly": 30,
         "trendMonthly": 30,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -4.9,
+          "monthly": -25.5
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 38
       },
       "scores": {
         "quality": 33,
@@ -4332,10 +5041,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 38,
+        "timing": 28,
         "marketAdj": 5,
-        "timingEffective": 43,
-        "composite": 42
+        "timingEffective": 33,
+        "composite": 38
       },
       "bagger": null,
       "isBagger": false,
@@ -4375,21 +5084,29 @@
         "volRatio": 0.77,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 8.85,
-            "0.382": 7.89,
-            "0.500": 7.11,
-            "0.618": 6.33,
+            "0.886": 4.56,
             "0.786": 5.22,
-            "0.886": 4.56
+            "0.705": 5.76,
+            "0.618": 6.33,
+            "0.500": 7.11,
+            "0.382": 7.89,
+            "0.236": 8.85,
+            "0.000": 10.41
           },
           "extensions": {
             "1.000": 10.41,
             "1.272": 12.21,
             "1.414": 13.14,
             "1.618": 14.49,
-            "1.818": 15.81
+            "2.000": 17.01,
+            "2.618": 21.09
+          },
+          "goldenPocket": {
+            "low": 5.76,
+            "high": 6.33
           },
           "swingHigh": 10.41,
           "swingLow": 3.81
@@ -4430,15 +5147,25 @@
         ]
       },
       "timing": {
-        "score": 62,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 48,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 51,
         "entryScore": 78,
         "trendDaily": 10,
         "trendWeekly": 49,
         "trendMonthly": 70,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 4,
+        "overextDetail": {
+          "weekly": -3.5,
+          "monthly": 5.0
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 62
       },
       "scores": {
         "quality": 95,
@@ -4451,10 +5178,10 @@
         ],
         "qualityFails": [],
         "valuation": 90,
-        "timing": 62,
+        "timing": 48,
         "marketAdj": 5,
-        "timingEffective": 67,
-        "composite": 82
+        "timingEffective": 53,
+        "composite": 77
       },
       "bagger": null,
       "isBagger": false,
@@ -4504,21 +5231,29 @@
         "volRatio": 0.9,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 217.59,
-            "0.382": 206.04,
-            "0.500": 196.7,
-            "0.618": 187.36,
+            "0.886": 166.15,
             "0.786": 174.07,
-            "0.886": 166.15
+            "0.705": 180.48,
+            "0.618": 187.36,
+            "0.500": 196.7,
+            "0.382": 206.04,
+            "0.236": 217.59,
+            "0.000": 236.26
           },
           "extensions": {
             "1.000": 236.26,
             "1.272": 257.79,
             "1.414": 269.03,
             "1.618": 285.17,
-            "1.818": 301.0
+            "2.000": 315.4,
+            "2.618": 364.3
+          },
+          "goldenPocket": {
+            "low": 180.48,
+            "high": 187.36
           },
           "swingHigh": 236.26,
           "swingLow": 157.13
@@ -4560,15 +5295,24 @@
         ]
       },
       "timing": {
-        "score": 33,
-        "label": "Zwakke setup",
-        "color": "orange",
+        "score": 28,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 21,
         "entryScore": 51,
         "trendDaily": 31,
         "trendWeekly": 30,
         "trendMonthly": 10,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -0.1,
+          "monthly": -21.5
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 33
       },
       "scores": {
         "quality": 57,
@@ -4578,10 +5322,10 @@
         ],
         "qualityFails": [],
         "valuation": 50,
-        "timing": 33,
+        "timing": 28,
         "marketAdj": 5,
-        "timingEffective": 38,
-        "composite": 47
+        "timingEffective": 33,
+        "composite": 45
       },
       "bagger": null,
       "isBagger": false,
@@ -4631,21 +5375,29 @@
         "volRatio": 1.18,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 69.59,
-            "0.382": 63.93,
-            "0.500": 59.36,
-            "0.618": 54.79,
+            "0.886": 44.41,
             "0.786": 48.29,
-            "0.886": 44.41
+            "0.705": 51.42,
+            "0.618": 54.79,
+            "0.500": 59.36,
+            "0.382": 63.93,
+            "0.236": 69.59,
+            "0.000": 78.73
           },
           "extensions": {
             "1.000": 78.73,
             "1.272": 89.26,
             "1.414": 94.76,
             "1.618": 102.66,
-            "1.818": 110.41
+            "2.000": 117.45,
+            "2.618": 141.39
+          },
+          "goldenPocket": {
+            "low": 51.42,
+            "high": 54.79
           },
           "swingHigh": 78.73,
           "swingLow": 40.0
@@ -4686,15 +5438,24 @@
         ]
       },
       "timing": {
-        "score": 59,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 50,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 81,
         "entryScore": 25,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 70,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 4,
+        "overextDetail": {
+          "weekly": 5.8,
+          "monthly": 1.1
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 59
       },
       "scores": {
         "quality": 57,
@@ -4704,10 +5465,10 @@
         ],
         "qualityFails": [],
         "valuation": 62,
-        "timing": 59,
+        "timing": 50,
         "marketAdj": 5,
-        "timingEffective": 64,
-        "composite": 61
+        "timingEffective": 55,
+        "composite": 58
       },
       "bagger": null,
       "isBagger": false,
@@ -4744,14 +5505,14 @@
           "cat": "FIB",
           "tf": "1D",
           "icon": "📐",
-          "title": "Nadert Fib 0.236 steunzone: $184.29 (2.2% weg)"
+          "title": "Nadert Fib 0.382 steunzone: $176.18 (2.3% weg)"
         },
         {
           "type": "WATCH",
           "cat": "FIB",
           "tf": "1D",
           "icon": "📐",
-          "title": "Nadert Fib 0.382 steunzone: $176.18 (2.3% weg)"
+          "title": "Nadert Fib 0.236 steunzone: $184.29 (2.2% weg)"
         }
       ],
       "overall": "LICHT VERKOOP",
@@ -4778,21 +5539,29 @@
         "volRatio": 0.6,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 184.29,
-            "0.382": 176.18,
-            "0.500": 169.62,
-            "0.618": 163.05,
+            "0.886": 148.15,
             "0.786": 153.71,
-            "0.886": 148.15
+            "0.705": 158.22,
+            "0.618": 163.05,
+            "0.500": 169.62,
+            "0.382": 176.18,
+            "0.236": 184.29,
+            "0.000": 197.42
           },
           "extensions": {
             "1.000": 197.42,
             "1.272": 212.54,
             "1.414": 220.43,
             "1.618": 231.78,
-            "1.818": 242.9
+            "2.000": 253.02,
+            "2.618": 287.38
+          },
+          "goldenPocket": {
+            "low": 158.22,
+            "high": 163.05
           },
           "swingHigh": 197.42,
           "swingLow": 141.82
@@ -4833,15 +5602,22 @@
         ]
       },
       "timing": {
-        "score": 39,
+        "score": 41,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 43,
-        "entryScore": 33,
+        "entryScore": 43,
         "trendDaily": 90,
         "trendWeekly": 51,
         "trendMonthly": 15,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 2,
+        "overextDetail": {
+          "weekly": 4.1,
+          "monthly": -2.2
+        },
+        "macdTurning": [],
+        "baseTimin": 43
       },
       "scores": {
         "quality": 53,
@@ -4854,10 +5630,10 @@
           "ROE < 12%"
         ],
         "valuation": 50,
-        "timing": 39,
+        "timing": 41,
         "marketAdj": 5,
-        "timingEffective": 44,
-        "composite": 48
+        "timingEffective": 46,
+        "composite": 49
       },
       "bagger": null,
       "isBagger": false,
@@ -4895,6 +5671,13 @@
           "tf": "1D",
           "icon": "📊",
           "title": "Nadert Bollinger bovenband ($230.75)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
+          "title": "Nadert Fib 0.705 steunzone: $223.97 (2.9% weg)"
         }
       ],
       "overall": "LICHT KOOP",
@@ -4921,21 +5704,29 @@
         "volRatio": 0.41,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 261.62,
-            "0.382": 249.9,
-            "0.500": 240.42,
-            "0.618": 230.95,
+            "0.886": 209.44,
             "0.786": 217.47,
-            "0.886": 209.44
+            "0.705": 223.97,
+            "0.618": 230.95,
+            "0.500": 240.42,
+            "0.382": 249.9,
+            "0.236": 261.62,
+            "0.000": 280.56
           },
           "extensions": {
             "1.000": 280.56,
             "1.272": 302.39,
             "1.414": 313.79,
             "1.618": 330.17,
-            "1.818": 346.22
+            "2.000": 360.83,
+            "2.618": 410.44
+          },
+          "goldenPocket": {
+            "low": 223.97,
+            "high": 230.95
           },
           "swingHigh": 280.56,
           "swingLow": 200.29
@@ -4976,7 +5767,7 @@
         ]
       },
       "timing": {
-        "score": 56,
+        "score": 45,
         "label": "Neutrale setup",
         "color": "neutral",
         "trendScore": 81,
@@ -4984,7 +5775,14 @@
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 70,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 11,
+        "overextDetail": {
+          "weekly": 10.2,
+          "monthly": 6.8
+        },
+        "macdTurning": [],
+        "baseTimin": 56
       },
       "scores": {
         "quality": 69,
@@ -4997,10 +5795,10 @@
           "marge < 8%"
         ],
         "valuation": 40,
-        "timing": 56,
+        "timing": 45,
         "marketAdj": 5,
-        "timingEffective": 61,
-        "composite": 57
+        "timingEffective": 50,
+        "composite": 53
       },
       "bagger": null,
       "isBagger": false,
@@ -5071,21 +5869,29 @@
         "volRatio": 0.64,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 202.48,
-            "0.382": 193.33,
-            "0.500": 185.92,
-            "0.618": 178.52,
+            "0.886": 161.71,
             "0.786": 167.99,
-            "0.886": 161.71
+            "0.705": 173.07,
+            "0.618": 178.52,
+            "0.500": 185.92,
+            "0.382": 193.33,
+            "0.236": 202.48,
+            "0.000": 217.29
           },
           "extensions": {
             "1.000": 217.29,
             "1.272": 234.35,
             "1.414": 243.25,
             "1.618": 256.05,
-            "1.818": 268.59
+            "2.000": 280.01,
+            "2.618": 318.77
+          },
+          "goldenPocket": {
+            "low": 173.07,
+            "high": 178.52
           },
           "swingHigh": 217.29,
           "swingLow": 154.56
@@ -5127,15 +5933,25 @@
         ]
       },
       "timing": {
-        "score": 55,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 30,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 50,
         "entryScore": 62,
         "trendDaily": 25,
         "trendWeekly": 90,
         "trendMonthly": 30,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 15,
+        "overextDetail": {
+          "weekly": -0.3,
+          "monthly": 22.7
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 55
       },
       "scores": {
         "quality": 24,
@@ -5146,10 +5962,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 55,
+        "timing": 30,
         "marketAdj": 5,
-        "timingEffective": 60,
-        "composite": 46
+        "timingEffective": 35,
+        "composite": 36
       },
       "bagger": null,
       "isBagger": false,
@@ -5189,21 +6005,29 @@
         "volRatio": 0.76,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 17.1,
-            "0.382": 15.37,
-            "0.500": 13.97,
-            "0.618": 12.58,
+            "0.886": 9.4,
             "0.786": 10.59,
-            "0.886": 9.4
+            "0.705": 11.55,
+            "0.618": 12.58,
+            "0.500": 13.97,
+            "0.382": 15.37,
+            "0.236": 17.1,
+            "0.000": 19.9
           },
           "extensions": {
             "1.000": 19.9,
             "1.272": 23.12,
             "1.414": 24.81,
             "1.618": 27.22,
-            "1.818": 29.59
+            "2.000": 31.75,
+            "2.618": 39.07
+          },
+          "goldenPocket": {
+            "low": 11.55,
+            "high": 12.58
           },
           "swingHigh": 19.9,
           "swingLow": 8.05
@@ -5244,15 +6068,22 @@
         ]
       },
       "timing": {
-        "score": 60,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 46,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 90,
         "entryScore": 15,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 14,
+        "overextDetail": {
+          "weekly": 5.0,
+          "monthly": 15.0
+        },
+        "macdTurning": [],
+        "baseTimin": 60
       },
       "scores": {
         "quality": 78,
@@ -5263,10 +6094,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 60,
+        "timing": 46,
         "marketAdj": 5,
-        "timingEffective": 65,
-        "composite": 52
+        "timingEffective": 51,
+        "composite": 46
       },
       "bagger": null,
       "isBagger": false,
@@ -5280,6 +6111,15 @@
           "icon": "📈",
           "title": "RSI WEEKLY overbought (71)",
           "detail": "Sterk verkoopsignaal op hogere timeframe."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.000 — steunzone: $11860.00 (0.7% weg)",
+          "detail": "Prijs $11780.00 raakt Fibonacci 0.000. Potentiële koopzone."
         },
         {
           "type": "SELL",
@@ -5316,10 +6156,10 @@
         }
       ],
       "overall": "VERKOOP",
-      "buyWeight": 0,
+      "buyWeight": 3,
       "sellWeight": 7,
-      "conflict": false,
-      "conflictNote": "",
+      "conflict": true,
+      "conflictNote": "⚠️ CONFLICT: 1 koop vs 2 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
       "indicators": {
         "last": 11780.0,
         "rsiDaily": 67.2,
@@ -5339,21 +6179,29 @@
         "volRatio": 0.51,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 10753.05,
-            "0.382": 10068.24,
-            "0.500": 9514.76,
-            "0.618": 8961.29,
+            "0.886": 7704.24,
             "0.786": 8173.29,
-            "0.886": 7704.24
+            "0.705": 8553.22,
+            "0.618": 8961.29,
+            "0.500": 9514.76,
+            "0.382": 10068.24,
+            "0.236": 10753.05,
+            "0.000": 11860.0
           },
           "extensions": {
             "1.000": 11860.0,
             "1.272": 13135.81,
             "1.414": 13801.86,
             "1.618": 14758.71,
-            "1.818": 15696.81
+            "2.000": 16550.47,
+            "2.618": 19449.19
+          },
+          "goldenPocket": {
+            "low": 8553.22,
+            "high": 8961.29
           },
           "swingHigh": 11860.0,
           "swingLow": 7169.53
@@ -5392,15 +6240,25 @@
         "notes": []
       },
       "timing": {
-        "score": 35,
-        "label": "Zwakke setup",
-        "color": "orange",
+        "score": 25,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 10,
         "entryScore": 72,
         "trendDaily": 10,
         "trendWeekly": 10,
         "trendMonthly": 10,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -16.6,
+          "monthly": -45.5
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 35
       },
       "scores": {
         "quality": 14,
@@ -5411,10 +6269,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 35,
+        "timing": 25,
         "marketAdj": 5,
-        "timingEffective": 40,
-        "composite": 35
+        "timingEffective": 30,
+        "composite": 31
       },
       "bagger": null,
       "isBagger": false,
@@ -5461,21 +6319,29 @@
         "volRatio": 1.19,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 368.62,
-            "0.382": 313.81,
-            "0.500": 269.51,
-            "0.618": 225.22,
+            "0.886": 124.61,
             "0.786": 162.15,
-            "0.886": 124.61
+            "0.705": 192.56,
+            "0.618": 225.22,
+            "0.500": 269.51,
+            "0.382": 313.81,
+            "0.236": 368.62,
+            "0.000": 457.22
           },
           "extensions": {
             "1.000": 457.22,
             "1.272": 559.33,
             "1.414": 612.64,
             "1.618": 689.22,
-            "1.818": 764.31
+            "2.000": 832.63,
+            "2.618": 1064.63
+          },
+          "goldenPocket": {
+            "low": 192.56,
+            "high": 225.22
           },
           "swingHigh": 457.22,
           "swingLow": 81.81
@@ -5516,15 +6382,24 @@
         ]
       },
       "timing": {
-        "score": 60,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 48,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 83,
         "entryScore": 25,
         "trendDaily": 56,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 7,
+        "overextDetail": {
+          "weekly": 4.3,
+          "monthly": 5.4
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 60
       },
       "scores": {
         "quality": 71,
@@ -5535,10 +6410,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 60,
+        "timing": 48,
         "marketAdj": 5,
-        "timingEffective": 65,
-        "composite": 50
+        "timingEffective": 53,
+        "composite": 45
       },
       "bagger": null,
       "isBagger": false,
@@ -5589,6 +6464,13 @@
           "cat": "FIB",
           "tf": "1D",
           "icon": "📐",
+          "title": "Nadert Fib 0.000 steunzone: $317.40 (2.8% weg)"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "📐",
           "title": "Nadert Fib 1.000 take-profit zone: $317.40 (2.8% weg)"
         }
       ],
@@ -5616,21 +6498,29 @@
         "volRatio": 1.09,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 289.86,
-            "0.382": 272.82,
-            "0.500": 259.05,
-            "0.618": 245.28,
+            "0.886": 214.01,
             "0.786": 225.68,
-            "0.886": 214.01
+            "0.705": 235.13,
+            "0.618": 245.28,
+            "0.500": 259.05,
+            "0.382": 272.82,
+            "0.236": 289.86,
+            "0.000": 317.4
           },
           "extensions": {
             "1.000": 317.4,
             "1.272": 349.14,
             "1.414": 365.71,
             "1.618": 389.52,
-            "1.818": 412.86
+            "2.000": 434.1,
+            "2.618": 506.21
+          },
+          "goldenPocket": {
+            "low": 235.13,
+            "high": 245.28
           },
           "swingHigh": 317.4,
           "swingLow": 200.7
@@ -5671,7 +6561,7 @@
         ]
       },
       "timing": {
-        "score": 39,
+        "score": 34,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 23,
@@ -5679,7 +6569,16 @@
         "trendDaily": 51,
         "trendWeekly": 10,
         "trendMonthly": 20,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -4.2,
+          "monthly": -21.0
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 39
       },
       "scores": {
         "quality": 83,
@@ -5690,10 +6589,10 @@
         ],
         "qualityFails": [],
         "valuation": 90,
-        "timing": 39,
+        "timing": 34,
         "marketAdj": 5,
-        "timingEffective": 44,
-        "composite": 70
+        "timingEffective": 39,
+        "composite": 68
       },
       "bagger": null,
       "isBagger": false,
@@ -5759,21 +6658,29 @@
         "volRatio": 1.12,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 116.22,
-            "0.382": 107.55,
-            "0.500": 100.54,
-            "0.618": 93.54,
+            "0.886": 77.63,
             "0.786": 83.56,
-            "0.886": 77.63
+            "0.705": 88.37,
+            "0.618": 93.54,
+            "0.500": 100.54,
+            "0.382": 107.55,
+            "0.236": 116.22,
+            "0.000": 130.23
           },
           "extensions": {
             "1.000": 130.23,
             "1.272": 146.37,
             "1.414": 154.8,
             "1.618": 166.91,
-            "1.818": 178.79
+            "2.000": 189.59,
+            "2.618": 226.28
+          },
+          "goldenPocket": {
+            "low": 88.37,
+            "high": 93.54
           },
           "swingHigh": 130.23,
           "swingLow": 70.86
@@ -5814,15 +6721,25 @@
         ]
       },
       "timing": {
-        "score": 39,
-        "label": "Zwakke setup",
-        "color": "orange",
+        "score": 29,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 23,
         "entryScore": 63,
         "trendDaily": 31,
         "trendWeekly": 35,
         "trendMonthly": 10,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -0.9,
+          "monthly": -6.3
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 39
       },
       "scores": {
         "quality": 46,
@@ -5834,10 +6751,10 @@
           "ROE < 12%"
         ],
         "valuation": 8,
-        "timing": 39,
+        "timing": 29,
         "marketAdj": 5,
-        "timingEffective": 44,
-        "composite": 34
+        "timingEffective": 34,
+        "composite": 30
       },
       "bagger": null,
       "isBagger": false,
@@ -5851,6 +6768,15 @@
           "icon": "📐",
           "title": "Fib 0.786 — steunzone: $98.20 (1.3% weg)",
           "detail": "Prijs $99.50 raakt Fibonacci 0.786. Potentiële koopzone."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.705 — steunzone: $100.73 (1.2% weg)",
+          "detail": "Prijs $99.50 raakt Fibonacci 0.705. Potentiële koopzone."
         }
       ],
       "alerts": [
@@ -5863,8 +6789,8 @@
           "detail": "MACD: -1.732 | Signaal: -1.803"
         }
       ],
-      "overall": "LICHT KOOP",
-      "buyWeight": 3,
+      "overall": "KOOP",
+      "buyWeight": 6,
       "sellWeight": 0,
       "conflict": false,
       "conflictNote": "",
@@ -5887,21 +6813,29 @@
         "volRatio": 0.98,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 115.43,
-            "0.382": 110.86,
-            "0.500": 107.16,
-            "0.618": 103.46,
+            "0.886": 95.06,
             "0.786": 98.2,
-            "0.886": 95.06
+            "0.705": 100.73,
+            "0.618": 103.46,
+            "0.500": 107.16,
+            "0.382": 110.86,
+            "0.236": 115.43,
+            "0.000": 122.83
           },
           "extensions": {
             "1.000": 122.83,
             "1.272": 131.36,
             "1.414": 135.81,
             "1.618": 142.2,
-            "1.818": 148.47
+            "2.000": 154.17,
+            "2.618": 173.54
+          },
+          "goldenPocket": {
+            "low": 100.73,
+            "high": 103.46
           },
           "swingHigh": 122.83,
           "swingLow": 91.49
@@ -5942,15 +6876,25 @@
         ]
       },
       "timing": {
-        "score": 40,
+        "score": 33,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 30,
-        "entryScore": 55,
+        "entryScore": 63,
         "trendDaily": 15,
         "trendWeekly": 15,
         "trendMonthly": 49,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -2.0,
+          "monthly": -6.0
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 43
       },
       "scores": {
         "quality": 76,
@@ -5961,15 +6905,25 @@
         ],
         "qualityFails": [],
         "valuation": 62,
-        "timing": 40,
+        "timing": 33,
         "marketAdj": 5,
-        "timingEffective": 45,
-        "composite": 59
+        "timingEffective": 38,
+        "composite": 57
       },
       "bagger": null,
       "isBagger": false,
       "currency": "$",
-      "signals": [],
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.705 — steunzone: $997.30 (0.2% weg)",
+          "detail": "Prijs $995.73 raakt Fibonacci 0.705. Potentiële koopzone."
+        }
+      ],
       "alerts": [
         {
           "type": "INFO",
@@ -5984,18 +6938,18 @@
           "cat": "FIB",
           "tf": "1D",
           "icon": "📐",
-          "title": "Nadert Fib 0.618 steunzone: $1022.38 (2.7% weg)"
+          "title": "Nadert Fib 0.786 steunzone: $973.94 (2.2% weg)"
         },
         {
           "type": "WATCH",
           "cat": "FIB",
           "tf": "1D",
           "icon": "📐",
-          "title": "Nadert Fib 0.786 steunzone: $973.94 (2.2% weg)"
+          "title": "Nadert Fib 0.618 steunzone: $1022.38 (2.7% weg)"
         }
       ],
-      "overall": "NEUTRAAL",
-      "buyWeight": 0,
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
       "sellWeight": 0,
       "conflict": false,
       "conflictNote": "",
@@ -6018,21 +6972,29 @@
         "volRatio": 0.72,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 1132.51,
-            "0.382": 1090.42,
-            "0.500": 1056.4,
-            "0.618": 1022.38,
+            "0.886": 945.11,
             "0.786": 973.94,
-            "0.886": 945.11
+            "0.705": 997.3,
+            "0.618": 1022.38,
+            "0.500": 1056.4,
+            "0.382": 1090.42,
+            "0.236": 1132.51,
+            "0.000": 1200.54
           },
           "extensions": {
             "1.000": 1200.54,
             "1.272": 1278.96,
             "1.414": 1319.9,
             "1.618": 1378.71,
-            "1.818": 1436.37
+            "2.000": 1488.84,
+            "2.618": 1667.01
+          },
+          "goldenPocket": {
+            "low": 997.3,
+            "high": 1022.38
           },
           "swingHigh": 1200.54,
           "swingLow": 912.25
@@ -6073,15 +7035,25 @@
         ]
       },
       "timing": {
-        "score": 52,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 42,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 25,
         "entryScore": 92,
         "trendDaily": 10,
         "trendWeekly": 10,
         "trendMonthly": 44,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -13.2,
+          "monthly": -24.5
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 52
       },
       "scores": {
         "quality": 67,
@@ -6093,10 +7065,10 @@
           "ROE < 12%"
         ],
         "valuation": 62,
-        "timing": 52,
+        "timing": 42,
         "marketAdj": 5,
-        "timingEffective": 57,
-        "composite": 62
+        "timingEffective": 47,
+        "composite": 58
       },
       "bagger": null,
       "isBagger": false,
@@ -6153,21 +7125,29 @@
         "volRatio": 0.89,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 167.57,
-            "0.382": 153.13,
-            "0.500": 141.45,
-            "0.618": 129.78,
+            "0.886": 103.27,
             "0.786": 113.16,
-            "0.886": 103.27
+            "0.705": 121.17,
+            "0.618": 129.78,
+            "0.500": 141.45,
+            "0.382": 153.13,
+            "0.236": 167.57,
+            "0.000": 190.92
           },
           "extensions": {
             "1.000": 190.92,
             "1.272": 217.82,
             "1.414": 231.87,
             "1.618": 252.05,
-            "1.818": 271.84
+            "2.000": 289.84,
+            "2.618": 350.98
+          },
+          "goldenPocket": {
+            "low": 121.17,
+            "high": 129.78
           },
           "swingHigh": 190.92,
           "swingLow": 91.99
@@ -6208,15 +7188,24 @@
         ]
       },
       "timing": {
-        "score": 64,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 45,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 83,
         "entryScore": 35,
         "trendDaily": 90,
         "trendWeekly": 70,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 14,
+        "overextDetail": {
+          "weekly": 8.0,
+          "monthly": 12.6
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 64
       },
       "scores": {
         "quality": 38,
@@ -6229,10 +7218,10 @@
           "marge < 8%"
         ],
         "valuation": 8,
-        "timing": 64,
+        "timing": 45,
         "marketAdj": 5,
-        "timingEffective": 69,
-        "composite": 41
+        "timingEffective": 50,
+        "composite": 34
       },
       "bagger": null,
       "isBagger": false,
@@ -6286,21 +7275,29 @@
         "volRatio": 1.43,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 5220.12,
-            "0.382": 4698.13,
-            "0.500": 4276.26,
-            "0.618": 3854.38,
+            "0.886": 2896.21,
             "0.786": 3253.74,
-            "0.886": 2896.21
+            "0.705": 3543.33,
+            "0.618": 3854.38,
+            "0.500": 4276.26,
+            "0.382": 4698.13,
+            "0.236": 5220.12,
+            "0.000": 6063.88
           },
           "extensions": {
             "1.000": 6063.88,
             "1.272": 7036.34,
             "1.414": 7544.02,
             "1.618": 8273.37,
-            "1.818": 8988.42
+            "2.000": 9639.11,
+            "2.618": 11848.61
+          },
+          "goldenPocket": {
+            "low": 3543.33,
+            "high": 3854.38
           },
           "swingHigh": 6063.88,
           "swingLow": 2488.64
@@ -6341,15 +7338,22 @@
         ]
       },
       "timing": {
-        "score": 60,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 33,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 90,
         "entryScore": 15,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 27,
+        "overextDetail": {
+          "weekly": 22.0,
+          "monthly": 43.6
+        },
+        "macdTurning": [],
+        "baseTimin": 60
       },
       "scores": {
         "quality": 53,
@@ -6362,10 +7366,10 @@
           "ROE < 12%"
         ],
         "valuation": 8,
-        "timing": 60,
+        "timing": 33,
         "marketAdj": 5,
-        "timingEffective": 65,
-        "composite": 44
+        "timingEffective": 38,
+        "composite": 34
       },
       "bagger": null,
       "isBagger": false,
@@ -6388,6 +7392,15 @@
           "icon": "🟢",
           "title": "MACD bullish crossover (daily) ✓ hoog volume",
           "detail": "MACD 391.933 kruist boven signaal 341.242."
+        },
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.000 — steunzone: $8870.00 (0.3% weg)",
+          "detail": "Prijs $8840.00 raakt Fibonacci 0.000. Potentiële koopzone."
         },
         {
           "type": "SELL",
@@ -6423,11 +7436,11 @@
           "title": "Nadert Bollinger bovenband ($8885.60)"
         }
       ],
-      "overall": "VERKOOP",
-      "buyWeight": 2,
+      "overall": "KOOP",
+      "buyWeight": 5,
       "sellWeight": 7,
       "conflict": true,
-      "conflictNote": "⚠️ CONFLICT: 1 koop vs 2 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
+      "conflictNote": "⚠️ CONFLICT: 2 koop vs 2 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging.",
       "indicators": {
         "last": 8840.0,
         "rsiDaily": 64.5,
@@ -6441,27 +7454,35 @@
         "macdLine": 391.9331,
         "macdSignal": 341.242,
         "macdLineW": 1130.8051,
-        "macdSigW": 870.1878,
+        "macdSigW": 870.1877,
         "bollUpper": 8885.6,
         "bollLower": 6078.4,
         "volRatio": 2.18,
         "volKnown": true,
         "highVolume": true,
+        "volNote": "✓ hoog volume",
         "fib": {
           "retracements": {
-            "0.236": 7319.88,
-            "0.382": 6360.91,
-            "0.500": 5585.86,
-            "0.618": 4810.8,
+            "0.886": 3050.5,
             "0.786": 3707.33,
-            "0.886": 3050.5
+            "0.705": 4239.36,
+            "0.618": 4810.8,
+            "0.500": 5585.86,
+            "0.382": 6360.91,
+            "0.236": 7319.88,
+            "0.000": 8870.0
           },
           "extensions": {
             "1.000": 8870.0,
             "1.272": 10656.57,
             "1.414": 11589.27,
             "1.618": 12929.2,
-            "1.818": 14242.86
+            "2.000": 15438.29,
+            "2.618": 19497.49
+          },
+          "goldenPocket": {
+            "low": 4239.36,
+            "high": 4810.8
           },
           "swingHigh": 8870.0,
           "swingLow": 2301.71
@@ -6502,15 +7523,25 @@
         ]
       },
       "timing": {
-        "score": 68,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 42,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 90,
         "entryScore": 35,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 16,
+        "overextDetail": {
+          "weekly": 4.7,
+          "monthly": 18.2
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 68
       },
       "scores": {
         "quality": 74,
@@ -6521,10 +7552,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 68,
+        "timing": 42,
         "marketAdj": 5,
-        "timingEffective": 73,
-        "composite": 54
+        "timingEffective": 47,
+        "composite": 43
       },
       "bagger": null,
       "isBagger": false,
@@ -6571,21 +7602,29 @@
         "volRatio": 0.76,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 76406.06,
-            "0.382": 71602.95,
-            "0.500": 67720.98,
-            "0.618": 63839.02,
+            "0.886": 55022.34,
             "0.786": 58312.15,
-            "0.886": 55022.34
+            "0.705": 60976.89,
+            "0.618": 63839.02,
+            "0.500": 67720.98,
+            "0.382": 71602.95,
+            "0.236": 76406.06,
+            "0.000": 84170.0
           },
           "extensions": {
             "1.000": 84170.0,
             "1.272": 93118.26,
             "1.414": 97789.78,
             "1.618": 104500.98,
-            "1.818": 111080.59
+            "2.000": 117068.03,
+            "2.618": 137399.01
+          },
+          "goldenPocket": {
+            "low": 60976.89,
+            "high": 63839.02
           },
           "swingHigh": 84170.0,
           "swingLow": 51271.97
@@ -6626,15 +7665,25 @@
         ]
       },
       "timing": {
-        "score": 60,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 39,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 71,
         "entryScore": 43,
         "trendDaily": 31,
         "trendWeekly": 70,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 11,
+        "overextDetail": {
+          "weekly": 1.7,
+          "monthly": 13.2
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 60
       },
       "scores": {
         "quality": 52,
@@ -6646,10 +7695,10 @@
           "ROE < 12%"
         ],
         "valuation": 8,
-        "timing": 60,
+        "timing": 39,
         "marketAdj": 5,
-        "timingEffective": 65,
-        "composite": 44
+        "timingEffective": 44,
+        "composite": 36
       },
       "bagger": null,
       "isBagger": false,
@@ -6696,21 +7745,29 @@
         "volRatio": 0.74,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 7638.48,
-            "0.382": 6870.42,
-            "0.500": 6249.66,
-            "0.618": 5628.9,
+            "0.886": 4219.03,
             "0.786": 4745.1,
-            "0.886": 4219.03
+            "0.705": 5171.22,
+            "0.618": 5628.9,
+            "0.500": 6249.66,
+            "0.382": 6870.42,
+            "0.236": 7638.48,
+            "0.000": 8880.0
           },
           "extensions": {
             "1.000": 8880.0,
             "1.272": 10310.91,
             "1.414": 11057.92,
             "1.618": 12131.1,
-            "1.818": 13183.24
+            "2.000": 14140.68,
+            "2.618": 17391.79
+          },
+          "goldenPocket": {
+            "low": 5171.22,
+            "high": 5628.9
           },
           "swingHigh": 8880.0,
           "swingLow": 3619.32
@@ -6751,15 +7808,22 @@
         ]
       },
       "timing": {
-        "score": 68,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 47,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 90,
         "entryScore": 35,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 21,
+        "overextDetail": {
+          "weekly": 10.0,
+          "monthly": 25.7
+        },
+        "macdTurning": [],
+        "baseTimin": 68
       },
       "scores": {
         "quality": 56,
@@ -6771,10 +7835,10 @@
           "ROE < 12%"
         ],
         "valuation": 8,
-        "timing": 68,
+        "timing": 47,
         "marketAdj": 5,
-        "timingEffective": 73,
-        "composite": 48
+        "timingEffective": 52,
+        "composite": 40
       },
       "bagger": null,
       "isBagger": false,
@@ -6831,21 +7895,29 @@
         "volRatio": 1.07,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 6697.91,
-            "0.382": 5944.97,
-            "0.500": 5336.43,
-            "0.618": 4727.89,
+            "0.886": 3345.77,
             "0.786": 3861.49,
-            "0.886": 3345.77
+            "0.705": 4279.22,
+            "0.618": 4727.89,
+            "0.500": 5336.43,
+            "0.382": 5944.97,
+            "0.236": 6697.91,
+            "0.000": 7915.0
           },
           "extensions": {
             "1.000": 7915.0,
             "1.272": 9317.74,
             "1.414": 10050.06,
             "1.618": 11102.11,
-            "1.818": 12133.54
+            "2.000": 13072.14,
+            "2.618": 16259.25
+          },
+          "goldenPocket": {
+            "low": 4279.22,
+            "high": 4727.89
           },
           "swingHigh": 7915.0,
           "swingLow": 2757.86
@@ -6902,15 +7974,25 @@
         ]
       },
       "timing": {
-        "score": 70,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 49,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 75,
         "entryScore": 62,
         "trendDaily": 15,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 11,
+        "overextDetail": {
+          "weekly": -3.3,
+          "monthly": 14.7
+        },
+        "macdTurning": [
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 70
       },
       "scores": {
         "quality": 51,
@@ -6918,10 +8000,10 @@
         "qualityReasons": [],
         "qualityFails": [],
         "valuation": 90,
-        "timing": 70,
+        "timing": 49,
         "marketAdj": 5,
-        "timingEffective": 75,
-        "composite": 72
+        "timingEffective": 54,
+        "composite": 64
       },
       "bagger": null,
       "isBagger": false,
@@ -6961,21 +8043,29 @@
         "volRatio": 0.84,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 7533.09,
-            "0.382": 6579.81,
-            "0.500": 5809.36,
-            "0.618": 5038.9,
+            "0.886": 3289.06,
             "0.786": 3941.99,
-            "0.886": 3289.06
+            "0.705": 4470.86,
+            "0.618": 5038.9,
+            "0.500": 5809.36,
+            "0.382": 6579.81,
+            "0.236": 7533.09,
+            "0.000": 9074.0
           },
           "extensions": {
             "1.000": 9074.0,
             "1.272": 10849.96,
             "1.414": 11777.12,
             "1.618": 13109.1,
-            "1.818": 14414.95
+            "2.000": 15603.28,
+            "2.618": 19638.38
+          },
+          "goldenPocket": {
+            "low": 4470.86,
+            "high": 5038.9
           },
           "swingHigh": 9074.0,
           "swingLow": 2544.72
@@ -7016,15 +8106,25 @@
         ]
       },
       "timing": {
-        "score": 71,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 45,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 89,
         "entryScore": 43,
         "trendDaily": 85,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 16,
+        "overextDetail": {
+          "weekly": 3.1,
+          "monthly": 18.5
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 71
       },
       "scores": {
         "quality": 65,
@@ -7034,10 +8134,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 71,
+        "timing": 45,
         "marketAdj": 5,
-        "timingEffective": 76,
-        "composite": 52
+        "timingEffective": 50,
+        "composite": 42
       },
       "bagger": null,
       "isBagger": false,
@@ -7084,21 +8184,29 @@
         "volRatio": 0.93,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 451.06,
-            "0.382": 422.42,
-            "0.500": 399.27,
-            "0.618": 376.12,
+            "0.886": 323.54,
             "0.786": 343.16,
-            "0.886": 323.54
+            "0.705": 359.05,
+            "0.618": 376.12,
+            "0.500": 399.27,
+            "0.382": 422.42,
+            "0.236": 451.06,
+            "0.000": 497.36
           },
           "extensions": {
             "1.000": 497.36,
             "1.272": 550.72,
             "1.414": 578.58,
             "1.618": 618.6,
-            "1.818": 657.84
+            "2.000": 693.54,
+            "2.618": 814.78
+          },
+          "goldenPocket": {
+            "low": 359.05,
+            "high": 376.12
           },
           "swingHigh": 497.36,
           "swingLow": 301.18
@@ -7139,15 +8247,25 @@
         ]
       },
       "timing": {
-        "score": 69,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 44,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 74,
         "entryScore": 62,
         "trendDaily": 44,
         "trendWeekly": 70,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 15,
+        "overextDetail": {
+          "weekly": -5.0,
+          "monthly": 49.4
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 69
       },
       "scores": {
         "quality": 83,
@@ -7158,10 +8276,10 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 69,
+        "timing": 44,
         "marketAdj": 5,
-        "timingEffective": 74,
-        "composite": 57
+        "timingEffective": 49,
+        "composite": 47
       },
       "bagger": null,
       "isBagger": false,
@@ -7211,21 +8329,29 @@
         "volRatio": 1.04,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 393.62,
-            "0.382": 335.29,
-            "0.500": 288.14,
-            "0.618": 241.0,
+            "0.886": 133.92,
             "0.786": 173.87,
-            "0.886": 133.92
+            "0.705": 206.24,
+            "0.618": 241.0,
+            "0.500": 288.14,
+            "0.382": 335.29,
+            "0.236": 393.62,
+            "0.000": 487.91
           },
           "extensions": {
             "1.000": 487.91,
             "1.272": 596.58,
             "1.414": 653.32,
             "1.618": 734.82,
-            "1.818": 814.73
+            "2.000": 887.45,
+            "2.618": 1134.36
+          },
+          "goldenPocket": {
+            "low": 206.24,
+            "high": 241.0
           },
           "swingHigh": 487.91,
           "swingLow": 88.37
@@ -7266,15 +8392,24 @@
         ]
       },
       "timing": {
-        "score": 32,
-        "label": "Zwakke setup",
-        "color": "orange",
+        "score": 27,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 24,
         "entryScore": 43,
         "trendDaily": 56,
         "trendWeekly": 10,
         "trendMonthly": 20,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": 0.6,
+          "monthly": -13.8
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 32
       },
       "scores": {
         "quality": 83,
@@ -7287,10 +8422,10 @@
         ],
         "qualityFails": [],
         "valuation": 30,
-        "timing": 32,
+        "timing": 27,
         "marketAdj": 5,
-        "timingEffective": 37,
-        "composite": 49
+        "timingEffective": 32,
+        "composite": 47
       },
       "bagger": null,
       "isBagger": false,
@@ -7347,21 +8482,29 @@
         "volRatio": 1.24,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 554.98,
-            "0.382": 524.73,
-            "0.500": 500.28,
-            "0.618": 475.83,
+            "0.886": 420.3,
             "0.786": 441.02,
-            "0.886": 420.3
+            "0.705": 457.8,
+            "0.618": 475.83,
+            "0.500": 500.28,
+            "0.382": 524.73,
+            "0.236": 554.98,
+            "0.000": 603.88
           },
           "extensions": {
             "1.000": 603.88,
             "1.272": 660.24,
             "1.414": 689.66,
             "1.618": 731.93,
-            "1.818": 773.37
+            "2.000": 811.08,
+            "2.618": 939.13
+          },
+          "goldenPocket": {
+            "low": 457.8,
+            "high": 475.83
           },
           "swingHigh": 603.88,
           "swingLow": 396.68
@@ -7402,15 +8545,25 @@
         ]
       },
       "timing": {
-        "score": 71,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 43,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 89,
         "entryScore": 43,
         "trendDaily": 85,
         "trendWeekly": 90,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 18,
+        "overextDetail": {
+          "weekly": 5.4,
+          "monthly": 30.8
+        },
+        "macdTurning": [
+          "daily",
+          "weekly"
+        ],
+        "baseTimin": 71
       },
       "scores": {
         "quality": 62,
@@ -7422,10 +8575,10 @@
           "ROE < 12%"
         ],
         "valuation": 8,
-        "timing": 71,
+        "timing": 43,
         "marketAdj": 5,
-        "timingEffective": 76,
-        "composite": 51
+        "timingEffective": 48,
+        "composite": 40
       },
       "bagger": null,
       "isBagger": false,
@@ -7472,21 +8625,29 @@
         "volRatio": 1.36,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 63.13,
-            "0.382": 57.09,
-            "0.500": 52.22,
-            "0.618": 47.34,
+            "0.886": 36.26,
             "0.786": 40.4,
-            "0.886": 36.26
+            "0.705": 43.74,
+            "0.618": 47.34,
+            "0.500": 52.22,
+            "0.382": 57.09,
+            "0.236": 63.13,
+            "0.000": 72.88
           },
           "extensions": {
             "1.000": 72.88,
             "1.272": 84.12,
             "1.414": 89.99,
             "1.618": 98.42,
-            "1.818": 106.69
+            "2.000": 114.21,
+            "2.618": 139.75
+          },
+          "goldenPocket": {
+            "low": 43.74,
+            "high": 47.34
           },
           "swingHigh": 72.88,
           "swingLow": 31.55
@@ -7527,15 +8688,24 @@
         ]
       },
       "timing": {
-        "score": 69,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 49,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 86,
         "entryScore": 43,
         "trendDaily": 90,
         "trendWeekly": 90,
         "trendMonthly": 80,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 15,
+        "overextDetail": {
+          "weekly": 4.6,
+          "monthly": 16.2
+        },
+        "macdTurning": [
+          "weekly"
+        ],
+        "baseTimin": 69
       },
       "scores": {
         "quality": 50,
@@ -7543,10 +8713,10 @@
         "qualityReasons": [],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 69,
+        "timing": 49,
         "marketAdj": 5,
-        "timingEffective": 74,
-        "composite": 47
+        "timingEffective": 54,
+        "composite": 39
       },
       "bagger": null,
       "isBagger": false,
@@ -7603,21 +8773,29 @@
         "volRatio": 1.36,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 154.49,
-            "0.382": 143.74,
-            "0.500": 135.06,
-            "0.618": 126.38,
+            "0.886": 106.66,
             "0.786": 114.02,
-            "0.886": 106.66
+            "0.705": 119.98,
+            "0.618": 126.38,
+            "0.500": 135.06,
+            "0.382": 143.74,
+            "0.236": 154.49,
+            "0.000": 171.85
           },
           "extensions": {
             "1.000": 171.85,
             "1.272": 191.86,
             "1.414": 202.31,
             "1.618": 217.32,
-            "1.818": 232.04
+            "2.000": 245.43,
+            "2.618": 290.9
+          },
+          "goldenPocket": {
+            "low": 119.98,
+            "high": 126.38
           },
           "swingHigh": 171.85,
           "swingLow": 98.27
@@ -7660,15 +8838,26 @@
         "notes": []
       },
       "timing": {
-        "score": 71,
-        "label": "Sterke instap-setup",
-        "color": "green",
+        "score": 50,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 67,
         "entryScore": 78,
         "trendDaily": 10,
         "trendWeekly": 69,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 6,
+        "overextDetail": {
+          "weekly": -7.2,
+          "monthly": 8.1
+        },
+        "macdTurning": [
+          "daily",
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 71
       },
       "scores": {
         "quality": 40,
@@ -7682,10 +8871,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 71,
+        "timing": 50,
         "marketAdj": 5,
-        "timingEffective": 76,
-        "composite": 57
+        "timingEffective": 55,
+        "composite": 49
       },
       "bagger": {
         "score": 63,
@@ -7751,24 +8940,32 @@
         "macdSigW": 2.374,
         "bollUpper": 64.34,
         "bollLower": 47.68,
-        "volRatio": 0.64,
+        "volRatio": 0.63,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 70.77,
-            "0.382": 62.2,
-            "0.500": 55.26,
-            "0.618": 48.33,
+            "0.886": 32.59,
             "0.786": 38.46,
-            "0.886": 32.59
+            "0.705": 43.22,
+            "0.618": 48.33,
+            "0.500": 55.26,
+            "0.382": 62.2,
+            "0.236": 70.77,
+            "0.000": 84.64
           },
           "extensions": {
             "1.000": 84.64,
             "1.272": 100.62,
             "1.414": 108.96,
             "1.618": 120.95,
-            "1.818": 132.7
+            "2.000": 143.39,
+            "2.618": 179.7
+          },
+          "goldenPocket": {
+            "low": 43.22,
+            "high": 48.33
           },
           "swingHigh": 84.64,
           "swingLow": 25.89
@@ -7811,15 +9008,26 @@
         "notes": []
       },
       "timing": {
-        "score": 54,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 39,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 44,
         "entryScore": 70,
         "trendDaily": 10,
         "trendWeekly": 35,
         "trendMonthly": 65,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -9.5,
+          "monthly": -3.9
+        },
+        "macdTurning": [
+          "daily",
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 54
       },
       "scores": {
         "quality": 40,
@@ -7833,10 +9041,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 54,
+        "timing": 39,
         "marketAdj": 5,
-        "timingEffective": 59,
-        "composite": 51
+        "timingEffective": 44,
+        "composite": 45
       },
       "bagger": {
         "score": 28,
@@ -7897,21 +9105,29 @@
         "volRatio": 0.7,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 47.28,
-            "0.382": 40.55,
-            "0.500": 35.12,
-            "0.618": 29.68,
+            "0.886": 17.33,
             "0.786": 21.94,
-            "0.886": 17.33
+            "0.705": 25.67,
+            "0.618": 29.68,
+            "0.500": 35.12,
+            "0.382": 40.55,
+            "0.236": 47.28,
+            "0.000": 58.15
           },
           "extensions": {
             "1.000": 58.15,
             "1.272": 70.68,
             "1.414": 77.22,
             "1.618": 86.62,
-            "1.818": 95.84
+            "2.000": 104.22,
+            "2.618": 132.69
+          },
+          "goldenPocket": {
+            "low": 25.67,
+            "high": 29.68
           },
           "swingHigh": 58.15,
           "swingLow": 12.08
@@ -7954,15 +9170,26 @@
         "notes": []
       },
       "timing": {
-        "score": 69,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 52,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 73,
-        "entryScore": 62,
+        "entryScore": 70,
         "trendDaily": 15,
         "trendWeekly": 85,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 5,
+        "overextDetail": {
+          "weekly": -3.6,
+          "monthly": 6.9
+        },
+        "macdTurning": [
+          "daily",
+          "weekly",
+          "monthly"
+        ],
+        "baseTimin": 72
       },
       "scores": {
         "quality": 40,
@@ -7976,10 +9203,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 69,
+        "timing": 52,
         "marketAdj": 5,
-        "timingEffective": 74,
-        "composite": 57
+        "timingEffective": 57,
+        "composite": 50
       },
       "bagger": {
         "score": 80,
@@ -7999,7 +9226,17 @@
       },
       "isBagger": true,
       "currency": "$",
-      "signals": [],
+      "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "📐",
+          "title": "Fib 0.705 — steunzone: $22.78 (1.1% weg)",
+          "detail": "Prijs $22.53 raakt Fibonacci 0.705. Potentiële koopzone."
+        }
+      ],
       "alerts": [
         {
           "type": "INFO",
@@ -8010,8 +9247,8 @@
           "detail": "MACD: 0.705 | Signaal: 0.354"
         }
       ],
-      "overall": "NEUTRAAL",
-      "buyWeight": 0,
+      "overall": "LICHT KOOP",
+      "buyWeight": 3,
       "sellWeight": 0,
       "conflict": false,
       "conflictNote": "",
@@ -8031,24 +9268,32 @@
         "macdSigW": 0.3536,
         "bollUpper": 26.66,
         "bollLower": 21.35,
-        "volRatio": 0.72,
+        "volRatio": 0.71,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 38.73,
-            "0.382": 33.76,
-            "0.500": 29.75,
-            "0.618": 25.74,
+            "0.886": 16.63,
             "0.786": 20.03,
-            "0.886": 16.63
+            "0.705": 22.78,
+            "0.618": 25.74,
+            "0.500": 29.75,
+            "0.382": 33.76,
+            "0.236": 38.73,
+            "0.000": 46.75
           },
           "extensions": {
             "1.000": 46.75,
             "1.272": 56.0,
             "1.414": 60.83,
             "1.618": 67.76,
-            "1.818": 74.56
+            "2.000": 80.75,
+            "2.618": 101.76
+          },
+          "goldenPocket": {
+            "low": 22.78,
+            "high": 25.74
           },
           "swingHigh": 46.75,
           "swingLow": 12.75
@@ -8091,15 +9336,22 @@
         "notes": []
       },
       "timing": {
-        "score": 46,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 44,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 42,
         "entryScore": 51,
         "trendDaily": 31,
         "trendWeekly": 15,
         "trendMonthly": 69,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 2,
+        "overextDetail": {
+          "weekly": 2.8,
+          "monthly": -4.7
+        },
+        "macdTurning": [],
+        "baseTimin": 46
       },
       "scores": {
         "quality": 34,
@@ -8112,10 +9364,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 46,
+        "timing": 44,
         "marketAdj": 5,
-        "timingEffective": 51,
-        "composite": 46
+        "timingEffective": 49,
+        "composite": 45
       },
       "bagger": {
         "score": 46,
@@ -8181,21 +9433,29 @@
         "volRatio": 2.72,
         "volKnown": true,
         "highVolume": true,
+        "volNote": "✓ hoog volume",
         "fib": {
           "retracements": {
-            "0.236": 140.82,
-            "0.382": 128.34,
-            "0.500": 118.25,
-            "0.618": 108.16,
+            "0.886": 85.25,
             "0.786": 93.8,
-            "0.886": 85.25
+            "0.705": 100.72,
+            "0.618": 108.16,
+            "0.500": 118.25,
+            "0.382": 128.34,
+            "0.236": 140.82,
+            "0.000": 161.0
           },
           "extensions": {
             "1.000": 161.0,
             "1.272": 184.26,
             "1.414": 196.4,
             "1.618": 213.84,
-            "1.818": 230.94
+            "2.000": 246.5,
+            "2.618": 299.34
+          },
+          "goldenPocket": {
+            "low": 100.72,
+            "high": 108.16
           },
           "swingHigh": 161.0,
           "swingLow": 75.5
@@ -8240,7 +9500,7 @@
         ]
       },
       "timing": {
-        "score": 42,
+        "score": 32,
         "label": "Zwakke setup",
         "color": "orange",
         "trendScore": 33,
@@ -8248,7 +9508,17 @@
         "trendDaily": 35,
         "trendWeekly": 10,
         "trendMonthly": 49,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -5.1,
+          "monthly": -13.9
+        },
+        "macdTurning": [
+          "daily",
+          "monthly"
+        ],
+        "baseTimin": 42
       },
       "scores": {
         "quality": 45,
@@ -8262,10 +9532,10 @@
           "marge < 8%"
         ],
         "valuation": 8,
-        "timing": 42,
+        "timing": 32,
         "marketAdj": 5,
-        "timingEffective": 47,
-        "composite": 35
+        "timingEffective": 37,
+        "composite": 31
       },
       "bagger": {
         "score": 29,
@@ -8328,21 +9598,29 @@
         "volRatio": 0.76,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 76.15,
-            "0.382": 68.9,
-            "0.500": 63.03,
-            "0.618": 57.17,
+            "0.886": 43.85,
             "0.786": 48.82,
-            "0.886": 43.85
+            "0.705": 52.85,
+            "0.618": 57.17,
+            "0.500": 63.03,
+            "0.382": 68.9,
+            "0.236": 76.15,
+            "0.000": 87.88
           },
           "extensions": {
             "1.000": 87.88,
             "1.272": 101.4,
             "1.414": 108.45,
             "1.618": 118.59,
-            "1.818": 128.53
+            "2.000": 137.57,
+            "2.618": 168.29
+          },
+          "goldenPocket": {
+            "low": 52.85,
+            "high": 57.17
           },
           "swingHigh": 87.88,
           "swingLow": 38.19
@@ -8385,15 +9663,24 @@
         "notes": []
       },
       "timing": {
-        "score": 47,
-        "label": "Neutrale setup",
-        "color": "neutral",
+        "score": 42,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 30,
         "entryScore": 72,
         "trendDaily": 30,
         "trendWeekly": 10,
         "trendMonthly": 45,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -13.5,
+          "monthly": -27.6
+        },
+        "macdTurning": [
+          "weekly"
+        ],
+        "baseTimin": 47
       },
       "scores": {
         "quality": 40,
@@ -8407,10 +9694,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 47,
+        "timing": 42,
         "marketAdj": 5,
-        "timingEffective": 52,
-        "composite": 48
+        "timingEffective": 47,
+        "composite": 46
       },
       "bagger": {
         "score": 54,
@@ -8480,21 +9767,29 @@
         "volRatio": 0.53,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 15.6,
-            "0.382": 13.73,
-            "0.500": 12.21,
-            "0.618": 10.69,
+            "0.886": 7.24,
             "0.786": 8.53,
-            "0.886": 7.24
+            "0.705": 9.57,
+            "0.618": 10.69,
+            "0.500": 12.21,
+            "0.382": 13.73,
+            "0.236": 15.6,
+            "0.000": 18.64
           },
           "extensions": {
             "1.000": 18.64,
             "1.272": 22.14,
             "1.414": 23.97,
             "1.618": 26.59,
-            "1.818": 29.16
+            "2.000": 31.5,
+            "2.618": 39.46
+          },
+          "goldenPocket": {
+            "low": 9.57,
+            "high": 10.69
           },
           "swingHigh": 18.64,
           "swingLow": 5.78
@@ -8537,15 +9832,24 @@
         "notes": []
       },
       "timing": {
-        "score": 35,
-        "label": "Zwakke setup",
-        "color": "orange",
+        "score": 30,
+        "label": "Slechte instap (wachten)",
+        "color": "red",
         "trendScore": 10,
         "entryScore": 72,
         "trendDaily": 10,
         "trendWeekly": 10,
         "trendMonthly": 10,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 0,
+        "overextDetail": {
+          "weekly": -12.2,
+          "monthly": -21.4
+        },
+        "macdTurning": [
+          "weekly"
+        ],
+        "baseTimin": 35
       },
       "scores": {
         "quality": 40,
@@ -8559,10 +9863,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 35,
+        "timing": 30,
         "marketAdj": 5,
-        "timingEffective": 40,
-        "composite": 43
+        "timingEffective": 35,
+        "composite": 41
       },
       "bagger": {
         "score": 50,
@@ -8630,24 +9934,32 @@
         "macdSigW": -0.2408,
         "bollUpper": 2.55,
         "bollLower": 1.75,
-        "volRatio": 0.77,
+        "volRatio": 0.76,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 6.08,
-            "0.382": 5.25,
-            "0.500": 4.58,
-            "0.618": 3.91,
+            "0.886": 2.38,
             "0.786": 2.95,
-            "0.886": 2.38
+            "0.705": 3.41,
+            "0.618": 3.91,
+            "0.500": 4.58,
+            "0.382": 5.25,
+            "0.236": 6.08,
+            "0.000": 7.43
           },
           "extensions": {
             "1.000": 7.43,
             "1.272": 8.98,
             "1.414": 9.79,
             "1.618": 10.95,
-            "1.818": 12.09
+            "2.000": 13.13,
+            "2.618": 16.65
+          },
+          "goldenPocket": {
+            "low": 3.41,
+            "high": 3.91
           },
           "swingHigh": 7.43,
           "swingLow": 1.73
@@ -8690,15 +10002,24 @@
         "notes": []
       },
       "timing": {
-        "score": 61,
-        "label": "Gunstige setup",
-        "color": "green",
+        "score": 49,
+        "label": "Neutrale setup",
+        "color": "neutral",
         "trendScore": 65,
         "entryScore": 55,
         "trendDaily": 35,
         "trendWeekly": 49,
         "trendMonthly": 90,
-        "hasMonthly": true
+        "hasMonthly": true,
+        "overextPenalty": 7,
+        "overextDetail": {
+          "weekly": -4.9,
+          "monthly": 9.8
+        },
+        "macdTurning": [
+          "monthly"
+        ],
+        "baseTimin": 61
       },
       "scores": {
         "quality": 40,
@@ -8712,10 +10033,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 61,
+        "timing": 49,
         "marketAdj": 5,
-        "timingEffective": 66,
-        "composite": 53
+        "timingEffective": 54,
+        "composite": 49
       },
       "bagger": {
         "score": 68,
@@ -8768,21 +10089,29 @@
         "volRatio": 0.55,
         "volKnown": true,
         "highVolume": false,
+        "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.236": 40.93,
-            "0.382": 34.23,
-            "0.500": 28.81,
-            "0.618": 23.4,
+            "0.886": 11.1,
             "0.786": 15.69,
-            "0.886": 11.1
+            "0.705": 19.41,
+            "0.618": 23.4,
+            "0.500": 28.81,
+            "0.382": 34.23,
+            "0.236": 40.93,
+            "0.000": 51.76
           },
           "extensions": {
             "1.000": 51.76,
             "1.272": 64.24,
             "1.414": 70.76,
             "1.618": 80.12,
-            "1.818": 89.3
+            "2.000": 97.65,
+            "2.618": 126.01
+          },
+          "goldenPocket": {
+            "low": 19.41,
+            "high": 23.4
           },
           "swingHigh": 51.76,
           "swingLow": 5.87
@@ -8793,7 +10122,6 @@
     }
   },
   "errors": [
-    "PLTR: data ophalen mislukt",
     "ABB: data ophalen mislukt"
   ],
   "market": {
@@ -8819,7 +10147,7 @@
     "context": {
       "DXY": {
         "name": "Dollar-index",
-        "change3m": 0.9
+        "change3m": 0.8
       },
       "GOLD": {
         "name": "Goud (GLD)",
@@ -8885,27 +10213,27 @@
     "primaryPick": {
       "ticker": "MU",
       "name": "MU",
-      "composite": 88,
+      "composite": 77,
       "quality": 95,
       "valuation": 90,
-      "timing": 77,
+      "timing": 49,
       "valuationVerdict": "Aantrekkelijk (PEG < 1)",
-      "timingLabel": "Sterke instap-setup",
+      "timingLabel": "Neutrale setup",
       "price": 975.56,
       "currency": "$",
       "marketAdj": 5
     },
-    "reasoning": "MU combineert kwaliteit (95/100), waardering (90/100: Aantrekkelijk (PEG < 1)) en timing (77/100: Sterke instap-setup) tot de hoogste composietscore (88/100) van de kwaliteitsaandelen deze maand. Het marktregime telt +5 mee in de timing van alle kandidaten.",
+    "reasoning": "MU combineert kwaliteit (95/100), waardering (90/100: Aantrekkelijk (PEG < 1)) en timing (49/100: Neutrale setup) tot de hoogste composietscore (77/100) van de kwaliteitsaandelen deze maand. Het marktregime telt +5 mee in de timing van alle kandidaten.",
     "candidates": [
       {
         "ticker": "MU",
         "name": "MU",
-        "composite": 88,
+        "composite": 77,
         "quality": 95,
         "valuation": 90,
-        "timing": 77,
+        "timing": 49,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
-        "timingLabel": "Sterke instap-setup",
+        "timingLabel": "Neutrale setup",
         "price": 975.56,
         "currency": "$",
         "marketAdj": 5
@@ -8913,53 +10241,14 @@
       {
         "ticker": "NVDA",
         "name": "NVDA",
-        "composite": 82,
+        "composite": 77,
         "quality": 95,
         "valuation": 90,
-        "timing": 62,
+        "timing": 48,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 194.83,
         "currency": "$",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "GAW",
-        "name": "GAW",
-        "composite": 72,
-        "quality": 94,
-        "valuation": 40,
-        "timing": 74,
-        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Sterke instap-setup",
-        "price": 21140.0,
-        "currency": "p",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "SOFTBANK",
-        "name": "SOFTBANK",
-        "composite": 72,
-        "quality": 51,
-        "valuation": 90,
-        "timing": 70,
-        "valuationVerdict": "Aantrekkelijk (PEG < 1)",
-        "timingLabel": "Sterke instap-setup",
-        "price": 6169.0,
-        "currency": "¥",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "ADM",
-        "name": "ADM",
-        "composite": 70,
-        "quality": 88,
-        "valuation": 62,
-        "timing": 58,
-        "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 3666.0,
-        "currency": "p",
         "marketAdj": 5
       },
       {
@@ -8968,7 +10257,7 @@
         "composite": 70,
         "quality": 95,
         "valuation": 90,
-        "timing": 31,
+        "timing": 30,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
         "timingLabel": "Slechte instap (wachten)",
         "price": 2611.0,
@@ -8978,10 +10267,10 @@
       {
         "ticker": "NFLX",
         "name": "NFLX",
-        "composite": 70,
+        "composite": 68,
         "quality": 83,
         "valuation": 90,
-        "timing": 39,
+        "timing": 34,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
         "timingLabel": "Zwakke setup",
         "price": 77.65,
@@ -8989,51 +10278,38 @@
         "marketAdj": 5
       },
       {
-        "ticker": "GOOGL",
-        "name": "GOOGL",
-        "composite": 69,
-        "quality": 94,
-        "valuation": 40,
-        "timing": 67,
-        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 359.91,
-        "currency": "$",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "ASMI",
-        "name": "ASMI",
+        "ticker": "ADM",
+        "name": "ADM",
         "composite": 66,
-        "quality": 89,
-        "valuation": 30,
-        "timing": 71,
-        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Sterke instap-setup",
-        "price": 975.6,
-        "currency": "€",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "ORCL",
-        "name": "ORCL",
-        "composite": 66,
-        "quality": 80,
+        "quality": 88,
         "valuation": 62,
-        "timing": 53,
+        "timing": 47,
         "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
         "timingLabel": "Neutrale setup",
-        "price": 140.27,
+        "price": 3666.0,
+        "currency": "p",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "PLTR",
+        "name": "PLTR",
+        "composite": 64,
+        "quality": 90,
+        "valuation": 62,
+        "timing": 41,
+        "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
+        "timingLabel": "Zwakke setup",
+        "price": 129.3,
         "currency": "$",
         "marketAdj": 5
       },
       {
         "ticker": "MSFT",
         "name": "MSFT",
-        "composite": 66,
+        "composite": 64,
         "quality": 95,
         "valuation": 62,
-        "timing": 43,
+        "timing": 38,
         "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
         "timingLabel": "Zwakke setup",
         "price": 390.49,
@@ -9041,14 +10317,66 @@
         "marketAdj": 5
       },
       {
+        "ticker": "SOFTBANK",
+        "name": "SOFTBANK",
+        "composite": 64,
+        "quality": 51,
+        "valuation": 90,
+        "timing": 49,
+        "valuationVerdict": "Aantrekkelijk (PEG < 1)",
+        "timingLabel": "Neutrale setup",
+        "price": 6169.0,
+        "currency": "¥",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "GOOGL",
+        "name": "GOOGL",
+        "composite": 63,
+        "quality": 94,
+        "valuation": 40,
+        "timing": 51,
+        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 359.91,
+        "currency": "$",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "GAW",
+        "name": "GAW",
+        "composite": 63,
+        "quality": 94,
+        "valuation": 40,
+        "timing": 51,
+        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 21140.0,
+        "currency": "p",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "ORCL",
+        "name": "ORCL",
+        "composite": 62,
+        "quality": 80,
+        "valuation": 62,
+        "timing": 43,
+        "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
+        "timingLabel": "Zwakke setup",
+        "price": 140.27,
+        "currency": "$",
+        "marketAdj": 5
+      },
+      {
         "ticker": "AMZN",
         "name": "AMZN",
-        "composite": 64,
+        "composite": 60,
         "quality": 77,
         "valuation": 40,
-        "timing": 66,
+        "timing": 56,
         "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 242.67,
         "currency": "$",
         "marketAdj": 5
@@ -9056,10 +10384,10 @@
       {
         "ticker": "KPG",
         "name": "KPG",
-        "composite": 61,
+        "composite": 60,
         "quality": 61,
         "valuation": 90,
-        "timing": 34,
+        "timing": 33,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
         "timingLabel": "Zwakke setup",
         "price": 4.03,
@@ -9069,10 +10397,10 @@
       {
         "ticker": "MELI",
         "name": "MELI",
-        "composite": 61,
+        "composite": 59,
         "quality": 71,
         "valuation": 75,
-        "timing": 37,
+        "timing": 34,
         "valuationVerdict": "Redelijk (PEG 1–1.5)",
         "timingLabel": "Zwakke setup",
         "price": 1763.36,
@@ -9082,23 +10410,36 @@
       {
         "ticker": "DIE",
         "name": "DIE",
-        "composite": 61,
+        "composite": 58,
         "quality": 57,
         "valuation": 62,
-        "timing": 59,
+        "timing": 50,
         "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 180.4,
+        "currency": "€",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "ASMI",
+        "name": "ASMI",
+        "composite": 57,
+        "quality": 89,
+        "valuation": 30,
+        "timing": 49,
+        "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 975.6,
         "currency": "€",
         "marketAdj": 5
       },
       {
         "ticker": "BLK",
         "name": "BLK",
-        "composite": 59,
+        "composite": 57,
         "quality": 76,
         "valuation": 62,
-        "timing": 40,
+        "timing": 33,
         "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
         "timingLabel": "Zwakke setup",
         "price": 995.73,
@@ -9108,10 +10449,10 @@
       {
         "ticker": "V",
         "name": "V",
-        "composite": 57,
+        "composite": 54,
         "quality": 83,
         "valuation": 30,
-        "timing": 53,
+        "timing": 45,
         "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
         "timingLabel": "Neutrale setup",
         "price": 362.13,
@@ -9119,197 +10460,197 @@
         "marketAdj": 5
       },
       {
-        "ticker": "TER",
-        "name": "TER",
-        "composite": 57,
-        "quality": 83,
-        "valuation": 8,
-        "timing": 69,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 369.09,
-        "currency": "$",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "ASML",
-        "name": "ASML",
-        "composite": 56,
-        "quality": 84,
-        "valuation": 8,
-        "timing": 65,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 1634.4,
-        "currency": "€",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "KEYENCE",
-        "name": "KEYENCE",
-        "composite": 54,
-        "quality": 74,
-        "valuation": 8,
-        "timing": 68,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 80300.0,
-        "currency": "¥",
-        "marketAdj": 5
-      },
-      {
         "ticker": "AON",
         "name": "AON",
-        "composite": 52,
+        "composite": 50,
         "quality": 68,
         "valuation": 40,
-        "timing": 45,
+        "timing": 40,
         "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 357.46,
-        "currency": "$",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "LOTB",
-        "name": "LOTB",
-        "composite": 52,
-        "quality": 78,
-        "valuation": 8,
-        "timing": 60,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 11780.0,
-        "currency": "€",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "ROK",
-        "name": "ROK",
-        "composite": 52,
-        "quality": 65,
-        "valuation": 8,
-        "timing": 71,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Sterke instap-setup",
-        "price": 471.7,
-        "currency": "$",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "MNST",
-        "name": "MNST",
-        "composite": 51,
-        "quality": 83,
-        "valuation": 8,
-        "timing": 54,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Neutrale setup",
-        "price": 97.6,
         "currency": "$",
         "marketAdj": 5
       },
       {
         "ticker": "SHOP",
         "name": "SHOP",
-        "composite": 51,
+        "composite": 49,
         "quality": 69,
         "valuation": 30,
-        "timing": 49,
+        "timing": 44,
         "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 119.46,
         "currency": "$",
         "marketAdj": 5
       },
       {
-        "ticker": "AAPL",
-        "name": "AAPL",
-        "composite": 50,
-        "quality": 71,
+        "ticker": "TER",
+        "name": "TER",
+        "composite": 47,
+        "quality": 83,
         "valuation": 8,
-        "timing": 60,
+        "timing": 44,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 308.63,
-        "currency": "$",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "CAT",
-        "name": "CAT",
-        "composite": 49,
-        "quality": 61,
-        "valuation": 8,
-        "timing": 65,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 963.53,
-        "currency": "$",
-        "marketAdj": 5
-      },
-      {
-        "ticker": "KO",
-        "name": "KO",
-        "composite": 49,
-        "quality": 63,
-        "valuation": 8,
-        "timing": 64,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 84.14,
+        "timingLabel": "Zwakke setup",
+        "price": 369.09,
         "currency": "$",
         "marketAdj": 5
       },
       {
         "ticker": "ISRG",
         "name": "ISRG",
-        "composite": 49,
+        "composite": 47,
         "quality": 83,
         "valuation": 30,
-        "timing": 32,
+        "timing": 27,
         "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Zwakke setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 426.01,
         "currency": "$",
         "marketAdj": 5
       },
       {
+        "ticker": "ASML",
+        "name": "ASML",
+        "composite": 46,
+        "quality": 84,
+        "valuation": 8,
+        "timing": 40,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Zwakke setup",
+        "price": 1634.4,
+        "currency": "€",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "KO",
+        "name": "KO",
+        "composite": 46,
+        "quality": 63,
+        "valuation": 8,
+        "timing": 57,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 84.14,
+        "currency": "$",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "LOTB",
+        "name": "LOTB",
+        "composite": 46,
+        "quality": 78,
+        "valuation": 8,
+        "timing": 46,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 11780.0,
+        "currency": "€",
+        "marketAdj": 5
+      },
+      {
         "ticker": "NKE",
         "name": "NKE",
-        "composite": 47,
+        "composite": 45,
         "quality": 57,
         "valuation": 50,
-        "timing": 33,
+        "timing": 28,
         "valuationVerdict": "Gemiddelde P/E (absoluut)",
-        "timingLabel": "Zwakke setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 44.09,
         "currency": "$",
         "marketAdj": 5
       },
       {
-        "ticker": "NOVT",
-        "name": "NOVT",
-        "composite": 47,
-        "quality": 50,
+        "ticker": "AAPL",
+        "name": "AAPL",
+        "composite": 45,
+        "quality": 71,
         "valuation": 8,
-        "timing": 69,
+        "timing": 48,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 161.72,
+        "timingLabel": "Neutrale setup",
+        "price": 308.63,
+        "currency": "$",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "KEYENCE",
+        "name": "KEYENCE",
+        "composite": 43,
+        "quality": 74,
+        "valuation": 8,
+        "timing": 42,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Zwakke setup",
+        "price": 80300.0,
+        "currency": "¥",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "MNST",
+        "name": "MNST",
+        "composite": 42,
+        "quality": 83,
+        "valuation": 8,
+        "timing": 31,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Slechte instap (wachten)",
+        "price": 97.6,
+        "currency": "$",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "ROK",
+        "name": "ROK",
+        "composite": 42,
+        "quality": 65,
+        "valuation": 8,
+        "timing": 45,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 471.7,
         "currency": "$",
         "marketAdj": 5
       },
       {
         "ticker": "WM",
         "name": "WM",
-        "composite": 40,
+        "composite": 39,
         "quality": 54,
+        "valuation": 8,
+        "timing": 47,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 230.4,
+        "currency": "$",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "NOVT",
+        "name": "NOVT",
+        "composite": 39,
+        "quality": 50,
         "valuation": 8,
         "timing": 49,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Neutrale setup",
-        "price": 230.4,
+        "price": 161.72,
+        "currency": "$",
+        "marketAdj": 5
+      },
+      {
+        "ticker": "CAT",
+        "name": "CAT",
+        "composite": 38,
+        "quality": 61,
+        "valuation": 8,
+        "timing": 38,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Zwakke setup",
+        "price": 963.53,
         "currency": "$",
         "marketAdj": 5
       }
@@ -9318,10 +10659,10 @@
       {
         "ticker": "LHX",
         "name": "LHX",
-        "composite": 56,
+        "composite": 54,
         "quality": 61,
         "valuation": 50,
-        "timing": 52,
+        "timing": 47,
         "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
         "timingLabel": "Neutrale setup",
         "price": 302.07,
@@ -9334,12 +10675,12 @@
       {
         "ticker": "MOGA",
         "name": "MOGA",
-        "composite": 46,
+        "composite": 34,
         "quality": 48,
         "valuation": 18,
-        "timing": 61,
+        "timing": 31,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 417.42,
         "currency": "$",
         "marketAdj": 5,
@@ -9350,12 +10691,12 @@
       {
         "ticker": "TDG",
         "name": "TDG",
-        "composite": 55,
+        "composite": 52,
         "quality": 63,
         "valuation": 30,
-        "timing": 62,
+        "timing": 56,
         "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 1348.49,
         "currency": "$",
         "marketAdj": 5,
@@ -9366,10 +10707,10 @@
       {
         "ticker": "KTOS",
         "name": "KTOS",
-        "composite": 35,
+        "composite": 33,
         "quality": 45,
         "valuation": 8,
-        "timing": 42,
+        "timing": 37,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
         "price": 55.35,
@@ -9383,12 +10724,12 @@
       {
         "ticker": "RKLB",
         "name": "RKLB",
-        "composite": 52,
+        "composite": 43,
         "quality": 34,
         "valuation": 50,
-        "timing": 62,
+        "timing": 39,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Zwakke setup",
         "price": 100.46,
         "currency": "$",
         "marketAdj": 5,
@@ -9400,12 +10741,12 @@
       {
         "ticker": "OPEN",
         "name": "OPEN",
-        "composite": 43,
+        "composite": 40,
         "quality": 20,
         "valuation": 50,
-        "timing": 50,
+        "timing": 42,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 4.9,
         "currency": "$",
         "marketAdj": 5,
@@ -9417,12 +10758,12 @@
       {
         "ticker": "SDGR",
         "name": "SDGR",
-        "composite": 48,
+        "composite": 43,
         "quality": 40,
         "valuation": 50,
-        "timing": 48,
+        "timing": 36,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 16.88,
         "currency": "$",
         "marketAdj": 5,
@@ -9434,12 +10775,12 @@
       {
         "ticker": "BNGO",
         "name": "BNGO",
-        "composite": 45,
+        "composite": 41,
         "quality": 40,
         "valuation": 50,
-        "timing": 41,
+        "timing": 31,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Zwakke setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 1.15,
         "currency": "$",
         "marketAdj": 5,
@@ -9451,12 +10792,12 @@
       {
         "ticker": "NET",
         "name": "NET",
-        "composite": 44,
+        "composite": 39,
         "quality": 39,
         "valuation": 8,
-        "timing": 71,
+        "timing": 57,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Sterke instap-setup",
+        "timingLabel": "Neutrale setup",
         "price": 242.41,
         "currency": "$",
         "marketAdj": 5,
@@ -9468,12 +10809,12 @@
       {
         "ticker": "CRWV",
         "name": "CRWV",
-        "composite": 43,
+        "composite": 39,
         "quality": 20,
         "valuation": 50,
-        "timing": 51,
+        "timing": 41,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 81.75,
         "currency": "$",
         "marketAdj": 5,
@@ -9486,12 +10827,12 @@
       {
         "ticker": "MTLS",
         "name": "MTLS",
-        "composite": 35,
+        "composite": 25,
         "quality": 33,
         "valuation": 8,
-        "timing": 51,
+        "timing": 26,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 7.16,
         "currency": "$",
         "marketAdj": 5,
@@ -9503,12 +10844,12 @@
       {
         "ticker": "SNAP",
         "name": "SNAP",
-        "composite": 42,
+        "composite": 38,
         "quality": 33,
         "valuation": 50,
-        "timing": 38,
+        "timing": 28,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Zwakke setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 4.84,
         "currency": "$",
         "marketAdj": 5,
@@ -9520,10 +10861,10 @@
       {
         "ticker": "SOF",
         "name": "SOF",
-        "composite": 48,
+        "composite": 49,
         "quality": 53,
         "valuation": 50,
-        "timing": 39,
+        "timing": 41,
         "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
         "timingLabel": "Zwakke setup",
         "price": 230.6,
@@ -9536,10 +10877,10 @@
       {
         "ticker": "AIR",
         "name": "AIR",
-        "composite": 57,
+        "composite": 53,
         "quality": 69,
         "valuation": 40,
-        "timing": 56,
+        "timing": 45,
         "valuationVerdict": "Aan de dure kant (PEG 2.5–3.5)",
         "timingLabel": "Neutrale setup",
         "price": 206.15,
@@ -9552,12 +10893,12 @@
       {
         "ticker": "ALFEN",
         "name": "ALFEN",
-        "composite": 46,
+        "composite": 36,
         "quality": 24,
         "valuation": 50,
-        "timing": 55,
+        "timing": 30,
         "valuationVerdict": "Hoge P/E (absoluut)",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 14.67,
         "currency": "€",
         "marketAdj": 5,
@@ -9569,12 +10910,12 @@
       {
         "ticker": "MSTR",
         "name": "MSTR",
-        "composite": 35,
+        "composite": 31,
         "quality": 14,
         "valuation": 50,
-        "timing": 35,
+        "timing": 25,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Zwakke setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 100.77,
         "currency": "$",
         "marketAdj": 5,
@@ -9586,12 +10927,12 @@
       {
         "ticker": "DIS",
         "name": "DIS",
-        "composite": 34,
+        "composite": 30,
         "quality": 46,
         "valuation": 8,
-        "timing": 39,
+        "timing": 29,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Zwakke setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 99.5,
         "currency": "$",
         "marketAdj": 5,
@@ -9602,12 +10943,12 @@
       {
         "ticker": "BABA",
         "name": "BABA",
-        "composite": 62,
+        "composite": 58,
         "quality": 67,
         "valuation": 62,
-        "timing": 52,
+        "timing": 42,
         "valuationVerdict": "Neutraal (PEG 1.5–2.5)",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 96.14,
         "currency": "$",
         "marketAdj": 5,
@@ -9618,12 +10959,12 @@
       {
         "ticker": "NABTESCO",
         "name": "NABTESCO",
-        "composite": 41,
+        "composite": 34,
         "quality": 38,
         "valuation": 8,
-        "timing": 64,
+        "timing": 45,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 5655.0,
         "currency": "¥",
         "marketAdj": 5,
@@ -9635,12 +10976,12 @@
       {
         "ticker": "HARMONIC",
         "name": "HARMONIC",
-        "composite": 44,
+        "composite": 34,
         "quality": 53,
         "valuation": 8,
-        "timing": 60,
+        "timing": 33,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Zwakke setup",
         "price": 8840.0,
         "currency": "¥",
         "marketAdj": 5,
@@ -9651,12 +10992,12 @@
       {
         "ticker": "FANUC",
         "name": "FANUC",
-        "composite": 44,
+        "composite": 36,
         "quality": 52,
         "valuation": 8,
-        "timing": 60,
+        "timing": 39,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Zwakke setup",
         "price": 7439.0,
         "currency": "¥",
         "marketAdj": 5,
@@ -9667,12 +11008,12 @@
       {
         "ticker": "YASKAWA",
         "name": "YASKAWA",
-        "composite": 48,
+        "composite": 40,
         "quality": 56,
         "valuation": 8,
-        "timing": 68,
+        "timing": 47,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 7479.0,
         "currency": "¥",
         "marketAdj": 5,
@@ -9683,12 +11024,12 @@
       {
         "ticker": "CGNX",
         "name": "CGNX",
-        "composite": 51,
+        "composite": 40,
         "quality": 62,
         "valuation": 8,
-        "timing": 71,
+        "timing": 43,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Sterke instap-setup",
+        "timingLabel": "Zwakke setup",
         "price": 67.8,
         "currency": "$",
         "marketAdj": 5,
@@ -9699,12 +11040,12 @@
       {
         "ticker": "IONQ",
         "name": "IONQ",
-        "composite": 57,
+        "composite": 49,
         "quality": 40,
         "valuation": 50,
-        "timing": 71,
+        "timing": 50,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Sterke instap-setup",
+        "timingLabel": "Neutrale setup",
         "price": 49.12,
         "currency": "$",
         "marketAdj": 5,
@@ -9716,12 +11057,12 @@
       {
         "ticker": "RGTI",
         "name": "RGTI",
-        "composite": 51,
+        "composite": 45,
         "quality": 40,
         "valuation": 50,
-        "timing": 54,
+        "timing": 39,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 17.94,
         "currency": "$",
         "marketAdj": 5,
@@ -9733,12 +11074,12 @@
       {
         "ticker": "QBTS",
         "name": "QBTS",
-        "composite": 57,
+        "composite": 50,
         "quality": 40,
         "valuation": 50,
-        "timing": 69,
+        "timing": 52,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 22.53,
         "currency": "$",
         "marketAdj": 5,
@@ -9750,12 +11091,12 @@
       {
         "ticker": "UBTECH",
         "name": "UBTECH",
-        "composite": 46,
+        "composite": 45,
         "quality": 34,
         "valuation": 50,
-        "timing": 46,
+        "timing": 44,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 108.9,
         "currency": "HK$",
         "marketAdj": 5,
@@ -9767,10 +11108,10 @@
       {
         "ticker": "SYM",
         "name": "SYM",
-        "composite": 35,
+        "composite": 31,
         "quality": 45,
         "valuation": 8,
-        "timing": 42,
+        "timing": 32,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
         "price": 42.74,
@@ -9784,12 +11125,12 @@
       {
         "ticker": "SERV",
         "name": "SERV",
-        "composite": 48,
+        "composite": 46,
         "quality": 40,
         "valuation": 50,
-        "timing": 47,
+        "timing": 42,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Neutrale setup",
+        "timingLabel": "Zwakke setup",
         "price": 6.31,
         "currency": "$",
         "marketAdj": 5,
@@ -9801,12 +11142,12 @@
       {
         "ticker": "RR",
         "name": "RR",
-        "composite": 43,
+        "composite": 41,
         "quality": 40,
         "valuation": 50,
-        "timing": 35,
+        "timing": 30,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Zwakke setup",
+        "timingLabel": "Slechte instap (wachten)",
         "price": 1.96,
         "currency": "$",
         "marketAdj": 5,
@@ -9818,12 +11159,12 @@
       {
         "ticker": "PL",
         "name": "PL",
-        "composite": 53,
+        "composite": 49,
         "quality": 40,
         "valuation": 50,
-        "timing": 61,
+        "timing": 49,
         "valuationVerdict": "Onvoldoende data",
-        "timingLabel": "Gunstige setup",
+        "timingLabel": "Neutrale setup",
         "price": 31.38,
         "currency": "$",
         "marketAdj": 5,
@@ -10234,8 +11575,8 @@
     "methodNote": "Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."
   },
   "weekly": {
-    "generatedAt": "2026-07-05T00:47:18.831600+02:00",
-    "generatedAtHuman": "Sunday 05 July 2026 om 00:47",
+    "generatedAt": "2026-07-05T10:08:41.093047+02:00",
+    "generatedAtHuman": "Sunday 05 July 2026 om 10:08",
     "periodLabel": "sinds ~1 week geleden",
     "changes": [
       {
@@ -10245,7 +11586,7 @@
           {
             "type": "composite",
             "dir": "down",
-            "text": "Composiet 66 ↓ 56"
+            "text": "Composiet 66 ↓ 46"
           },
           {
             "type": "valuation",
@@ -10269,6 +11610,11 @@
         "daysAgo": 3,
         "changes": [
           {
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 63 ↓ 57"
+          },
+          {
             "type": "valuation",
             "dir": "neutral",
             "text": "Waardering: Duur (PEG > 3.5) → Aan de dure kant (PEG 2.5–3.5)"
@@ -10281,34 +11627,34 @@
         ]
       },
       {
+        "ticker": "MU",
+        "daysAgo": 3,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 85 ↓ 77"
+          },
+          {
+            "type": "signal",
+            "dir": "neutral",
+            "text": "Signaal: VERKOOP → LICHT KOOP"
+          }
+        ]
+      },
+      {
         "ticker": "GOOGL",
         "daysAgo": 3,
         "changes": [
           {
             "type": "composite",
             "dir": "down",
-            "text": "Composiet 76 ↓ 69"
+            "text": "Composiet 76 ↓ 63"
           },
           {
             "type": "valuation",
             "dir": "neutral",
             "text": "Waardering: Redelijk (PEG 1–1.5) → Aan de dure kant (PEG 2.5–3.5)"
-          }
-        ]
-      },
-      {
-        "ticker": "LHX",
-        "daysAgo": 3,
-        "changes": [
-          {
-            "type": "composite",
-            "dir": "up",
-            "text": "Composiet 51 ↑ 56"
-          },
-          {
-            "type": "valuation",
-            "dir": "neutral",
-            "text": "Waardering: Aan de dure kant (PEG 2.5–3.5) → Neutraal (PEG 1.5–2.5)"
           }
         ]
       },
@@ -10319,7 +11665,7 @@
           {
             "type": "composite",
             "dir": "down",
-            "text": "Composiet 54 ↓ 46"
+            "text": "Composiet 54 ↓ 34"
           },
           {
             "type": "valuation",
@@ -10329,13 +11675,13 @@
         ]
       },
       {
-        "ticker": "MU",
+        "ticker": "CAT",
         "daysAgo": 3,
         "changes": [
           {
-            "type": "signal",
-            "dir": "neutral",
-            "text": "Signaal: VERKOOP → LICHT KOOP"
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 50 ↓ 38"
           }
         ]
       },
@@ -10349,9 +11695,42 @@
             "text": "Waardering: Neutraal (PEG 1.5–2.5) → Aan de dure kant (PEG 2.5–3.5)"
           }
         ]
+      },
+      {
+        "ticker": "KO",
+        "daysAgo": 3,
+        "changes": [
+          {
+            "type": "signal",
+            "dir": "neutral",
+            "text": "Signaal: LICHT VERKOOP → NEUTRAAL"
+          }
+        ]
+      },
+      {
+        "ticker": "LHX",
+        "daysAgo": 3,
+        "changes": [
+          {
+            "type": "valuation",
+            "dir": "neutral",
+            "text": "Waardering: Aan de dure kant (PEG 2.5–3.5) → Neutraal (PEG 1.5–2.5)"
+          }
+        ]
+      },
+      {
+        "ticker": "RKLB",
+        "daysAgo": 3,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 49 ↓ 43"
+          }
+        ]
       }
     ],
-    "changedCount": 7,
+    "changedCount": 10,
     "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
   },
   "trackSummary": {
