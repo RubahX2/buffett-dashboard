@@ -27,7 +27,12 @@ const { useState, useEffect } = React;
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 // Relatief pad: dashboard en data staan op hetzelfde adres (GitHub Pages).
-const SIGNALS_URL = "./signals.json";
+const SIGNALS_URL = (function(){
+  // Robuust: leid af van de map waarin index.html staat, ongeacht hoe het script laadt.
+  var base = window.location.href.split("?")[0].split("#")[0];
+  base = base.substring(0, base.lastIndexOf("/") + 1);
+  return base + "signals.json";
+})();
 
 // ── FALLBACK fundamentals (statisch, als backup) ──────────────────────────────
 const FALLBACK_FUND = {
@@ -1567,15 +1572,35 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 <script>
 (function(){
-  try {
-    var src = document.getElementById('jsx-source').textContent;
-    var out = Babel.transform(src, { presets: ['react'] }).code;
-    var s = document.createElement('script');
-    s.textContent = out;
-    document.body.appendChild(s);
-  } catch (e) {
-    document.body.innerHTML = '<pre style="color:#f88;padding:20px;font-family:monospace;white-space:pre-wrap;">BABEL FOUT:\n' + (e && e.message ? e.message : e) + '\n\nStack:\n' + (e && e.stack ? e.stack : '') + '</pre>';
-    console.error('Babel transform faalde:', e);
+  function ready(){
+    return typeof Babel !== "undefined"
+        && typeof React !== "undefined"
+        && typeof ReactDOM !== "undefined";
+  }
+  var tries = 0;
+  function run(){
+    if (!ready()) {
+      if (tries++ < 100) { setTimeout(run, 50); return; }
+      document.body.innerHTML = '<pre style="color:#f88;padding:20px;font-family:monospace;white-space:pre-wrap;font-size:12px;">Bibliotheken (React/Babel) konden niet laden. Controleer je internetverbinding en herlaad.</pre>';
+      return;
+    }
+    try {
+      var src = document.getElementById("jsx-source").textContent;
+      var out = Babel.transform(src, { presets: ["react"] }).code;
+      var s = document.createElement("script");
+      s.textContent = out;
+      document.body.appendChild(s);
+    } catch (e) {
+      var msg = (e && e.message) ? e.message : String(e);
+      var stack = (e && e.stack) ? e.stack : "";
+      document.body.innerHTML = '<pre style="color:#f88;padding:20px;font-family:monospace;white-space:pre-wrap;font-size:12px;">BABEL FOUT:\n' + msg + '\n\n' + stack + '</pre>';
+      console.error("Babel transform faalde:", e);
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
   }
 })();
 </script>
