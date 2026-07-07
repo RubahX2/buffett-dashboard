@@ -369,7 +369,7 @@ function TrackRecord({ track }) {
     <div>
       {/* Disclaimer */}
       <div style={{background:"#1c1206",border:"1px solid #854d0e",borderRadius:8,padding:"10px 12px",marginBottom:14,fontSize:11,color:C.orange,lineHeight:1.5}}>
-        ⚠️ Observatie-instrument, geen bewijs. Accuraatheid wordt pas getoond vanaf {minObs} afgeronde
+        ⚠ Observatie-instrument, geen bewijs. Accuraatheid wordt pas getoond vanaf {minObs} afgeronde
         observaties per horizon — daaronder zie je enkel de telling en gemiddelde return. Alles is
         gemeten <b>relatief tot {bench}</b> (beter dan de index, niet "ging de markt omhoog"). Het model
         past nooit zelf gewichten aan; jij trekt de conclusies.
@@ -811,7 +811,7 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
             {/* Conflict waarschuwing */}
             {data?.conflict&&(
               <div style={{marginTop:6,padding:"5px 8px",background:"#1c1206",border:"1px solid #854d0e",borderRadius:5,fontSize:10,color:C.orange}}>
-                ⚠️ {data.conflictNote}
+                ⚠ {data.conflictNote}
               </div>
             )}
           </div>
@@ -820,7 +820,7 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
 
         {/* Tabs */}
         <div style={{display:"flex",gap:4,marginBottom:14,flexWrap:"wrap"}}>
-          {[["signalen","🚦 Signalen"],["timing","⏱️ Timing"],["waardering","💰 Waardering"],
+          {[["signalen","🚦 Signalen"],["timing","⏱ Timing"],["waardering","💰 Waardering"],
             ...(data?.bagger?[["bagger","🚀 Bagger"]]:[]),
             ["indicatoren","📊 Indicatoren"],
             ["fibonacci","📐 Fibonacci"],["fundamentals","📋 Fundamentals"],["portfolio","💼 Portfolio"]].map(([tb,lb])=>(
@@ -880,7 +880,7 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
           <div>
             {!data?(
               <div style={{color:C.orange,padding:16,textAlign:"center",background:"#1c1206",borderRadius:8,border:"1px solid #854d0e"}}>
-                ⚠️ Nog geen live data. Wacht op eerste GitHub Actions run, of open TradingView voor live analyse.
+                ⚠ Nog geen live data. Wacht op eerste GitHub Actions run, of open TradingView voor live analyse.
               </div>
             ):(
               <>
@@ -888,7 +888,7 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
                   {[
                     {l:"🟢 Koop",    v:data.buyWeight||0,  c:C.green},
                     {l:"🔴 Verkoop", v:data.sellWeight||0, c:C.red},
-                    {l:"⚠️ Alerts",  v:data.alerts?.length||0, c:C.orange},
+                    {l:"⚠ Alerts",  v:data.alerts?.length||0, c:C.orange},
                   ].map(x=>(
                     <div key={x.l} style={{background:C.bg,borderRadius:6,padding:"8px 14px",textAlign:"center"}}>
                       <div style={{color:C.textDim,fontSize:10}}>{x.l}</div>
@@ -915,13 +915,13 @@ function Detail({ ticker, data, onClose, portfolio, add }) {
                 )}
                 {data.signals?.filter(s=>s.type==="INFO").length>0&&(
                   <div style={{marginBottom:10}}>
-                    <div style={{color:C.blue,fontSize:11,fontWeight:700,marginBottom:6}}>ℹ️ INFO</div>
+                    <div style={{color:C.blue,fontSize:11,fontWeight:700,marginBottom:6}}>ℹ INFO</div>
                     {data.signals.filter(s=>s.type==="INFO").map((s,i)=><SignalCard key={i} sig={s}/>)}
                   </div>
                 )}
                 {data.alerts?.length>0&&(
                   <div>
-                    <div style={{color:C.orange,fontSize:11,fontWeight:700,marginBottom:6}}>⚠️ NABIJHEID ALERTS</div>
+                    <div style={{color:C.orange,fontSize:11,fontWeight:700,marginBottom:6}}>⚠ NABIJHEID ALERTS</div>
                     {data.alerts.map((s,i)=><SignalCard key={i} sig={s}/>)}
                   </div>
                 )}
@@ -1180,19 +1180,19 @@ function App() {
           )}
           {loadState==="unconfigured"&&(
             <span style={{color:C.orange}}>
-              ⚙️ Configuratie nodig: vervang YOUR-USERNAME in de app met je GitHub gebruikersnaam
+              ⚙ Configuratie nodig: vervang YOUR-USERNAME in de app met je GitHub gebruikersnaam
             </span>
           )}
         </div>
         {errors.length>0&&(
-          <span style={{color:C.red,fontSize:10}}>⚠️ {errors.length} fout(en) bij laatste run</span>
+          <span style={{color:C.red,fontSize:10}}>⚠ {errors.length} fout(en) bij laatste run</span>
         )}
       </div>
 
       {/* SETUP INSTRUCTIE (als nog niet geconfigureerd) */}
       {loadState==="unconfigured"&&(
         <div style={{margin:16,padding:16,background:"#1c1206",border:"1px solid #854d0e",borderRadius:8}}>
-          <div style={{color:C.accent,fontWeight:700,marginBottom:8}}>⚙️ Eenmalige setup nodig</div>
+          <div style={{color:C.accent,fontWeight:700,marginBottom:8}}>⚙ Eenmalige setup nodig</div>
           <div style={{color:C.textDim,fontSize:12,lineHeight:1.8}}>
             <b style={{color:C.text}}>Stap 1:</b> Maak een gratis GitHub account op github.com<br/>
             <b style={{color:C.text}}>Stap 2:</b> Maak een nieuwe repository aan: <code style={{color:C.accent}}>buffett-dashboard</code><br/>
@@ -1333,7 +1333,7 @@ function App() {
             {[
               {l:"🟢 Koop signalen",   v:allBuySignals.length,  c:C.green,  f:"BUY"},
               {l:"🔴 Verkoop signalen", v:allSellSignals.length, c:C.red,    f:"SELL"},
-              {l:"⚠️ Nabijheid alerts", v:allAlerts.length,      c:C.orange, f:"WATCH"},
+              {l:"⚠ Nabijheid alerts", v:allAlerts.length,      c:C.orange, f:"WATCH"},
             ].map(x=>(
               <div key={x.l} onClick={()=>setFilter(f=>f===x.f?"ALL":x.f)}
                 style={{background:filterType===x.f?C.panel2:C.panel,
@@ -1362,7 +1362,7 @@ function App() {
                     <span style={{color:C.text,fontSize:12,fontWeight:700}}>{stocks[g.ticker]?.currency||"$"}{stocks[g.ticker].indicators.last.toFixed(2)}</span>
                   )}
                   {stocks[g.ticker]?.overall&&<OverallBadge signal={stocks[g.ticker].overall}/>}
-                  {stocks[g.ticker]?.conflict&&<span style={{color:C.orange,fontSize:10}}>⚠️ Conflict</span>}
+                  {stocks[g.ticker]?.conflict&&<span style={{color:C.orange,fontSize:10}}>⚠ Conflict</span>}
                 </div>
                 <span style={{color:C.textDim,fontSize:11}}>→ details</span>
               </div>
@@ -1377,7 +1377,7 @@ function App() {
         <div style={{padding:"14px 16px"}}>
           <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:14,alignItems:"center"}}>
             <span style={{color:C.textDim,fontSize:10}}>Sorteer:</span>
-            {[["action","Actie 🎯"],["composite","Composiet ★"],["timing","Timing ⏱️"],["valuation","Waardering 💰"],["buyWeight","Koop 🟢"],["alerts","Alerts ⚠️"],["score","Buffett"]].map(([k,l])=><SBtn key={k} k={k} l={l}/>)}
+            {[["action","Actie 🎯"],["composite","Composiet ★"],["timing","Timing ⏱"],["valuation","Waardering 💰"],["buyWeight","Koop 🟢"],["alerts","Alerts ⚠"],["score","Buffett"]].map(([k,l])=><SBtn key={k} k={k} l={l}/>)}
           </div>
 
           {/* Als geen live data: toon alle tickers met fallback fundamentals */}
@@ -1399,7 +1399,7 @@ function App() {
                       </div>
                       <Ring score={score} size={40}/>
                     </div>
-                    <div style={{color:C.orange,fontSize:10}}>⚠️ Geen live data — klik voor fundamentals</div>
+                    <div style={{color:C.orange,fontSize:10}}>⚠ Geen live data — klik voor fundamentals</div>
                   </div>
                 );
               })}
@@ -1441,7 +1441,7 @@ function App() {
                         🔴 {data?.signals?.filter(s=>s.type==="SELL").length||0}
                       </span>
                       <span style={{background:"#1c1a06",color:C.orange,border:"1px solid #854d0e",borderRadius:4,padding:"2px 7px",fontSize:10,fontWeight:700}}>
-                        ⚠️ {data?.alerts?.length||0}
+                        ⚠ {data?.alerts?.length||0}
                       </span>
                       {data?.valuation?.verdictColor&&<ValuationBadge color={data.valuation.verdictColor} compact/>}
                       {data?.scores?.composite!=null&&(
