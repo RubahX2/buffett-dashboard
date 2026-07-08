@@ -326,33 +326,47 @@ def calc_fibonacci(swing_low: float, swing_high: float,
 
     Als ext_low/ext_high niet gegeven zijn, valt de extensieset terug op dezelfde swing.
     """
-    rng = swing_high - swing_low
-    if rng <= 0:
+    if swing_high <= swing_low or swing_low <= 0:
         return {"retracements": {}, "extensions": {}, "goldenPocket": None,
                 "swingHigh": swing_high, "swingLow": swing_low,
-                "extSwingHigh": ext_high, "extSwingLow": ext_low}
+                "extSwingHigh": ext_high, "extSwingLow": ext_low, "logScale": True}
 
-    # ── Retracementset: prijs = high - pct*range (hoog pct → lage prijs, diepe pullback) ──
-    retr = {lbl: round(swing_high - pct * rng, 2) for lbl, pct in
+    # ── LOGARITMISCHE fib-berekening ──────────────────────────────────────────
+    # Charts worden op log-schaal gelezen (zoals TradingView in log-mode): procentuele
+    # bewegingen wegen gelijk. Een fib-niveau op fractie f ligt op:
+    #     prijs = exp( log(low) + f * (log(high) - log(low)) )
+    # Dit is cruciaal bij aandelen met grote koersrange (bv. PL $1.67 → $12.37 → $50+),
+    # waar lineaire projectie de TP-zones veel te laag zou zetten.
+    import math as _m
+    def _logfib(lo, hi, f):
+        return round(_m.exp(_m.log(lo) + f * (_m.log(hi) - _m.log(lo))), 2)
+
+    # ── Retracementset: 0.000 = top, 1.000 = bodem (hoog pct = diepe pullback) ──
+    # Op log-schaal: prijs = exp( log(high) - pct*(log(high)-log(low)) )
+    log_hi, log_lo = _m.log(swing_high), _m.log(swing_low)
+    log_rng = log_hi - log_lo
+    def _logretr(pct):
+        return round(_m.exp(log_hi - pct * log_rng), 2)
+    retr = {lbl: _logretr(pct) for lbl, pct in
             [("0.000",0.000),("0.236",0.236),("0.382",0.382),("0.500",0.500),
              ("0.618",0.618),("0.705",0.705),("0.786",0.786),("0.886",0.886),("1.000",1.000)]}
-    gp_low  = round(swing_high - 0.705 * rng, 2)   # dieper (lagere prijs)
-    gp_high = round(swing_high - 0.618 * rng, 2)   # ondieper (hogere prijs)
+    gp_low  = _logretr(0.705)   # dieper (lagere prijs)
+    gp_high = _logretr(0.618)   # ondieper (hogere prijs)
 
-    # ── Extensieset: eigen swing. Projecteert boven de top naar TP-zones ──
+    # ── Extensieset: eigen swing bodem→top, log-geprojecteerd BOVEN de top ──
     e_lo = ext_low  if ext_low  is not None else swing_low
     e_hi = ext_high if ext_high is not None else swing_high
-    e_rng = e_hi - e_lo
-    if e_rng <= 0:
-        e_lo, e_hi, e_rng = swing_low, swing_high, rng
-    ext = {lbl: round(e_lo + pct * e_rng, 2) for lbl, pct in
+    if e_hi <= e_lo or e_lo <= 0:
+        e_lo, e_hi = swing_low, swing_high
+    ext = {lbl: _logfib(e_lo, e_hi, pct) for lbl, pct in
            [("1.000",1.000),("1.272",1.272),("1.414",1.414),
             ("1.618",1.618),("1.818",1.818),("2.000",2.000),("2.618",2.618)]}
 
     return {"retracements": retr, "extensions": ext,
             "goldenPocket": {"low": gp_low, "high": gp_high},
             "swingHigh": round(swing_high, 2), "swingLow": round(swing_low, 2),
-            "extSwingHigh": round(e_hi, 2), "extSwingLow": round(e_lo, 2)}
+            "extSwingHigh": round(e_hi, 2), "extSwingLow": round(e_lo, 2),
+            "logScale": True}
 
 def safe_last(series: pd.Series, default=None):
     """Laatste niet-NaN waarde, of default. Voorkomt stille NaN-fouten."""
