@@ -1668,7 +1668,7 @@ def update_timeline(timeline: dict, name: str, ind: dict):
 def atomic_write(path: str, data: dict):
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False, default=str)
+        json.dump(data, f, indent=2, ensure_ascii=True, default=str)
     os.replace(tmp, path)
 
 # ── WEKELIJKSE CHANGELOG ──────────────────────────────────────────────────────
