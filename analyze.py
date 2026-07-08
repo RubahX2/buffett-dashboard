@@ -1076,6 +1076,15 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
                 "detail":f"Prijs ${last:.2f} bij de {lbl}-extensie (${_ext_val(lbl):.2f}) — "
                          "kern-winstzone. Baggers keren hier vaak hard terug; sterk verkooppunt."})
             tp_fired = True
+        elif _near("1.414") or _near("1.272"):
+            # Lagere TP-zones: bij baggers al proportioneel winst — licht verkoopsignaal.
+            lbl = "1.414" if _near("1.414") else "1.272"
+            w = 5 if lbl == "1.414" else 4   # 1.414 iets zwaarder dan 1.272
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":w,"icon":"🎯",
+                "title":f"Bij {lbl} TP-zone ⭐ (winst nemen)",
+                "detail":f"Prijs ${last:.2f} bij de {lbl}-extensie (${_ext_val(lbl):.2f}) — "
+                         "eerste winstnemingszone. Bij baggers al proportioneel; overweeg (deels) winst."})
+            tp_fired = True
     else:
         # Kwaliteit: 1.618 = CAUTION (geen verkoop), oplopend naar sterk verkoop bij 2.618
         if _near("2.618"):
@@ -1103,20 +1112,33 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
                          "Kern-winstzone, maar kwaliteitsaandelen breken hier vaak dwars doorheen. "
                          "Voorzichtig (overextended), geen automatisch verkoopsignaal."})
             tp_fired = True
+        elif _near("1.414") or _near("1.272"):
+            # Lagere TP-zones bij kwaliteit: CAUTION (waarschuwing dat je in winstzone
+            # zit), geen verkoop — een gemiste verkoop is hier niet erg voor kwaliteit.
+            lbl = "1.414" if _near("1.414") else "1.272"
+            signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
+                "title":f"Bij {lbl} TP-zone — winstzone",
+                "detail":f"Prijs ${last:.2f} bij de {lbl}-extensie (${_ext_val(lbl):.2f}) — "
+                         "eerste winstnemingszone. Voorzichtig; voor kwaliteit geen verkoop, "
+                         "maar wees bewust dat je in winstgebied zit."})
+            tp_fired = True
 
     # ── B) TERUGVAL uit een TP-zone met verzwakkend momentum ──
     # Voorwaarden: (1) recente high raakte een TP-extensie ≥1.272, (2) prijs is nu
     # merkbaar teruggevallen van die high, (3) MACD kruist op ≥2 timeframes, (4) dalend
     # volume of onder de high. Dit vangt PL/IONQ/QBTS: de draai vanaf de TP is bezig.
     # Fase 1: raakte de prijs in de LAATSTE 3 MAANDEN een TP-zone? (verse terugval)
+    # Loop van HOOG naar laag en pak het HOOGSTE niveau dat de recente top raakte —
+    # zo krijgt een top die bv. bij 2.618 lag ook echt het label 2.618 (niet 1.618).
+    _ext_levels = ("2.618", "2.000", "1.818", "1.618", "1.414", "1.272")
     tp_recent = None
-    for lbl in ("1.618", "1.414", "1.272"):
+    for lbl in _ext_levels:
         lvl = _ext_val(lbl)
         if lvl and sell_high >= lvl * 0.98:
             tp_recent = (lbl, lvl); break
     # Fase 2: raakte de prijs OOIT (hele periode) een TP-zone? (voor uitbodem-instap)
     tp_ever = None
-    for lbl in ("1.618", "1.414", "1.272"):
+    for lbl in _ext_levels:
         lvl = _ext_val(lbl)
         if lvl and long_high >= lvl * 0.98:
             tp_ever = (lbl, lvl); break
@@ -1167,8 +1189,19 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
             sum([oversold, wk_macd_turning_up, vol_declining]) >= 2)
 
         if pulled_back and momentum_weak:
-            # Nog vallend → verkoopsignaal (fase 1)
-            w = 6 if is_bagger else 5
+            # Nog vallend → verkoopsignaal (fase 1). Gewicht hangt af van het niveau
+            # dat de top raakte én bedrijfstype (consistent met de nabij-TP logica):
+            #   2.618 → sterk verkoop (w8) voor élk aandeel (uitzonderlijk ver).
+            #   2.000 → w6-7. 1.818/1.618 → kwaliteit w5, bagger w6.
+            #   lagere niveaus → kwaliteit lichter, bagger zwaarder.
+            if lbl == "2.618":
+                w = 8
+            elif lbl == "2.000":
+                w = 7 if is_bagger else 6
+            elif lbl in ("1.818", "1.618"):
+                w = 6 if is_bagger else 5
+            else:  # 1.414, 1.272
+                w = 5 if is_bagger else 4
             redenen = []
             if wk_bear: redenen.append("weekly MACD bearish")
             if mo_bear: redenen.append("monthly MACD bearish")
