@@ -1354,6 +1354,37 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
             overall = "LICHT VERKOOP"
         conflict_note = (conflict_note + " " if conflict_note else "") + ("Overextensie: " + ", ".join(overext_flags) + " - rijp voor terugval.")
 
+    # ── 6. GETRAPTE FIB-KANTELING: de TP-zones kantelen de overall ────────────────
+    # De extensie-zones zijn duidelijke, strenge take-profit-niveaus. Elk niveau kantelt
+    # de overall, ONGEACHT de koopmassa en ongeacht doorbraak of terugval:
+    #   1.618 → CAUTION (overextended). Streng maar zacht: een waarschuwing, geen luide
+    #           verkoop-trigger. Bij kwaliteit die er gezond doorheen breekt geen paniek,
+    #           maar wel het signaal dat je in een duidelijke winstzone zit.
+    #   2.000 → VERKOOP. Hier loopt het hoog; winst nemen.
+    #   2.618 → STERK VERKOOP. Uitzonderlijk ver; hier moet je verkopen.
+    # De lagere zones (1.272, 1.414) blijven "één signaal" (via hun gewicht), zodat de
+    # trend daar nog kan meespelen — die kantelen de overall NIET.
+    fib_tp_sigs = [s for s in signals if s.get("cat") == "FIB" and s.get("tf") == "TP"]
+    has_2618 = any("2.618" in s.get("title", "") for s in fib_tp_sigs)
+    has_2000 = any("2.0" in s.get("title", "") or "2.000" in s.get("title", "") for s in fib_tp_sigs)
+    has_1618 = any("1.618" in s.get("title", "") for s in fib_tp_sigs)
+    if has_2618:
+        if overall != "STERK VERKOOP":
+            overall = "STERK VERKOOP"
+            conflict_note = (conflict_note + " " if conflict_note else "") + \
+                "Prijs bij/terug van de 2.618-TP-zone (uitzonderlijk ver in winst) - sterk verkoop, ongeacht trendsignalen."
+    elif has_2000:
+        if overall not in ("STERK VERKOOP", "VERKOOP"):
+            overall = "VERKOOP"
+            conflict_note = (conflict_note + " " if conflict_note else "") + \
+                "Prijs bij/terug van de 2.0-TP-zone (hoog in winst) - verkoop, ongeacht trendsignalen."
+    elif has_1618:
+        # Streng maar zacht: kantel naar CAUTION, geen harde verkoop.
+        if overall not in ("STERK VERKOOP", "VERKOOP", "LICHT VERKOOP"):
+            overall = "CAUTION (overextended)"
+            conflict_note = (conflict_note + " " if conflict_note else "") + \
+                "Prijs bij de 1.618-TP-zone (duidelijke winstzone) - voorzichtig (overextended), geen automatische verkoop."
+
     if reasons_c:
         conflict_note = (conflict_note + " " if conflict_note else "") + " | ".join(reasons_c)
 
