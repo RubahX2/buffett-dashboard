@@ -1908,7 +1908,7 @@ def update_timeline(timeline: dict, name: str, ind: dict):
 def atomic_write(path: str, data: dict):
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=True, default=str)
+        json.dump(_sanitize_json(data), f, indent=2, ensure_ascii=True, allow_nan=False, default=str)
     os.replace(tmp, path)
 
 # ── WEKELIJKSE CHANGELOG ──────────────────────────────────────────────────────
@@ -2124,6 +2124,32 @@ def load_track_record():
     return {"_meta": {"created": NOW.isoformat()}, "records": {}}
 
 # ── MAIN ──────────────────────────────────────────────────────────────────────
+
+def _sanitize_json(obj):
+    """Vervang NaN/Infinity door None zodat de output GELDIGE JSON is.
+    JSON kent geen NaN/Infinity; Safari's parser weigert ze ('Unexpected identifier NaN').
+    Recursief over dicts, lists en losse floats."""
+    import math as _m
+    if isinstance(obj, float):
+        if _m.isnan(obj) or _m.isinf(obj):
+            return None
+        return obj
+    if isinstance(obj, dict):
+        return {k: _sanitize_json(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_sanitize_json(v) for v in obj]
+    # numpy floats/ints afvangen
+    try:
+        import numpy as _np
+        if isinstance(obj, _np.floating):
+            f = float(obj)
+            return None if (_m.isnan(f) or _m.isinf(f)) else f
+        if isinstance(obj, _np.integer):
+            return int(obj)
+    except Exception:
+        pass
+    return obj
+
 def main():
     print(f"\n{'='*60}")
     print(f"BUFFETT+ v2 — {NOW.strftime('%A %d %B %Y %H:%M')} Brussels")
