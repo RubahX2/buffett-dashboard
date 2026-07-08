@@ -349,7 +349,8 @@ def calc_fibonacci(swing_low: float, swing_high: float,
         return round(_m.exp(log_hi - pct * log_rng), 2)
     retr = {lbl: _logretr(pct) for lbl, pct in
             [("0.000",0.000),("0.236",0.236),("0.382",0.382),("0.500",0.500),
-             ("0.618",0.618),("0.705",0.705),("0.786",0.786),("0.886",0.886),("1.000",1.000)]}
+             ("0.618",0.618),("0.705",0.705),("0.786",0.786),("0.886",0.886),("1.000",1.000),
+             ("1.272",1.272),("1.618",1.618)]}
     gp_low  = _logretr(0.705)   # dieper (lagere prijs)
     gp_high = _logretr(0.618)   # ondieper (hogere prijs)
 
@@ -359,7 +360,7 @@ def calc_fibonacci(swing_low: float, swing_high: float,
     if e_hi <= e_lo or e_lo <= 0:
         e_lo, e_hi = swing_low, swing_high
     ext = {lbl: _logfib(e_lo, e_hi, pct) for lbl, pct in
-           [("1.000",1.000),("1.272",1.272),("1.414",1.414),
+           [("0.000",0.000),("1.000",1.000),("1.272",1.272),("1.414",1.414),
             ("1.618",1.618),("1.818",1.818),("2.000",2.000),("2.618",2.618)]}
 
     return {"retracements": retr, "extensions": ext,
