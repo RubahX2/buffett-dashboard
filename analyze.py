@@ -1013,6 +1013,165 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
                 "title":"Uptrend (MONTHLY) ⭐",
                 "detail":f"Monthly trendscore {tr_m}/100 — stijgend op de hoogste timeframe."})
 
+    # ── 12. TAKE-PROFIT-ZONE SIGNALEN (fib-extensies) ──────────────────────────
+    # Twee mechanismen, zoals besproken:
+    #  A) NABIJ een TP-extensie komen → verkoopsignaal. De 1.618 is het hoofdsignaal
+    #     (zwaar, voor élk aandeel). De lagere zones (1.272/1.414) wegen zwaarder bij
+    #     baggers (volatiel, lagere prijzen komen snel) dan bij kwaliteitsaandelen
+    #     (die hou je langer vast; een gemiste lagere-TP-verkoop is minder erg).
+    #  B) TERUGVAL uit een TP-zone met verzwakkend momentum (MACD-kruising op meerdere
+    #     timeframes + dalend volume) → verkoopsignaal. Dit is het "de draai is al
+    #     begonnen"-geval (PL terug van 1.618; IONQ/QBTS onder resistance 1.272).
+    is_bagger = name in BAGGER_TICKERS
+    exts = fib.get("extensions", {}) if fib else {}
+
+    # TWEE tijdshorizonnen voor de twee fases:
+    #  - VERKOOP (fase 1): verse terugval → kort venster (~3 maanden / 65 dagen).
+    #    Na 3 maanden is een terugval geen actueel verkoopmoment meer.
+    #  - KOOP (fase 2): uitgebodemd na TP → lang venster. De TP-aanraking mag lang
+    #    geleden zijn; de instap hangt af van de HUIDIGE reversal, niet van recentheid.
+    sell_win = min(len(daily), 65)     # ~3 maanden voor de verkoop-terugval
+    sell_high = float(daily["High"].iloc[-sell_win:].max()) if sell_win >= 20 else last
+    # Voor fase 2: de grote TP-piek over de hele dataperiode (kan >1 jaar geleden zijn)
+    long_high = float(daily["High"].max())
+
+    def _ext_val(lbl):
+        try: return exts.get(lbl)
+        except: return None
+
+    # ── A) Prijs NABIJ een TP-extensie (binnen 3%) ──
+    e1618 = _ext_val("1.618")
+    if e1618 and prox_pct(last, e1618) < 3.0:
+        signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":6,"icon":"🎯",
+            "title":"Bij 1.618 TP-zone ⭐⭐ (winst nemen)",
+            "detail":f"Prijs ${last:.2f} bij de 1.618-extensie (${e1618:.2f}) — de kern-"
+                     "winstnemingszone. Historisch een sterk verkooppunt, geen instap."})
+    else:
+        # Lagere TP-zones: gewicht hangt af van bedrijfstype
+        for lbl in ("1.414", "1.272"):
+            lvl = _ext_val(lbl)
+            if lvl and prox_pct(last, lvl) < 3.0:
+                w = 4 if is_bagger else 2   # baggers: zwaarder; kwaliteit: lichter
+                extra = " (bagger — lagere prijzen komen snel)" if is_bagger else ""
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":w,"icon":"🎯",
+                    "title":f"Bij {lbl} TP-zone{' ⭐' if is_bagger else ''} (winst nemen)",
+                    "detail":f"Prijs ${last:.2f} bij de {lbl}-extensie (${lvl:.2f}) — "
+                             f"winstnemingszone{extra}."})
+                break
+
+    # ── B) TERUGVAL uit een TP-zone met verzwakkend momentum ──
+    # Voorwaarden: (1) recente high raakte een TP-extensie ≥1.272, (2) prijs is nu
+    # merkbaar teruggevallen van die high, (3) MACD kruist op ≥2 timeframes, (4) dalend
+    # volume of onder de high. Dit vangt PL/IONQ/QBTS: de draai vanaf de TP is bezig.
+    # Fase 1: raakte de prijs in de LAATSTE 3 MAANDEN een TP-zone? (verse terugval)
+    tp_recent = None
+    for lbl in ("1.618", "1.414", "1.272"):
+        lvl = _ext_val(lbl)
+        if lvl and sell_high >= lvl * 0.98:
+            tp_recent = (lbl, lvl); break
+    # Fase 2: raakte de prijs OOIT (hele periode) een TP-zone? (voor uitbodem-instap)
+    tp_ever = None
+    for lbl in ("1.618", "1.414", "1.272"):
+        lvl = _ext_val(lbl)
+        if lvl and long_high >= lvl * 0.98:
+            tp_ever = (lbl, lvl); break
+
+    # ── FASE 1: VERSE TERUGVAL uit TP → verkoopsignaal ──
+    if tp_recent:
+        lbl, lvl = tp_recent
+        pulled_back = last < sell_high * 0.92   # ≥8% terug van de recente (3mnd) high
+        macd_turning = _macd_rolling_over(daily["Close"], close_w, close_m)
+        # Weekly/monthly MACD bearish gekruist telt zwaar mee
+        wk_bear = False; mo_bear = False
+        if close_w is not None and len(close_w) >= 35:
+            mwl, mws, _ = calc_macd(close_w)
+            wk_bear = safe_last(mwl) is not None and safe_last(mws) is not None and safe_last(mwl) < safe_last(mws)
+        if close_m is not None and len(close_m) >= 35:
+            mml, mms, _ = calc_macd(close_m)
+            mo_bear = safe_last(mml) is not None and safe_last(mms) is not None and safe_last(mml) < safe_last(mms)
+        vol_declining = False
+        if "Volume" in daily.columns and len(daily) >= 15:
+            v = daily["Volume"].dropna()
+            if len(v) >= 10:
+                vol_declining = v.iloc[-10:].mean() < v.iloc[-30:-10].mean() if len(v) >= 30 else False
+        # Momentum verzwakt als: MACD draait op ≥1 TF, OF weekly/monthly al bearish gekruist
+        momentum_weak = len(macd_turning) >= 1 or wk_bear or mo_bear
+
+        # ── KANTELPUNT: nog vallend (verkoop) vs uitgebodemd (instapkans) ──
+        # Zodra de reversal-tekenen verschijnen — RSI oversold, weekly MACD keert,
+        # verkoopvolume daalt — is de daling waarschijnlijk uitgewerkt. Dan vervalt
+        # het TP-verkoopsignaal en wordt dit een goede langetermijn-instap (niet per
+        # se de bodem, wel gunstig risico). Zelfde reversal-logica als monthly licht-bearish.
+        rsi_d_now = safe_last(calc_rsi(daily["Close"], 14), 50.0)
+        rsi_w_now = safe_last(calc_rsi(close_w, 14), 50.0) if close_w is not None and len(close_w) >= 15 else 50.0
+        oversold = rsi_d_now < 40 or rsi_w_now < 40
+        # Weekly MACD keert: histogram draait omhoog (niet meer dalend)
+        wk_macd_turning_up = False
+        if close_w is not None and len(close_w) >= 35:
+            mwl, mws, _ = calc_macd(close_w)
+            wh = (mwl - mws).dropna()
+            if len(wh) >= 2:
+                wk_macd_turning_up = wh.iloc[-1] > wh.iloc[-2]
+        # Prijs stabiliseert (niet meer in vrije val): laatste 3 weken niet gestaag lager
+        price_stabilizing = False
+        if close_w is not None and len(close_w) >= 4:
+            c1, c2, c3 = close_w.iloc[-1], close_w.iloc[-2], close_w.iloc[-3]
+            price_stabilizing = not (c1 < c2 < c3)
+        # Reversal bevestigd: prijs stabiel + minstens 2 van (oversold, weekly MACD keert, dalend volume)
+        reversal_confirmed = price_stabilizing and (
+            sum([oversold, wk_macd_turning_up, vol_declining]) >= 2)
+
+        if pulled_back and momentum_weak:
+            # Nog vallend → verkoopsignaal (fase 1)
+            w = 6 if is_bagger else 5
+            redenen = []
+            if wk_bear: redenen.append("weekly MACD bearish")
+            if mo_bear: redenen.append("monthly MACD bearish")
+            if macd_turning: redenen.append(f"MACD draait op {len(macd_turning)} TF")
+            if vol_declining: redenen.append("dalend volume")
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":w,"icon":"📉",
+                "title":f"Terugval uit {lbl} TP-zone " + ("⭐⭐" if is_bagger else "⭐"),
+                "detail":f"Prijs zakte {(1-last/sell_high)*100:.0f}% van de recente top "
+                         f"(${sell_high:.2f}, bij de {lbl}-TP-zone). "
+                         + ", ".join(redenen) +
+                         " — de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."})
+
+    # ── FASE 2: UITGEBODEMD na een (mogelijk lang geleden) TP-aanraking → instapkans ──
+    # Onafhankelijk van fase 1: het aandeel raakte ooit een TP-zone, viel diep terug,
+    # en bodemt nu uit met bevestigde reversal-tekenen. Alleen als het NIET meer in een
+    # verse terugval zit (dat zou fase 1 = verkoop zijn) en flink onder de TP-piek staat.
+    if tp_ever and not (tp_recent and last < sell_high * 0.92):
+        lbl_e, lvl_e = tp_ever
+        deep_below_tp = last < lvl_e * 0.75   # minstens 25% onder de TP-piek = echt teruggevallen
+        rsi_d2 = safe_last(calc_rsi(daily["Close"], 14), 50.0)
+        rsi_w2 = safe_last(calc_rsi(close_w, 14), 50.0) if close_w is not None and len(close_w) >= 15 else 50.0
+        oversold2 = rsi_d2 < 45 or rsi_w2 < 45
+        wk_up2 = False
+        if close_w is not None and len(close_w) >= 35:
+            mwl2, mws2, _ = calc_macd(close_w)
+            wh2 = (mwl2 - mws2).dropna()
+            if len(wh2) >= 2: wk_up2 = wh2.iloc[-1] > wh2.iloc[-2]
+        stab2 = False
+        if close_w is not None and len(close_w) >= 4:
+            stab2 = not (close_w.iloc[-1] < close_w.iloc[-2] < close_w.iloc[-3])
+        vol_decl2 = False
+        if "Volume" in daily.columns and len(daily) >= 30:
+            v2 = daily["Volume"].dropna()
+            if len(v2) >= 30: vol_decl2 = v2.iloc[-10:].mean() < v2.iloc[-30:-10].mean()
+        reversal2 = stab2 and (sum([oversold2, wk_up2, vol_decl2]) >= 2)
+        if deep_below_tp and reversal2:
+            w = 3 if is_bagger else 5
+            tekenen = []
+            if oversold2: tekenen.append("oversold")
+            if wk_up2: tekenen.append("weekly MACD keert")
+            if vol_decl2: tekenen.append("verkoopvolume daalt")
+            voorzichtig = " (bagger - klein instappen, dieper dal mogelijk)" if is_bagger else ""
+            signals.append({"type":"BUY","cat":"FIB","tf":"TP","weight":w,"icon":"🟢",
+                "title":"Uitgebodemd na TP-terugval " + ("" if is_bagger else "⭐"),
+                "detail":f"Na een diepe terugval van de {lbl_e}-TP-zone (${lvl_e:.2f}) "
+                         f"stabiliseert de prijs op ${last:.2f}: " + ", ".join(tekenen) +
+                         f". Niet per se de bodem, wel een gunstige langetermijn-instap{voorzichtig}."})
+
     # ── Conflict + score ──
     buy_sigs  = [s for s in signals if s["type"] == "BUY"]
     sell_sigs = [s for s in signals if s["type"] == "SELL"]
