@@ -1039,25 +1039,70 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
         try: return exts.get(lbl)
         except: return None
 
-    # ── A) Prijs NABIJ een TP-extensie (binnen 3%) ──
-    e1618 = _ext_val("1.618")
-    if e1618 and prox_pct(last, e1618) < 3.0:
-        signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":6,"icon":"🎯",
-            "title":"Bij 1.618 TP-zone ⭐⭐ (winst nemen)",
-            "detail":f"Prijs ${last:.2f} bij de 1.618-extensie (${e1618:.2f}) — de kern-"
-                     "winstnemingszone. Historisch een sterk verkooppunt, geen instap."})
+    # ── A) Prijs NABIJ een TP-extensie ──────────────────────────────────────────
+    # Fibs zijn ZONES, geen exacte lijnen (prox 4%). De reactie hangt af van het niveau
+    # én het bedrijfstype, en werkt als CONFLUENCE-BIJDRAGE (gewogen), geen veto:
+    #
+    #   KWALITEIT: 1.618 → CAUTION (geen verkoop; winst laten lopen, zoals GOOG die door
+    #              1.618 brak en verdubbelde). 1.818 → licht verkoop (w5). 2.000 → verkoop
+    #              (w6). 2.618 → sterk verkoop (w8, uitzonderlijk ver).
+    #   BAGGER:    1.618 → sterk verkoop (w6, keert harder terug). 2.618 → sterk verkoop (w8).
+    #
+    # Gewichten verankerd op de zwaarste momentum-signalen (weekly/monthly MACD = 4):
+    # de fib weegt iets zwaarder, oplopend met de extensie-diepte.
+    PROX = 4.0
+    def _near(lbl):
+        v = _ext_val(lbl)
+        return v is not None and prox_pct(last, v) < PROX
+
+    tp_fired = False
+    if is_bagger:
+        # Baggers: verkoop rond 1.618, sterk verkoop bij 2.618
+        if _near("2.618"):
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":8,"icon":"🎯",
+                "title":"Bij 2.618 TP-zone ⭐⭐⭐ (uitzonderlijk — winst nemen)",
+                "detail":f"Prijs ${last:.2f} bij de 2.618-extensie (${_ext_val('2.618'):.2f}). "
+                         "Uitzonderlijk ver in de winstzone voor een bagger — sterk verkooppunt."})
+            tp_fired = True
+        elif _near("2.000"):
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":7,"icon":"🎯",
+                "title":"Bij 2.0 TP-zone ⭐⭐ (winst nemen)",
+                "detail":f"Prijs ${last:.2f} bij de 2.0-extensie (${_ext_val('2.000'):.2f}) — diep in de winstzone."})
+            tp_fired = True
+        elif _near("1.818") or _near("1.618"):
+            lbl = "1.818" if _near("1.818") else "1.618"
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":6,"icon":"🎯",
+                "title":f"Bij {lbl} TP-zone ⭐⭐ (winst nemen)",
+                "detail":f"Prijs ${last:.2f} bij de {lbl}-extensie (${_ext_val(lbl):.2f}) — "
+                         "kern-winstzone. Baggers keren hier vaak hard terug; sterk verkooppunt."})
+            tp_fired = True
     else:
-        # Lagere TP-zones: gewicht hangt af van bedrijfstype
-        for lbl in ("1.414", "1.272"):
-            lvl = _ext_val(lbl)
-            if lvl and prox_pct(last, lvl) < 3.0:
-                w = 4 if is_bagger else 2   # baggers: zwaarder; kwaliteit: lichter
-                extra = " (bagger — lagere prijzen komen snel)" if is_bagger else ""
-                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":w,"icon":"🎯",
-                    "title":f"Bij {lbl} TP-zone{' ⭐' if is_bagger else ''} (winst nemen)",
-                    "detail":f"Prijs ${last:.2f} bij de {lbl}-extensie (${lvl:.2f}) — "
-                             f"winstnemingszone{extra}."})
-                break
+        # Kwaliteit: 1.618 = CAUTION (geen verkoop), oplopend naar sterk verkoop bij 2.618
+        if _near("2.618"):
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":8,"icon":"🎯",
+                "title":"Bij 2.618 TP-zone ⭐⭐⭐ (uitzonderlijk — winst nemen)",
+                "detail":f"Prijs ${last:.2f} bij de 2.618-extensie (${_ext_val('2.618'):.2f}). "
+                         "Zelfs voor kwaliteit uitzonderlijk ver — sterk verkooppunt."})
+            tp_fired = True
+        elif _near("2.000"):
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":6,"icon":"🎯",
+                "title":"Bij 2.0 TP-zone ⭐⭐ (winst nemen)",
+                "detail":f"Prijs ${last:.2f} bij de 2.0-extensie (${_ext_val('2.000'):.2f}) — diep in de winstzone."})
+            tp_fired = True
+        elif _near("1.818"):
+            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":5,"icon":"🎯",
+                "title":"Bij 1.818 TP-zone ⭐ (licht winst nemen)",
+                "detail":f"Prijs ${last:.2f} bij de 1.818-extensie (${_ext_val('1.818'):.2f}). "
+                         "Ver in de winstzone; overweeg deels winst te nemen."})
+            tp_fired = True
+        elif _near("1.618"):
+            # CAUTION, geen verkoop: winst laten lopen (GOOG brak door 1.618 en verdubbelde)
+            signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
+                "title":"Bij 1.618 TP-zone — overextended",
+                "detail":f"Prijs ${last:.2f} bij de 1.618-extensie (${_ext_val('1.618'):.2f}). "
+                         "Kern-winstzone, maar kwaliteitsaandelen breken hier vaak dwars doorheen. "
+                         "Voorzichtig (overextended), geen automatisch verkoopsignaal."})
+            tp_fired = True
 
     # ── B) TERUGVAL uit een TP-zone met verzwakkend momentum ──
     # Voorwaarden: (1) recente high raakte een TP-extensie ≥1.272, (2) prijs is nu
@@ -1193,21 +1238,27 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
     # 8-EMA is rijp voor terugval — dan mag "STERK KOOP" niet blijven staan, hoe
     # sterk de trend ook is. Dit vangt precies de overextended-markt-situatie.
     overext_flags = []
-    # a) Prijs in/nabij een echte take-profit-extensie (≥1.272)?
-    tp_zone = False
-    for lbl, lvl in fib.get("extensions", {}).items():
-        try:
-            if float(lbl) >= 1.272 and prox_pct(last, lvl) < 2.5:
-                tp_zone = True; break
-        except (ValueError, TypeError):
-            pass
+    # a) Zit de prijs in/nabij een take-profit-zone? We gebruiken hetzelfde signaal
+    #    dat het genuanceerde fib-TP-blok hierboven al bepaalde (prox 4%, ≥1.272).
+    #    Zo vloeken de twee niet: één bron van waarheid voor "bij een TP-zone".
+    near_tp_zone = any(
+        (_ext_val(l) is not None and prox_pct(last, _ext_val(l)) < 4.0)
+        for l in ("1.272", "1.414", "1.618", "1.818", "2.000", "2.618")
+    )
     # b) Ver boven 8-EMA op weekly/monthly?
     wk_close = weekly["Close"] if (weekly is not None and len(weekly) >= 10) else None
     mo_close = monthly["Close"] if (monthly is not None and len(monthly) >= 10) else None
     overext_pen, overext_detail = _overextension_penalty(wk_close, mo_close)
     far_above_ema = overext_pen >= 12   # substantieel boven de 8-EMA
-    if tp_zone:        overext_flags.append("take-profit-zone")
-    if far_above_ema:  overext_flags.append(f"ver boven 8-EMA {overext_detail}")
+    # KERN-FIX (NET): 'ver boven 8-EMA' telt ALLEEN als overextensie mee wanneer de prijs
+    # OOK in de buurt van een TP-zone zit. Een verse uitbraak boven de vorige top (ver
+    # boven 8-EMA maar nog lang niet bij een TP-zone) is GEZOND, geen overextensie —
+    # anders straffen we een uitbraak af (zoals NET die net boven de 1.0 uitbreekt).
+    if near_tp_zone and far_above_ema:
+        overext_flags.append(f"bij TP-zone én ver boven 8-EMA {overext_detail}")
+    # Een fib-CAUTION-signaal (kwaliteit bij 1.618) zet de overextensie-status ook aan.
+    if any(s.get("type") == "CAUTION" and s.get("cat") == "FIB" for s in signals):
+        overext_flags.append("bij 1.618 TP-zone (overextended)")
 
     if   net >=  8: base_overall = "STERK KOOP"
     elif net >=  4: base_overall = "KOOP"
