@@ -141,13 +141,14 @@ WATCHLIST = [
     ("KEYENCE",  "6861.T",  "KYCCF"),# Keyence (Tokio, ¥)
     ("FANUC",    "6954.T",  "FANUY"),# Fanuc (Tokio, ¥)
     ("YASKAWA",  "6506.T",  "YASKY"),# Yaskawa (Tokio, ¥)
-    ("ABB",      "ABB",     None),   # ABB (NYSE-notering, $)
     ("SOFTBANK", "9984.T",  "SFTBY"),# SoftBank Group (Tokio, ¥)
     ("ROK",      "ROK",     None),   # Rockwell Automation
     ("TER",      "TER",     None),   # Teradyne
     ("ISRG",     "ISRG",    None),   # Intuitive Surgical
     ("CGNX",     "CGNX",    None),   # Cognex
     ("NOVT",     "NOVT",    None),   # Novanta
+    ("ANET",     "ANET",    None),   # Arista Networks (AI-netwerken)
+    ("HOOD",     "HOOD",    None),   # Robinhood Markets (fintech-broker)
     # ── Quantum: 100x-bagger testkandidaten ──
     ("IONQ",     "IONQ",    None),   # IonQ
     ("RGTI",     "RGTI",    None),   # Rigetti
@@ -181,6 +182,8 @@ FUNDAMENTALS = {
     "ASMI":  {"pe":44.9,  "roe":21.6, "fcfYield":2.9,  "debtEquity":0.01, "netMargin":23.9, "divYield":0.3,  "revenueGrowth":12.0,  "eps":23.75, "mktCap":"$52B",   "beta":1.50, "lastUpdated":"2026-06"},
     "MU":    {"pe":25.3,  "roe":66.6, "fcfYield":2.1,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.05, "revenueGrowth":125.0, "eps":44.80, "mktCap":"$1280B", "beta":2.17, "lastUpdated":"2026-06"},
     "GOOGL": {"pe":19.8,  "roe":31.5, "fcfYield":4.2,  "debtEquity":0.07, "netMargin":28.6, "divYield":0.5,  "revenueGrowth":14.0,  "eps":9.15,  "mktCap":"$2200B", "beta":1.05, "lastUpdated":"2026-06"},
+    "ANET":  {"pe":54.0,  "roe":31.5, "fcfYield":2.7,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.0,  "eps":3.15,  "mktCap":"$155B",  "beta":1.61, "lastUpdated":"2026-06"},
+    "HOOD":  {"pe":44.0,  "roe":21.5, "fcfYield":2.5,  "debtEquity":1.40, "netMargin":35.0, "divYield":0,    "revenueGrowth":15.0,  "eps":2.07,  "mktCap":"$101B",  "beta":2.35, "lastUpdated":"2026-06"},
     "AMZN":  {"pe":27.2,  "roe":24.3, "fcfYield":2.8,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":11.0,  "eps":8.36,  "mktCap":"$2440B", "beta":1.44, "lastUpdated":"2026-06"},
     "ORCL":  {"pe":31.6,  "roe":53.4, "fcfYield":4.2,  "debtEquity":3.63, "netMargin":25.2, "divYield":1.3,  "revenueGrowth":15.0,  "eps":5.83,  "mktCap":"$438B",  "beta":1.65, "lastUpdated":"2026-06"},
     "KO":    {"pe":25.5,  "roe":43.4, "fcfYield":3.3,  "debtEquity":1.25, "netMargin":27.8, "divYield":3.0,  "revenueGrowth":3.5,   "eps":2.91,  "mktCap":"$320B",  "beta":0.36, "lastUpdated":"2026-06"},
@@ -239,7 +242,6 @@ FUNDAMENTALS = {
     "KEYENCE":{"pe":37.0, "roe":13.5,"fcfYield":2.0, "debtEquity":0.00, "netMargin":37.0, "divYield":0.7, "revenueGrowth":9.0,  "eps":1850,  "mktCap":"¥16.5T", "beta":0.95, "lastUpdated":"2026-01"},
     "FANUC": {"pe":27.0, "roe":8.0,  "fcfYield":2.5, "debtEquity":0.00, "netMargin":16.0, "divYield":2.2, "revenueGrowth":5.0,  "eps":160,   "mktCap":"¥4.3T",  "beta":0.90, "lastUpdated":"2026-01"},
     "YASKAWA":{"pe":26.0, "roe":11.0,"fcfYield":2.0, "debtEquity":0.20, "netMargin":8.5,  "divYield":1.6, "revenueGrowth":6.0,  "eps":165,   "mktCap":"¥1.1T",  "beta":1.20, "lastUpdated":"2026-01"},
-    "ABB":   {"pe":29.0, "roe":29.0, "fcfYield":3.2, "debtEquity":0.50, "netMargin":14.5, "divYield":1.7, "revenueGrowth":6.0,  "eps":2.1,   "mktCap":"$115B",  "beta":1.10, "lastUpdated":"2026-01"},
     "SOFTBANK":{"pe":14.0,"roe":14.0,"fcfYield":0.5, "debtEquity":1.60, "netMargin":18.0, "divYield":0.4, "revenueGrowth":8.0,  "eps":1300,  "mktCap":"¥17T",   "beta":2.20, "lastUpdated":"2026-01"},
     "ROK":   {"pe":31.0, "roe":33.0, "fcfYield":3.0, "debtEquity":1.00, "netMargin":13.5, "divYield":1.5, "revenueGrowth":4.0,  "eps":10.5,  "mktCap":"$37B",   "beta":1.20, "lastUpdated":"2026-01"},
     "TER":   {"pe":36.0, "roe":21.0, "fcfYield":2.2, "debtEquity":0.05, "netMargin":19.0, "divYield":0.4, "revenueGrowth":12.0, "eps":3.6,   "mktCap":"$21B",   "beta":1.50, "lastUpdated":"2026-01"},
@@ -1250,6 +1252,72 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
                          f"stabiliseert de prijs op ${last:.2f}: " + ", ".join(tekenen) +
                          f". Niet per se de bodem, wel een gunstige langetermijn-instap{voorzichtig}."})
 
+    # ── 13. EMA-SIGNALEN (8/21 kruis) ─────────────────────────────────────────────
+    # De EMA's zijn een volwaardige signaalbron naast de fibs. Drie gevallen:
+    #  A) HET ULTIEME KOOPSIGNAAL: 8/21 weekly goudkruis NA een lange downtrend, met
+    #     oversold weekly + bodempatroon + monthly-bevestiging (volume lang laag, MACD
+    #     krult omhoog). Bij kwaliteit OVERRULET dit alles → STERK KOOP. Zeldzaam en sterk.
+    #  B) Alleen een 8/21 weekly goudkruis (zonder de volledige combinatie): een
+    #     koopsignaal dat HEEL ZWAAR weegt (w8), maar niet overrulet.
+    #  C) 8/21 weekly bearish kruis bij/na een top: een duidelijk zichtbaar VERKOOPsignaal
+    #     (voorheen verstopt in de confluence).
+    ema_ultimate_buy = False
+    wt = _weekly_turn(weekly)
+    if wt:
+        cross_up = wt.get("emaCrossUp", False)
+        cross_down = wt.get("emaCrossDown", False)
+        # "Recent oversold": RSI weekly dook in de afgelopen ~10 weken onder 40. Bij een
+        # bodem-dan-kruis patroon ligt de oversold-dip zelden op exact de kruis-candle;
+        # de bodem vormt zich oversold en het goudkruis bevestigt een paar weken later.
+        ovs_w = wt.get("oversold", False)   # RSI weekly nu < 40
+        if not ovs_w and weekly is not None and len(weekly) >= 20:
+            _rsi_w_series = calc_rsi(weekly["Close"], 14)
+            _recent = _rsi_w_series.iloc[-10:]
+            ovs_recent = bool((_recent < 40).any())
+        else:
+            ovs_recent = ovs_w
+
+        # Bodempatroon + lange downtrend: prijs kwam van een diepe daling en vormt een
+        # basis. We meten of de prijs in de laatste ~2 jaar fors onder een eerdere top
+        # lag (downtrend) en nu stabiliseert (recente low niet veel lager dan 3mnd geleden).
+        long_downtrend = False
+        bodem_basis = False
+        if len(daily) >= 250:
+            hi_2y = float(daily["High"].iloc[-500:].max()) if len(daily) >= 500 else float(daily["High"].max())
+            if last < hi_2y * 0.6:          # minstens 40% onder de 2-jaars top = echte downtrend
+                long_downtrend = True
+            recent_low = float(daily["Low"].iloc[-65:].min())     # laatste ~3mnd
+            prev_low = float(daily["Low"].iloc[-130:-65].min()) if len(daily) >= 130 else recent_low
+            if recent_low >= prev_low * 0.95:  # niet veel lager = basis aan het vormen
+                bodem_basis = True
+
+        # Monthly-bevestiging: volume lang minder + MACD krult omhoog.
+        # _monthly_state geeft (state, detail); de vlaggen zitten in detail.
+        _ms, _md = _monthly_state(monthly)
+        m_confirm = _md.get("volDeclining", False) and _md.get("macdRising", False)
+
+        # A) ULTIEME KOOP: alle voorwaarden samen
+        if cross_up and ovs_recent and long_downtrend and bodem_basis and m_confirm:
+            ema_ultimate_buy = True
+            extra = " Voor kwaliteit het sterkste instapmoment." if not is_bagger else ""
+            signals.append({"type":"BUY","cat":"EMA","tf":"1W","weight":10,"icon":"🚀",
+                "title":"ULTIEM koopmoment ⭐⭐⭐ (8/21 goudkruis na downtrend)",
+                "detail":f"Weekly 8/21-EMA goudkruis na een lange downtrend, oversold (RSI "
+                         f"{wt.get('rsi')}), bodempatroon, én monthly bevestigt (volume lang "
+                         f"laag, MACD krult omhoog).{extra} Zeldzame samenloop van steun-signalen."})
+        # B) Alleen goudkruis: zwaar koopsignaal, geen overrule
+        elif cross_up:
+            signals.append({"type":"BUY","cat":"EMA","tf":"1W","weight":8,"icon":"📈",
+                "title":"Weekly 8/21-EMA goudkruis ⭐⭐",
+                "detail":f"De 8-EMA kruist boven de 21-EMA op weekly (RSI {wt.get('rsi')}) — "
+                         "een sterk momentum-omslagsignaal. Weegt zwaar mee."})
+        # C) Bearish kruis bij/na een top: zichtbaar verkoopsignaal
+        elif cross_down:
+            signals.append({"type":"SELL","cat":"EMA","tf":"1W","weight":6,"icon":"📉",
+                "title":"Weekly 8/21-EMA bearish kruis ⭐⭐",
+                "detail":f"De 8-EMA kruist onder de 21-EMA op weekly (RSI {wt.get('rsi')}) — "
+                         "momentum draait bearish. Vaak het begin van een correctie na een top."})
+
     # ── Conflict + score ──
     buy_sigs  = [s for s in signals if s["type"] == "BUY"]
     sell_sigs = [s for s in signals if s["type"] == "SELL"]
@@ -1387,6 +1455,15 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
 
     if reasons_c:
         conflict_note = (conflict_note + " " if conflict_note else "") + " | ".join(reasons_c)
+
+    # ── 7. ULTIEME-KOOP OVERRULE: bij kwaliteit overrulet het ultieme EMA-koopsignaal
+    # ALLES → STERK KOOP. De zeldzame samenloop (goudkruis na downtrend + oversold +
+    # bodempatroon + monthly-bevestiging) wil je bij kwaliteit niet missen, ook niet als
+    # er nog wat bearish ruis of een TP-caution meespeelt.
+    if ema_ultimate_buy and not is_bagger:
+        overall = "STERK KOOP"
+        conflict_note = (conflict_note + " " if conflict_note else "") + \
+            "Ultiem EMA-koopmoment (goudkruis na downtrend + oversold + bodem + monthly-bevestiging) - overrulet naar sterk koop voor kwaliteit."
 
     return {
         "signals": signals, "alerts": alerts, "overall": overall,
