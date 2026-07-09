@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-07-08T22:28:06.296260+02:00"
+    "lastUpdate": "2026-07-09T18:47:06.255603+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -17,7 +17,15 @@
         "valuation": 90,
         "timing": 70
       },
-      "outcomes": {}
+      "outcomes": {
+        "1w": {
+          "exitDate": "2026-07-09",
+          "exitPrice": 1010.73,
+          "return": 5.09,
+          "relativeReturn": 4.07,
+          "success": true
+        }
+      }
     },
     "monthly_pick:MU:2026-07-03": {
       "ticker": "MU",
@@ -1207,13 +1215,226 @@
         "timing": 45
       },
       "outcomes": {}
+    },
+    "monthly_pick:MU:2026-07-09": {
+      "ticker": "MU",
+      "type": "monthly_pick",
+      "direction": "BUY",
+      "date": "2026-07-09",
+      "entryPrice": 1010.73,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "composite": 73,
+        "quality": 95,
+        "valuation": 90,
+        "timing": 38
+      },
+      "outcomes": {}
+    },
+    "strong_signal:PLTR:2026-07-09": {
+      "ticker": "PLTR",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 126.99,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 58,
+        "timing": 24
+      },
+      "outcomes": {}
+    },
+    "strong_signal:CAT:2026-07-09": {
+      "ticker": "CAT",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 954.57,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 36,
+        "timing": 32
+      },
+      "outcomes": {}
+    },
+    "strong_signal:MU:2026-07-09": {
+      "ticker": "MU",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 1010.73,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 73,
+        "timing": 38
+      },
+      "outcomes": {}
+    },
+    "strong_signal:GOOGL:2026-07-09": {
+      "ticker": "GOOGL",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 355.15,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 57,
+        "timing": 36
+      },
+      "outcomes": {}
+    },
+    "strong_signal:ORCL:2026-07-09": {
+      "ticker": "ORCL",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 145.13,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 56,
+        "timing": 28
+      },
+      "outcomes": {}
+    },
+    "strong_signal:KTOS:2026-07-09": {
+      "ticker": "KTOS",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 49.31,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 33,
+        "timing": 30
+      },
+      "outcomes": {}
+    },
+    "strong_signal:III:2026-07-09": {
+      "ticker": "III",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 2658.0,
+      "benchEntry": 7532.5,
+      "currency": "p",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 64,
+        "timing": 14
+      },
+      "outcomes": {}
+    },
+    "strong_signal:NVDA:2026-07-09": {
+      "ticker": "NVDA",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 201.65,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 72,
+        "timing": 34
+      },
+      "outcomes": {}
+    },
+    "strong_signal:NFLX:2026-07-09": {
+      "ticker": "NFLX",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 74.57,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 65,
+        "timing": 26
+      },
+      "outcomes": {}
+    },
+    "strong_signal:BABA:2026-07-09": {
+      "ticker": "BABA",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 111.37,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 54,
+        "timing": 32
+      },
+      "outcomes": {}
+    },
+    "strong_signal:SOFTBANK:2026-07-09": {
+      "ticker": "SOFTBANK",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 5763.0,
+      "benchEntry": 7532.5,
+      "currency": "\u00a5",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 54,
+        "timing": 45
+      },
+      "outcomes": {}
+    },
+    "strong_signal:ISRG:2026-07-09": {
+      "ticker": "ISRG",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 411.65,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 47,
+        "timing": 26
+      },
+      "outcomes": {}
+    },
+    "strong_signal:SYM:2026-07-09": {
+      "ticker": "SYM",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-09",
+      "entryPrice": 42.72,
+      "benchEntry": 7532.5,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 28,
+        "timing": 25
+      },
+      "outcomes": {}
     }
   },
   "accuracy": {
     "monthly_pick": {
       "1w": {
-        "n": 0,
-        "status": "geen data",
+        "n": 1,
+        "avgReturn": 5.09,
+        "avgRelativeReturn": 4.07,
+        "status": "te weinig data (1/20)",
         "accuracyShown": false
       },
       "4w": {
