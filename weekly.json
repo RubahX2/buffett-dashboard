@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-09T18:47:06.255603+02:00",
-  "generatedAtHuman": "Thursday 09 July 2026 om 18:47",
+  "generatedAt": "2026-07-09T19:00:30.873058+02:00",
+  "generatedAtHuman": "Thursday 09 July 2026 om 19:00",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -104,7 +104,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 54 \u2193 34"
+          "text": "Composiet 54 \u2193 33"
         },
         {
           "type": "valuation",
@@ -135,7 +135,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -16.6% deze week ($100\u2192$84)"
+          "text": "Koers -16.9% deze week ($100\u2192$84)"
         }
       ]
     },
@@ -177,7 +177,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +15.8% deze week ($96\u2192$111)"
+          "text": "Koers +15.7% deze week ($96\u2192$111)"
         }
       ]
     },
@@ -357,22 +357,6 @@
       ]
     },
     {
-      "ticker": "OPEN",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 KOOP"
-        },
-        {
-          "type": "price",
-          "dir": "up",
-          "text": "Koers +8.2% deze week ($5\u2192$5)"
-        }
-      ]
-    },
-    {
       "ticker": "NET",
       "daysAgo": 4,
       "changes": [
@@ -384,7 +368,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +13.1% deze week ($242\u2192$274)"
+          "text": "Koers +12.7% deze week ($242\u2192$273)"
         }
       ]
     },
@@ -432,7 +416,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -12.1% deze week ($31\u2192$28)"
+          "text": "Koers -12.2% deze week ($31\u2192$28)"
         }
       ]
     },
@@ -448,18 +432,18 @@
       ]
     },
     {
-      "ticker": "SDGR",
+      "ticker": "OPEN",
       "daysAgo": 7,
       "changes": [
         {
           "type": "signal",
           "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 LICHT KOOP"
+          "text": "Signaal: NEUTRAAL \u2192 KOOP"
         }
       ]
     },
     {
-      "ticker": "BNGO",
+      "ticker": "SDGR",
       "daysAgo": 7,
       "changes": [
         {
@@ -536,6 +520,17 @@
       ]
     },
     {
+      "ticker": "DIE",
+      "daysAgo": 4,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 KOOP"
+        }
+      ]
+    },
+    {
       "ticker": "AIR",
       "daysAgo": 4,
       "changes": [
@@ -608,7 +603,18 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -8.4% deze week ($49\u2192$45)"
+          "text": "Koers -8.3% deze week ($49\u2192$45)"
+        }
+      ]
+    },
+    {
+      "ticker": "RGTI",
+      "daysAgo": 4,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT VERKOOP \u2192 VERKOOP"
         }
       ]
     },
@@ -630,11 +636,11 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -9.7% deze week ($2\u2192$2)"
+          "text": "Koers -9.2% deze week ($2\u2192$2)"
         }
       ]
     }
   ],
-  "changedCount": 41,
+  "changedCount": 42,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
