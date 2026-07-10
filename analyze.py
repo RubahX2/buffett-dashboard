@@ -149,6 +149,10 @@ WATCHLIST = [
     ("NOVT",     "NOVT",    None),   # Novanta
     ("ANET",     "ANET",    None),   # Arista Networks (AI-netwerken)
     ("HOOD",     "HOOD",    None),   # Robinhood Markets (fintech-broker)
+    ("TSCO",     "TSCO",    None),   # Tractor Supply (rurale retail, compounder)
+    ("ODFL",     "ODFL",    None),   # Old Dominion Freight Line (LTL-transport, moat)
+    ("HWM",      "HWM",     None),   # Howmet Aerospace (engine spares, aerospace)
+    ("SNDK",     "SNDK",    None),   # Sandisk (NAND-flash, AI-storage, cyclisch)
     # ── Quantum: 100x-bagger testkandidaten ──
     ("IONQ",     "IONQ",    None),   # IonQ
     ("RGTI",     "RGTI",    None),   # Rigetti
@@ -184,6 +188,10 @@ FUNDAMENTALS = {
     "GOOGL": {"pe":19.8,  "roe":31.5, "fcfYield":4.2,  "debtEquity":0.07, "netMargin":28.6, "divYield":0.5,  "revenueGrowth":14.0,  "eps":9.15,  "mktCap":"$2200B", "beta":1.05, "lastUpdated":"2026-06"},
     "ANET":  {"pe":54.0,  "roe":31.5, "fcfYield":2.7,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.0,  "eps":3.15,  "mktCap":"$155B",  "beta":1.61, "lastUpdated":"2026-06"},
     "HOOD":  {"pe":44.0,  "roe":21.5, "fcfYield":2.5,  "debtEquity":1.40, "netMargin":35.0, "divYield":0,    "revenueGrowth":15.0,  "eps":2.07,  "mktCap":"$101B",  "beta":2.35, "lastUpdated":"2026-06"},
+    "TSCO":  {"pe":14.6,  "roe":45.5, "fcfYield":3.6,  "debtEquity":0.70, "netMargin":6.9,  "divYield":2.5,  "revenueGrowth":4.3,   "eps":2.03,  "mktCap":"$16B",   "beta":0.75, "lastUpdated":"2026-07"},
+    "ODFL":  {"pe":40.0,  "roe":23.9, "fcfYield":1.9,  "debtEquity":0.03, "netMargin":18.5, "divYield":0.6,  "revenueGrowth":4.2,   "eps":4.85,  "mktCap":"$50B",   "beta":1.22, "lastUpdated":"2026-07"},
+    "HWM":   {"pe":62.0,  "roe":33.8, "fcfYield":1.5,  "debtEquity":0.88, "netMargin":20.2, "divYield":0.2,  "revenueGrowth":19.0,  "eps":4.35,  "mktCap":"$108B",  "beta":1.19, "lastUpdated":"2026-07"},
+    "SNDK":  {"pe":68.0,  "roe":39.3, "fcfYield":2.0,  "debtEquity":0.02, "netMargin":34.2, "divYield":0,    "revenueGrowth":97.0,  "eps":30.0,  "mktCap":"$300B",  "beta":2.50, "lastUpdated":"2026-07"},
     "AMZN":  {"pe":27.2,  "roe":24.3, "fcfYield":2.8,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":11.0,  "eps":8.36,  "mktCap":"$2440B", "beta":1.44, "lastUpdated":"2026-06"},
     "ORCL":  {"pe":31.6,  "roe":53.4, "fcfYield":4.2,  "debtEquity":3.63, "netMargin":25.2, "divYield":1.3,  "revenueGrowth":15.0,  "eps":5.83,  "mktCap":"$438B",  "beta":1.65, "lastUpdated":"2026-06"},
     "KO":    {"pe":25.5,  "roe":43.4, "fcfYield":3.3,  "debtEquity":1.25, "netMargin":27.8, "divYield":3.0,  "revenueGrowth":3.5,   "eps":2.91,  "mktCap":"$320B",  "beta":0.36, "lastUpdated":"2026-06"},
