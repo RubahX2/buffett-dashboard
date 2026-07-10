@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-07-10T08:13:14.832430+02:00"
+    "lastUpdate": "2026-07-10T16:10:21.242449+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -40,7 +40,15 @@
         "valuation": 90,
         "timing": 73
       },
-      "outcomes": {}
+      "outcomes": {
+        "1w": {
+          "exitDate": "2026-07-10",
+          "exitPrice": 980.07,
+          "return": 0.46,
+          "relativeReturn": -0.51,
+          "success": false
+        }
+      }
     },
     "monthly_pick:MU:2026-07-05": {
       "ticker": "MU",
@@ -1642,10 +1650,10 @@
   "accuracy": {
     "monthly_pick": {
       "1w": {
-        "n": 1,
-        "avgReturn": 5.09,
-        "avgRelativeReturn": 4.07,
-        "status": "te weinig data (1/20)",
+        "n": 2,
+        "avgReturn": 2.77,
+        "avgRelativeReturn": 1.78,
+        "status": "te weinig data (2/20)",
         "accuracyShown": false
       },
       "4w": {
