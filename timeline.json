@@ -2,7 +2,7 @@
   "_meta": {
     "created": "2026-07-02T21:21:34",
     "note": "Schone start \u2014 demo-data verwijderd 2026-07-02",
-    "lastUpdate": "2026-07-12T15:42:09.950199+02:00"
+    "lastUpdate": "2026-07-12T15:47:02.477810+02:00"
   },
   "stocks": {
     "WM": [
@@ -438,11 +438,11 @@
         "rsiDaily": 50.9,
         "rsiWeekly": 67.7,
         "overall": "VERKOOP",
-        "composite": 47,
+        "composite": 59,
         "timing": 43,
         "qualityGate": true,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "valuationColor": "red"
+        "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
+        "valuationColor": "orange"
       }
     ],
     "ASMI": [
@@ -548,7 +548,7 @@
         "rsiDaily": 45.2,
         "rsiWeekly": 58.8,
         "overall": "VERKOOP",
-        "composite": 56,
+        "composite": 61,
         "timing": 45,
         "qualityGate": true,
         "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
@@ -658,7 +658,7 @@
         "rsiDaily": 49.1,
         "rsiWeekly": 68.7,
         "overall": "STERK VERKOOP",
-        "composite": 74,
+        "composite": 80,
         "timing": 41,
         "qualityGate": true,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
@@ -1428,11 +1428,11 @@
         "rsiDaily": 50.0,
         "rsiWeekly": 52.0,
         "overall": "LICHT KOOP",
-        "composite": 48,
+        "composite": 58,
         "timing": 44,
         "qualityGate": false,
-        "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
-        "valuationColor": "orange"
+        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
+        "valuationColor": "neutral"
       }
     ],
     "KTOS": [
@@ -2408,11 +2408,11 @@
         "rsiDaily": 62.7,
         "rsiWeekly": 60.5,
         "overall": "KOOP",
-        "composite": 69,
+        "composite": 49,
         "timing": 53,
         "qualityGate": true,
-        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
-        "valuationColor": "neutral"
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "valuationColor": "red"
       }
     ],
     "AON": [
@@ -2494,7 +2494,7 @@
         "rsiDaily": 66.4,
         "rsiWeekly": 59.1,
         "overall": "LICHT VERKOOP",
-        "composite": 50,
+        "composite": 51,
         "timing": 38,
         "qualityGate": true,
         "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
@@ -2663,7 +2663,7 @@
       {
         "date": "2026-07-12",
         "price": 2704.0,
-        "rsiDaily": 71.3,
+        "rsiDaily": 71.7,
         "rsiWeekly": 48.5,
         "overall": "STERK VERKOOP",
         "composite": 64,
@@ -3576,11 +3576,11 @@
         "rsiDaily": 57.1,
         "rsiWeekly": 58.7,
         "overall": "LICHT KOOP",
-        "composite": 51,
+        "composite": 41,
         "timing": 40,
         "qualityGate": false,
-        "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
-        "valuationColor": "orange"
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "valuationColor": "red"
       }
     ],
     "ALFEN": [
@@ -3920,7 +3920,7 @@
         "rsiDaily": 62.9,
         "rsiWeekly": 64.6,
         "overall": "KOOP",
-        "composite": 42,
+        "composite": 44,
         "timing": 39,
         "qualityGate": true,
         "valuationVerdict": "Duur (PEG > 3.5)",
