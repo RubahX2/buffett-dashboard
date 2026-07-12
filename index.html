@@ -788,6 +788,9 @@ function usePortfolio() {
   return {
     portfolio:p,
     add:(ticker,shares,buyPrice,date,reason,risk,note)=>save([...p,{ticker,shares:+shares,buyPrice:+buyPrice,date,reason:reason||"",risk:risk||"",note:note||""}]),
+    // Bewerk een bestaande positie (bv. het dagboek achteraf invullen of bijstellen).
+    // De index is de positie in de volledige portfolio-lijst.
+    update:(idx,fields)=>save(p.map((pos,j)=>j===idx?{...pos,...fields}:pos)),
     remove:i=>save(p.filter((_,j)=>j!==i)),
     syncLink,
   };
@@ -808,7 +811,7 @@ function useNotes() {
 }
 
 // ── DETAIL MODAL ──────────────────────────────────────────────────────────────
-function Detail({ ticker, data, onClose, portfolio, add, notes, saveNote }) {
+function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote }) {
   const [tab,setTab] = useState("signalen");
   const [sh,setSh]   = useState("");
   const [pr,setPr]   = useState(data?.indicators?.last?.toFixed(2)||"");
@@ -1074,39 +1077,102 @@ function Detail({ ticker, data, onClose, portfolio, add, notes, saveNote }) {
                 + Toevoegen
               </button>
             </div>
-            {portfolio.filter(p=>p.ticker===ticker).map((p,i)=>{
-              const pnl=(last-p.buyPrice)*p.shares;
-              return(
-                <div key={i} style={{background:C.bg,borderRadius:6,padding:10,marginBottom:6}}>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <span style={{color:C.text,fontSize:12}}>{p.shares} × ${p.buyPrice}</span>
-                    <span style={{color:pnl>=0?C.green:C.red,fontWeight:700,fontSize:12}}>
-                      {pnl>=0?"+":""}${pnl.toFixed(0)} ({((pnl/(p.buyPrice*p.shares))*100).toFixed(1)}%)
-                    </span>
-                  </div>
-                  <div style={{color:C.textDim,fontSize:10,marginTop:2}}>{p.date}</div>
-                  {(p.reason||p.risk||p.note)&&(
-                    <div style={{marginTop:8,paddingTop:8,borderTop:`1px solid ${C.border}`,display:"flex",flexDirection:"column",gap:6}}>
-                      {p.reason&&<div>
-                        <div style={{color:C.green,fontSize:10,fontWeight:700,marginBottom:2}}>Waarom gekocht</div>
-                        <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.reason}</div>
-                      </div>}
-                      {p.risk&&<div>
-                        <div style={{color:C.orange,fontSize:10,fontWeight:700,marginBottom:2}}>⚠ Gevaar</div>
-                        <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.risk}</div>
-                      </div>}
-                      {p.note&&<div>
-                        <div style={{color:C.textDim,fontSize:10,fontWeight:700,marginBottom:2}}>Opmerking</div>
-                        <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.note}</div>
-                      </div>}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {portfolio.map((p,globalIdx)=>({p,globalIdx})).filter(x=>x.p.ticker===ticker).map(({p,globalIdx})=>(
+              <PositionCard key={globalIdx} p={p} globalIdx={globalIdx} last={last}
+                currency={data?.currency||"$"} update={update}/>
+            ))}
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// Eén positie met bewerkbaar dagboek. De bewerkknop klapt de drie velden open —
+// zo kun je ook posities die je eerder toevoegde alsnog van een dagboek voorzien,
+// of je thesis bijstellen als je inzicht verandert.
+function PositionCard({ p, globalIdx, last, currency, update }) {
+  const [editing,setEditing] = useState(false);
+  const [rsn,setRsn] = useState(p.reason||"");
+  const [rsk,setRsk] = useState(p.risk||"");
+  const [nt,setNt]   = useState(p.note||"");
+  const pnl = (last-p.buyPrice)*p.shares;
+  const hasJournal = p.reason||p.risk||p.note;
+
+  const saveEdit = ()=>{ update(globalIdx,{reason:rsn,risk:rsk,note:nt}); setEditing(false); };
+  const cancelEdit = ()=>{ setRsn(p.reason||""); setRsk(p.risk||""); setNt(p.note||""); setEditing(false); };
+
+  return (
+    <div style={{background:C.bg,borderRadius:6,padding:10,marginBottom:6}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span style={{color:C.text,fontSize:12}}>{p.shares} × {currency}{p.buyPrice}</span>
+        <span style={{color:pnl>=0?C.green:C.red,fontWeight:700,fontSize:12}}>
+          {pnl>=0?"+":""}{currency}{pnl.toFixed(0)} ({((pnl/(p.buyPrice*p.shares))*100).toFixed(1)}%)
+        </span>
+      </div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:2}}>
+        <span style={{color:C.textDim,fontSize:10}}>{p.date}</span>
+        {!editing&&(
+          <button onClick={()=>setEditing(true)}
+            style={{background:"transparent",color:hasJournal?C.accent:C.textDim,
+              border:`1px solid ${hasJournal?C.accent+"66":C.border}`,borderRadius:4,
+              padding:"2px 8px",fontSize:10,cursor:"pointer",fontWeight:600}}>
+            {hasJournal?"✎ Dagboek bewerken":"+ Dagboek toevoegen"}
+          </button>
+        )}
+      </div>
+
+      {editing?(
+        <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${C.border}`}}>
+          <div style={{color:C.accent,fontSize:11,fontWeight:700,marginBottom:6}}>📓 Beleggingsdagboek</div>
+          <div style={{marginBottom:6}}>
+            <div style={{color:C.green,fontSize:11,marginBottom:3}}>Waarom kocht ik?</div>
+            <textarea value={rsn} onChange={e=>setRsn(e.target.value)}
+              placeholder="Thesis: moat, koopsignaal, waardering..." rows={2}
+              style={{width:"100%",background:C.panel,border:`1px solid ${C.border}`,color:C.text,
+                borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
+          </div>
+          <div style={{marginBottom:6}}>
+            <div style={{color:C.orange,fontSize:11,marginBottom:3}}>Gevaar — wat kan de thesis breken?</div>
+            <textarea value={rsk} onChange={e=>setRsk(e.target.value)}
+              placeholder="Het risico dat je erkent op dit moment..." rows={2}
+              style={{width:"100%",background:C.panel,border:`1px solid ${C.orange}55`,color:C.text,
+                borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
+          </div>
+          <div style={{marginBottom:8}}>
+            <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Bijkomende opmerking</div>
+            <textarea value={nt} onChange={e=>setNt(e.target.value)}
+              placeholder="Optioneel..." rows={2}
+              style={{width:"100%",background:C.panel,border:`1px solid ${C.border}`,color:C.text,
+                borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
+          </div>
+          <div style={{display:"flex",gap:6}}>
+            <button onClick={saveEdit}
+              style={{background:C.accent,color:C.bg,border:"none",borderRadius:5,
+                padding:"6px 14px",fontWeight:700,fontSize:12,cursor:"pointer"}}>Opslaan</button>
+            <button onClick={cancelEdit}
+              style={{background:"transparent",color:C.textDim,border:`1px solid ${C.border}`,
+                borderRadius:5,padding:"6px 14px",fontSize:12,cursor:"pointer"}}>Annuleer</button>
+          </div>
+        </div>
+      ):(
+        hasJournal&&(
+          <div style={{marginTop:8,paddingTop:8,borderTop:`1px solid ${C.border}`,display:"flex",flexDirection:"column",gap:6}}>
+            {p.reason&&<div>
+              <div style={{color:C.green,fontSize:10,fontWeight:700,marginBottom:2}}>Waarom gekocht</div>
+              <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.reason}</div>
+            </div>}
+            {p.risk&&<div>
+              <div style={{color:C.orange,fontSize:10,fontWeight:700,marginBottom:2}}>⚠ Gevaar</div>
+              <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.risk}</div>
+            </div>}
+            {p.note&&<div>
+              <div style={{color:C.textDim,fontSize:10,fontWeight:700,marginBottom:2}}>Opmerking</div>
+              <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.note}</div>
+            </div>}
+          </div>
+        )
+      )}
     </div>
   );
 }
@@ -1129,7 +1195,7 @@ function App() {
   const [sortBy,    setSortBy]    = useState("action");
   const [sortDir,   setSortDir]   = useState("desc");
   const [filterType,setFilter]    = useState("ALL");
-  const { portfolio, add, remove, syncLink } = usePortfolio();
+  const { portfolio, add, update, remove, syncLink } = usePortfolio();
   const { notes, saveNote } = useNotes();
 
   // Cache-busting: voeg timestamp toe aan URL
@@ -1232,10 +1298,13 @@ function App() {
       return primary;
     });
 
-  const portItems = portfolio.map(p=>{
+  // BELANGRIJK: draag de ORIGINELE index mee (origIdx). portItems filtert posities weg
+  // waarvoor geen koersdata is; zonder origIdx zou remove()/update() dan de VERKEERDE
+  // positie raken zodra één aandeel een datafout heeft.
+  const portItems = portfolio.map((p,origIdx)=>{
     const last = stocks[p.ticker]?.indicators?.last;
     if (!last) return null;
-    return{...p,last,cv:last*p.shares,cb:p.buyPrice*p.shares,pnl:(last-p.buyPrice)*p.shares};
+    return{...p,origIdx,last,cv:last*p.shares,cb:p.buyPrice*p.shares,pnl:(last-p.buyPrice)*p.shares};
   }).filter(Boolean);
   const tv2=portItems.reduce((a,p)=>a+p.cv,0);
   const tc2=portItems.reduce((a,p)=>a+p.cb,0);
@@ -1744,21 +1813,47 @@ function App() {
             :<div style={{display:"grid",gap:8}}>
               {portItems.map((p,i)=>{
                 const data=getStockData(p.ticker);
+                const hasJournal = p.reason||p.risk||p.note;
                 return(
                   <div key={i} style={{background:C.panel,border:`1px solid ${C.border}`,
-                    borderRadius:8,padding:"12px 14px",display:"flex",
-                    justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
-                    <div>
-                      <div style={{color:C.accent,fontWeight:700}}>{p.ticker} <span style={{color:C.textDim,fontWeight:400,fontSize:11}}>{STOCK_NAMES[p.ticker]}</span></div>
-                      <div style={{color:C.textDim,fontSize:11}}>{p.shares} × ${p.buyPrice} · {p.date}</div>
-                      <div style={{color:C.textDim,fontSize:11}}>Huidig: ${p.last?.toFixed(2)||"—"}</div>
-                      {data?.overall&&<div style={{marginTop:4}}><OverallBadge signal={data.overall}/></div>}
+                    borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
+                      <div>
+                        <div style={{color:C.accent,fontWeight:700}}>{p.ticker} <span style={{color:C.textDim,fontWeight:400,fontSize:11}}>{STOCK_NAMES[p.ticker]}</span></div>
+                        <div style={{color:C.textDim,fontSize:11}}>{p.shares} × ${p.buyPrice} · {p.date}</div>
+                        <div style={{color:C.textDim,fontSize:11}}>Huidig: ${p.last?.toFixed(2)||"—"}</div>
+                        {data?.overall&&<div style={{marginTop:4}}><OverallBadge signal={data.overall}/></div>}
+                      </div>
+                      <div style={{textAlign:"right"}}>
+                        <div style={{color:p.pnl>=0?C.green:C.red,fontWeight:700,fontSize:16}}>{p.pnl>=0?"+":""}${p.pnl.toFixed(0)}</div>
+                        <div style={{color:p.pnl>=0?C.green:C.red,fontSize:12}}>{((p.pnl/p.cb)*100).toFixed(1)}%</div>
+                      </div>
+                      <div style={{display:"flex",gap:6}}>
+                        <button onClick={()=>setSelected(p.ticker)}
+                          style={{background:"none",border:`1px solid ${hasJournal?C.accent+"66":C.border}`,
+                            color:hasJournal?C.accent:C.textDim,borderRadius:4,padding:"3px 8px",
+                            fontSize:10,cursor:"pointer",fontWeight:600}}>
+                          {hasJournal?"✎ Dagboek":"+ Dagboek"}
+                        </button>
+                        <button onClick={()=>remove(p.origIdx)} style={{background:"none",border:`1px solid ${C.border}`,color:C.textDim,borderRadius:4,padding:"3px 8px",fontSize:10,cursor:"pointer"}}>Verwijder</button>
+                      </div>
                     </div>
-                    <div style={{textAlign:"right"}}>
-                      <div style={{color:p.pnl>=0?C.green:C.red,fontWeight:700,fontSize:16}}>{p.pnl>=0?"+":""}${p.pnl.toFixed(0)}</div>
-                      <div style={{color:p.pnl>=0?C.green:C.red,fontSize:12}}>{((p.pnl/p.cb)*100).toFixed(1)}%</div>
-                    </div>
-                    <button onClick={()=>remove(i)} style={{background:"none",border:`1px solid ${C.border}`,color:C.textDim,borderRadius:4,padding:"3px 8px",fontSize:10,cursor:"pointer"}}>Verwijder</button>
+                    {hasJournal&&(
+                      <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${C.border}`,display:"flex",flexDirection:"column",gap:6}}>
+                        {p.reason&&<div>
+                          <div style={{color:C.green,fontSize:10,fontWeight:700,marginBottom:2}}>Waarom gekocht</div>
+                          <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.reason}</div>
+                        </div>}
+                        {p.risk&&<div>
+                          <div style={{color:C.orange,fontSize:10,fontWeight:700,marginBottom:2}}>⚠ Gevaar</div>
+                          <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.risk}</div>
+                        </div>}
+                        {p.note&&<div>
+                          <div style={{color:C.textDim,fontSize:10,fontWeight:700,marginBottom:2}}>Opmerking</div>
+                          <div style={{color:C.text,fontSize:11,lineHeight:1.4,whiteSpace:"pre-wrap"}}>{p.note}</div>
+                        </div>}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -1769,7 +1864,7 @@ function App() {
 
       {selected&&(
         <Detail ticker={selected} data={getStockData(selected)}
-          onClose={()=>setSelected(null)} portfolio={portfolio} add={add}
+          onClose={()=>setSelected(null)} portfolio={portfolio} add={add} update={update}
           notes={notes} saveNote={saveNote}/>
       )}
 
