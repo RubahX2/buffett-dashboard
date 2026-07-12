@@ -175,7 +175,53 @@ CURRENCY = {
     "GAW":"p", "ADM":"p", "III":"p",
     "NABTESCO":"¥", "HARMONIC":"¥", "KEYENCE":"¥", "FANUC":"¥", "YASKAWA":"¥", "SOFTBANK":"¥",
     "UBTECH":"HK$", "KPG":"A$",
-}  # alles zonder vermelding: "$"
+}
+
+# ── SECTOR-INDELING ───────────────────────────────────────────────────────────
+# Elk aandeel hoort bij één sector, voor de sectortab (groepering + "winner per
+# sector" afweging). Handmatig bijgehouden, zoals de fundamentals.
+SECTORS = {
+    # Halfgeleiders & AI-infrastructuur
+    "ASML":"Halfgeleiders & AI", "ASMI":"Halfgeleiders & AI", "MU":"Halfgeleiders & AI",
+    "NVDA":"Halfgeleiders & AI", "ANET":"Halfgeleiders & AI", "SNDK":"Halfgeleiders & AI",
+    "ORCL":"Halfgeleiders & AI", "CRWV":"Halfgeleiders & AI", "OPEN":"Halfgeleiders & AI",
+    # Robotica & automatisering (industrieel + medisch + humanoïde/service, samen)
+    "NABTESCO":"Robotica & automatisering", "HARMONIC":"Robotica & automatisering",
+    "KEYENCE":"Robotica & automatisering", "FANUC":"Robotica & automatisering",
+    "YASKAWA":"Robotica & automatisering", "ROK":"Robotica & automatisering",
+    "TER":"Robotica & automatisering", "ISRG":"Robotica & automatisering",
+    "CGNX":"Robotica & automatisering", "NOVT":"Robotica & automatisering",
+    "SYM":"Robotica & automatisering", "UBTECH":"Robotica & automatisering",
+    "SERV":"Robotica & automatisering", "RR":"Robotica & automatisering",
+    # Kwantum computing
+    "IONQ":"Kwantum computing", "RGTI":"Kwantum computing", "QBTS":"Kwantum computing",
+    # Ruimtevaart & defensie
+    "LHX":"Ruimtevaart & defensie", "MOGA":"Ruimtevaart & defensie", "TDG":"Ruimtevaart & defensie",
+    "KTOS":"Ruimtevaart & defensie", "RKLB":"Ruimtevaart & defensie", "HWM":"Ruimtevaart & defensie",
+    "AIR":"Ruimtevaart & defensie", "PL":"Ruimtevaart & defensie",
+    # Software & platforms
+    "GOOGL":"Software & platforms", "MSFT":"Software & platforms", "AMZN":"Software & platforms",
+    "PLTR":"Software & platforms", "SHOP":"Software & platforms", "NET":"Software & platforms",
+    "SNAP":"Software & platforms", "MTLS":"Software & platforms", "MELI":"Software & platforms",
+    "AAPL":"Software & platforms",
+    # Fintech & financiën
+    "V":"Fintech & financiën", "HOOD":"Fintech & financiën", "BLK":"Fintech & financiën",
+    "SOF":"Fintech & financiën", "MSTR":"Fintech & financiën",
+    # Consument & retail
+    "KO":"Consument & retail", "MNST":"Consument & retail", "NKE":"Consument & retail",
+    "TSCO":"Consument & retail", "DIS":"Consument & retail", "NFLX":"Consument & retail",
+    "LOTB":"Consument & retail", "GAW":"Consument & retail", "DIE":"Consument & retail",
+    # Biotech & health-tech
+    "SDGR":"Biotech & health-tech", "BNGO":"Biotech & health-tech",
+    # Industrie & diversen
+    "CAT":"Industrie & diversen", "WM":"Industrie & diversen", "ODFL":"Industrie & diversen",
+    "ADM":"Industrie & diversen", "AON":"Industrie & diversen", "III":"Industrie & diversen",
+    "KPG":"Industrie & diversen", "BABA":"Industrie & diversen", "SOFTBANK":"Industrie & diversen",
+    "ALFEN":"Industrie & diversen",
+}
+DEFAULT_SECTOR = "Industrie & diversen"
+
+  # alles zonder vermelding: "$"
 
 # Fundamentals — handmatig bijgehouden per kwartaal. Laatste update: juni 2026.
 FUNDAMENTALS = {
@@ -2437,7 +2483,8 @@ def main():
             msg = f"{name}: data ophalen mislukt"
             print(f"  ✗ {msg}")
             results["errors"].append(msg)
-            results["stocks"][name] = {"error": msg, "fund": FUNDAMENTALS.get(name, {})}
+            results["stocks"][name] = {"error": msg, "fund": FUNDAMENTALS.get(name, {}),
+                                        "sector": SECTORS.get(name, DEFAULT_SECTOR)}
             continue
         try:
             analysis = generate_signals(name, entry["daily"], entry["weekly"], entry.get("monthly"))
@@ -2487,6 +2534,7 @@ def main():
                 "fund": fund, "valuation": valuation,
                 "timing": timing, "scores": scores, "bagger": bagger,
                 "isBagger": name in BAGGER_TICKERS,
+                "sector": SECTORS.get(name, DEFAULT_SECTOR),
                 "currency": CURRENCY.get(name, "$"), **analysis,
             }
             # Timeline bijwerken
