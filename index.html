@@ -1326,6 +1326,8 @@ function App() {
         sortBy==="action"     ? actionRank(t) :
         sortBy==="composite"  ? (stocks[t]?.scores?.composite ?? -1) :
         sortBy==="timing"     ? (stocks[t]?.scores?.timing ?? -1) :
+        sortBy==="entry"      ? (stocks[t]?.timing?.entryScore ?? -1) :
+        sortBy==="trend"      ? (stocks[t]?.timing?.trendScore ?? -1) :
         sortBy==="buyWeight"  ? (stocks[t]?.buyWeight||0) :
         sortBy==="sellWeight" ? (stocks[t]?.sellWeight||0) :
         sortBy==="valuation"  ? valScore(t) :
@@ -1608,7 +1610,7 @@ function App() {
           </div>
           <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:14,alignItems:"center"}}>
             <span style={{color:C.textDim,fontSize:10}}>Sorteer:</span>
-            {[["action","Actie 🎯"],["composite","Composiet ★"],["timing","Timing ⏱"],["valuation","Waardering 💰"],["acceleration","Versnelt 🚀"],["buyWeight","Koop 🟢"],["alerts","Alerts ⚠"],["score","Buffett"]].map(([k,l])=><SBtn key={k} k={k} l={l}/>)}
+            {[["action","Actie 🎯"],["composite","Composiet ★"],["entry","Instap nu 🎪"],["trend","Trend 📈"],["timing","Timing ⏱"],["valuation","Waardering 💰"],["acceleration","Versnelt 🚀"],["buyWeight","Koop 🟢"],["alerts","Alerts ⚠"],["score","Buffett"]].map(([k,l])=><SBtn key={k} k={k} l={l}/>)}
           </div>
 
           {/* Als geen live data: toon alle tickers met fallback fundamentals */}
@@ -1681,6 +1683,23 @@ function App() {
                         ⚠ {data?.alerts?.length||0}
                       </span>
                       {data?.valuation?.verdictColor&&<ValuationBadge color={data.valuation.verdictColor} compact/>}
+                      {/* Trend en instap APART. De samengestelde timing (0.6*trend + 0.4*entry)
+                          verbergt het verschil: een aandeel kan een beroerde trend hebben maar
+                          toch op een uitstekend instapniveau liggen (bv. NFLX: trend 18, instap 82). */}
+                      {data?.timing?.trendScore!=null&&(()=>{
+                        const tr=data.timing.trendScore, en=data.timing.entryScore;
+                        const trCol = tr>=60?C.green:tr>=40?C.orange:C.red;
+                        const enCol = en>=70?C.green:en>=50?C.accent:en>=35?C.orange:C.textDim;
+                        return (
+                          <span title={`Trend ${tr}/100 (is dit een uptrend?) · Instap ${en}/100 (is NU een goed moment?)`}
+                            style={{background:C.panel2,border:`1px solid ${C.border}`,borderRadius:4,
+                            padding:"2px 7px",fontSize:10,fontWeight:700,display:"inline-flex",gap:5}}>
+                            <span style={{color:trCol}}>📈{tr}</span>
+                            <span style={{color:C.muted}}>·</span>
+                            <span style={{color:enCol}}>🎪{en}</span>
+                          </span>
+                        );
+                      })()}
                       {data?.scores?.composite!=null&&(
                         <span style={{background:C.panel2,color:C.accent,border:`1px solid ${C.accent}`,
                           borderRadius:4,padding:"2px 7px",fontSize:10,fontWeight:700}}>
