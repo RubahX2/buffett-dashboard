@@ -1511,7 +1511,28 @@ function App() {
           )}
         </div>
         {errors.length>0&&(
-          <span style={{color:C.red,fontSize:10}}>⚠ {errors.length} fout(en) bij laatste run</span>
+          <details style={{display:"inline-block"}}>
+            <summary style={{color:C.red,fontSize:10,cursor:"pointer",listStyle:"none"}}>
+              ⚠ {errors.length} fout(en) bij laatste run <span style={{color:C.muted}}>· klik voor details</span>
+            </summary>
+            <div style={{position:"absolute",right:16,marginTop:6,background:C.panel,
+              border:`1px solid ${C.red}66`,borderRadius:8,padding:"10px 12px",
+              maxWidth:420,zIndex:50,boxShadow:"0 8px 24px rgba(0,0,0,0.5)"}}>
+              <div style={{color:C.red,fontSize:11,fontWeight:700,marginBottom:6}}>
+                Deze aandelen konden niet worden opgehaald:
+              </div>
+              {errors.map((e,i)=>(
+                <div key={i} style={{color:C.textDim,fontSize:10,lineHeight:1.6,
+                  paddingLeft:8,borderLeft:`2px solid ${C.red}44`,marginBottom:3}}>
+                  {e}
+                </div>
+              ))}
+              <div style={{color:C.muted,fontSize:9,marginTop:8,borderTop:`1px solid ${C.border}`,paddingTop:6}}>
+                Meestal een tijdelijke datafout bij yfinance. Draai de workflow opnieuw;
+                blijft het terugkomen, dan klopt de ticker niet.
+              </div>
+            </div>
+          </details>
         )}
       </div>
 

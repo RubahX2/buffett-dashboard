@@ -556,6 +556,8 @@ def fetch_all(watchlist) -> dict:
         except Exception as e:
             print(f"  ⚠ blok {i//CHUNK+1} faalde ({type(e).__name__}: {e}) — tickers individueel...")
             for tk in chunk:
+                got = False
+                # Herkansing 1: normale 5-jaars periode
                 try:
                     p1 = yf.download(tk, period="5y", interval="1d", auto_adjust=True,
                                      progress=False, timeout=30)
@@ -563,8 +565,25 @@ def fetch_all(watchlist) -> dict:
                         if isinstance(p1.columns, pd.MultiIndex):
                             p1.columns = p1.columns.get_level_values(-1)
                         data_parts.append(pd.concat({tk: p1}, axis=1))
+                        got = True
                 except Exception as e2:
-                    print(f"    ✗ {tk}: {e2}")
+                    print(f"    ✗ {tk} (5y): {e2}")
+                # Herkansing 2: KORTERE periode. Recente beursgangen (RDDT ging maart 2024
+                # naar de beurs) kunnen bij period="5y" leeg terugkomen omdat het gevraagde
+                # venster grotendeels vóór hun notering ligt. "2y" vangt die gevallen.
+                if not got:
+                    try:
+                        p2 = yf.download(tk, period="2y", interval="1d", auto_adjust=True,
+                                         progress=False, timeout=30)
+                        if p2 is not None and not p2.empty:
+                            if isinstance(p2.columns, pd.MultiIndex):
+                                p2.columns = p2.columns.get_level_values(-1)
+                            data_parts.append(pd.concat({tk: p2}, axis=1))
+                            print(f"    ✓ {tk}: gelukt met kortere periode (2y) "
+                                  f"— waarschijnlijk een recente beursgang")
+                            got = True
+                    except Exception as e3:
+                        print(f"    ✗ {tk} (2y): {e3}")
     try:
         data = pd.concat(data_parts, axis=1) if data_parts else None
     except Exception as e:
@@ -608,6 +627,30 @@ def fetch_all(watchlist) -> dict:
                     df, used = candidate, fallback
             except Exception as e:
                 print(f"  ✗ {name} fallback faalde: {e}")
+
+        # LAATSTE REDMIDDEL: individuele download van de PRIMAIRE ticker.
+        # Zonder dit had een ticker zonder fallback (RDDT, DDOG, NOW...) geen enkele
+        # herkansing zodra hij uit de batch viel -- hij verdween dan stil uit het
+        # dashboard. Dit was de oorzaak van "RDDT is niet vindbaar".
+        # Twee periodes: 5y normaal, 2y voor recente beursgangen (RDDT: IPO maart 2024,
+        # DDOG en andere jonge noteringen kunnen bij een 5-jaars venster leeg terugkomen).
+        if df is None:
+            for per in ("5y", "2y"):
+                try:
+                    candidate = yf.download(primary, period=per, interval="1d",
+                                            auto_adjust=True, progress=False, timeout=30)
+                    if candidate is None or candidate.empty:
+                        continue
+                    if isinstance(candidate.columns, pd.MultiIndex):
+                        candidate.columns = candidate.columns.get_level_values(-1)
+                    candidate = candidate.dropna(how="all")
+                    ok, msg = sanity_check(candidate, name)
+                    if ok:
+                        df, used = candidate, primary
+                        print(f"  ✓ {name}: alsnog gelukt met losse download ({per})")
+                        break
+                except Exception as e:
+                    print(f"  ✗ {name} losse download ({per}) faalde: {e}")
 
         if df is None:
             print(f"  ✗ {name}: geen bruikbare data")
@@ -1068,8 +1111,15 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
     # Monthly weegt het zwaarst: een bearish/bullish MACD-stand op maandbasis is
     # een krachtig trendsignaal. We tonen de STAND (niet enkel de crossover-candle),
     # want maandcandles zijn zeldzaam en de stand is het bruikbare signaal.
+    #
+    # BELANGRIJK: close_m wordt HIER geïnitialiseerd, buiten de if. Eerder gebeurde de
+    # toekenning alleen BINNEN `if len(monthly) >= 35`. Bij een jonge notering (RDDT ging
+    # maart 2024 naar de beurs -> 27 maandcandles) werd de variabele dus nooit aangemaakt,
+    # terwijl hij verderop wel gebruikt wordt -> UnboundLocalError en het aandeel viel
+    # volledig uit het dashboard. Dit trof elk aandeel met minder dan ~3 jaar historie.
+    close_m = monthly["Close"] if (monthly is not None and not monthly.empty) else None
+
     if monthly is not None and len(monthly) >= 35:
-        close_m = monthly["Close"]
         macd_ml, macd_ms, _ = calc_macd(close_m)
         mm_l, mm_s = safe_last(macd_ml), safe_last(macd_ms)
         if mm_l is not None and mm_s is not None:
