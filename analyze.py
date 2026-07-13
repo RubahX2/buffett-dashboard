@@ -163,11 +163,31 @@ WATCHLIST = [
     ("SERV",     "SERV",    None),   # Serve Robotics
     ("RR",       "RR",      None),   # Richtech Robotics
     ("PL",       "PL",      None),   # Planet Labs — aardobservatie (bagger-kandidaat)
+    ("RDDT",  "RDDT",    None),
+    ("NOW",   "NOW",     None),
+    ("GILD",  "GILD",    None),
+    ("DDOG",  "DDOG",    None),
+    ("ARCC",  "ARCC",    None),
+    ("ONON",  "ONON",    None),
+    # ETF (derde spoor: alleen timing, geen kwaliteitspoort/composiet)
+    ("ARCG",  "ARKG",    None),    # ARK Genomic Revolution ETF (US-notering in $;
+                                   # de LSE-variant LON:ARCG volgt dezelfde strategie)
 ]
 
 # Welke tickers worden (ook) in het bagger-spoor beoordeeld?
 BAGGER_TICKERS = {"LHX", "MOGA", "TDG", "KTOS", "RKLB", "OPEN", "SDGR", "BNGO",
                   "CRWV", "IONQ", "RGTI", "QBTS", "UBTECH", "SYM", "SERV", "RR", "PL"}
+
+# ── ETF's: DERDE SPOOR (naast kwaliteit en baggers) ───────────────────────────
+# Een ETF is een mandje aandelen, geen bedrijf. Het HEEFT geen ROE, marge of
+# schuld — die velden bestaan simpelweg niet. De Buffett-poort en het composiet
+# zijn dus betekenisloos en worden overgeslagen.
+#
+# Wat WEL werkt is de timing: RSI, EMA's, MACD en de fibonacci/TP-zones zijn
+# puur koersgebaseerd en zeggen over een ETF net zoveel als over een aandeel.
+# ETF's krijgen daarom de TP-zone-logica (zoals baggers) maar GEEN kwaliteits-
+# score en GEEN composiet. Ze verschijnen niet in de maandpick-allocatie.
+ETF_TICKERS = {"ARCG"}
 
 # Valuta per aandeel (weergave). "p" = Britse pence (LSE noteert in pence!).
 CURRENCY = {
@@ -185,6 +205,12 @@ SECTORS = {
     "ASML":"Halfgeleiders & AI", "ASMI":"Halfgeleiders & AI", "MU":"Halfgeleiders & AI",
     "NVDA":"Halfgeleiders & AI", "ANET":"Halfgeleiders & AI", "SNDK":"Halfgeleiders & AI",
     "ORCL":"Halfgeleiders & AI", "CRWV":"Halfgeleiders & AI", "OPEN":"Halfgeleiders & AI",
+    # ETF's: eigen groep. Geen bedrijf, dus geen kwaliteitsoordeel — puur timing.
+    "RDDT":"Software & platforms", "NOW":"Software & platforms", "DDOG":"Software & platforms",
+    "GILD":"Biotech & health-tech",
+    "ARCC":"Fintech & financiën",
+    "ONON":"Consument & retail",
+    "ARCG":"ETF's",
     # Robotica & automatisering (industrieel + medisch + humanoïde/service, samen)
     "NABTESCO":"Robotica & automatisering", "HARMONIC":"Robotica & automatisering",
     "KEYENCE":"Robotica & automatisering", "FANUC":"Robotica & automatisering",
@@ -318,6 +344,23 @@ FUNDAMENTALS = {
               "grossMargin":45.0, "grossMarginTrend":2.0,  "revenueGrowthPrev":90.0,  "cashRunwayMonths":20},
     "PL":    {"pe":None, "roe":-8.0, "fcfYield":-1.0, "debtEquity":0.05, "netMargin":-10.0, "divYield":0, "revenueGrowth":18.0, "eps":-0.08, "mktCap":"$3.8B",  "beta":2.30, "lastUpdated":"2026-01",
               "grossMargin":58.0, "grossMarginTrend":4.0,  "revenueGrowthPrev":11.0,  "cashRunwayMonths":None},
+    # ETF: geen bedrijf, dus geen fundamentals. Alle velden None -- het systeem
+    # slaat de kwaliteitspoort voor ETF's toch over (zie ETF_TICKERS).
+    "ARCG":  {"pe":None, "roe":None, "fcfYield":None, "debtEquity":None, "netMargin":None,
+              "divYield":None, "revenueGrowth":None, "eps":None, "mktCap":"ETF", "beta":None,
+              "lastUpdated":"2026-07"},
+    # ── Nieuwe kanshebbers (juli 2026) ───────────────────────────────────────
+    "RDDT":  {"pe":45.0,  "roe":26.2, "fcfYield":2.0,  "debtEquity":0.05, "netMargin":28.6, "divYield":0,    "revenueGrowth":69.0,  "revenueGrowthPrev":62.0, "eps":2.55,  "mktCap":"$32B",   "beta":2.10, "lastUpdated":"2026-07"},
+    "NOW":   {"pe":53.3,  "roe":16.1, "fcfYield":3.5,  "debtEquity":0.21, "netMargin":13.0, "divYield":0,    "revenueGrowth":22.1,  "revenueGrowthPrev":22.5, "eps":1.67,  "mktCap":"$92B",   "beta":0.93, "lastUpdated":"2026-07"},
+    "GILD":  {"pe":22.9,  "roe":40.7, "fcfYield":5.5,  "debtEquity":1.16, "netMargin":28.9, "divYield":2.5,  "revenueGrowth":4.7,   "revenueGrowthPrev":3.5,  "eps":6.54,  "mktCap":"$158B",  "beta":0.39, "lastUpdated":"2026-07"},
+    # DDOG: sterke groei (32%) en kasstroom, MAAR minimale boekwinst (marge 3.7%, ROE 3.9%)
+    # -> faalt de poort. Investeert bewust zwaar in R&D. P/E 683 is puur toekomstverwachting.
+    "DDOG":  {"pe":683.0, "roe":3.9,  "fcfYield":1.1,  "debtEquity":0.32, "netMargin":3.7,  "divYield":0,    "revenueGrowth":32.0,  "revenueGrowthPrev":28.0, "eps":0.39,  "mktCap":"$93B",   "beta":1.54, "lastUpdated":"2026-07"},
+    # ARCC: BDC (kredietverstrekker). Moet wettelijk ~90% van de winst uitkeren, dus het
+    # eigen vermogen groeit niet -> ROE is per constructie beperkt (8.3%). Faalt de poort,
+    # maar het DIVIDEND (10.2%) IS het rendement. De Buffett-poort past hier niet goed op.
+    "ARCC":  {"pe":11.5,  "roe":8.3,  "fcfYield":9.0,  "debtEquity":1.13, "netMargin":37.3, "divYield":10.2, "revenueGrowth":6.0,   "revenueGrowthPrev":8.0,  "eps":1.63,  "mktCap":"$13B",   "beta":0.62, "lastUpdated":"2026-07"},
+    "ONON":  {"pe":41.9,  "roe":15.5, "fcfYield":2.0,  "debtEquity":0.31, "netMargin":8.0,  "divYield":0,    "revenueGrowth":26.4,  "revenueGrowthPrev":29.0, "eps":1.00,  "mktCap":"$13B",   "beta":1.85, "lastUpdated":"2026-07"},
 }
 
 # ── TECHNISCHE INDICATOREN ────────────────────────────────────────────────────
@@ -1077,6 +1120,11 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
     #     timeframes + dalend volume) → verkoopsignaal. Dit is het "de draai is al
     #     begonnen"-geval (PL terug van 1.618; IONQ/QBTS onder resistance 1.272).
     is_bagger = name in BAGGER_TICKERS
+    is_etf    = name in ETF_TICKERS
+    # Een ETF krijgt de TP-zone-logica van een bagger (dezelfde extensie-niveaus),
+    # maar GEEN kwaliteitsoordeel — dat wordt verderop uitgeschakeld.
+    if is_etf:
+        is_bagger = True   # alleen voor de TP-zone/fib-logica hieronder
     exts = fib.get("extensions", {}) if fib else {}
 
     # TWEE tijdshorizonnen voor de twee fases:
@@ -2508,6 +2556,19 @@ def main():
             timing_eff = max(0, min(100, timing["score"] + market_adj))
             composite = compute_composite(quality["score"], val_score, timing_eff, accel_bonus)
 
+            # ETF's: een mandje aandelen heeft geen ROE, marge of schuld. De kwaliteits-
+            # poort, waardering, versnelling en het composiet zijn dus betekenisloos en
+            # worden op None gezet. Alleen de timing (RSI/EMA/MACD/fib) blijft over —
+            # die is puur koersgebaseerd en werkt net zo goed op een ETF.
+            if name in ETF_TICKERS:
+                quality = {"score": None, "gate": False, "reasons": [], "gateFails": []}
+                val_score = None
+                composite = None
+                accel = {"score": None, "label": "n.v.t. (ETF)", "color": "gray",
+                         "accel": None, "composite_bonus": 0, "reason": None,
+                         "ratio": None, "growthNow": None, "growthPrev": None}
+                accel_bonus = 0
+
             scores = {
                 "quality": quality["score"], "qualityGate": quality["gate"],
                 "qualityReasons": quality["reasons"], "qualityFails": quality["gateFails"],
@@ -2532,6 +2593,7 @@ def main():
                 "fund": fund, "valuation": valuation,
                 "timing": timing, "scores": scores, "bagger": bagger,
                 "isBagger": name in BAGGER_TICKERS,
+                "isETF": name in ETF_TICKERS,
                 "sector": SECTORS.get(name, DEFAULT_SECTOR),
                 "currency": CURRENCY.get(name, "$"), **analysis,
             }
@@ -2566,6 +2628,10 @@ def main():
     for name, s in results["stocks"].items():
         sc = s.get("scores")
         if not sc:
+            continue
+        # ETF's doen niet mee aan de allocatie: ze hebben geen kwaliteitsoordeel.
+        # Ze "falen" de poort niet — de poort is simpelweg niet van toepassing.
+        if name in ETF_TICKERS:
             continue
         row = {
             "ticker": name, "name": name,

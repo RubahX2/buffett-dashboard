@@ -71,6 +71,9 @@ const STOCK_NAMES = {
   SERV:"Serve Robotics", RR:"Richtech Robotics", PL:"Planet Labs",
   ANET:"Arista Networks", HOOD:"Robinhood Markets", TSCO:"Tractor Supply",
   ODFL:"Old Dominion Freight", HWM:"Howmet Aerospace", SNDK:"Sandisk",
+  RDDT:"Reddit", NOW:"ServiceNow", GILD:"Gilead Sciences",
+  DDOG:"Datadog", ARCC:"Ares Capital", ONON:"On Holding",
+  ARCG:"ARK Genomic Revolution ETF",
 };
 
 const TV_LINKS = {
@@ -103,6 +106,10 @@ const C = {
 // ── BUFFETT SCORE ─────────────────────────────────────────────────────────────
 function bScore(f) {
   if (!f) return 0;
+  // ETF's hebben geen fundamentals (pe/roe/marge zijn null). In JS is `null < 15`
+  // gelijk aan `true`, dus zonder deze check zou een ETF een ONTERECHTE score krijgen.
+  // Geen cijfers = geen oordeel.
+  if (f.pe==null && f.roe==null && f.netMargin==null) return null;
   let s = 0;
   if (f.pe > 0 && f.pe < 15) s+=22; else if (f.pe<20) s+=14; else if (f.pe<28) s+=7;
   if (f.roe > 20) s+=20; else if (f.roe>12) s+=10;
@@ -133,6 +140,18 @@ function OverallBadge({ signal }) {
 }
 
 function Ring({ score, size=48 }) {
+  // ETF's hebben geen Buffett-score (score is null). Toon een neutrale ring met "ETF"
+  // in plaats van een misleidende lege/rode ring.
+  if (score==null) {
+    const r0=(size/2)-5;
+    return (
+      <svg width={size} height={size} style={{flexShrink:0}}>
+        <circle cx={size/2} cy={size/2} r={r0} fill="none" stroke={C.border} strokeWidth={5}/>
+        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central"
+          style={{fill:C.textDim,fontSize:size<44?9:11,fontWeight:700}}>ETF</text>
+      </svg>
+    );
+  }
   const r=(size/2)-5, circ=2*Math.PI*r, fill=circ*(1-score/100);
   const col=score>=70?C.green:score>=50?C.accent:C.red;
   return (
@@ -1006,6 +1025,26 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
 
         {tab==="fundamentals"&&(
           <div>
+            {score==null?(
+              /* ETF: geen bedrijf, dus geen fundamentals. Eerlijk zeggen wat er niet is,
+                 in plaats van een lege ring en een nietszeggende "Zwak" tonen. */
+              <div style={{background:C.bg,padding:14,borderRadius:8,marginBottom:14,
+                border:`1px solid ${C.accent}44`}}>
+                <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:6}}>
+                  📊 Dit is een ETF — geen bedrijf
+                </div>
+                <div style={{color:C.textDim,fontSize:12,lineHeight:1.6}}>
+                  Een ETF is een mandje aandelen. Het heeft dus geen ROE, winstmarge of
+                  schuldratio — die cijfers bestaan simpelweg niet. De Buffett-poort en de
+                  composietscore zijn hier betekenisloos en worden overgeslagen.
+                  <div style={{marginTop:8,color:C.text}}>
+                    Wat <b>wel</b> werkt: de <b>timing</b> (RSI, EMA's, MACD en de
+                    fibonacci/TP-zones). Die zijn puur koersgebaseerd en zeggen over een ETF
+                    net zoveel als over een aandeel. Kijk dus naar de tabs Timing en Signalen.
+                  </div>
+                </div>
+              </div>
+            ):(
             <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:14,background:C.bg,padding:12,borderRadius:8}}>
               <Ring score={score} size={58}/>
               <div>
@@ -1020,6 +1059,8 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                 )}
               </div>
             </div>
+            )}
+            {score!=null&&(<>
             <MRow label="P/E Ratio (TTM)"   value={fund.pe}           good={18} warn={40}  fmt={v=>`${(+v).toFixed(1)}x`}/>
             <MRow label="ROE"               value={fund.roe}                               fmt={v=>`${(+v).toFixed(1)}%`}/>
             <MRow label="FCF Yield"         value={fund.fcfYield}                          fmt={v=>`${(+v).toFixed(2)}%`}/>
@@ -1030,6 +1071,7 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
             <MRow label="EPS (TTM)"         value={fund.eps}                               fmt={v=>`${cur}${(+v).toFixed(2)}`}/>
             <MRow label="Market Cap"        value={fund.mktCap}                            fmt={v=>String(v)}/>
             <MRow label="Beta"              value={fund.beta}                              fmt={v=>`${(+v).toFixed(2)}`}/>
+            </>)}
           </div>
         )}
 
@@ -1183,7 +1225,8 @@ const TICKER_ORDER = ["WM","PLTR","CAT","ASML","ASMI","MU","GOOGL","AMZN","ORCL"
   "NFLX","DIS","BLK","BABA","MTLS","GAW","ADM","III","KPG","DIE","SOF","AIR","ALFEN","LOTB",
   "ANET","HOOD","TSCO","ODFL","HWM","SNDK","NABTESCO","HARMONIC","KEYENCE","FANUC","YASKAWA","SOFTBANK","ROK","TER","ISRG","CGNX","NOVT",
   "LHX","MOGA","TDG","KTOS","RKLB","OPEN","SDGR","BNGO","PL",
-  "IONQ","RGTI","QBTS","UBTECH","SYM","SERV","RR"];
+  "IONQ","RGTI","QBTS","UBTECH","SYM","SERV","RR",
+  "RDDT","NOW","GILD","DDOG","ARCC","ONON","ARCG"];
 
 function App() {
   const [jsonData,  setJsonData]  = useState(null);
@@ -1289,7 +1332,7 @@ function App() {
         sortBy==="acceleration" ? (stocks[t]?.scores?.acceleration ?? -1) :
         sortBy==="rsi"        ? (stocks[t]?.indicators?.rsiDaily||50) :
         sortBy==="alerts"     ? (stocks[t]?.alerts?.length||0) :
-                                bScore(stocks[t]?.fund||FALLBACK_FUND[t]||{});
+                                (bScore(stocks[t]?.fund||FALLBACK_FUND[t]||{}) ?? -1);
       // Tiebreak binnen actie-groep: hoogste composiet eerst
       const primary = sortDir==="desc"?v(b)-v(a):v(a)-v(b);
       if (sortBy==="action" && primary===0) {
@@ -1614,6 +1657,9 @@ function App() {
                       <div>
                         <div style={{display:"flex",alignItems:"center",gap:5}}>
                           <span style={{color:C.accent,fontWeight:700,fontSize:15}}>{ticker}</span>
+                          {data?.isETF&&<span title="ETF - een mandje aandelen, geen bedrijf. Geen kwaliteitsscore mogelijk; alleen de timing telt."
+                            style={{background:C.panel2,color:C.accent,border:`1px solid ${C.accent}66`,
+                            borderRadius:3,padding:"1px 5px",fontSize:9,fontWeight:700}}>ETF</span>}
                           {notes[ticker]&&<span title={notes[ticker]} style={{fontSize:11,opacity:0.8}}>📝</span>}
                         </div>
                         <div style={{color:C.textDim,fontSize:10}}>{STOCK_NAMES[ticker]}</div>
@@ -1748,14 +1794,21 @@ function App() {
                             </div>
                           </div>
                           <div style={{display:"flex",gap:5,marginTop:8,alignItems:"center",flexWrap:"wrap"}}>
-                            <span style={{background:C.panel2,color:C.accent,border:`1px solid ${C.accent}`,
-                              borderRadius:4,padding:"1px 6px",fontSize:9,fontWeight:700}}>★ {comp>=0?comp:"—"}</span>
+                            {d?.isETF
+                              ? <span title="ETF: geen kwaliteitsscore mogelijk — alleen timing telt"
+                                  style={{background:C.panel2,color:C.textDim,border:`1px solid ${C.border}`,
+                                  borderRadius:4,padding:"1px 6px",fontSize:9,fontWeight:700}}>★ n.v.t.</span>
+                              : <span style={{background:C.panel2,color:C.accent,border:`1px solid ${C.accent}`,
+                                  borderRadius:4,padding:"1px 6px",fontSize:9,fontWeight:700}}>★ {comp>=0?comp:"—"}</span>}
                             {d?.scores?.accelLabel&&d.scores.accelLabel!=="onbekend"&&d.scores.accelLabel!=="Stabiel"&&(
                               <span style={{color:d.scores.accelColor==="green"?C.green:d.scores.accelColor==="orange"?C.orange:C.textDim,
                                 fontSize:9,fontWeight:700}}>
                                 {d.scores.accelColor==="green"?"🚀":"🐢"}{d.scores.accelValue>0?"+":""}{d.scores.accelValue}pp</span>
                             )}
-                            {d?.isBagger&&<span style={{color:C.textDim,fontSize:9}}>bagger</span>}
+                            {d?.isETF&&<span title="ETF - een mandje aandelen. Geen kwaliteitsscore mogelijk; alleen timing telt."
+                              style={{background:C.panel2,color:C.accent,border:`1px solid ${C.accent}66`,
+                              borderRadius:4,padding:"1px 5px",fontSize:9,fontWeight:700}}>ETF</span>}
+                            {d?.isBagger&&!d?.isETF&&<span style={{color:C.textDim,fontSize:9}}>bagger</span>}
                           </div>
                         </div>
                       );
