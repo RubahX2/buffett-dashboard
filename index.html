@@ -22,7 +22,7 @@
 <body>
 <div id="root"><div class="bplus-loading">BUFFETT+ laden...</div></div>
 <script type="text/plain" id="jsx-source">
-const { useState, useEffect } = React;
+import { useState, useEffect, useRef } from "react";
 
 // ── CONFIG — pas deze URL aan na GitHub Pages setup ───────────────────────────
 // Formaat: https://JOUW-GITHUB-NAAM.github.io/REPO-NAAM/signals.json
@@ -760,7 +760,16 @@ function IndicatorGrid({ ind, cur="$" }) {
 }
 
 function usePortfolio() {
-  const [p,setP] = useState(()=>{try{return JSON.parse(localStorage.getItem("bplus_v9")||"[]")}catch{return[]}});
+  const newId = ()=> (typeof crypto!=="undefined"&&crypto.randomUUID)
+    ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2,9)}`;
+  const [p,setP] = useState(()=>{
+    try{
+      const raw = JSON.parse(localStorage.getItem("bplus_v9")||"[]");
+      // Migratie: posities die eerder zonder id zijn opgeslagen krijgen er nu een.
+      // Zonder dit zou update()/remove() op bestaande posities niets doen.
+      return Array.isArray(raw) ? raw.map(pos=>pos.id?pos:{...pos,id:newId()}) : [];
+    }catch{return[]}
+  });
   const save = v=>{setP(v);try{localStorage.setItem("bplus_v9",JSON.stringify(v))}catch{}};
   // Sync tussen apparaten: een #sync=... link importeert je gegevens op dít apparaat.
   // Het #-deel van een URL wordt nooit naar een server gestuurd — dit blijft volledig lokaal.
@@ -806,11 +815,20 @@ function usePortfolio() {
   };
   return {
     portfolio:p,
-    add:(ticker,shares,buyPrice,date,reason,risk,note)=>save([...p,{ticker,shares:+shares,buyPrice:+buyPrice,date,reason:reason||"",risk:risk||"",note:note||""}]),
-    // Bewerk een bestaande positie (bv. het dagboek achteraf invullen of bijstellen).
-    // De index is de positie in de volledige portfolio-lijst.
-    update:(idx,fields)=>save(p.map((pos,j)=>j===idx?{...pos,...fields}:pos)),
-    remove:i=>save(p.filter((_,j)=>j!==i)),
+    // Elke positie krijgt een UNIEK id. Zonder dat werd de array-index als identiteit
+    // gebruikt -- en die verschuift zodra je een positie verwijdert of de lijst
+    // herschikt, waardoor een bewerking op de VERKEERDE positie kon landen (of een
+    // bewerking als nieuwe positie werd toegevoegd).
+    add:(ticker,shares,buyPrice,date,reason,risk,note)=>save([...p,{
+      id: (typeof crypto!=="undefined"&&crypto.randomUUID) ? crypto.randomUUID()
+          : `${Date.now()}-${Math.random().toString(36).slice(2,9)}`,
+      ticker,shares:+shares,buyPrice:+buyPrice,date,
+      reason:reason||"",risk:risk||"",note:note||""}]),
+    // Bewerken en verwijderen gaan op ID, NIET op array-index. Een index verschuift
+    // zodra de lijst verandert; een id blijft bij de positie horen. Dit was de oorzaak
+    // van bewerkingen die als nieuwe positie werden toegevoegd.
+    update:(id,fields)=>save(p.map(pos=>pos.id===id?{...pos,...fields}:pos)),
+    remove:id=>save(p.filter(pos=>pos.id!==id)),
     syncLink,
   };
 }
@@ -832,12 +850,6 @@ function useNotes() {
 // ── DETAIL MODAL ──────────────────────────────────────────────────────────────
 function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote }) {
   const [tab,setTab] = useState("signalen");
-  const [sh,setSh]   = useState("");
-  const [pr,setPr]   = useState(data?.indicators?.last?.toFixed(2)||"");
-  const [dt,setDt]   = useState(new Date().toISOString().slice(0,10));
-  const [rsn,setRsn] = useState("");   // dagboek: waarom gekocht
-  const [rsk,setRsk] = useState("");   // dagboek: gevaar / wat kan de thesis breken
-  const [nt,setNt]   = useState("");   // dagboek: bijkomende opmerking
 
   const fund  = data?.fund || FALLBACK_FUND[ticker] || {};
   const ind   = data?.indicators || {};
@@ -899,18 +911,7 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
         {/* WATCHLIST-NOTITIE — altijd zichtbaar, los van posities.
             Voor "waar vond ik dit aandeel" + losse gedachten. Werkt voor de hele
             watchlist, ook aandelen die je niet bezit. */}
-        <div style={{background:C.bg,borderRadius:8,padding:"10px 12px",marginBottom:14,
-          border:`1px solid ${notes[ticker]?C.accent+"66":C.border}`}}>
-          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
-            <span style={{fontSize:12}}>📝</span>
-            <span style={{color:C.accent,fontSize:11,fontWeight:700}}>Mijn notitie</span>
-            <span style={{color:C.muted,fontSize:10}}>· waar vond je dit, losse gedachten</span>
-          </div>
-          <textarea value={notes[ticker]||""} onChange={e=>saveNote(ticker,e.target.value)}
-            placeholder="Bijv. getipt via robotica-research, podcast X, vriend noemde dit..."
-            rows={2} style={{width:"100%",background:C.panel,border:`1px solid ${C.border}`,color:C.text,
-              borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
-        </div>
+        <NoteBlock ticker={ticker} notes={notes} saveNote={saveNote}/>
 
         {/* BAGGER */}
         {tab==="bagger"&&data?.bagger&&(
@@ -1077,50 +1078,10 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
 
         {tab==="portfolio"&&(
           <div>
-            <div style={{marginBottom:16}}>
-              <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:10}}>Positie toevoegen</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
-                <div>
-                  <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Aantal aandelen</div>
-                  <input value={sh} onChange={e=>setSh(e.target.value)} placeholder="bijv. 10"
-                    style={{width:"100%",background:C.bg,border:`1px solid ${C.border}`,color:C.text,borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box"}}/>
-                </div>
-                <div>
-                  <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Aankoopprijs ($)</div>
-                  <input value={pr} onChange={e=>setPr(e.target.value)}
-                    style={{width:"100%",background:C.bg,border:`1px solid ${C.border}`,color:C.text,borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box"}}/>
-                </div>
-              </div>
-              <div style={{marginBottom:8}}>
-                <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Datum</div>
-                <input type="date" value={dt} onChange={e=>setDt(e.target.value)}
-                  style={{background:C.bg,border:`1px solid ${C.border}`,color:C.text,borderRadius:5,padding:"6px 8px",fontSize:12}}/>
-              </div>
-              <div style={{borderTop:`1px solid ${C.border}`,margin:"10px 0 8px",paddingTop:8}}>
-                <div style={{color:C.accent,fontSize:11,fontWeight:700,marginBottom:6}}>📓 Beleggingsdagboek</div>
-                <div style={{marginBottom:6}}>
-                  <div style={{color:C.green,fontSize:11,marginBottom:3}}>Waarom kocht ik?</div>
-                  <textarea value={rsn} onChange={e=>setRsn(e.target.value)} placeholder="Thesis: moat, koopsignaal, waardering..."
-                    rows={2} style={{width:"100%",background:C.bg,border:`1px solid ${C.border}`,color:C.text,borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
-                </div>
-                <div style={{marginBottom:6}}>
-                  <div style={{color:C.orange,fontSize:11,marginBottom:3}}>Gevaar — wat kan de thesis breken?</div>
-                  <textarea value={rsk} onChange={e=>setRsk(e.target.value)} placeholder="Het risico dat je erkent op dit moment..."
-                    rows={2} style={{width:"100%",background:C.bg,border:`1px solid ${C.orange}55`,color:C.text,borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
-                </div>
-                <div style={{marginBottom:8}}>
-                  <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Bijkomende opmerking</div>
-                  <textarea value={nt} onChange={e=>setNt(e.target.value)} placeholder="Optioneel..."
-                    rows={2} style={{width:"100%",background:C.bg,border:`1px solid ${C.border}`,color:C.text,borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
-                </div>
-              </div>
-              <button onClick={()=>{if(sh&&pr){add(ticker,sh,pr,dt,rsn,rsk,nt);setSh("");setRsn("");setRsk("");setNt("")}}}
-                style={{background:C.accent,color:C.bg,border:"none",borderRadius:5,padding:"8px 16px",fontWeight:700,fontSize:12,cursor:"pointer"}}>
-                + Toevoegen
-              </button>
-            </div>
-            {portfolio.map((p,globalIdx)=>({p,globalIdx})).filter(x=>x.p.ticker===ticker).map(({p,globalIdx})=>(
-              <PositionCard key={globalIdx} p={p} globalIdx={globalIdx} last={last}
+            <AddPositionForm ticker={ticker} last={last}
+              currency={data?.currency||"$"} add={add}/>
+            {portfolio.filter(pos=>pos.ticker===ticker).map(pos=>(
+              <PositionCard key={pos.id} p={pos} last={last}
                 currency={data?.currency||"$"} update={update}/>
             ))}
           </div>
@@ -1130,10 +1091,154 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
   );
 }
 
+// Notitie per aandeel — INGEKLAPT tenzij er al iets staat. De meeste aandelen op de
+// watchlist zijn niet getipt, dus dat veld hoeft niet permanent in beeld te staan.
+function NoteBlock({ ticker, notes, saveNote }) {
+  const existing = notes[ticker] || "";
+  const [open,setOpen] = useState(!!existing);
+
+  if (!open) {
+    return (
+      <button onClick={()=>setOpen(true)}
+        style={{background:"transparent",color:C.textDim,border:`1px dashed ${C.border}`,
+          borderRadius:8,padding:"7px 12px",marginBottom:14,fontSize:11,cursor:"pointer",
+          width:"100%",textAlign:"left"}}>
+        📝 + Notitie toevoegen <span style={{color:C.muted}}>(waar vond je dit, losse gedachten)</span>
+      </button>
+    );
+  }
+  return (
+    <div style={{background:C.bg,borderRadius:8,padding:"10px 12px",marginBottom:14,
+      border:`1px solid ${existing?C.accent+"66":C.border}`}}>
+      <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
+        <span style={{fontSize:12}}>📝</span>
+        <span style={{color:C.accent,fontSize:11,fontWeight:700}}>Mijn notitie</span>
+        <span style={{color:C.muted,fontSize:10}}>· waar vond je dit, losse gedachten</span>
+        <button onClick={()=>setOpen(false)}
+          style={{marginLeft:"auto",background:"transparent",color:C.textDim,border:"none",
+            fontSize:11,cursor:"pointer",padding:"2px 6px"}}>▲</button>
+      </div>
+      <textarea value={existing} onChange={e=>saveNote(ticker,e.target.value)}
+        placeholder="Bijv. getipt via robotica-research, podcast X, vriend noemde dit..."
+        rows={2} style={{width:"100%",background:C.panel,border:`1px solid ${C.border}`,color:C.text,
+          borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box",resize:"vertical",fontFamily:"inherit"}}/>
+    </div>
+  );
+}
+
+// Formulier om een positie toe te voegen. STAAT APART als component, met eigen state.
+// Eerder zat deze state in Detail; die component hertekent bij elke wijziging, waardoor
+// de ingevulde velden konden leeglopen (tekst selecteren wiste het formulier, en een
+// leeg prijsveld blokkeerde de knop stilletjes).
+//
+// Het dagboek is INGEKLAPT by default: de meeste posities hebben geen thesis-notitie
+// nodig, dus die drie velden hoeven niet permanent in beeld te staan.
+function AddPositionForm({ ticker, last, currency, add }) {
+  const [sh,setSh]   = useState("");
+  const [pr,setPr]   = useState("");
+  const [dt,setDt]   = useState(()=>new Date().toISOString().slice(0,10));
+  const [rsn,setRsn] = useState("");
+  const [rsk,setRsk] = useState("");
+  const [nt,setNt]   = useState("");
+  const [openJournal,setOpenJournal] = useState(false);
+
+  // Vul de prijs met de huidige koers zodra die bekend is -- maar alleen als de
+  // gebruiker nog niets zelf heeft ingetypt. (De koers is er soms nog niet bij de
+  // eerste render; een useState-initialisatie zou dan voor altijd leeg blijven.)
+  const touched = useRef(false);
+  useEffect(()=>{
+    if(!touched.current && last && !pr) setPr(last.toFixed(2));
+  },[last]);   // eslint-disable-line react-hooks/exhaustive-deps
+
+  const canSave = sh.trim()!=="" && pr.trim()!=="" && +sh>0 && +pr>0;
+  const submit = ()=>{
+    if(!canSave) return;
+    add(ticker, sh, pr, dt, rsn, rsk, nt);
+    setSh(""); setRsn(""); setRsk(""); setNt("");
+    setOpenJournal(false);
+    touched.current = false;
+    if(last) setPr(last.toFixed(2));
+  };
+  const inp = {width:"100%",background:C.bg,border:`1px solid ${C.border}`,color:C.text,
+    borderRadius:5,padding:"6px 8px",fontSize:12,boxSizing:"border-box"};
+  const ta = extra => ({...inp,resize:"vertical",fontFamily:"inherit",background:C.bg,...extra});
+
+  return (
+    <div style={{marginBottom:16}}>
+      <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:10}}>Positie toevoegen</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
+        <div>
+          <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Aantal aandelen</div>
+          <input value={sh} inputMode="decimal" placeholder="bijv. 10"
+            onChange={e=>setSh(e.target.value)} style={inp}/>
+        </div>
+        <div>
+          <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Aankoopprijs ({currency})</div>
+          <input value={pr} inputMode="decimal"
+            onChange={e=>{touched.current=true; setPr(e.target.value);}} style={inp}/>
+        </div>
+      </div>
+      <div style={{marginBottom:8}}>
+        <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Datum</div>
+        <input type="date" value={dt} onChange={e=>setDt(e.target.value)}
+          style={{...inp,width:"auto"}}/>
+      </div>
+
+      {/* Dagboek: ingeklapt tenzij je het nodig hebt */}
+      <div style={{borderTop:`1px solid ${C.border}`,margin:"10px 0 8px",paddingTop:8}}>
+        {!openJournal ? (
+          <button onClick={()=>setOpenJournal(true)}
+            style={{background:"transparent",color:C.textDim,border:`1px dashed ${C.border}`,
+              borderRadius:5,padding:"6px 12px",fontSize:11,cursor:"pointer",width:"100%",
+              textAlign:"left"}}>
+            📓 + Beleggingsdagboek toevoegen <span style={{color:C.muted}}>(optioneel — waarom, gevaar, opmerking)</span>
+          </button>
+        ) : (
+          <div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+              <span style={{color:C.accent,fontSize:11,fontWeight:700}}>📓 Beleggingsdagboek</span>
+              <button onClick={()=>setOpenJournal(false)}
+                style={{background:"transparent",color:C.textDim,border:"none",fontSize:11,
+                  cursor:"pointer",padding:"2px 6px"}}>▲ inklappen</button>
+            </div>
+            <div style={{marginBottom:6}}>
+              <div style={{color:C.green,fontSize:11,marginBottom:3}}>Waarom kocht ik?</div>
+              <textarea value={rsn} onChange={e=>setRsn(e.target.value)} rows={2}
+                placeholder="Thesis: moat, koopsignaal, waardering..." style={ta()}/>
+            </div>
+            <div style={{marginBottom:6}}>
+              <div style={{color:C.orange,fontSize:11,marginBottom:3}}>Gevaar — wat kan de thesis breken?</div>
+              <textarea value={rsk} onChange={e=>setRsk(e.target.value)} rows={2}
+                placeholder="Het risico dat je erkent op dit moment..." style={ta({border:`1px solid ${C.orange}55`})}/>
+            </div>
+            <div style={{marginBottom:8}}>
+              <div style={{color:C.textDim,fontSize:11,marginBottom:3}}>Bijkomende opmerking</div>
+              <textarea value={nt} onChange={e=>setNt(e.target.value)} rows={2}
+                placeholder="Optioneel..." style={ta()}/>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <button onClick={submit} disabled={!canSave}
+        style={{background:canSave?C.accent:C.panel2,color:canSave?C.bg:C.muted,border:"none",
+          borderRadius:5,padding:"8px 16px",fontWeight:700,fontSize:12,
+          cursor:canSave?"pointer":"not-allowed"}}>
+        + Toevoegen
+      </button>
+      {!canSave&&(sh||pr)&&(
+        <span style={{color:C.muted,fontSize:10,marginLeft:8}}>
+          Vul aantal én prijs in (groter dan 0)
+        </span>
+      )}
+    </div>
+  );
+}
+
 // Eén positie met bewerkbaar dagboek. De bewerkknop klapt de drie velden open —
 // zo kun je ook posities die je eerder toevoegde alsnog van een dagboek voorzien,
 // of je thesis bijstellen als je inzicht verandert.
-function PositionCard({ p, globalIdx, last, currency, update }) {
+function PositionCard({ p, last, currency, update }) {
   const [editing,setEditing] = useState(false);
   const [rsn,setRsn] = useState(p.reason||"");
   const [rsk,setRsk] = useState(p.risk||"");
@@ -1141,7 +1246,7 @@ function PositionCard({ p, globalIdx, last, currency, update }) {
   const pnl = (last-p.buyPrice)*p.shares;
   const hasJournal = p.reason||p.risk||p.note;
 
-  const saveEdit = ()=>{ update(globalIdx,{reason:rsn,risk:rsk,note:nt}); setEditing(false); };
+  const saveEdit = ()=>{ update(p.id,{reason:rsn,risk:rsk,note:nt}); setEditing(false); };
   const cancelEdit = ()=>{ setRsn(p.reason||""); setRsk(p.risk||""); setNt(p.note||""); setEditing(false); };
 
   return (
@@ -1344,13 +1449,12 @@ function App() {
       return primary;
     });
 
-  // BELANGRIJK: draag de ORIGINELE index mee (origIdx). portItems filtert posities weg
-  // waarvoor geen koersdata is; zonder origIdx zou remove()/update() dan de VERKEERDE
-  // positie raken zodra één aandeel een datafout heeft.
-  const portItems = portfolio.map((p,origIdx)=>{
+  // Elke positie heeft een uniek id, dus remove()/update() raken altijd de JUISTE
+  // positie -- ook al filtert portItems posities zonder koersdata weg.
+  const portItems = portfolio.map(p=>{
     const last = stocks[p.ticker]?.indicators?.last;
     if (!last) return null;
-    return{...p,origIdx,last,cv:last*p.shares,cb:p.buyPrice*p.shares,pnl:(last-p.buyPrice)*p.shares};
+    return{...p,last,cv:last*p.shares,cb:p.buyPrice*p.shares,pnl:(last-p.buyPrice)*p.shares};
   }).filter(Boolean);
   const tv2=portItems.reduce((a,p)=>a+p.cv,0);
   const tc2=portItems.reduce((a,p)=>a+p.cb,0);
@@ -2066,11 +2170,11 @@ function App() {
           {portItems.length===0
             ?<div style={{textAlign:"center",color:C.textDim,padding:40}}>Nog geen posities. Klik een aandeel → tab "Portfolio".</div>
             :<div style={{display:"grid",gap:8}}>
-              {portItems.map((p,i)=>{
+              {portItems.map(p=>{
                 const data=getStockData(p.ticker);
                 const hasJournal = p.reason||p.risk||p.note;
                 return(
-                  <div key={i} style={{background:C.panel,border:`1px solid ${C.border}`,
+                  <div key={p.id} style={{background:C.panel,border:`1px solid ${C.border}`,
                     borderRadius:8,padding:"12px 14px"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
                       <div>
@@ -2090,7 +2194,7 @@ function App() {
                             fontSize:10,cursor:"pointer",fontWeight:600}}>
                           {hasJournal?"✎ Dagboek":"+ Dagboek"}
                         </button>
-                        <button onClick={()=>remove(p.origIdx)} style={{background:"none",border:`1px solid ${C.border}`,color:C.textDim,borderRadius:4,padding:"3px 8px",fontSize:10,cursor:"pointer"}}>Verwijder</button>
+                        <button onClick={()=>remove(p.id)} style={{background:"none",border:`1px solid ${C.border}`,color:C.textDim,borderRadius:4,padding:"3px 8px",fontSize:10,cursor:"pointer"}}>Verwijder</button>
                       </div>
                     </div>
                     {hasJournal&&(
