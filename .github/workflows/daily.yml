@@ -36,12 +36,25 @@ jobs:
         run: |
           git config user.name  "Buffett+ Bot"
           git config user.email "bot@buffett-dashboard"
-          # universe.jsonl en fills.jsonl MOETEN hier staan. Zonder deze regel wordt
-          # het universum-log elke run weggegooid -- en wat vandaag niet bewaard wordt,
-          # bestaat in december niet. Dat is het enige onomkeerbare deel van het
-          # trackrecord: zonder de niet-aanbevolen aandelen is er geen controlegroep.
-          git add signals.json timeline.json weekly.json track_record.json \
-                  universe.jsonl fills.jsonl history/ || true
+
+          # Elk bestand APART toevoegen, met `|| true` erachter. Reden: fills.jsonl
+          # bestaat pas zodra je een positie logt. Stond het in een gecombineerde
+          # `git add`-regel, dan kon de hele stap falen op dat ene ontbrekende bestand
+          # -- en werd er NIETS gecommit, ook universe.jsonl niet.
+          for f in signals.json timeline.json weekly.json track_record.json \
+                   universe.jsonl fills.jsonl; do
+            if [ -f "$f" ]; then
+              git add "$f" || true
+              echo "  toegevoegd: $f"
+            else
+              echo "  (nog niet aanwezig: $f)"
+            fi
+          done
+          git add history/ || true
+
+          echo "--- Wat staat er klaar om te committen? ---"
+          git status --short
+
           git diff --staged --quiet || git commit -m "Update $(date '+%Y-%m-%d %H:%M UTC')"
           git push
 
