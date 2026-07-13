@@ -226,26 +226,25 @@ DEFAULT_SECTOR = "Industrie & diversen"
 # Fundamentals — handmatig bijgehouden per kwartaal. Laatste update: juni 2026.
 FUNDAMENTALS = {
     "WM":    {"pe":29.2,  "roe":29.9, "fcfYield":3.0,  "debtEquity":2.28, "netMargin":11.0, "divYield":1.69, "revenueGrowth":6.1,   "eps":7.72,  "mktCap":"$90B",   "beta":0.46, "lastUpdated":"2026-06"},
-    "PLTR":  {"pe":117.6, "roe":32.6, "fcfYield":1.0,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":67.7,  "eps":0.96,  "mktCap":"$271B",  "beta":1.52, "lastUpdated":"2026-06"},
+    "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07"},   # P/E 145 - extreme waardering
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.7,  "debtEquity":2.31, "netMargin":13.3, "divYield":1.1,  "revenueGrowth":11.9,  "eps":8.12,  "mktCap":"$176B",  "beta":1.60, "lastUpdated":"2026-06"},
     "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":29.50, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07"},
     "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07"},
     "MU":    {"pe":22.1,  "roe":66.6, "fcfYield":2.2,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.1,  "revenueGrowth":144.0, "revenueGrowthPrev":62.0, "eps":44.6,  "mktCap":"$1.1T",  "beta":2.14, "lastUpdated":"2026-07"},   # AI-geheugencyclus op piek - extreem cyclisch
-    "GOOGL": {"pe":19.8,  "roe":31.5, "fcfYield":4.2,  "debtEquity":0.07, "netMargin":28.6, "divYield":0.5,  "revenueGrowth":14.0,  "eps":9.15,  "mktCap":"$2200B", "beta":1.05, "lastUpdated":"2026-06"},
+    "GOOGL": {"pe":25.7,  "roe":38.9, "fcfYield":1.6,  "debtEquity":0.20, "netMargin":37.9, "divYield":0.3,  "revenueGrowth":13.4,  "revenueGrowthPrev":14.0, "eps":13.15, "mktCap":"$4.1T",  "beta":1.24, "lastUpdated":"2026-07"},
     "ANET":  {"pe":54.0,  "roe":31.5, "fcfYield":2.7,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.0, "revenueGrowthPrev":42.0,  "eps":3.15,  "mktCap":"$155B",  "beta":1.61, "lastUpdated":"2026-06"},
     "HOOD":  {"pe":44.0,  "roe":21.5, "fcfYield":2.5,  "debtEquity":1.40, "netMargin":35.0, "divYield":0,    "revenueGrowth":15.0,  "eps":2.07,  "mktCap":"$101B",  "beta":2.35, "lastUpdated":"2026-06"},
     "TSCO":  {"pe":14.6,  "roe":45.5, "fcfYield":3.6,  "debtEquity":0.70, "netMargin":6.9,  "divYield":2.5,  "revenueGrowth":4.3,   "eps":2.03,  "mktCap":"$16B",   "beta":0.75, "lastUpdated":"2026-07"},
     "ODFL":  {"pe":40.0,  "roe":23.9, "fcfYield":1.9,  "debtEquity":0.03, "netMargin":18.5, "divYield":0.6,  "revenueGrowth":4.2,   "eps":4.85,  "mktCap":"$50B",   "beta":1.22, "lastUpdated":"2026-07"},
     "HWM":   {"pe":62.0,  "roe":33.8, "fcfYield":1.5,  "debtEquity":0.88, "netMargin":20.2, "divYield":0.2,  "revenueGrowth":19.0,  "eps":4.35,  "mktCap":"$108B",  "beta":1.19, "lastUpdated":"2026-07"},
     "SNDK":  {"pe":68.0,  "roe":39.3, "fcfYield":2.0,  "debtEquity":0.02, "netMargin":34.2, "divYield":0,    "revenueGrowth":97.0,  "eps":30.0,  "mktCap":"$300B",  "beta":2.50, "lastUpdated":"2026-07"},
-    "AMZN":  {"pe":27.2,  "roe":24.3, "fcfYield":2.8,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":11.0,  "eps":8.36,  "mktCap":"$2440B", "beta":1.44, "lastUpdated":"2026-06"},
-    "ORCL":  {"pe":31.6,  "roe":53.4, "fcfYield":4.2,  "debtEquity":3.63, "netMargin":25.2, "divYield":1.3,  "revenueGrowth":15.0,  "eps":5.83,  "mktCap":"$438B",  "beta":1.65, "lastUpdated":"2026-06"},
+    "AMZN":  {"pe":29.3,  "roe":24.3, "fcfYield":0.3,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":14.2,  "revenueGrowthPrev":12.4, "eps":8.36,  "mktCap":"$2.6T",  "beta":1.46, "lastUpdated":"2026-07"},
+    "ORCL":  {"pe":24.1,  "roe":53.4, "fcfYield":0.5,  "debtEquity":3.89, "netMargin":25.4, "divYield":1.4,  "revenueGrowth":17.4,  "revenueGrowthPrev":8.0,  "eps":5.83,  "mktCap":"$402B",  "beta":1.71, "lastUpdated":"2026-07"},   # WAARSCHUWING: S&P-rating verlaagd, D/E 3.9
     "KO":    {"pe":25.5,  "roe":43.4, "fcfYield":3.3,  "debtEquity":1.25, "netMargin":27.8, "divYield":3.0,  "revenueGrowth":3.5,   "eps":2.91,  "mktCap":"$320B",  "beta":0.36, "lastUpdated":"2026-06"},
     # ── Bagger-kandidaten ── Extra velden: grossMargin, grossMarginTrend (pp YoY),
     #    revenueGrowthPrev (voor versnelling), cashRunwayMonths (None = winstgevend/n.v.t.).
     #    Cijfers indicatief per begin 2026 — VERIFIEER en werk per kwartaal bij.
-    "LHX":   {"pe":24.5, "roe":11.2, "fcfYield":4.8, "debtEquity":0.70, "netMargin":9.8,  "divYield":1.9, "revenueGrowth":9.5,   "eps":13.10, "mktCap":"$47B",  "beta":0.90, "lastUpdated":"2026-01",
-              "grossMargin":27.0, "grossMarginTrend":0.8, "revenueGrowthPrev":7.0,  "cashRunwayMonths":None},
+    "LHX":   {"pe":43.0,  "roe":8.2,  "fcfYield":4.1,  "debtEquity":0.61, "netMargin":7.5,  "divYield":1.5,  "revenueGrowth":5.8,   "revenueGrowthPrev":3.0,  "eps":8.53,  "mktCap":"$68B",   "beta":0.61, "lastUpdated":"2026-07"},   # ROE 8.2% faalt poort
     "MOGA":  {"pe":22.0, "roe":13.5, "fcfYield":3.5, "debtEquity":0.85, "netMargin":7.5,  "divYield":1.1, "revenueGrowth":11.0,  "eps":8.60,  "mktCap":"$6B",   "beta":1.15, "lastUpdated":"2026-01",
               "grossMargin":28.5, "grossMarginTrend":1.2, "revenueGrowthPrev":8.0,  "cashRunwayMonths":None},
     "TDG":   {"pe":42.0,  "roe":20.0, "fcfYield":2.5,  "debtEquity":8.00, "netMargin":21.0, "divYield":0,    "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":34.50, "mktCap":"$72B",   "beta":1.05, "lastUpdated":"2026-07"},   # ROE=ROIC-proxy: negatief eigen vermogen door schuldgefinancierde uitkeringen
@@ -263,20 +262,20 @@ FUNDAMENTALS = {
     # Let op eenheden: eps in noteringsvaluta (LSE in PENCE, Tokio in ¥, Brussel/Parijs/Adam in €, HK in HK$)
     "GAW":   {"pe":24.0, "roe":60.0, "fcfYield":4.0, "debtEquity":0.02, "netMargin":32.0, "divYield":4.2, "revenueGrowth":12.0, "eps":620,   "mktCap":"£5.2B",  "beta":0.50, "lastUpdated":"2026-01"},
     "MNST":  {"pe":34.0, "roe":23.0, "fcfYield":2.8, "debtEquity":0.03, "netMargin":21.5, "divYield":0,   "revenueGrowth":7.0,  "eps":1.68,  "mktCap":"$56B",   "beta":0.75, "lastUpdated":"2026-01"},
-    "V":     {"pe":29.0, "roe":51.0, "fcfYield":3.4, "debtEquity":0.62, "netMargin":53.0, "divYield":0.75,"revenueGrowth":10.0, "eps":10.9,  "mktCap":"$640B",  "beta":0.95, "lastUpdated":"2026-01"},
+    "V":     {"pe":28.5,  "roe":60.4, "fcfYield":3.4,  "debtEquity":0.67, "netMargin":51.7, "divYield":0.8,  "revenueGrowth":14.4,  "revenueGrowthPrev":11.6, "eps":11.70, "mktCap":"$582B",  "beta":0.76, "lastUpdated":"2026-07"},
     "KPG":   {"pe":55.0, "roe":35.0, "fcfYield":1.8, "debtEquity":2.40, "netMargin":9.0,  "divYield":1.0, "revenueGrowth":26.0, "eps":0.21,  "mktCap":"A$1.6B", "beta":0.90, "lastUpdated":"2026-01"},
     "ADM":   {"pe":13.8,  "roe":53.0, "fcfYield":5.5,  "debtEquity":1.31, "netMargin":14.8, "divYield":6.1,  "revenueGrowth":8.0,   "revenueGrowthPrev":5.0,  "eps":2.42,  "mktCap":"p10B",   "beta":0.18, "lastUpdated":"2026-07"},
     "AON":   {"pe":16.8,  "roe":39.3, "fcfYield":3.8,  "debtEquity":1.40, "netMargin":24.0, "divYield":0.9,  "revenueGrowth":7.0,   "revenueGrowthPrev":5.0,  "eps":17.07, "mktCap":"$77B",   "beta":0.90, "lastUpdated":"2026-07"},
-    "MELI":  {"pe":52.0, "roe":38.0, "fcfYield":2.5, "debtEquity":1.10, "netMargin":9.5,  "divYield":0,   "revenueGrowth":34.0, "eps":42.0,  "mktCap":"$115B",  "beta":1.50, "lastUpdated":"2026-01"},
+    "MELI":  {"pe":40.0,  "roe":30.0, "fcfYield":1.0,  "debtEquity":1.80, "netMargin":6.0,  "divYield":0,    "revenueGrowth":49.0,  "revenueGrowthPrev":37.0, "eps":39.39, "mktCap":"$79B",   "beta":1.60, "lastUpdated":"2026-07"},   # marge ingestort 8.3->6.0 door capex
     "III":   {"pe":9.0,  "roe":22.0, "fcfYield":2.0, "debtEquity":0.30, "netMargin":60.0, "divYield":1.9, "revenueGrowth":16.0, "eps":450,   "mktCap":"£40B",   "beta":1.05, "lastUpdated":"2026-01"},
     "SHOP":  {"pe":85.0, "roe":13.0, "fcfYield":1.2, "debtEquity":0.08, "netMargin":13.0, "divYield":0,   "revenueGrowth":26.0, "eps":1.45,  "mktCap":"$155B",  "beta":2.20, "lastUpdated":"2026-01"},
     "NET":   {"pe":None, "roe":3.0,  "fcfYield":0.8, "debtEquity":0.90, "netMargin":1.5,  "divYield":0,   "revenueGrowth":28.0, "eps":0.08,  "mktCap":"$70B",   "beta":1.90, "lastUpdated":"2026-01"},
     "CRWV":  {"pe":None, "roe":-40.7,"fcfYield":-19.0,"debtEquity":5.20,"netMargin":-25.6,"divYield":0,   "revenueGrowth":105.0,"eps":-2.72, "mktCap":"$45B",   "beta":2.80, "lastUpdated":"2026-05",
               "grossMargin":73.0, "grossMarginTrend":-1.0, "revenueGrowthPrev":168.0, "cashRunwayMonths":None},
-    "MSFT":  {"pe":34.0, "roe":34.0, "fcfYield":2.4, "debtEquity":0.30, "netMargin":36.0, "divYield":0.7, "revenueGrowth":15.0, "eps":13.4,  "mktCap":"$3.7T",  "beta":0.90, "lastUpdated":"2026-01"},
+    "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":39.3, "divYield":1.0,  "revenueGrowth":15.0,  "revenueGrowthPrev":16.0, "eps":16.85, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07"},
     "MTLS":  {"pe":48.0, "roe":6.0,  "fcfYield":1.0, "debtEquity":0.15, "netMargin":4.0,  "divYield":0,   "revenueGrowth":6.0,  "eps":0.13,  "mktCap":"$0.4B",  "beta":1.30, "lastUpdated":"2026-01"},
     "SNAP":  {"pe":None, "roe":-12.0,"fcfYield":1.5, "debtEquity":0.90, "netMargin":-8.0, "divYield":0,   "revenueGrowth":12.0, "eps":-0.30, "mktCap":"$16B",   "beta":1.90, "lastUpdated":"2026-01"},
-    "NVDA":  {"pe":42.0, "roe":95.0, "fcfYield":2.2, "debtEquity":0.12, "netMargin":54.0, "divYield":0.03,"revenueGrowth":55.0, "eps":4.4,   "mktCap":"$4.5T",  "beta":1.70, "lastUpdated":"2026-01"},
+    "NVDA":  {"pe":31.1,  "roe":114.3,"fcfYield":2.4,  "debtEquity":0.07, "netMargin":63.0, "divYield":0.5,  "revenueGrowth":70.7,  "revenueGrowthPrev":114.0,"eps":6.56,  "mktCap":"$4.9T",  "beta":2.21, "lastUpdated":"2026-07"},
     "NKE":   {"pe":32.0, "roe":28.0, "fcfYield":2.8, "debtEquity":0.65, "netMargin":8.5,  "divYield":2.1, "revenueGrowth":-3.0, "eps":2.2,   "mktCap":"$105B",  "beta":1.10, "lastUpdated":"2026-01"},
     "DIE":   {"pe":13.0, "roe":16.0, "fcfYield":5.0, "debtEquity":1.70, "netMargin":8.0,  "divYield":1.5, "revenueGrowth":7.0,  "eps":15.5,  "mktCap":"€11B",   "beta":1.00, "lastUpdated":"2026-01"},
     "SOF":   {"pe":13.0, "roe":8.0,  "fcfYield":1.0, "debtEquity":0.10, "netMargin":40.0, "divYield":1.4, "revenueGrowth":5.0,  "eps":19.0,  "mktCap":"€8B",    "beta":0.90, "lastUpdated":"2026-01"},
@@ -285,9 +284,9 @@ FUNDAMENTALS = {
     "LOTB":  {"pe":48.0, "roe":27.0, "fcfYield":1.5, "debtEquity":0.35, "netMargin":14.5, "divYield":0.9, "revenueGrowth":11.0, "eps":210.0, "mktCap":"€8.5B",  "beta":0.50, "lastUpdated":"2026-01"},
     "MSTR":  {"pe":None, "roe":-5.0, "fcfYield":-1.0,"debtEquity":0.90, "netMargin":-30.0,"divYield":0,   "revenueGrowth":2.0,  "eps":-1.0,  "mktCap":"$80B",   "beta":3.50, "lastUpdated":"2026-01"},
     "AAPL":  {"pe":38.0,  "roe":141.5,"fcfYield":2.1,  "debtEquity":0.80, "netMargin":27.2, "divYield":0.3,  "revenueGrowth":6.4,   "revenueGrowthPrev":4.0,  "eps":8.30,  "mktCap":"$4.6T",  "beta":1.10, "lastUpdated":"2026-07"},
-    "NFLX":  {"pe":42.0, "roe":38.0, "fcfYield":2.0, "debtEquity":0.70, "netMargin":25.0, "divYield":0,   "revenueGrowth":14.0, "eps":26.0,  "mktCap":"$470B",  "beta":1.20, "lastUpdated":"2026-01"},
+    "NFLX":  {"pe":24.4,  "roe":48.5, "fcfYield":4.0,  "debtEquity":0.54, "netMargin":28.5, "divYield":0,    "revenueGrowth":15.0,  "revenueGrowthPrev":16.0, "eps":3.18,  "mktCap":"$313B",  "beta":1.52, "lastUpdated":"2026-07"},
     "DIS":   {"pe":22.0, "roe":9.0,  "fcfYield":3.5, "debtEquity":0.45, "netMargin":9.0,  "divYield":1.0, "revenueGrowth":4.0,  "eps":5.4,   "mktCap":"$210B",  "beta":1.20, "lastUpdated":"2026-01"},
-    "BLK":   {"pe":24.0, "roe":15.0, "fcfYield":3.8, "debtEquity":0.50, "netMargin":31.0, "divYield":2.0, "revenueGrowth":13.0, "eps":45.0,  "mktCap":"$170B",  "beta":1.20, "lastUpdated":"2026-01"},
+    "BLK":   {"pe":20.0,  "roe":15.0, "fcfYield":4.5,  "debtEquity":0.35, "netMargin":30.0, "divYield":2.2,  "revenueGrowth":10.0,  "revenueGrowthPrev":6.0,  "eps":48.09, "mktCap":"$150B",  "beta":1.35, "lastUpdated":"2026-07"},
     "BABA":  {"pe":18.0, "roe":11.0, "fcfYield":5.5, "debtEquity":0.35, "netMargin":13.0, "divYield":1.1, "revenueGrowth":7.0,  "eps":8.8,   "mktCap":"$280B",  "beta":1.30, "lastUpdated":"2026-01"},
     # Robotics moat (¥/$ — eps in noteringsvaluta)
     "NABTESCO":{"pe":21.0,"roe":8.5, "fcfYield":3.0, "debtEquity":0.25, "netMargin":7.5,  "divYield":3.0, "revenueGrowth":5.0,  "eps":135,   "mktCap":"¥350B",  "beta":0.80, "lastUpdated":"2026-01"},
@@ -297,7 +296,7 @@ FUNDAMENTALS = {
     "YASKAWA":{"pe":26.0, "roe":11.0,"fcfYield":2.0, "debtEquity":0.20, "netMargin":8.5,  "divYield":1.6, "revenueGrowth":6.0,  "eps":165,   "mktCap":"¥1.1T",  "beta":1.20, "lastUpdated":"2026-01"},
     "SOFTBANK":{"pe":14.0,"roe":14.0,"fcfYield":0.5, "debtEquity":1.60, "netMargin":18.0, "divYield":0.4, "revenueGrowth":8.0,  "eps":1300,  "mktCap":"¥17T",   "beta":2.20, "lastUpdated":"2026-01"},
     "ROK":   {"pe":31.0, "roe":33.0, "fcfYield":3.0, "debtEquity":1.00, "netMargin":13.5, "divYield":1.5, "revenueGrowth":4.0,  "eps":10.5,  "mktCap":"$37B",   "beta":1.20, "lastUpdated":"2026-01"},
-    "TER":   {"pe":36.0, "roe":21.0, "fcfYield":2.2, "debtEquity":0.05, "netMargin":19.0, "divYield":0.4, "revenueGrowth":12.0, "revenueGrowthPrev":4.0, "eps":3.6,   "mktCap":"$21B",   "beta":1.50, "lastUpdated":"2026-01"},
+    "TER":   {"pe":66.6,  "roe":22.0, "fcfYield":1.2,  "debtEquity":0.10, "netMargin":17.4, "divYield":0.1,  "revenueGrowth":13.1,  "revenueGrowthPrev":5.0,  "eps":5.39,  "mktCap":"$56B",   "beta":1.45, "lastUpdated":"2026-07"},
     "ISRG":  {"pe":66.0, "roe":17.5, "fcfYield":1.4, "debtEquity":0.00, "netMargin":28.5, "divYield":0,   "revenueGrowth":16.0, "eps":8.2,   "mktCap":"$190B",  "beta":1.30, "lastUpdated":"2026-01"},
     "CGNX":  {"pe":44.0, "roe":11.0, "fcfYield":2.0, "debtEquity":0.05, "netMargin":13.0, "divYield":0.8, "revenueGrowth":7.0, "revenueGrowthPrev":1.0,  "eps":0.95,  "mktCap":"$7B",    "beta":1.50, "lastUpdated":"2026-01"},
     "NOVT":  {"pe":42.0, "roe":13.0, "fcfYield":2.3, "debtEquity":0.50, "netMargin":11.0, "divYield":0,   "revenueGrowth":6.0,  "eps":3.3,   "mktCap":"$5B",    "beta":1.30, "lastUpdated":"2026-01"},
