@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-07-13T21:58:31.641080+02:00"
+    "lastUpdate": "2026-07-13T22:23:49.594186+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -2642,5 +2642,163 @@
     4,
     13,
     26
-  ]
+  ],
+  "diagnostics": {
+    "n": 77,
+    "baseRates": [
+      {
+        "action": "KOOP",
+        "n": 25,
+        "pct": 32.5,
+        "verdict": "weinig discriminerend",
+        "color": "orange"
+      },
+      {
+        "action": "VERKOOP",
+        "n": 22,
+        "pct": 28.6,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "STERK VERKOOP",
+        "n": 16,
+        "pct": 20.8,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "LICHT KOOP",
+        "n": 5,
+        "pct": 6.5,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "CAUTION (overextended)",
+        "n": 5,
+        "pct": 6.5,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "NEUTRAAL",
+        "n": 2,
+        "pct": 2.6,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
+      },
+      {
+        "action": "LICHT VERKOOP",
+        "n": 2,
+        "pct": 2.6,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
+      }
+    ],
+    "corrLabels": [
+      "Kwaliteit",
+      "Waardering",
+      "Timing",
+      "Trend",
+      "Instap",
+      "Composiet",
+      "Koopkans"
+    ],
+    "corrMatrix": [
+      {
+        "label": "Kwaliteit",
+        "key": "qual",
+        "cells": [
+          1.0,
+          0.2,
+          -0.06,
+          0.26,
+          -0.49,
+          0.73,
+          0.35
+        ]
+      },
+      {
+        "label": "Waardering",
+        "key": "val",
+        "cells": [
+          0.2,
+          1.0,
+          -0.23,
+          -0.36,
+          0.09,
+          0.74,
+          0.71
+        ]
+      },
+      {
+        "label": "Timing",
+        "key": "tim",
+        "cells": [
+          -0.06,
+          -0.23,
+          1.0,
+          0.64,
+          0.07,
+          0.1,
+          -0.49
+        ]
+      },
+      {
+        "label": "Trend",
+        "key": "trd",
+        "cells": [
+          0.26,
+          -0.36,
+          0.64,
+          1.0,
+          -0.52,
+          0.1,
+          -0.68
+        ]
+      },
+      {
+        "label": "Instap",
+        "key": "ent",
+        "cells": [
+          -0.49,
+          0.09,
+          0.07,
+          -0.52,
+          1.0,
+          -0.21,
+          0.46
+        ]
+      },
+      {
+        "label": "Composiet",
+        "key": "comp",
+        "cells": [
+          0.73,
+          0.74,
+          0.1,
+          0.1,
+          -0.21,
+          1.0,
+          0.61
+        ]
+      },
+      {
+        "label": "Koopkans",
+        "key": "opp",
+        "cells": [
+          0.35,
+          0.71,
+          -0.49,
+          -0.68,
+          0.46,
+          0.61,
+          1.0
+        ]
+      }
+    ],
+    "corrWarnings": []
+  },
+  "modelVersion": "v3-koopkans"
 }
