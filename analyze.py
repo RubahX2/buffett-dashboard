@@ -2725,7 +2725,151 @@ def diagnose_signals(stocks) -> dict:
             "corrMatrix": matrix, "corrWarnings": warnings}
 
 
+def migrate_collapse_episodes(track):
+    """
+    EENMALIGE OPSCHONING van de bestaande log.
+
+    De oude code maakte elke dag een nieuw record voor hetzelfde doorlopende signaal.
+    Resultaat: 131 "aanbevelingen" die in werkelijkheid een handvol signalen zijn --
+    MU stond er tien keer in, met bijna dezelfde entry-prijs.
+
+    Deze functie klapt opeenvolgende records van dezelfde (ticker, type, richting)
+    samen tot EEN episode: de eerste dag is de entry, de rest wordt weggegooid. Zo
+    telt het trackrecord signalen in plaats van cron-runs.
+    """
+    records = track.get("records", {})
+    if not records:
+        return 0
+
+    # Groepeer per (ticker, type, richting) en sorteer op datum
+    from collections import defaultdict
+    groups = defaultdict(list)
+    for key, r in records.items():
+        groups[(r["ticker"], r["type"], r.get("direction"))].append((r["date"], key, r))
+
+    keep, dropped = {}, 0
+    for _g, items in groups.items():
+        items.sort(key=lambda x: x[0])
+        prev_date = None
+        for dt, key, r in items:
+            d = date.fromisoformat(dt)
+            # Nieuwe episode als er een gat van >4 dagen zit (weekend = 3 dagen).
+            # Anders is het dezelfde doorlopende aanbeveling -> weggooien.
+            if prev_date is not None and (d - prev_date).days <= 4:
+                dropped += 1
+                prev_date = d
+                continue
+            keep[key] = r
+            prev_date = d
+
+    if dropped:
+        track["records"] = keep
+        print(f"  ⚙ Opschoning: {dropped} dubbele dag-records samengevoegd tot episodes")
+        print(f"    ({len(records)} rijen -> {len(keep)} echte aanbevelingen)")
+    return dropped
+
+
 def record_recommendations(track, today_iso, allocation, stocks, prices, bench_close):
+    """
+    Leg aanbevelingen vast — maar ALLEEN als het signaal NIEUW is.
+
+    DE BUG DIE DIT OPLOST: eerder bevatte de sleutel de datum, dus elke cron-run maakte
+    een nieuw record. Een MU-signaal dat tien dagen aanhield werd tien "aanbevelingen".
+    Maar dat is EEN aanbeveling, tien keer waargenomen -- de tien observaties delen
+    vrijwel hun hele venster en zijn ~99% gecorreleerd. De teller telde cron-runs,
+    geen signalen, en elk statistisch getal daarop was fictie.
+
+    Nu geldt: een record wordt geopend zodra een ticker in een nieuwe SIGNAALTOESTAND
+    komt, en blijft open zolang die toestand duurt. Zakt het signaal weg en komt het
+    later terug, dan is dat wel een nieuwe aanbeveling.
+
+    (Het volledige universum -- inclusief de niet-aanbevolen namen en de dagelijkse
+    stand -- gaat naar universe.jsonl. Dat is waar de statistiek later uit komt.)
+    """
+    records = track.setdefault("records", {})
+    # Laatst bekende signaaltoestand per ticker. Hiermee zien we of een signaal NIEUW is.
+    last_state = track.setdefault("_lastState", {})
+    bench_entry = float(bench_close.iloc[-1]) if bench_close is not None and len(bench_close) else None
+
+    def open_episode(ticker, rec_type, direction, entry_price, snapshot, state):
+        """Open een record ALLEEN als de ticker nog niet in deze toestand zat."""
+        if entry_price is None:
+            return False
+        prev = last_state.get(ticker)
+        if prev == state:
+            return False        # zelfde signaal als gisteren -> geen nieuwe aanbeveling
+        # Nieuw signaal: open een episode. De sleutel bevat de STARTDATUM, zodat een
+        # herhaling later (na een onderbreking) wel een eigen record krijgt.
+        key = _record_key(ticker, today_iso, rec_type)
+        if key in records:
+            return False        # idempotent binnen dezelfde dag
+        records[key] = {
+            "ticker": ticker, "type": rec_type, "direction": direction,
+            "date": today_iso, "entryPrice": entry_price, "benchEntry": bench_entry,
+            "currency": CURRENCY.get(ticker, "$"),
+            "snapshot": snapshot, "outcomes": {},
+            "episodeDays": 1,
+        }
+        return True
+
+    opened = 0
+    new_state = {}
+
+    # 1. Maandpick
+    if allocation and allocation.get("primaryPick"):
+        p = allocation["primaryPick"]
+        t = p["ticker"]
+        st = f"pick:{t}"
+        new_state[t] = st
+        if open_episode(t, "monthly_pick", "BUY", prices.get(t), {
+                "composite": p.get("composite"), "quality": p.get("quality"),
+                "valuation": p.get("valuation"), "timing": p.get("timing"),
+            }, st):
+            opened += 1
+
+    # 2. Sterke signalen
+    for t, s in stocks.items():
+        overall = s.get("overall")
+        sc = s.get("scores", {})
+        if overall not in ("STERK KOOP", "STERK VERKOOP"):
+            # Geen sterk signaal meer: toestand wissen, zodat een terugkeer later
+            # wel als NIEUWE aanbeveling telt.
+            if t not in new_state:
+                new_state[t] = None
+            continue
+        direction = "BUY" if overall == "STERK KOOP" else "SELL"
+        st = f"sig:{overall}"
+        # Een ticker kan zowel maandpick als sterk signaal zijn; de pick-toestand wint
+        # niet, we houden per type los bij via de sleutel.
+        prev = last_state.get(t)
+        if prev != st:
+            key = _record_key(t, today_iso, "strong_signal")
+            if key not in records and prices.get(t) is not None:
+                records[key] = {
+                    "ticker": t, "type": "strong_signal", "direction": direction,
+                    "date": today_iso, "entryPrice": prices.get(t), "benchEntry": bench_entry,
+                    "currency": CURRENCY.get(t, "$"),
+                    "snapshot": {"overall": overall, "composite": sc.get("composite"),
+                                 "timing": sc.get("timing")},
+                    "outcomes": {}, "episodeDays": 1,
+                }
+                opened += 1
+        else:
+            # Zelfde signaal als gisteren: verleng de lopende episode, maak GEEN nieuw record.
+            for k, r in records.items():
+                if (r["ticker"] == t and r["type"] == "strong_signal"
+                        and not r["outcomes"] and r.get("_closed") is not True):
+                    r["episodeDays"] = r.get("episodeDays", 1) + 1
+                    break
+        new_state[t] = st
+
+    track["_lastState"] = new_state
+    n_open = len([r for r in records.values()])
+    print(f"  Aanbevelingen: {opened} NIEUW vandaag ({n_open} episodes totaal)")
+    print(f"    (een doorlopend signaal telt als EEN aanbeveling, niet als een per dag)")
+
+
+def _record_recommendations_OLD(track, today_iso, allocation, stocks, prices, bench_close):
     """Leg vandaag's aanbevelingen vast (idempotent): maandpick + sterke signalen."""
     records = track.setdefault("records", {})
     bench_entry = float(bench_close.iloc[-1]) if bench_close is not None and len(bench_close) else None
@@ -3165,6 +3309,10 @@ def main():
             print("\n  ✓ Geen subscores die elkaar dubbel tellen (alle |r| < 0.80)")
 
     track = load_track_record()
+
+    # Eenmalige opschoning: klap opeenvolgende dag-records samen tot episodes.
+    # Zonder dit blijven de 131 rijen staan waarin MU tien keer voorkomt.
+    migrate_collapse_episodes(track)
     prices_today = {nm: results["stocks"][nm].get("indicators", {}).get("last")
                     for nm in results["stocks"] if "indicators" in results["stocks"][nm]}
     # 1. Vandaag's aanbevelingen vastleggen (idempotent)
