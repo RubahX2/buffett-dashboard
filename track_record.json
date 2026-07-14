@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-07-14T15:04:37.601208+02:00"
+    "lastUpdate": "2026-07-14T15:29:30.489822+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -1179,7 +1179,7 @@
         "timing": 31
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:HWM:2026-07-10": {
       "ticker": "HWM",
@@ -1195,7 +1195,7 @@
         "timing": 47
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:GILD:2026-07-13": {
       "ticker": "GILD",
@@ -1226,7 +1226,7 @@
         "timing": 50
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:SNDK:2026-07-13": {
       "ticker": "SNDK",
@@ -1257,7 +1257,7 @@
         "timing": 48
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:ASMI:2026-07-14": {
       "ticker": "ASMI",
@@ -1273,7 +1273,7 @@
         "timing": 47
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:MU:2026-07-14": {
       "ticker": "MU",
@@ -1289,7 +1289,7 @@
         "timing": 39
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:GOOGL:2026-07-14": {
       "ticker": "GOOGL",
@@ -1305,7 +1305,7 @@
         "timing": 38
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:RKLB:2026-07-14": {
       "ticker": "RKLB",
@@ -1321,7 +1321,7 @@
         "timing": 32
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:GAW:2026-07-14": {
       "ticker": "GAW",
@@ -1337,7 +1337,7 @@
         "timing": 52
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:MSFT:2026-07-14": {
       "ticker": "MSFT",
@@ -1353,7 +1353,7 @@
         "timing": 17
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:BLK:2026-07-14": {
       "ticker": "BLK",
@@ -1369,7 +1369,7 @@
         "timing": 37
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:FANUC:2026-07-14": {
       "ticker": "FANUC",
@@ -1385,7 +1385,7 @@
         "timing": 41
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:SOFTBANK:2026-07-14": {
       "ticker": "SOFTBANK",
@@ -1401,7 +1401,7 @@
         "timing": 40
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:TER:2026-07-14": {
       "ticker": "TER",
@@ -1417,7 +1417,7 @@
         "timing": 34
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:ANET:2026-07-14": {
       "ticker": "ANET",
@@ -1433,7 +1433,7 @@
         "timing": 37
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:ODFL:2026-07-14": {
       "ticker": "ODFL",
@@ -1449,7 +1449,7 @@
         "timing": 42
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:PL:2026-07-14": {
       "ticker": "PL",
@@ -1465,7 +1465,7 @@
         "timing": 42
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:ARCG:2026-07-14": {
       "ticker": "ARCG",
@@ -1481,7 +1481,7 @@
         "timing": 41
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:AIR:2026-07-14": {
       "ticker": "AIR",
@@ -1497,7 +1497,7 @@
         "timing": 41
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     }
   },
   "accuracy": {
@@ -1657,11 +1657,11 @@
         "cells": [
           1.0,
           0.15,
-          -0.08,
-          0.26,
-          -0.51,
-          0.75,
-          0.33
+          -0.03,
+          0.28,
+          -0.5,
+          0.77,
+          0.37
         ]
       },
       {
@@ -1670,75 +1670,75 @@
         "cells": [
           0.15,
           1.0,
-          -0.29,
-          -0.32,
-          -0.02,
-          0.69,
-          0.69
+          -0.24,
+          -0.25,
+          0.0,
+          0.67,
+          0.68
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          -0.08,
-          -0.29,
+          -0.03,
+          -0.24,
           1.0,
           0.61,
-          0.11,
-          0.04,
-          -0.52
+          0.1,
+          0.1,
+          -0.5
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.26,
-          -0.32,
+          0.28,
+          -0.25,
           0.61,
           1.0,
           -0.51,
-          0.14,
-          -0.66
+          0.21,
+          -0.63
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.51,
-          -0.02,
-          0.11,
+          -0.5,
+          0.0,
+          0.1,
           -0.51,
           1.0,
-          -0.31,
-          0.42
+          -0.3,
+          0.4
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.75,
-          0.69,
-          0.04,
-          0.14,
-          -0.31,
+          0.77,
+          0.67,
+          0.1,
+          0.21,
+          -0.3,
           1.0,
-          0.61
+          0.6
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.33,
-          0.69,
-          -0.52,
-          -0.66,
-          0.42,
-          0.61,
+          0.37,
+          0.68,
+          -0.5,
+          -0.63,
+          0.4,
+          0.6,
           1.0
         ]
       }
