@@ -74,6 +74,12 @@ const STOCK_NAMES = {
   RDDT:"Reddit", NOW:"ServiceNow", GILD:"Gilead Sciences",
   DDOG:"Datadog", ARCC:"Ares Capital", ONON:"On Holding",
   ARCG:"ARK Genomic Revolution ETF",
+  META: "Meta Platforms",
+  VST:  "Vistra",
+  VOW:  "Volkswagen (pref)",
+  EL:   "Est\u00e9e Lauder",
+  COPX: "Global X Copper Miners ETF",
+  ROBO: "iShares Automation & Robotics ETF",
 };
 
 const TV_LINKS = {
@@ -428,7 +434,17 @@ function PurchaseMirror({ portfolio, track, stocks }) {
         uitleg = `${sig.snapshot?.overall || "verkoopsignaal"} rond je aankoop`;
       }
     } else {
-      uitleg = "geen sterk signaal rond je aankoopdatum";
+      // Waarom staat hier "geen signaal" terwijl het bord vandaag STERK KOOP toont?
+      // Omdat het trackrecord alleen STERKE signalen vastlegt (STERK KOOP / STERK
+      // VERKOOP / CAUTION), en hoogstens een per 10 dagen per aandeel. Een gewone
+      // "KOOP" komt er niet in. En een sterk signaal dat NA je aankoop ontstond,
+      // telt hier terecht niet mee -- je kon het niet weten.
+      //
+      // Dit label moet dus niet suggereren dat het model niets vond; het zegt dat er
+      // geen VASTGELEGDE episode rond jouw aankoopdatum lag.
+      uitleg = nu
+        ? `geen vastgelegde episode rond je aankoop (bord staat nu op ${nu})`
+        : "geen vastgelegde episode rond je aankoopdatum";
     }
     return {...p, sig, nu, oordeel, kleur, uitleg};
   });
@@ -1431,6 +1447,21 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                 <div style={{color:score>=70?C.green:score>=50?C.accent:C.red,fontSize:13,fontWeight:700}}>
                   {score>=70?"Uitstekend":score>=50?"Goed":"Zwak"}
                 </div>
+                {/* Waarom dit label er staat: de Buffett Score en de kwaliteitsscore ("kwal 95")
+                    meten NIET hetzelfde, en bij 38 van de 83 aandelen lopen ze 20+ punten uiteen
+                    -- altijd dezelfde kant op. ANET: kwal 95, Buffett 58.
+
+                    De oorzaak is de P/E-component (22 van de 100 punten), die alleen in de
+                    Buffett Score zit. Juist de beste bedrijven zijn duur, dus hoe hoger de
+                    kwaliteit, hoe harder deze score hem afstraft.
+
+                    Zonder uitleg lijkt dat een fout. Met uitleg is het informatie: ANET is
+                    een uitstekend bedrijf DAT DUUR IS. */}
+                <div style={{color:C.muted,fontSize:9,marginTop:3,lineHeight:1.5}}>
+                  Kwaliteit × prijs — <b style={{color:C.textDim}}>timing telt hier niet mee</b>.
+                  Een uitstekend maar duur bedrijf scoort hier lager dan bij "kwal".
+                  De composiet (30% kwaliteit · 30% waardering · 40% timing) bepaalt de maandpick.
+                </div>
                 {fund.lastUpdated&&(
                   <div style={{color:C.muted,fontSize:9,marginTop:4}}>
                     Fundamentals bijgewerkt: {fund.lastUpdated} · Controleer bij elk kwartaalrapport
@@ -1705,7 +1736,7 @@ function PositionCard({ p, last, currency, update }) {
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
 const TICKER_ORDER = ["WM","PLTR","CAT","ASML","ASMI","MU","GOOGL","AMZN","ORCL","KO",
   "MSFT","AAPL","NVDA","V","MNST","AON","MELI","SHOP","NET","CRWV","SNAP","NKE","MSTR",
-  "NFLX","DIS","BLK","BABA","MTLS","GAW","ADM","III","KPG","DIE","SOF","AIR","ALFEN","LOTB",
+  "NFLX","DIS","BLK","BABA","MTLS","GAW","ADM","III","KPG","DIE","SOF","AIR","ALFEN","LOTB", "VOW", "EL", "META", "VST", "COPX", "ROBO",
   "ANET","HOOD","TSCO","ODFL","HWM","SNDK","NABTESCO","HARMONIC","KEYENCE","FANUC","YASKAWA","SOFTBANK","ROK","TER","ISRG","CGNX","NOVT",
   "LHX","MOGA","TDG","KTOS","RKLB","OPEN","SDGR","BNGO","PL",
   "IONQ","RGTI","QBTS","UBTECH","SYM","SERV","RR",
@@ -1857,7 +1888,7 @@ function App() {
           <span style={{color:C.textDim,fontSize:11,marginLeft:10}}>Kwaliteit × Timing</span>
         </div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          {[["allocatie","🎯 Allocatie"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
+          {[["allocatie","🎯 Maandpick"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
             <button key={v} onClick={()=>setView(v)} style={{
               background:view===v?C.accent:"none",color:view===v?C.bg:C.textDim,
               border:`1px solid ${view===v?C.accent:C.border}`,borderRadius:5,
@@ -2431,8 +2462,12 @@ function App() {
                     </div>
 
                     {portfolio.find(p=>p.ticker===ticker)&&(
-                      <div style={{marginTop:8,padding:"3px 6px",background:"#1e3a2f",border:"1px solid #166534",borderRadius:4,fontSize:10,color:"#4ade80"}}>
-                        💼 In portfolio
+                      // BLAUW, niet groen. Groen betekent in dit dashboard "koopsignaal";
+                      // als bezit ook groen is, lees je een positie per ongeluk als een
+                      // aanbeveling. Blauw is nergens anders in gebruik -- het staat dus
+                      // voor precies een ding: dit heb je al.
+                      <div style={{marginTop:8,padding:"3px 6px",background:"#172554",border:"1px solid #1d4ed8",borderRadius:4,fontSize:10,color:"#60a5fa",fontWeight:600}}>
+                        💼 In portefeuille
                       </div>
                     )}
                   </div>
