@@ -1568,9 +1568,28 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
             reasons_c.append("Confluence VERKOOP: weekly bearish draai + daily downtrend")
         # ── 4. Geen confluence -> geen 'sterk', laat netto meespelen maar getemperd ──
         else:
-            if "STERK" in base_overall:
+            # ⚠ ASYMMETRIE-FIX. De temper-regel wiste ELK sterk koopsignaal uit: STERK KOOP
+            # kon alleen ontstaan via een weekly bullish DRAAI. Maar dat is een denkfout --
+            # een draai zoek je bij een OMKEERPUNT. Een aandeel dat al in een gezonde
+            # opgaande trend zit heeft geen draai nodig: het IS al gedraaid. Zo werd
+            # bestaande sterkte afgestraft en vuurde STERK KOOP praktisch nooit, terwijl
+            # STERK VERKOOP via de fib-achterdeur wel op ~20% van het universum stond.
+            #
+            # Tweede route naar STERK KOOP: OVERWELDIGENDE EENSGEZINDHEID. Geen enkel
+            # verkoopsignaal (sell_w == 0) en een fors koop-overwicht. Dan is er geen
+            # tegenspraak om op te wachten -- elk timeframe wijst dezelfde kant op.
+            # De eis blijft streng: nul tegensignalen, en de maandstand mag niet bearish zijn.
+            unaniem = (sell_w == 0 and net >= 8 and m_state in ("bull", "neutral"))
+            if unaniem and base_overall == "STERK KOOP":
+                overall = "STERK KOOP"
+                reasons_c.append(
+                    f"Geen weekly draai, maar UNANIEM: {buy_w} koopgewicht tegenover 0 verkoop "
+                    f"op alle timeframes - geen tegenspraak om op te wachten.")
+            elif "STERK" in base_overall:
                 overall = base_overall.replace("STERK ", "")
-            reasons_c.append("Geen duidelijke confluence - signaal getemperd")
+                reasons_c.append("Geen duidelijke confluence - signaal getemperd")
+            else:
+                reasons_c.append("Geen duidelijke confluence - signaal getemperd")
 
     # ── 5. OVEREXTENSIE-VETO: TP-zone of ver boven 8-EMA kapt koop af ──
     if overext_flags:
@@ -1581,29 +1600,55 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
         conflict_note = (conflict_note + " " if conflict_note else "") + ("Overextensie: " + ", ".join(overext_flags) + " - rijp voor terugval.")
 
     # ── 6. GETRAPTE FIB-KANTELING: de TP-zones kantelen de overall ────────────────
-    # De extensie-zones zijn duidelijke, strenge take-profit-niveaus. Elk niveau kantelt
-    # de overall, ONGEACHT de koopmassa en ongeacht doorbraak of terugval:
-    #   1.618 → CAUTION (overextended). Streng maar zacht: een waarschuwing, geen luide
-    #           verkoop-trigger. Bij kwaliteit die er gezond doorheen breekt geen paniek,
-    #           maar wel het signaal dat je in een duidelijke winstzone zit.
-    #   2.000 → VERKOOP. Hier loopt het hoog; winst nemen.
-    #   2.618 → STERK VERKOOP. Uitzonderlijk ver; hier moet je verkopen.
-    # De lagere zones (1.272, 1.414) blijven "één signaal" (via hun gewicht), zodat de
-    # trend daar nog kan meespelen — die kantelen de overall NIET.
+    # De extensie-zones zijn duidelijke take-profit-niveaus:
+    #   1.618 -> CAUTION (overextended). Een waarschuwing, geen verkoop-trigger.
+    #   2.000 -> VERKOOP. Hier loopt het hoog; winst nemen.
+    #   2.618 -> STERK VERKOOP. Uitzonderlijk ver.
+    #
+    # ⚠ ASYMMETRIE-FIX. Deze kanteling omzeilde eerder de confluence-eis volledig:
+    # een STERK KOOP zonder weekly draai werd getemperd naar KOOP (regel 4 hierboven),
+    # maar de fib-zones konden WEL ongehinderd STERK VERKOOP opleggen "ongeacht
+    # trendsignalen". Gevolg: STERK KOOP vuurde praktisch NOOIT terwijl STERK VERKOOP
+    # op ~20% van het universum stond. De strengheid gold maar één kant op.
+    #
+    # Nu geldt dezelfde eis aan beide kanten: de 2.618-zone mag alleen STERK VERKOOP
+    # opleggen als er OOK bearish bevestiging is (weekly bearish draai of een bearish
+    # maandstand). Zonder die bevestiging wordt het VERKOOP -- nog steeds een duidelijk
+    # signaal, maar niet "sterk". Een aandeel dat ver in winst staat en gewoon dóórstijgt
+    # is niet hetzelfde als een aandeel dat ver in winst staat en kantelt.
     fib_tp_sigs = [s for s in signals if s.get("cat") == "FIB" and s.get("tf") == "TP"]
     has_2618 = any("2.618" in s.get("title", "") for s in fib_tp_sigs)
     has_2000 = any("2.0" in s.get("title", "") or "2.000" in s.get("title", "") for s in fib_tp_sigs)
     has_1618 = any("1.618" in s.get("title", "") for s in fib_tp_sigs)
+
+    bearish_bevestiging = (w_turn.get("bearTurn") or w_turn.get("emaBearish")
+                           or m_state in ("light_bear", "strong_bear"))
+
     if has_2618:
-        if overall != "STERK VERKOOP":
-            overall = "STERK VERKOOP"
+        if bearish_bevestiging:
+            if overall != "STERK VERKOOP":
+                overall = "STERK VERKOOP"
+                conflict_note = (conflict_note + " " if conflict_note else "") + \
+                    "Prijs bij/terug van de 2.618-TP-zone (uitzonderlijk ver in winst) + bearish bevestiging - sterk verkoop."
+        elif overall not in ("STERK VERKOOP", "VERKOOP", "LICHT VERKOOP"):
+            # GEEN bearish bevestiging: uitzonderlijk ver in winst, maar het aandeel
+            # kantelt niet. Dat is een WAARSCHUWING, geen verkoopbevel -- precies de
+            # NET-les: een gezonde uitbraak is geen overextensie. Wie hier hard verkoopt,
+            # stapt uit bij de sterkste aandelen.
+            overall = "CAUTION (overextended)"
             conflict_note = (conflict_note + " " if conflict_note else "") + \
-                "Prijs bij/terug van de 2.618-TP-zone (uitzonderlijk ver in winst) - sterk verkoop, ongeacht trendsignalen."
+                "Prijs bij de 2.618-TP-zone (uitzonderlijk ver in winst), maar GEEN bearish bevestiging - " \
+                "waarschuwing, geen verkoopsignaal. Het aandeel stijgt gezond door."
     elif has_2000:
-        if overall not in ("STERK VERKOOP", "VERKOOP"):
-            overall = "VERKOOP"
+        if bearish_bevestiging:
+            if overall not in ("STERK VERKOOP", "VERKOOP"):
+                overall = "VERKOOP"
+                conflict_note = (conflict_note + " " if conflict_note else "") + \
+                    "Prijs bij/terug van de 2.0-TP-zone (hoog in winst) + bearish bevestiging - verkoop."
+        elif overall not in ("STERK VERKOOP", "VERKOOP", "LICHT VERKOOP"):
+            overall = "CAUTION (overextended)"
             conflict_note = (conflict_note + " " if conflict_note else "") + \
-                "Prijs bij/terug van de 2.0-TP-zone (hoog in winst) - verkoop, ongeacht trendsignalen."
+                "Prijs bij de 2.0-TP-zone (hoog in winst), geen bearish bevestiging - voorzichtig (overextended)."
     elif has_1618:
         # Streng maar zacht: kantel naar CAUTION, geen harde verkoop.
         if overall not in ("STERK VERKOOP", "VERKOOP", "LICHT VERKOOP"):
@@ -2730,22 +2775,33 @@ def migrate_collapse_episodes(track):
     EENMALIGE OPSCHONING van de bestaande log.
 
     De oude code maakte elke dag een nieuw record voor hetzelfde doorlopende signaal.
-    Resultaat: 131 "aanbevelingen" die in werkelijkheid een handvol signalen zijn --
-    MU stond er tien keer in, met bijna dezelfde entry-prijs.
+    Resultaat: 131 "aanbevelingen" die in werkelijkheid een handvol signalen zijn.
 
-    Deze functie klapt opeenvolgende records van dezelfde (ticker, type, richting)
-    samen tot EEN episode: de eerste dag is de entry, de rest wordt weggegooid. Zo
-    telt het trackrecord signalen in plaats van cron-runs.
+    Twee dingen worden hier samengeklapt:
+
+    1. HERHALING. Dezelfde ticker, dagen achtereen hetzelfde signaal -> een episode.
+       De cooldown is 10 kalenderdagen, niet 4. Reden: de cron draait niet elke dag
+       (weekends, feestdagen, gemiste runs), dus opeenvolgende observaties van hetzelfde
+       aanhoudende signaal kunnen 5-7 dagen uit elkaar liggen. Met een krappe drempel
+       werd zo'n gat onterecht als "nieuwe aanbeveling" geteld.
+
+    2. RICHTINGSWISSELING binnen dezelfde periode. Een aandeel dat een week lang
+       heen en weer gaat tussen STERK VERKOOP en VERKOOP is NIET drie aanbevelingen --
+       het is een aanhoudend negatief beeld. We groeperen daarom op (ticker, type),
+       niet op (ticker, type, richting).
     """
     records = track.get("records", {})
     if not records:
         return 0
 
-    # Groepeer per (ticker, type, richting) en sorteer op datum
     from collections import defaultdict
     groups = defaultdict(list)
     for key, r in records.items():
-        groups[(r["ticker"], r["type"], r.get("direction"))].append((r["date"], key, r))
+        # Groepeer op ticker + type. NIET op richting: een wisseling tussen
+        # STERK VERKOOP en VERKOOP binnen dezelfde week is geen nieuwe aanbeveling.
+        groups[(r["ticker"], r["type"])].append((r["date"], key, r))
+
+    COOLDOWN_DAYS = 10
 
     keep, dropped = {}, 0
     for _g, items in groups.items():
@@ -2753,18 +2809,18 @@ def migrate_collapse_episodes(track):
         prev_date = None
         for dt, key, r in items:
             d = date.fromisoformat(dt)
-            # Nieuwe episode als er een gat van >4 dagen zit (weekend = 3 dagen).
-            # Anders is het dezelfde doorlopende aanbeveling -> weggooien.
-            if prev_date is not None and (d - prev_date).days <= 4:
+            if prev_date is not None and (d - prev_date).days < COOLDOWN_DAYS:
                 dropped += 1
-                prev_date = d
+                # prev_date NIET bijwerken: de cooldown loopt vanaf de EERSTE dag van
+                # de episode. Anders schuift het venster mee en blijft de episode
+                # zichzelf verlengen zolang er elke paar dagen een observatie is.
                 continue
             keep[key] = r
             prev_date = d
 
     if dropped:
         track["records"] = keep
-        print(f"  ⚙ Opschoning: {dropped} dubbele dag-records samengevoegd tot episodes")
+        print(f"  ⚙ Opschoning: {dropped} herhaalde dag-records samengevoegd tot episodes")
         print(f"    ({len(records)} rijen -> {len(keep)} echte aanbevelingen)")
     return dropped
 
@@ -2827,26 +2883,66 @@ def record_recommendations(track, today_iso, allocation, stocks, prices, bench_c
             }, st):
             opened += 1
 
-    # 2. Sterke signalen
+    # 2. Sterke signalen EN CAUTION
+    #
+    # CAUTION (overextended) hoort hier thuis. Het is een FALSIFICEERBARE voorspelling:
+    # "dit aandeel staat ver in winst en is rijp voor terugval". Als die aandelen daarna
+    # gewoon dóórstijgen, straft het model gezonde uitbraken af -- precies de NET-les
+    # (een verse uitbraak boven de vorige top is geen overextensie).
+    #
+    # Zonder deze evaluatie is CAUTION een bewering die nooit getoetst wordt. Met de
+    # evaluatie zie je over een paar maanden of de zone echt een omkeerpunt markeert,
+    # of alleen "dit aandeel is hard gestegen" met een waarschuwing erop.
+    #
+    # De richting is SELL: de voorspelling is dat het aandeel achterblijft. Blijkt het
+    # tegendeel -- de CAUTION-aandelen presteren beter dan de index -- dan is het
+    # signaal contraproductief en moet de overextensie-logica op de schop.
+    GEMONITORD = ("STERK KOOP", "STERK VERKOOP", "CAUTION (overextended)")
     for t, s in stocks.items():
         overall = s.get("overall")
         sc = s.get("scores", {})
-        if overall not in ("STERK KOOP", "STERK VERKOOP"):
-            # Geen sterk signaal meer: toestand wissen, zodat een terugkeer later
+        if overall not in GEMONITORD:
+            # Geen gemonitord signaal meer: toestand wissen, zodat een terugkeer later
             # wel als NIEUWE aanbeveling telt.
             if t not in new_state:
                 new_state[t] = None
             continue
-        direction = "BUY" if overall == "STERK KOOP" else "SELL"
-        st = f"sig:{overall}"
-        # Een ticker kan zowel maandpick als sterk signaal zijn; de pick-toestand wint
-        # niet, we houden per type los bij via de sleutel.
+        if overall == "STERK KOOP":
+            direction, rec_type = "BUY", "strong_signal"
+        elif overall == "STERK VERKOOP":
+            direction, rec_type = "SELL", "strong_signal"
+        else:
+            # CAUTION: de bewering is "rijp voor terugval" -> dus SELL-richting.
+            direction, rec_type = "SELL", "caution"
+        # Groepeer STERK KOOP en STERK VERKOOP als richting, niet als exacte tekst.
+        # Een aandeel dat wisselt tussen STERK VERKOOP en VERKOOP is geen nieuwe
+        # aanbeveling -- het is hetzelfde aanhoudende beeld.
+        # Het TYPE hoort in de toestand: een aandeel dat van CAUTION naar STERK VERKOOP
+        # gaat is wel degelijk een nieuw signaal, ook al is de richting in beide gevallen
+        # SELL. Zonder het type zou die overgang gemist worden.
+        st = f"sig:{rec_type}:{direction}"
         prev = last_state.get(t)
-        if prev != st:
-            key = _record_key(t, today_iso, "strong_signal")
+
+        # COOLDOWN: ook als het signaal even wegviel en terugkomt, is dat pas een
+        # NIEUWE aanbeveling na een echte onderbreking. Zonder deze check opent een
+        # aandeel dat heen en weer flikkert elke week een nieuw record.
+        # De cooldown geldt PER TYPE: een CAUTION blokkeert geen STERK VERKOOP-record.
+        recent = False
+        for r in records.values():
+            if r["ticker"] == t and r["type"] == rec_type:
+                try:
+                    gap = (date.fromisoformat(today_iso) - date.fromisoformat(r["date"])).days
+                    if gap < 10:
+                        recent = True
+                        break
+                except Exception:
+                    continue
+
+        if prev != st and not recent:
+            key = _record_key(t, today_iso, rec_type)
             if key not in records and prices.get(t) is not None:
                 records[key] = {
-                    "ticker": t, "type": "strong_signal", "direction": direction,
+                    "ticker": t, "type": rec_type, "direction": direction,
                     "date": today_iso, "entryPrice": prices.get(t), "benchEntry": bench_entry,
                     "currency": CURRENCY.get(t, "$"),
                     "snapshot": {"overall": overall, "composite": sc.get("composite"),
@@ -2857,7 +2953,7 @@ def record_recommendations(track, today_iso, allocation, stocks, prices, bench_c
         else:
             # Zelfde signaal als gisteren: verleng de lopende episode, maak GEEN nieuw record.
             for k, r in records.items():
-                if (r["ticker"] == t and r["type"] == "strong_signal"
+                if (r["ticker"] == t and r["type"] == rec_type
                         and not r["outcomes"] and r.get("_closed") is not True):
                     r["episodeDays"] = r.get("episodeDays", 1) + 1
                     break
@@ -2924,12 +3020,30 @@ def evaluate_outcomes(track, today, price_data, bench_close, horizons_weeks):
             exit_price, exit_date = _price_on_or_after(close_series, target)
             if exit_price is None:
                 continue
-            eff_ret = (exit_price - entry_price) / entry_price * 100 * dir_mult
+            # Ruwe koersbeweging van het aandeel (nog NIET omgedraaid).
+            raw_ret = (exit_price - entry_price) / entry_price * 100
+
             rel = None
             if bench_entry and bench_close is not None:
                 bexit, _ = _price_on_or_after(bench_close, target)
                 if bexit:
-                    rel = eff_ret - ((bexit - bench_entry) / bench_entry * 100)
+                    bench_ret = (bexit - bench_entry) / bench_entry * 100
+                    # EERST de outperformance t.o.v. de index bepalen, DAN pas omdraaien
+                    # voor de richting.
+                    #
+                    # De oude volgorde was fout: die draaide de aandeelreturn eerst om
+                    # (x -1 bij VERKOOP) en trok DAARNA de index af. Daardoor werd de
+                    # indexbeweging bij elk verkoop-signaal DUBBEL tegen het model
+                    # geteld. Voorbeeld: aandeel -5%, index +2% -> het model had gelijk
+                    # met +7% outperformance, maar kreeg slechts +3% toegekend. In een
+                    # sterk stijgende markt werd een CORRECT verkoop-signaal zo zelfs
+                    # als mislukking geboekt. Omdat ~90% van de signalen VERKOOP is,
+                    # vertekende dit de hele hit rate naar beneden.
+                    rel = (raw_ret - bench_ret) * dir_mult
+
+            # De effectieve return in de richting van het signaal (voor de weergave).
+            eff_ret = raw_ret * dir_mult
+
             rec["outcomes"][hkey] = {
                 "exitDate": exit_date, "exitPrice": round(exit_price, 2),
                 "return": round(eff_ret, 2),
@@ -3313,6 +3427,26 @@ def main():
     # Eenmalige opschoning: klap opeenvolgende dag-records samen tot episodes.
     # Zonder dit blijven de 131 rijen staan waarin MU tien keer voorkomt.
     migrate_collapse_episodes(track)
+
+    # HERBEREKENING van de uitkomsten. De oude formule telde bij een VERKOOP-signaal
+    # de indexbeweging DUBBEL tegen het model (eerst omdraaien, dan de index aftrekken
+    # -- dat moet andersom). Omdat ~90% van de signalen VERKOOP is, was de gemeten hit
+    # rate systematisch te laag. De opgeslagen uitkomsten zijn dus besmet en worden
+    # gewist; ze worden hieronder opnieuw berekend uit de ruwe prijzen.
+    #
+    # Dit is precies waarom de log alleen RUWE feiten bewaart en geen afgeleide waarden:
+    # een foute formule repareer je, en de hele historie geneest mee.
+    fixver = track.get("_outcomeFormulaVersion")
+    if fixver != 2:
+        wiped = 0
+        for r in track.get("records", {}).values():
+            if r.get("outcomes"):
+                wiped += len(r["outcomes"])
+                r["outcomes"] = {}
+        track["_outcomeFormulaVersion"] = 2
+        if wiped:
+            print(f"  ⚙ {wiped} uitkomsten gewist en herberekend "
+                  f"(oude formule telde de index dubbel bij VERKOOP-signalen)")
     prices_today = {nm: results["stocks"][nm].get("indicators", {}).get("last")
                     for nm in results["stocks"] if "indicators" in results["stocks"][nm]}
     # 1. Vandaag's aanbevelingen vastleggen (idempotent)
