@@ -137,6 +137,15 @@ WATCHLIST = [
     ("AIR",      "AIR.PA",  None),   # Airbus (Euronext Parijs)
     ("ALFEN",    "ALFEN.AS",None),   # Alfen (Euronext Amsterdam)
     ("LOTB",     "LOTB.BR", None),   # Lotus Bakeries (Euronext Brussel)
+    ("VOW",      "VOW3.DE", None),   # Volkswagen PREF (VOW3 = de liquide notering,
+                                     # niet VOW; de gewone aandelen handelen nauwelijks)
+    ("EL",       "EL",      None),   # Estee Lauder (NYSE)
+    ("META",     "META",    None),   # Meta Platforms
+    ("VST",      "VST",     None),   # Vistra - stroom voor datacenters
+    # ── ETF's ──
+    ("COPX",     "COPX.AS", None),   # Global X Copper Miners UCITS (Euronext Amsterdam)
+    ("ROBO",     "RBOT.AS", None),   # iShares Automation & Robotics UCITS (2B76)
+                                     # Zit in de DEGIRO Kernselectie -> EUR 1 per order.
     ("MSTR",     "MSTR",    None),   # Strategy (bitcoin-proxy — poort zal falen, bewust)
     ("AAPL",     "AAPL",    None),   # Apple
     ("NFLX",     "NFLX",    None),   # Netflix
@@ -195,7 +204,7 @@ BAGGER_TICKERS = {"LHX", "MOGA", "TDG", "KTOS", "RKLB", "OPEN", "SDGR", "BNGO",
 # puur koersgebaseerd en zeggen over een ETF net zoveel als over een aandeel.
 # ETF's krijgen daarom de TP-zone-logica (zoals baggers) maar GEEN kwaliteits-
 # score en GEEN composiet. Ze verschijnen niet in de maandpick-allocatie.
-ETF_TICKERS = {"ARCG"}
+ETF_TICKERS = {"ARCG", "COPX", "ROBO"}
 
 # Valuta per aandeel (weergave). "p" = Britse pence (LSE noteert in pence!).
 CURRENCY = {
@@ -203,6 +212,7 @@ CURRENCY = {
     "GAW":"p", "ADM":"p", "III":"p",
     "NABTESCO":"¥", "HARMONIC":"¥", "KEYENCE":"¥", "FANUC":"¥", "YASKAWA":"¥", "SOFTBANK":"¥",
     "UBTECH":"HK$", "KPG":"A$",
+    "VOW":"E", "COPX":"E", "ROBO":"E",
 }
 
 # ── SECTOR-INDELING ───────────────────────────────────────────────────────────
@@ -218,7 +228,9 @@ SECTORS = {
     "GILD":"Biotech & health-tech",
     "ARCC":"Fintech & financiën",
     "ONON":"Consument & retail",
-    "ARCG":"ETF's",
+    "ARCG":"ETF's", "COPX":"ETF's", "ROBO":"ETF's",
+    "VOW":"Industrie & diversen", "EL":"Consument & retail",
+    "META":"Software & platforms", "VST":"Industrie & diversen",
     # Robotica & automatisering (industrieel + medisch + humanoïde/service, samen)
     "NABTESCO":"Robotica & automatisering", "HARMONIC":"Robotica & automatisering",
     "KEYENCE":"Robotica & automatisering", "FANUC":"Robotica & automatisering",
@@ -342,6 +354,91 @@ FUNDAMENTALS = {
     "ARCG":  {"pe":None, "roe":None, "fcfYield":None, "debtEquity":None, "netMargin":None,
               "divYield":None, "revenueGrowth":None, "eps":None, "mktCap":"ETF", "beta":None,
               "lastUpdated":"2026-07"},
+
+    # ── Volkswagen (VOW3.DE -- de PREFERENTE aandelen, de liquide notering) ──
+    # VALT BUITEN DE POORT en dat is terecht. ROE 3,1% tegenover een 10-jaarsmediaan
+    # van 9,85% -- 69% onder het eigen historische gemiddelde. Nettomarge 1,9% (was
+    # 2,9%). De winst daalt al vijf jaar met gemiddeld 15% per jaar.
+    #
+    # Ja, de P/E is 5,8 en het dividendrendement 7,4%. Dat ZIET er goedkoop uit. Maar
+    # goedkoop en ondergewaardeerd zijn niet hetzelfde: VW is goedkoop OMDAT de winst
+    # wegsmelt. Het bedrijf schrapt 15% van het personeel en sluit vier Duitse
+    # fabrieken. GuruFocus noemt het letterlijk een "Possible Value Trap".
+    #
+    # De les uit TSCO geldt hier dubbel: als de koers op een 52w-dieptepunt staat, weet
+    # de markt vaak iets wat de (per kwartaal bijgewerkte) fundamentals nog niet tonen.
+    "VOW":   {"pe":5.8,   "roe":3.1,  "fcfYield":0.5,  "debtEquity":1.37, "netMargin":1.9,  "divYield":7.4,  "revenueGrowth":-2.5,  "revenueGrowthPrev":1.0,  "eps":12.30, "mktCap":"E36B",   "beta":1.22, "lastUpdated":"2026-07"},
+
+    # ── Estee Lauder ──
+    # VALT BUITEN DE POORT, maar dit is een ANDER verhaal dan VW: hier is de turnaround
+    # ECHT, hij is alleen nog niet zichtbaar in de GAAP-cijfers.
+    #
+    # De kloof zit in de herstructurering. Aangepaste operationele marge: 15,0% (van
+    # 11,4%). Aangepaste WPA: +40%. Vrije kasstroom: $891M (van $276M). Maar de GAAP-
+    # nettomarge is 2,4% -- want $1,5-1,7 MILJARD herstructureringskosten en 9.000-10.000
+    # geschrapte posities lopen door de winst- en verliesrekening.
+    #
+    # De poort kijkt naar GAAP en ziet dus een bedrijf dat nauwelijks winst maakt. Dat is
+    # per constructie: eenmalige lasten mogen niet weggeredeneerd worden, anders wordt
+    # elke reorganisatie een excuus. Maar het betekent WEL dat de poort hier iets mist
+    # wat de aangepaste cijfers wel zien.
+    #
+    # Het bedrijf zelf mikt op 12,5-13,0% operationele marge in FY2027. Als dat lukt en
+    # de herstructurering is voorbij, kan EL alsnog door de poort komen. DIT IS EEN
+    # AANDEEL OM TE VOLGEN, NIET OM NU TE KOPEN OP EEN MODELSIGNAAL.
+    "EL":    {"pe":42.0,  "roe":9.0,  "fcfYield":3.5,  "debtEquity":1.55, "netMargin":2.4,  "divYield":1.6,  "revenueGrowth":4.6,   "revenueGrowthPrev":-2.0, "eps":1.55,  "mktCap":"$26B",   "beta":1.15, "lastUpdated":"2026-07"},
+
+    # ── Meta Platforms ──
+    # HAALT DE POORT RUIM. ROE ~35%, nettomarge 38%, D/E 0,15, netto kaspositie
+    # $15,6 mld. Omzetgroei 33% in Q1 2026 -- de snelste sinds 2021. Operationele
+    # marge 41% terwijl de kosten met 35% stegen: dat is echte operationele hefboom.
+    #
+    # LET OP BIJ DE WPA: de GAAP-WPA van $10,44 bevat een EENMALIG belastingvoordeel
+    # van $8,03 miljard. Zonder dat was het $7,31. Ik gebruik hier de ONDERLIGGENDE
+    # winst -- anders zou het model een fiscale meevaller aanzien voor verdiencapaciteit.
+    # (Dezelfde discipline als bij NKE's tariefteruggave en MSTR's bitcoin-herwaardering.)
+    #
+    # HET GROTE VRAAGTEKEN: de capex-raming voor 2026 ging naar $125-145 MILJARD -- de
+    # grootste kapitaaluitgave in Meta's geschiedenis, in een jaar dat Zuckerberg zelf een
+    # "prove-it year" noemt. De koers ging van $700 naar $583. De markt vraagt zich af of
+    # dit rendeert of dat het de winst opeet.
+    #
+    # Dit is precies het soort vraag waar het model GEEN antwoord op heeft: de kwaliteit
+    # is er (vandaag), maar de capex bepaalt of ze er over twee jaar nog is. De poort meet
+    # het verleden.
+    "META":  {"pe":21.5,  "roe":35.0, "fcfYield":2.8,  "debtEquity":0.15, "netMargin":38.0, "divYield":0.4,  "revenueGrowth":33.0,  "revenueGrowthPrev":22.0, "eps":27.10, "mktCap":"$1.5T",  "beta":1.28, "lastUpdated":"2026-07"},
+
+    # ── Vistra ──
+    # HAALT DE POORT OP PAPIER, MAAR LEES DIT EERST.
+    #
+    # ROE 39,9% ziet er spectaculair uit. Maar Simply Wall St waarschuwt er zelf bij:
+    # "deze maatstaf is VERTEKEND door hun hoge schuldniveau". Een hoge ROE bij hoge
+    # schuld is geen kwaliteitssignaal maar een hefboomsignaal -- je deelt de winst door
+    # een kleine noemer (eigen vermogen), niet omdat het bedrijf zo efficient is.
+    #
+    # ERGER: de nettowinst van Q1 2026 ($1.029M) steeg met $1.297M ten opzichte van Q1
+    # 2025 -- maar $1.290M daarvan kwam uit ONGEREALISEERDE mark-to-market-winsten op
+    # derivaten. Bijna de VOLLEDIGE winststijging is een herwaardering van hedges, geen
+    # geld dat binnenkomt. Dat is dezelfde constructie als bij SOFTBANK (OpenAI-
+    # herwaardering) en MSTR (bitcoin) -- alleen minder zichtbaar.
+    #
+    # De ECHTE motor: langetermijncontracten met Meta en AWS voor 2.600 MW op PJM-
+    # kernsites, en de overname van 5.500 MW gasvermogen (Cogentrix). Dat is
+    # voorspelbare, terugkerende omzet -- precies het "up only"-profiel. Maar het gaat
+    # gepaard met 2,6x nettoschuld bij deal-close.
+    #
+    # De nettomarge (10,5%, gedaald van 12,3%) haalt de poort nipt. De ROE is misleidend.
+    # Weeg dit aandeel op zijn CONTRACTEN, niet op zijn ROE.
+    "VST":   {"pe":22.0,  "roe":39.9, "fcfYield":5.5,  "debtEquity":3.10, "netMargin":10.5, "divYield":0.6,  "revenueGrowth":25.0,  "revenueGrowthPrev":17.0, "eps":8.20,  "mktCap":"$60B",   "beta":1.35, "lastUpdated":"2026-07"},
+
+    # ── ETF's: geen fundamentals, geen kwaliteitsscore, geen composiet ──
+    # Een ETF heeft geen ROE en geen winstmarge -- die velden bestaan simpelweg niet.
+    # Ze krijgen daarom None en verschijnen NIET in de maandpick. Wel de TP-zone-logica
+    # (technische timing), want die werkt op koersdata en is dus wel zinvol.
+    "COPX":  {"pe":None, "roe":None, "fcfYield":None, "debtEquity":None, "netMargin":None,
+              "divYield":None, "revenueGrowth":None, "eps":None, "mktCap":"E0.96B", "beta":1.55, "lastUpdated":"2026-07"},
+    "ROBO":  {"pe":None, "roe":None, "fcfYield":None, "debtEquity":None, "netMargin":None,
+              "divYield":None, "revenueGrowth":None, "eps":None, "mktCap":"E4.2B",  "beta":1.30, "lastUpdated":"2026-07"},
     # ── Nieuwe kanshebbers (juli 2026) ───────────────────────────────────────
     "RDDT":  {"pe":45.0,  "roe":26.2, "fcfYield":2.0,  "debtEquity":0.05, "netMargin":28.6, "divYield":0,    "revenueGrowth":69.0,  "revenueGrowthPrev":62.0, "eps":2.55,  "mktCap":"$32B",   "beta":2.10, "lastUpdated":"2026-07"},
     "NOW":   {"pe":53.3,  "roe":16.1, "fcfYield":3.5,  "debtEquity":0.21, "netMargin":13.0, "divYield":0,    "revenueGrowth":22.1,  "revenueGrowthPrev":22.5, "eps":1.67,  "mktCap":"$92B",   "beta":0.93, "lastUpdated":"2026-07"},
@@ -685,6 +782,51 @@ def fetch_all(watchlist) -> dict:
         print(f"  ✓ {name} ({used}): {len(df)} dag, {len(weekly)} week, {len(monthly)} maand candles")
         result[name] = {"daily": df, "weekly": weekly, "monthly": monthly, "ticker": used}
 
+    # ══ LANGE REEKS VOOR DE FIB-SWING ══════════════════════════════════════════
+    # De 5-jaars dagreeks hierboven is prima voor RSI/EMA/MACD, maar VEEL te kort voor
+    # een fib-swing. MU is het schoolvoorbeeld: in 5 jaar ziet het model bodem $47,52
+    # (2022) met een top ervoor van $96,24 -- een swing van factor 2,0. De echte swing
+    # loopt van $97 (juni 2000) naar $1,59 (dec 2008): factor 61.
+    #
+    # Met de korte swing komt 2.618 uit op $301, terwijl de koers op $973 staat --
+    # dus "3x voorbij de verste TP-zone", permanente CAUTION.
+    # Met de lange swing komt 1.618 uit op $1231, en de candle stopte op $1254.
+    # Dat is de juiste meetlat, en hij dwingt respect af.
+    #
+    # We halen daarom een WEEKLY reeks over de volle historie op. Weekly volstaat ruim
+    # voor een swing (je zoekt de extreme high/low, niet de dagelijkse ruis) en is veel
+    # goedkoper dan 25 jaar dagdata. Faalt de download, dan valt de fib gewoon terug op
+    # de 5-jaars reeks -- geen crash, alleen minder nauwkeurige zones.
+    print("\nLange reeks ophalen voor de fib-swings (weekly, volledige historie)...")
+    for i in range(0, len(all_tickers), CHUNK):
+        chunk = all_tickers[i:i+CHUNK]
+        try:
+            longp = yf.download(chunk, period="max", interval="1wk", auto_adjust=True,
+                                group_by="ticker", progress=False, threads=True, timeout=60)
+            if longp is None or longp.empty:
+                continue
+            if not isinstance(longp.columns, pd.MultiIndex):
+                longp = pd.concat({chunk[0]: longp}, axis=1)
+            for tk in chunk:
+                if tk not in longp.columns.get_level_values(0):
+                    continue
+                name = next((n for n, s, _f in WATCHLIST if s == tk or _f == tk), None)
+                if name is None or result.get(name) is None:
+                    continue
+                ldf = longp[tk].dropna(how="all")
+                if ldf.empty or "Low" not in ldf.columns:
+                    continue
+                ldf = ldf[["Open","High","Low","Close","Volume"]].copy()
+                ldf.index = pd.to_datetime(ldf.index)
+                ldf = ldf.sort_index()
+                # Alleen gebruiken als hij ECHT langer is dan wat we al hebben.
+                if len(ldf) > 0:
+                    result[name]["fib_daily"] = ldf
+        except Exception as e:
+            print(f"  (lange reeks blok {i//CHUNK+1} mislukt: {type(e).__name__} - fib valt terug op 5j)")
+    n_lang = sum(1 for v in result.values() if v and v.get("fib_daily") is not None)
+    print(f"  ✓ lange reeks voor {n_lang}/{len(result)} aandelen")
+
     # Benchmark-serie apart bewaren (alleen slotkoersen nodig)
     bench = None
     if data is not None:
@@ -881,7 +1023,8 @@ def _support_confluence(last, daily, weekly, monthly_state):
     return len(flags), flags
 
 
-def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, monthly: pd.DataFrame = None) -> dict:
+def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
+                     monthly: pd.DataFrame = None, fib_daily: pd.DataFrame = None) -> dict:
     signals, alerts = [], []
 
     close_d = daily["Close"]
@@ -977,7 +1120,49 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame, month
     else:
         # Terugval: geen historische top → gebruik de herstel-swing
         ext_lo, ext_hi = swing_lo, recovery_top
-    fib      = calc_fibonacci(swing_lo, swing_hi, ext_low=ext_lo, ext_high=ext_hi)
+
+    # ══ TE KORT VENSTER: DE ECHTE OORZAAK ══════════════════════════════════════
+    # De TP-swing hierboven wordt gemeten op de DAILY-reeks, en die is 5 jaar lang.
+    # Voor de meeste aandelen is dat prima. Voor een aandeel dat een DIEPE crash heeft
+    # meegemaakt VOOR dat venster, is het rampzalig.
+    #
+    # MU, juli 2026 — wat het model ziet in 5 jaar:
+    #     bodem $47,52 (2022), hoogste top ervoor $96,24  ->  factor 2,0
+    #     -> 2.618 = $301.  Koers $973.  "3,2x voorbij de verste TP-zone."
+    #
+    # MU, wat er ECHT staat (24 jaar):
+    #     top $97 (juni 2000) -> bodem $1,59 (dec 2008)   ->  factor 61
+    #     -> 1.618 = $1231.  Koers $973.  "nadert de kern-winstzone."
+    #
+    # De candle stopte op $1254. Dat is de 1.618 van de 24-jaars swing, op 2% na.
+    # Dezelfde fib-verhoudingen; het VENSTER bepaalt alles.
+    #
+    # Gevolg van het te korte venster: bij elk aandeel dat sinds zijn 5-jaars bodem
+    # spectaculair is gestegen (MU, NVDA, PLTR, ANET...) liggen ALLE TP-zones onder de
+    # koers. Het model roept dan permanent "voorbij 2.618" en zet CAUTION -- niet omdat
+    # het aandeel overextended is, maar omdat de meetlat te kort is.
+    #
+    # Dit is dezelfde klasse fout als de bearish bias: KRACHT WORDT AFGESTRAFT.
+    # Toen kon STERK KOOP niet vuren; nu vuurt CAUTION te vaak. Beide keren straft het
+    # model precies de aandelen af waar je in wilt zitten.
+    #
+    # DE FIX: meet de TP-swing op de LANGE reeks (fib_daily, tot 'max' historie) als
+    # die beschikbaar is. De indicatoren (RSI/EMA/MACD) blijven op 5 jaar -- die hebben
+    # geen 25 jaar nodig en zouden er alleen trager van worden.
+    if fib_daily is not None and len(fib_daily) > len(daily):
+        _lo_idx_L   = fib_daily["Low"].idxmin()
+        _swing_lo_L = float(fib_daily["Low"].min())
+        _before_L   = fib_daily[fib_daily.index < _lo_idx_L]
+        _hist_top_L = float(_before_L["High"].max()) if len(_before_L) >= 10 else None
+        _since_L    = fib_daily[fib_daily.index >= _lo_idx_L]
+        _recov_L    = float(_since_L["High"].max())
+        if _hist_top_L is not None and _hist_top_L > _swing_lo_L:
+            # De lange reeks geeft een diepere bodem en dus een realistische TP-projectie.
+            swing_lo = _swing_lo_L
+            swing_hi = _recov_L
+            ext_lo, ext_hi = _swing_lo_L, _hist_top_L
+
+    fib = calc_fibonacci(swing_lo, swing_hi, ext_low=ext_lo, ext_high=ext_hi)
 
     vol_note = " ✓ hoog volume" if high_volume else (" (laag volume)" if vol_known else "")
 
@@ -3259,7 +3444,8 @@ def main():
                                         "sector": SECTORS.get(name, DEFAULT_SECTOR)}
             continue
         try:
-            analysis = generate_signals(name, entry["daily"], entry["weekly"], entry.get("monthly"))
+            analysis = generate_signals(name, entry["daily"], entry["weekly"],
+                                        entry.get("monthly"), entry.get("fib_daily"))
             if "error" in analysis:
                 results["errors"].append(f"{name}: {analysis['error']}")
 
