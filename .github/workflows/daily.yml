@@ -21,6 +21,11 @@ jobs:
     steps:
       - name: Repository ophalen
         uses: actions/checkout@v4
+        with:
+          # Standaard haalt checkout maar EEN commit op (shallow clone). Dat is sneller,
+          # maar `git pull --rebase` heeft historie nodig om een gemeenschappelijke basis
+          # te vinden. Zonder dit faalt de rebase-retry hieronder.
+          fetch-depth: 0
 
       - name: Python installeren
         uses: actions/setup-python@v5
@@ -60,8 +65,37 @@ jobs:
           echo "--- Wat staat er klaar om te committen? ---"
           git status --short
 
-          git diff --staged --quiet || git commit -m "Update $(date '+%Y-%m-%d %H:%M UTC')"
-          git push
+          git diff --staged --quiet && { echo "Niets gewijzigd."; exit 0; }
+          git commit -m "Update $(date '+%Y-%m-%d %H:%M UTC')"
+
+          # PUSHEN MET REBASE-RETRY.
+          #
+          # Waarom dit nodig is: de workflow haalt de repo op bij de START. Upload jij
+          # tijdens de run een bestand via de GitHub-website, dan loopt `main` verder
+          # terwijl de bot nog draait. De push wordt dan geweigerd:
+          #     ! [rejected]  main -> main (fetch first)
+          # Dat is geen fout in de analyse -- die is dan al geslaagd en gecommit. Het is
+          # een race tussen jou en de bot.
+          #
+          # `--rebase` zet de bot-commit BOVENOP wat er intussen is bijgekomen, in plaats
+          # van te proberen het te overschrijven. `--autostash` is niet nodig (alles is
+          # al gecommit), maar staat er voor de zekerheid.
+          #
+          # Drie pogingen, want in theorie kan er tussen de pull en de push opnieuw iets
+          # binnenkomen. In de praktijk slaagt de eerste bijna altijd.
+          for poging in 1 2 3; do
+            if git push; then
+              echo "Push geslaagd (poging $poging)."
+              exit 0
+            fi
+            echo "Push geweigerd -- remote is verder gelopen. Ophalen en opnieuw (poging $poging/3)..."
+            git pull --rebase --autostash origin main || {
+              echo "Rebase mislukt. Handmatig ingrijpen nodig."
+              exit 1
+            }
+          done
+          echo "Push na 3 pogingen niet gelukt."
+          exit 1
 
       - name: E-mail bij fout
         # Alleen mailen als er ECHT een adres is ingesteld. Zonder deze check faalt de
