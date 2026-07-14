@@ -365,6 +365,140 @@ function TimingBreakdown({ timing }) {
   );
 }
 
+// ── JOUW AANKOPEN TEGENOVER HET MODEL ─────────────────────────────────────────
+// WAT DIT WEL EN NIET MEET -- lees dit voor je conclusies trekt.
+//
+// De eerste versie berekende "hoeveel duurder kocht je dan het signaal". Dat cijfer
+// was VERTEKEND, om drie redenen:
+//
+//   1. LATENTIE. De cron draait 's ochtends; je koopt de dag erna. Elke aankoop is
+//      dus per constructie "te laat". Dat meet de vertraging van het SYSTEEM, niet
+//      je discipline.
+//   2. WACHTEN WORDT AFGESTRAFT. Bij een vast maandbedrag kan wachten juist lucratief
+//      zijn. Een spiegel die elke dag vertraging als verlies boekt, straft precies het
+//      geduld af dat je wilt aanleren.
+//   3. HET NEGEERDE DE ECHTE FOUT. Een aankoop tegen een VERKOOP-signaal in verdween
+//      als "geen signaal gevonden" -- terwijl dat het belangrijkste datapunt is dat er
+//      bestaat.
+//
+// Deze versie meet daarom niet de prijsafstand, maar de RICHTING: kocht je MET het
+// model mee, of ertegenin? Dat is de vraag die je gedrag echt blootlegt, en hij is
+// ongevoelig voor de latentie van de cron.
+function PurchaseMirror({ portfolio, track, stocks }) {
+  const recs = Object.values(track?.records || {});
+
+  if (!portfolio?.length) {
+    return (
+      <div style={{background:C.panel,border:`1px dashed ${C.border}`,borderRadius:8,
+        padding:"14px 16px",marginBottom:16,color:C.textDim,fontSize:11,lineHeight:1.6}}>
+        <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:5}}>
+          🪞 Jouw aankopen tegenover het model
+        </div>
+        Zodra je posities toevoegt verschijnt hier of je MET het model kocht of ertegenin.
+      </div>
+    );
+  }
+
+  // Voor elke positie: wat zei het model rond je aankoopdatum?
+  // We kijken naar signalen tot 14 dagen VOOR de aankoop (het signaal moest er al zijn)
+  // en hooguit 2 dagen erna (het kan die ochtend gedraaid zijn).
+  const rows = portfolio.map(p => {
+    const buyDate = new Date(p.date);
+    const rondom = recs
+      .filter(r => r.ticker === p.ticker)
+      .map(r => ({...r, dagen: Math.round((buyDate - new Date(r.date)) / 86400000)}))
+      .filter(r => r.dagen >= -2 && r.dagen <= 14)
+      .sort((a,b) => Math.abs(a.dagen) - Math.abs(b.dagen));
+
+    const sig = rondom[0] || null;
+    // De huidige stand -- als het model NU verkoop zegt en je hebt het gekocht,
+    // is dat op zichzelf al informatie.
+    const nu = stocks?.[p.ticker]?.overall || null;
+
+    let oordeel = "geen", kleur = C.muted, uitleg = "";
+    if (sig) {
+      if (sig.direction === "BUY") {
+        oordeel = "MET het model"; kleur = C.green;
+        uitleg = `${sig.snapshot?.overall || "koopsignaal"} rond je aankoop`;
+      } else if (sig.type === "caution") {
+        oordeel = "TEGEN het model"; kleur = C.orange;
+        uitleg = "het model waarschuwde voor overextensie";
+      } else {
+        oordeel = "TEGEN het model"; kleur = C.red;
+        uitleg = `${sig.snapshot?.overall || "verkoopsignaal"} rond je aankoop`;
+      }
+    } else {
+      uitleg = "geen sterk signaal rond je aankoopdatum";
+    }
+    return {...p, sig, nu, oordeel, kleur, uitleg};
+  });
+
+  const mee    = rows.filter(r => r.oordeel === "MET het model").length;
+  const tegen  = rows.filter(r => r.oordeel === "TEGEN het model").length;
+  const zonder = rows.filter(r => r.oordeel === "geen").length;
+
+  return (
+    <div style={{background:C.panel,border:`1px solid ${tegen>0?C.orange+"66":C.border}`,
+      borderRadius:8,padding:"12px 14px",marginBottom:16}}>
+      <div style={{color:C.accent,fontSize:13,fontWeight:700}}>
+        🪞 Jouw aankopen tegenover het model
+      </div>
+      <div style={{color:C.muted,fontSize:10,marginTop:2,marginBottom:10}}>
+        Kocht je MET het model mee, of ertegenin?
+      </div>
+
+      <div style={{display:"flex",gap:8,marginBottom:11}}>
+        {[["MET het model",mee,C.green],["TEGEN het model",tegen,C.red],
+          ["Geen signaal",zonder,C.muted]].map(([l,v,c],i)=>(
+          <div key={i} style={{flex:1,background:C.bg,borderRadius:6,padding:"7px 9px",
+            border:`1px solid ${v>0?c+"44":C.border}`}}>
+            <div style={{color:c,fontSize:19,fontWeight:700}}>{v}</div>
+            <div style={{color:C.textDim,fontSize:9}}>{l}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{display:"flex",flexDirection:"column",gap:5}}>
+        {rows.map(r => (
+          <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,fontSize:11,
+            padding:"6px 8px",background:C.bg,borderRadius:5,
+            borderLeft:`3px solid ${r.kleur}`}}>
+            <span style={{color:C.accent,fontWeight:700,minWidth:62}}>{r.ticker}</span>
+            <span style={{color:r.kleur,fontWeight:600,minWidth:112,fontSize:10}}>
+              {r.oordeel==="geen" ? "—" : r.oordeel}
+            </span>
+            <span style={{color:C.textDim,fontSize:10,flex:1}}>{r.uitleg}</span>
+            {r.nu && (
+              <span style={{color:C.muted,fontSize:9}}>
+                nu: <span style={{color:r.nu.includes("VERKOOP")?C.red
+                  :r.nu.includes("KOOP")?C.green:C.textDim}}>{r.nu}</span>
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {tegen > 0 && (
+        <div style={{background:"#1c1a06",border:`1px solid ${C.orange}55`,borderRadius:6,
+          padding:"9px 11px",marginTop:10,color:C.textDim,fontSize:10,lineHeight:1.6}}>
+          <b style={{color:C.orange}}>{tegen} {tegen===1?"positie":"posities"} tegen het model in.</b>{" "}
+          Dat is niet automatisch fout — jij weet dingen die het model niet weet. Maar het is
+          wel de vraag waar je een antwoord op wilt: <b style={{color:C.text}}>had je gelijk,
+          of het model?</b> Over een paar maanden zie je dat in de uitkomsten hieronder.
+        </div>
+      )}
+
+      <div style={{color:C.muted,fontSize:9,marginTop:9,borderTop:`1px solid ${C.border}`,
+        paddingTop:7,lineHeight:1.6}}>
+        <b style={{color:C.textDim}}>Bewust geen prijsvergelijking.</b> De cron draait 's ochtends
+        en je koopt de dag erna — elke aankoop zou dan "te laat" heten, terwijl dat de vertraging
+        van het systeem meet en niet je discipline. Bij een vast maandbedrag kan wachten bovendien
+        juist lucratief zijn. De richting zegt meer dan de prijsafstand.
+      </div>
+    </div>
+  );
+}
+
 // ── MODELDIAGNOSTIEK ──────────────────────────────────────────────────────────
 // Twee checks die VANDAAG al iets zeggen -- geen jaar forward returns nodig.
 //   1. Base rates: vuurt een signaal discriminerend, of beschrijft het de markt?
@@ -605,8 +739,16 @@ function TrackRecord({ track }) {
                       const o = r.outcomes?.[h];
                       if(!o) return <span key={h} style={{color:C.muted,fontSize:10}}>{h}:—</span>;
                       const c = o.success?C.green:C.red;
-                      return <span key={h} style={{color:c,fontSize:10}} title={`return ${o.return}%, vs index ${o.relativeReturn}%`}>
-                        {h}:{o.relativeReturn!=null?(o.relativeReturn>0?"+":"")+o.relativeReturn+"%":(o.return>0?"+":"")+o.return+"%"}
+                      // "null%" is geen getal, het is een ONTBREKENDE meting -- en die
+                      // hoort als streepje getoond te worden, niet als tekst "null".
+                      // Dezelfde klasse fout als de crash in de backend: een None werd
+                      // behandeld als waarde in plaats van als onbekende.
+                      const rel = (typeof o.relativeReturn === "number") ? o.relativeReturn : null;
+                      const abs = (typeof o.return === "number") ? o.return : null;
+                      const toon = rel != null ? rel : abs;
+                      return <span key={h} style={{color:toon==null?C.muted:c,fontSize:10}}
+                        title={toon==null ? "nog geen meting" : `return ${abs}%, vs index ${rel}%`}>
+                        {h}:{toon==null ? "\u2014" : (toon>0?"+":"")+toon+"%"}
                       </span>;
                     })}
                   </div>
@@ -900,55 +1042,127 @@ function IndicatorGrid({ ind, cur="$" }) {
 function usePortfolio() {
   const newId = ()=> (typeof crypto!=="undefined"&&crypto.randomUUID)
     ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2,9)}`;
+  const nu = ()=> Date.now();
+
+  // ── SYNC TUSSEN APPARATEN ───────────────────────────────────────────────────
+  // localStorage is PER BROWSER, PER APPARAAT. Je iPad-Safari en je iPhone-Safari
+  // hebben elk hun eigen opslag en weten niets van elkaar. Dat is geen bug maar een
+  // eigenschap van de browser -- en dus niet iets dat je wegprogrammeert, alleen
+  // iets waar je omheen bouwt.
+  //
+  // De vorige sync OVERSCHREEF: schreef je op je iPad een notitie bij ANET en op je
+  // iPhone een bij MU, dan wiste een sync er een van de twee. Dat is erger dan geen
+  // sync, want je merkt het pas als het te laat is.
+  //
+  // Deze versie VOEGT SAMEN. Elke positie en elke notitie draagt een tijdstempel
+  // (`ts`). Bij een sync:
+  //   - bestaat iets alleen op het ENE apparaat  -> het komt erbij
+  //   - bestaat iets op BEIDE                    -> de NIEUWSTE versie wint
+  //   - is iets ongewijzigd                      -> er verandert niets
+  // Niets gaat verloren. Je kunt in beide richtingen syncen zonder na te denken.
+  const mergePosities = (lokaal, binnen)=>{
+    const byId = {};
+    for(const pos of lokaal) byId[pos.id] = pos;
+    let nieuwe=0, bijgewerkt=0, ongewijzigd=0;
+    for(const pos of binnen){
+      if(!pos || !pos.id) continue;
+      const bestaand = byId[pos.id];
+      if(!bestaand){ byId[pos.id] = pos; nieuwe++; }
+      else if((pos.ts||0) > (bestaand.ts||0)){ byId[pos.id] = pos; bijgewerkt++; }
+      else ongewijzigd++;
+    }
+    return {lijst:Object.values(byId), nieuwe, bijgewerkt, ongewijzigd};
+  };
+
+  // Notities: {TICKER: {text, ts}}. Oud formaat was {TICKER: "tekst"} zonder tijdstempel
+  // -- die krijgen ts=0 en verliezen dus altijd van een versie MET tijdstempel. Dat is
+  // correct: een notitie zonder tijdstempel is per definitie ouder dan een met.
+  const normNotes = (obj)=>{
+    const out = {};
+    for(const [tk,v] of Object.entries(obj||{})){
+      if(typeof v === "string") out[tk] = {text:v, ts:0};
+      else if(v && typeof v.text === "string") out[tk] = {text:v.text, ts:v.ts||0};
+    }
+    return out;
+  };
+  const mergeNotities = (lokaal, binnen)=>{
+    const L = normNotes(lokaal), B = normNotes(binnen);
+    let nieuwe=0, bijgewerkt=0;
+    for(const [tk,n] of Object.entries(B)){
+      if(!L[tk]){ L[tk] = n; nieuwe++; }
+      else if(n.ts > L[tk].ts){ L[tk] = n; bijgewerkt++; }
+    }
+    return {obj:L, nieuwe, bijgewerkt};
+  };
+
   const [p,setP] = useState(()=>{
     try{
       const raw = JSON.parse(localStorage.getItem("bplus_v9")||"[]");
-      // Migratie: posities die eerder zonder id zijn opgeslagen krijgen er nu een.
-      // Zonder dit zou update()/remove() op bestaande posities niets doen.
-      return Array.isArray(raw) ? raw.map(pos=>pos.id?pos:{...pos,id:newId()}) : [];
+      // Migratie: posities zonder id OF zonder tijdstempel krijgen er nu een.
+      // Zonder id zou update()/remove() op de verkeerde positie landen; zonder
+      // tijdstempel kan de merge niet bepalen welke versie nieuwer is.
+      return Array.isArray(raw) ? raw.map(pos=>({
+        ...pos,
+        id: pos.id || newId(),
+        ts: pos.ts || 0,     // 0 = "onbekend, dus ouder dan alles met een echte ts"
+      })) : [];
     }catch{return[]}
   });
   const save = v=>{setP(v);try{localStorage.setItem("bplus_v9",JSON.stringify(v))}catch{}};
-  // Sync tussen apparaten: een #sync=... link importeert je gegevens op dít apparaat.
-  // Het #-deel van een URL wordt nooit naar een server gestuurd — dit blijft volledig lokaal.
-  // De sync neemt zowel je POSITIES als je NOTITIES mee. Nieuw formaat is een pakketje
-  // {portfolio:[...], notes:{...}}; een oude link (kale lijst) blijft ook werken.
+
+  // Een #sync=... link importeert gegevens op DIT apparaat. Het #-deel van een URL
+  // wordt nooit naar een server gestuurd -- dit blijft volledig lokaal en privé.
   useEffect(()=>{
     const m = window.location.hash.match(/^#sync=(.+)$/);
     if(!m) return;
     try{
       const data = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
-      let posCount=0, noteCount=0;
-      if(Array.isArray(data)&&data.every(x=>x&&x.ticker)){
-        // Oud formaat: kale positielijst
-        save(data); posCount=data.length;
-      } else if(data&&typeof data==="object"&&Array.isArray(data.portfolio)){
-        // Nieuw formaat: pakketje met posities + notities
-        save(data.portfolio); posCount=data.portfolio.length;
-        if(data.notes&&typeof data.notes==="object"){
-          try{localStorage.setItem("bplus_notes_v1",JSON.stringify(data.notes));}catch{}
-          noteCount=Object.keys(data.notes).length;
-        }
+      let binnenPos = [], binnenNotes = {};
+      if(Array.isArray(data) && data.every(x=>x&&x.ticker)){
+        binnenPos = data;                       // oud formaat: kale positielijst
+      } else if(data && typeof data==="object" && Array.isArray(data.portfolio)){
+        binnenPos   = data.portfolio;
+        binnenNotes = data.notes || {};
       } else {
         throw new Error("onbekend formaat");
       }
-      const notePart = noteCount>0 ? ` en ${noteCount} notitie(s)` : "";
-      alert(`✓ Gesynchroniseerd: ${posCount} positie(s)${notePart} overgenomen op dit apparaat.`+
-            (noteCount>0?" Herlaad de pagina om je notities te zien.":""));
+      // Binnenkomende posities zonder id/ts opwaarderen, anders kan de merge ze niet
+      // matchen en zouden ze als duplicaat binnenkomen.
+      binnenPos = binnenPos.map(pos=>({...pos, id: pos.id||newId(), ts: pos.ts||0}));
+
+      const rp = mergePosities(p, binnenPos);
+      save(rp.lijst);
+
+      let lokaalNotes = {};
+      try{ lokaalNotes = JSON.parse(localStorage.getItem("bplus_notes_v1")||"{}"); }catch{}
+      const rn = mergeNotities(lokaalNotes, binnenNotes);
+      try{ localStorage.setItem("bplus_notes_v1", JSON.stringify(rn.obj)); }catch{}
+
+      // Vertel PRECIES wat er gebeurd is. "Gesynchroniseerd" zegt niets; de gebruiker
+      // wil weten of er iets is overschreven.
+      const delen = [];
+      if(rp.nieuwe)     delen.push(`${rp.nieuwe} nieuwe positie(s)`);
+      if(rp.bijgewerkt) delen.push(`${rp.bijgewerkt} positie(s) bijgewerkt`);
+      if(rn.nieuwe)     delen.push(`${rn.nieuwe} nieuwe notitie(s)`);
+      if(rn.bijgewerkt) delen.push(`${rn.bijgewerkt} notitie(s) bijgewerkt`);
+      const bericht = delen.length
+        ? `\u2713 Samengevoegd: ${delen.join(", ")}.\n\nNiets is verloren gegaan \u2014 wat alleen op dit apparaat stond, staat er nog.`
+        : "\u2713 Alles was al up-to-date. Er is niets veranderd.";
+      alert(bericht + (rn.nieuwe||rn.bijgewerkt ? "\n\nHerlaad de pagina om je notities te zien." : ""));
     }catch(e){ alert("Sync-link kon niet gelezen worden."); }
     history.replaceState(null,"",window.location.pathname+window.location.search);
   },[]);
+
   const syncLink = ()=>{
-    // Neem posities én notities mee in het sync-pakketje
     let notesObj={};
     try{notesObj=JSON.parse(localStorage.getItem("bplus_notes_v1")||"{}");}catch{}
-    const payload = {portfolio:p, notes:notesObj};
+    const payload = {portfolio:p, notes:normNotes(notesObj), v:2};
     const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     const url = window.location.origin + window.location.pathname + "#sync=" + b64;
     const nP=p.length, nN=Object.keys(notesObj).length;
     const summary = `${nP} positie(s)`+(nN>0?` + ${nN} notitie(s)`:"");
     if(navigator.share){ navigator.share({title:"BUFFETT+ sync",text:summary,url}).catch(()=>{}); }
-    else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url); alert(`Sync-link gekopieerd (${summary}) — open hem in Safari op je andere apparaat.`); }
+    else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url); alert(`Sync-link gekopieerd (${summary}) \u2014 open hem op je andere apparaat. Je gegevens worden SAMENGEVOEGD, niet overschreven.`); }
     else { prompt(`Kopieer deze sync-link (${summary}) en open hem op je andere apparaat:`, url); }
   };
   return {
@@ -957,15 +1171,17 @@ function usePortfolio() {
     // gebruikt -- en die verschuift zodra je een positie verwijdert of de lijst
     // herschikt, waardoor een bewerking op de VERKEERDE positie kon landen (of een
     // bewerking als nieuwe positie werd toegevoegd).
+    // Elke positie krijgt een tijdstempel bij het AANMAKEN en bij elke WIJZIGING.
+    // Zonder ts kan de merge niet bepalen welke versie nieuwer is, en valt hij terug
+    // op "eerste wint" -- wat willekeurig is en dus fout.
     add:(ticker,shares,buyPrice,date,reason,risk,note)=>save([...p,{
-      id: (typeof crypto!=="undefined"&&crypto.randomUUID) ? crypto.randomUUID()
-          : `${Date.now()}-${Math.random().toString(36).slice(2,9)}`,
+      id: newId(), ts: nu(),
       ticker,shares:+shares,buyPrice:+buyPrice,date,
       reason:reason||"",risk:risk||"",note:note||""}]),
     // Bewerken en verwijderen gaan op ID, NIET op array-index. Een index verschuift
     // zodra de lijst verandert; een id blijft bij de positie horen. Dit was de oorzaak
     // van bewerkingen die als nieuwe positie werden toegevoegd.
-    update:(id,fields)=>save(p.map(pos=>pos.id===id?{...pos,...fields}:pos)),
+    update:(id,fields)=>save(p.map(pos=>pos.id===id?{...pos,...fields,ts:nu()}:pos)),
     remove:id=>save(p.filter(pos=>pos.id!==id)),
     syncLink,
   };
@@ -974,12 +1190,36 @@ function usePortfolio() {
 // Watchlist-notities per aandeel (los van posities): "waar vond ik dit", losse gedachten.
 // Bewaard per ticker in een aparte localStorage-sleutel, werkt voor de hele watchlist —
 // ook aandelen die je niet bezit.
+//
+// OPSLAG: {TICKER: {text, ts}} -- met tijdstempel, nodig voor de merge tussen apparaten.
+// INTERFACE: `notes[ticker]` geeft nog steeds een STRING terug. De rest van de code
+// hoeft dus niets te weten van het tijdstempel; die complexiteit blijft hier.
 function useNotes() {
-  const [notes,setNotes] = useState(()=>{try{return JSON.parse(localStorage.getItem("bplus_notes_v1")||"{}")}catch{return{}}});
+  // Zowel het oude formaat (kale string) als het nieuwe ({text,ts}) inlezen. Een
+  // notitie zonder tijdstempel krijgt ts=0 en verliest dus altijd van een versie MET
+  // tijdstempel -- wat klopt: hij is per definitie ouder.
+  const lees = ()=>{
+    let raw={};
+    try{ raw = JSON.parse(localStorage.getItem("bplus_notes_v1")||"{}"); }catch{}
+    const out = {};
+    for(const [tk,v] of Object.entries(raw)){
+      if(typeof v === "string") out[tk] = {text:v, ts:0};
+      else if(v && typeof v.text === "string") out[tk] = {text:v.text, ts:v.ts||0};
+    }
+    return out;
+  };
+  const [store,setStore] = useState(lees);
+
+  // Wat de rest van de app ziet: een platte {TICKER: "tekst"}. Zo hoeft geen enkele
+  // andere component aangepast te worden.
+  const notes = {};
+  for(const [tk,v] of Object.entries(store)) notes[tk] = v.text;
+
   const saveNote = (ticker,text)=>{
-    const next = {...notes};
-    if(text&&text.trim()) next[ticker]=text; else delete next[ticker];
-    setNotes(next);
+    const next = {...store};
+    if(text&&text.trim()) next[ticker] = {text, ts: Date.now()};
+    else delete next[ticker];
+    setStore(next);
     try{localStorage.setItem("bplus_notes_v1",JSON.stringify(next))}catch{}
   };
   return { notes, saveNote };
@@ -2296,6 +2536,7 @@ function App() {
       {/* TRACKRECORD VIEW */}
       {view==="trackrecord"&&(
         <div style={{padding:"14px 16px"}}>
+          <PurchaseMirror portfolio={portfolio} track={trackData} stocks={stocks}/>
           <ModelDiagnostics diag={trackData?.diagnostics} version={trackData?.modelVersion}/>
           <TrackRecord track={trackData}/>
         </div>
