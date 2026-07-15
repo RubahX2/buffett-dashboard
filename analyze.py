@@ -801,7 +801,23 @@ def fetch_all(watchlist) -> dict:
     for i in range(0, len(all_tickers), CHUNK):
         chunk = all_tickers[i:i+CHUNK]
         try:
-            longp = yf.download(chunk, period="max", interval="1wk", auto_adjust=True,
+            # auto_adjust=FALSE -- dit is de kern.
+            #
+            # auto_adjust=True corrigeert historische koersen voor splits EN DIVIDENDEN.
+            # Voor totaalrendement is dat juist. Voor FIBONACCI is het fout: je tekent op
+            # de koersen zoals ze WERKELIJK VERHANDELD werden, niet op een rendementsreeks.
+            #
+            # Over 25 jaar stapelt die dividendcorrectie zich op. MU's echte bodem van
+            # dec 2008 ($1,59) wordt dan naar $0,32 getrokken -- een factor 5. De recente
+            # top blijft wel op $1254,81 staan (die is de referentie). Resultaat: een swing
+            # van 3.921x in plaats van 61x, met 1.618 = $0 en een golden pocket op $7,59
+            # voor een aandeel dat op $973 staat. Volstrekt onbruikbaar.
+            #
+            # Met auto_adjust=False geeft yfinance koersen die WEL voor splits zijn
+            # gecorrigeerd (nodig -- anders zie je een cliff waar geen daling was) maar
+            # NIET voor dividenden. Dat is exact wat TradingView toont, en daarom klopt
+            # Rubens $1,59 wel.
+            longp = yf.download(chunk, period="max", interval="1wk", auto_adjust=False,
                                 group_by="ticker", progress=False, threads=True, timeout=60)
             if longp is None or longp.empty:
                 continue
@@ -1154,15 +1170,130 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         _swing_lo_L = float(fib_daily["Low"].min())
         _before_L   = fib_daily[fib_daily.index < _lo_idx_L]
         _hist_top_L = float(_before_L["High"].max()) if len(_before_L) >= 10 else None
-        _since_L    = fib_daily[fib_daily.index >= _lo_idx_L]
-        _recov_L    = float(_since_L["High"].max())
-        if _hist_top_L is not None and _hist_top_L > _swing_lo_L:
-            # De lange reeks geeft een diepere bodem en dus een realistische TP-projectie.
-            swing_lo = _swing_lo_L
-            swing_hi = _recov_L
+
+        # ══ ALLEEN DE EXTENSIE KRIJGT DE LANGE SWING ═══════════════════════════
+        # Dit is de fout die ik vier keer heb gemaakt: ik overschreef OOK swing_lo en
+        # swing_hi -- de RETRACEMENT-swing. Dat is verkeerd, en het staat zelfs in de
+        # docstring van calc_fibonacci hierboven.
+        #
+        # Het zijn TWEE fibs met TWEE doelen:
+        #
+        #   RETRACEMENT = instapzones. "Waar koop ik bij een terugval?"
+        #     -> RECENTE swing (bodem -> herstel-top uit de 5-jaars reeks)
+        #     -> horizon: maanden. Je wilt weten waar de HUIDIGE beweging steun vindt.
+        #     -> meer historie is hier ACTIEF SCHADELIJK.
+        #
+        #   EXTENSIE = winstnemingszones. "Waar neem ik winst?"
+        #     -> HISTORISCHE swing (structurele top -> structurele bodem)
+        #     -> horizon: jaren. Je wilt weten waar de GROTE beweging uitgeput raakt.
+        #     -> hier IS lange historie nodig.
+        #
+        # Wat er misging bij MU toen ik beide overschreef: de golden pocket kwam uit op
+        # $11-20. Voor een aandeel van $973. Dat is geen instapzone, dat is de koers van
+        # 2010. Terwijl de instapzone gewoon uit de 5-jaars swing had moeten komen.
+        #
+        # swing_lo en swing_hi blijven dus ONAANGERAAKT. Alleen ext_lo/ext_hi veranderen.
+        _factor = (_hist_top_L / _swing_lo_L) if (_hist_top_L and _swing_lo_L > 0) else None
+        _geloofwaardig = (
+            _hist_top_L is not None
+            and _swing_lo_L > 0.05          # geen koersen onder 5 cent (data-artefact)
+            and _hist_top_L > _swing_lo_L
+            and _factor is not None
+            and _factor <= 200.0            # absurd grote swing = datafout
+        )
+        if _geloofwaardig:
             ext_lo, ext_hi = _swing_lo_L, _hist_top_L
 
     fib = calc_fibonacci(swing_lo, swing_hi, ext_low=ext_lo, ext_high=ext_hi)
+
+    # ══ PLAUSIBILITEITSTOETS ═══════════════════════════════════════════════════
+    # Dit is de toets die er vier fixes lang NIET was -- en daarom kon elke fix een
+    # nieuwe onzin opleveren zonder dat het model iets merkte.
+    #
+    # De vraag is niet "draait de code?" maar "is dit getal WAAR?". Voor fibs bestaat
+    # geen unit test die dat kan zeggen; de enige echte toets is de chart. Maar er zijn
+    # wel harde ONDERGRENZEN van plausibiliteit, en die kan het model wel controleren.
+    #
+    # CRUCIAAL -- de toets is GESPLITST. Retracement (instapzones) en extensie
+    # (winstnemingszones) zijn aparte dingen met aparte swings; dat was de hele les.
+    # Dus een kapotte extensie mag NIET de goede retracement meeslepen, en omgekeerd.
+    # Elk deel wordt apart beoordeeld en apart verworpen.
+    #
+    # Dit is precies wat ETF's redt: een ETF die sterk is gestegen heeft geen zinnige
+    # 1.618-winstzone (die ligt onder de koers), maar de golden pocket als INSTAPzone
+    # is nog steeds bruikbaar. De oude toets gooide beide weg; deze houdt de instap.
+    #
+    # Verworpen deel -> die zones verdwijnen en de bijbehorende signalen vuren niet.
+    # Beter geen zone dan een foute zone, want een foute TP-zone stuurt via de
+    # kanteling het KOOP/VERKOOP-signaal. Dat was MU's permanente CAUTION.
+    _r = fib.get("retracements") or {}
+    _e = fib.get("extensions") or {}
+    _gp = _r.get("0.618")
+
+    # -- Gedeelde bodem: een artefact-bodem breekt ALLES --
+    # Retracement en extensie kunnen verschillende swings gebruiken, maar delen de BODEM
+    # (swing_lo). Is die bodem een data-artefact -- een koers van $0,32 terwijl het
+    # aandeel op $973 staat, gevolg van opgestapelde dividendcorrectie over 25 jaar --
+    # dan zijn BEIDE fibs kapot, niet alleen de retracement. Deze check vangt dat aan de
+    # bron, zodat een kapotte bodem geen "geldige" winstzone van $3.314 kan opleveren.
+    _artefact_bodem = (last > 50.0 and swing_lo < 0.50)
+
+    # -- Retracement (instapzones) --
+    _retr_ok = True
+    _retr_reden = None
+    if _artefact_bodem:
+        _retr_ok, _retr_reden = False, (
+            f"de swing-bodem (${swing_lo:.2f}) is onmogelijk laag naast de koers "
+            f"(${last:.2f}) - opgestapelde dividendcorrectie, geen echte koers")
+    elif not _r:
+        _retr_ok, _retr_reden = False, "geen retracement-niveaus"
+    elif any((v is None or v <= 0) for v in _r.values()):
+        _retr_ok, _retr_reden = False, "een instapniveau kwam uit op nul of lager (datafout)"
+    elif _gp is not None and last > 0 and _gp < last / 10.0:
+        _retr_ok, _retr_reden = False, (
+            f"golden pocket (${_gp:.2f}) ligt onwaarschijnlijk ver onder de koers "
+            f"(${last:.2f}) - de swing is vrijwel zeker een data-artefact")
+
+    # -- Extensie (winstnemingszones) --
+    _ext_ok = True
+    _ext_reden = None
+    _tp = _e.get("1.618")
+    if _artefact_bodem:
+        _ext_ok, _ext_reden = False, (
+            f"de swing-bodem (${swing_lo:.2f}) is een data-artefact - "
+            f"winstzones erop zijn betekenisloos")
+    elif not _e:
+        _ext_ok, _ext_reden = False, "geen extensie-niveaus"
+    elif any((v is None or v <= 0) for v in _e.values()):
+        _ext_ok, _ext_reden = False, "een winstniveau kwam uit op nul of lager (datafout)"
+    elif _tp is not None and last > 0 and _tp < last:
+        # De 1.618-TP ligt ONDER de koers -> geen winstdoel meer, maar een herinnering.
+        # Zonder deze check zou het model permanent "voorbij de TP-zone" roepen.
+        _ext_ok, _ext_reden = False, (
+            f"de 1.618-TP (${_tp:.2f}) ligt onder de koers (${last:.2f}) - "
+            f"de swing is te kort om nog winstnemingszones op te leveren")
+    elif _tp is not None and last > 0 and _tp > last * 5.0:
+        # De 1.618-TP ligt meer dan 5x boven de koers. Een fib-extensie boven een gezonde
+        # swing ligt zelden meer dan 3-4x boven de huidige koers. 10x is geen technisch
+        # doel maar een fantasie -- symptoom van een te grote (log-geexplodeerde) swing.
+        # Dit ving MU's $9.488 dat anders als "geldig doel" was doorgekomen.
+        _ext_ok, _ext_reden = False, (
+            f"de 1.618-TP (${_tp:.2f}) ligt onwaarschijnlijk ver boven de koers "
+            f"(${last:.2f}) - de swing is te groot, het niveau is geen bereikbaar doel")
+
+    if not _retr_ok:
+        fib["retracements"] = {}
+        fib["goldenPocket"] = None
+        fib["retrRejected"] = True
+        fib["retrRejectReason"] = _retr_reden
+    if not _ext_ok:
+        fib["extensions"] = {}
+        fib["extRejected"] = True
+        fib["extRejectReason"] = _ext_reden
+    # 'rejected' = alles weg (voor de diagnose-telling en de _near-guard hieronder)
+    fib["rejected"] = (not _retr_ok) and (not _ext_ok)
+    if fib["rejected"]:
+        fib["rejectReason"] = _ext_reden or _retr_reden
 
     vol_note = " ✓ hoog volume" if high_volume else (" (laag volume)" if vol_known else "")
 
@@ -1395,6 +1526,14 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # de fib weegt iets zwaarder, oplopend met de extensie-diepte.
     PROX = 4.0
     def _near(lbl):
+        # Zijn de EXTENSIES verworpen door de plausibiliteitstoets, dan vuren er GEEN
+        # TP-signalen. TP-zones horen bij de extensie; als die is weggegooid (bijv. 1.618
+        # onder de koers), zijn er geen zones om te naderen. Kijkt bewust naar
+        # extRejected en niet naar het hele 'rejected' -- de retracement kan nog prima
+        # zijn. Zonder deze regel zou de toets cosmetisch zijn: een vlag zetten en er
+        # niets mee doen. Dat was een van mijn eerdere fouten.
+        if fib.get("extRejected"):
+            return False
         v = _ext_val(lbl)
         return v is not None and prox_pct(last, v) < PROX
 
@@ -3802,6 +3941,46 @@ def main():
         sys.exit(1)
     if results["errors"]:
         print(f"⚠ {ok_count}/{len(WATCHLIST)} aandelen gelukt; {len(results['errors'])} fouten (zie boven) — run slaagt met waarschuwingen.")
+
+    # ── FIB-DIAGNOSE ────────────────────────────────────────────────────────────
+    # Dit blok bestaat omdat foute fibs vier keer op rij ONGEMERKT door de tests
+    # kwamen: de code draaide, de JSON was geldig, alle asserts slaagden -- en toch
+    # stond er een golden pocket van $7,59 voor een aandeel van $973 op het scherm.
+    #
+    # Een fib is niet fout doordat de code crasht; hij is fout doordat het GETAL
+    # niet klopt. Daar bestaat geen unit test voor. Wat wel kan: laten zien welke
+    # delen zijn VERWORPEN, zodat het zichtbaar is in plaats van stil.
+    #
+    # De toets is gesplitst, dus de diagnose ook: instapzones weg, winstzones weg,
+    # of allebei. Verschijnt hier een aandeel dat er niet hoort, dan is dat een
+    # signaal om de swing handmatig na te kijken op de chart -- niet om de drempel
+    # op te rekken.
+    def _fibstat(s):
+        return (s.get("indicators") or {}).get("fib") or {}
+    geen_instap = [(n, _fibstat(s).get("retrRejectReason"))
+                   for n, s in results["stocks"].items()
+                   if isinstance(s, dict) and _fibstat(s).get("retrRejected")]
+    geen_winst  = [(n, _fibstat(s).get("extRejectReason"))
+                   for n, s in results["stocks"].items()
+                   if isinstance(s, dict) and _fibstat(s).get("extRejected")]
+    print()
+    if not geen_instap and not geen_winst:
+        print(f"FIB-DIAGNOSE: alle {ok_count} fibs volledig plausibel (instap + winst).")
+    else:
+        print(f"FIB-DIAGNOSE: {len(geen_instap)} zonder instapzones, "
+              f"{len(geen_winst)} zonder winstzones (van {ok_count}).")
+        if geen_instap:
+            print("  Geen instapzones (golden pocket verworpen):")
+            for n, reden in geen_instap[:5]:
+                print(f"    {n:8s} {(reden or '')[:58]}")
+            if len(geen_instap) > 5: print(f"    ... en {len(geen_instap)-5} meer")
+        if geen_winst:
+            print("  Geen winstzones (1.618-TP onder de koers of datafout):")
+            for n, reden in geen_winst[:5]:
+                print(f"    {n:8s} {(reden or '')[:58]}")
+            if len(geen_winst) > 5: print(f"    ... en {len(geen_winst)-5} meer")
+        print("  Deze delen leveren GEEN signalen. Beter geen zone dan een foute zone:")
+        print("  een foute TP-zone stuurt via de kanteling het KOOP/VERKOOP-signaal.")
 
 if __name__ == "__main__":
     main()
