@@ -53,7 +53,7 @@ const FALLBACK_FUND = {
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
   ASML:"ASML Holding", ASMI:"ASM International", MU:"Micron Technology",
-  GOOGL:"Alphabet (Google)", AMZN:"Amazon", ORCL:"Oracle", KO:"Coca-Cola",
+  GOOGL:"Alphabet (Google)", AMZN:"Amazon", ORCL:"Oracle", KO:"Coca-Cola", MC:"LVMH",
   LHX:"L3Harris Technologies", MOGA:"Moog Inc. (A)", TDG:"TransDigm Group",
   KTOS:"Kratos Defense", RKLB:"Rocket Lab", OPEN:"Opendoor",
   SDGR:"Schrödinger", BNGO:"Bionano Genomics",
@@ -966,10 +966,24 @@ function MRow({ label, value, good, warn, fmt }) {
 }
 
 function FibLevelRows({ entries, currentPrice, cur, accent }) {
+  // TradingView-kleurcodering per fib-niveau, zodat de zones hier hetzelfde ogen als op
+  // je chart. De golden pocket (0.618/0.705) is geel, de kern-extensie 1.618 blauw,
+  // de verre 2.618/3.618 rood/groen. Ruben herkent de zones zo in een oogopslag.
+  const fibColor = (label)=>{
+    const l = String(label);
+    if (l==="0.618"||l==="0.65"||l==="0.68"||l==="0.705"||l==="0.71"||l==="0.786") return "#e5c100"; // geel (golden pocket + entry)
+    if (l==="0.5"||l==="1.414") return "#e0533d";   // rood
+    if (l==="0.886"||l==="1.818") return "#3fae6b";  // groen
+    if (l==="1.618") return "#3d7ee0";               // blauw (kern-TP)
+    if (l==="2.618"||l==="1.272") return "#e0533d";  // rood (verre extensie)
+    if (l==="3.618") return "#a855c9";               // paars
+    return null; // 0.236 / 0.382 / 1.0 / 0.0 -> neutraal
+  };
   return entries.map((f,i)=>{
     const dist = Math.abs((currentPrice-f.price)/currentPrice*100);
     const isNear = dist < 3, isCurrent = dist < 1.5;
     const inGP = f.gp;
+    const lblColor = fibColor(f.label) || (accent==="green"?C.teal:C.orange);
     return (
       <div key={i} style={{
         display:"flex",justifyContent:"space-between",alignItems:"center",
@@ -978,7 +992,7 @@ function FibLevelRows({ entries, currentPrice, cur, accent }) {
         border:`1px solid ${isCurrent?(accent==="green"?C.green:C.red):inGP?C.gold||"#a3852f":C.border}`,
       }}>
         <div style={{display:"flex",gap:6,alignItems:"center"}}>
-          <span style={{color:accent==="green"?C.teal:C.orange,fontSize:11,fontWeight:700,minWidth:42}}>{f.label}</span>
+          <span style={{color:lblColor,fontSize:11,fontWeight:700,minWidth:42}}>{f.label}</span>
           {inGP&&<span style={{fontSize:8,color:C.gold||"#c9a227",fontWeight:700}}>GOLDEN</span>}
         </div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
@@ -1734,7 +1748,7 @@ function PositionCard({ p, last, currency, update }) {
 }
 
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
-const TICKER_ORDER = ["WM","PLTR","CAT","ASML","ASMI","MU","GOOGL","AMZN","ORCL","KO",
+const TICKER_ORDER = ["WM","PLTR","CAT","ASML","ASMI","MU","GOOGL","AMZN","ORCL","KO","MC",
   "MSFT","AAPL","NVDA","V","MNST","AON","MELI","SHOP","NET","CRWV","SNAP","NKE","MSTR",
   "NFLX","DIS","BLK","BABA","MTLS","GAW","ADM","III","KPG","DIE","SOF","AIR","ALFEN","LOTB", "VOW", "EL", "META", "VST", "COPX", "ROBO",
   "ANET","HOOD","TSCO","ODFL","HWM","SNDK","NABTESCO","HARMONIC","KEYENCE","FANUC","YASKAWA","SOFTBANK","ROK","TER","ISRG","CGNX","NOVT",
