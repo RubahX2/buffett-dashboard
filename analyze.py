@@ -1099,110 +1099,64 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         last_rsi_w = last_ema8w = last_ema21w = None
         last_macd_wl = last_macd_ws = None
 
-    # ── Fib-swings volgens de meerjarige structuur (log-schaal) ──
-    # KERN: de diepste bodem in ~5 jaar is het draaipunt. Daaromheen liggen twee tops:
-    #   - de HISTORISCHE TOP VÓÓR de bodem (waar de grote daling begon)
-    #   - de HERSTEL-TOP NÁ de bodem (de nieuwe stijging sindsdien)
+    # ── Fib-swings volgens Rubens methode: ATH en ATL uit de VOLLEDIGE historie ──
     #
-    # TP-METING (extensie): van de historische top VÓÓR de bodem, omlaag naar de bodem,
-    #   omhoog geprojecteerd. Bij PL: top $12.37 (2021) → bodem $1.67 (2024) → 1.618 ≈ $50.
-    #   Dit geeft de take-profit-zones voor de huidige uptrend.
-    # ENTRY-METING (retracement): van de bodem naar de herstel-top erná. Bij een
-    #   sterk hersteld aandeel is de golden pocket daarvan de interessante instapzone.
-    lo_idx   = daily["Low"].idxmin()                     # diepste punt in ~5j = draaipunt
-    swing_lo = float(daily["Low"].min())
+    # Dit is bewust GEEN algoritme dat "het betekenisvolle draaipunt" probeert te raden.
+    # Dat heb ik geprobeerd en het faalde steeds: idxmin() op 5 jaar pakt een recente
+    # bodem ($47) in plaats van de structurele ($1,59), en dan kloppen de niveaus niet.
+    #
+    # De methode is simpel en vast, precies zoals je een fib op TradingView tekent:
+    #
+    #   EXTENSIE (TP-zones):     historische TOP -> historische BODEM
+    #                            1.618 vanaf de bodem omhoog = het kern-winstdoel
+    #   RETRACEMENT (instap):    historische BODEM -> recente TOP
+    #                            golden pocket 0.618-0.705 = instapzone
+    #
+    # BEIDE gebruiken dezelfde historische bodem (ATL). Het verschil is de andere kant:
+    # de extensie meet naar de oude top, de retracement naar de recente top.
+    #
+    # Voorbeeld MU (geverifieerd tegen Rubens chart):
+    #   ATH $97 (juni 2000), ATL $1,59 (dec 2008), recente top $1254 (2026)
+    #   extensie:    1.618 = $1231   (de candle stopte op $1254 -- klopt op 2% na)
+    #   retracement: golden pocket $11-20
+    #
+    # CRUCIAAL: dit werkt ALLEEN op de lange reeks met ECHTE koersen (auto_adjust=False).
+    # De 5-jaars daily mist de crash van 2008 -> geen ATL. En auto_adjust=True zou de
+    # ATL naar $0,34 trekken door opgestapelde dividendcorrectie.
+    #
+    # Bron voor de swings, in volgorde van voorkeur:
+    #   1. fib_daily  -> lange reeks, echte koersen. Dit is het normale geval.
+    #   2. daily      -> terugval als de lange reeks ontbrak (download faalde).
+    fib_src = fib_daily if (fib_daily is not None and len(fib_daily) > len(daily)) else daily
 
-    # Historische top VÓÓR de bodem (chronologisch eerder dan de bodem)
-    before_lo = daily[daily.index < lo_idx]
-    if len(before_lo) >= 10:
-        hist_top = float(before_lo["High"].max())        # bv. PL $12.37 van 2021
+    # De ATL (all-time low) is het draaipunt. Twee tops eromheen:
+    #   - de hoogste top VÓÓR de ATL   -> de piek van de vorige cyclus (MU: $97 in 2000)
+    #   - de hoogste top NÁ de ATL     -> de moderne stijging (MU: $1254 in 2026)
+    #
+    # LET OP het subtiele punt dat me eerder de das omdeed: ext_hi is NIET de all-time
+    # high. MU's ATH is NU (~$1254), niet de $97 uit 2000. Maar Ruben tekent de extensie
+    # van de VORIGE-cyclus-top ($97) naar de bodem ($1,59) -- en de 1.618 daarvan komt uit
+    # op $1231, precies waar de huidige koers piekte. De fib VOORSPELDE die top.
+    # Dus: ext_hi = de hoogste top VÓÓR de ATL, niet de hoogste ooit.
+    atl_idx = fib_src["Low"].idxmin()
+    atl = float(fib_src["Low"].min())
+
+    before_atl = fib_src[fib_src.index < atl_idx]
+    since_atl  = fib_src[fib_src.index >= atl_idx]
+
+    # Top vóór de ATL (voor de extensie). Ontbreekt die (ATL helemaal aan het begin van
+    # de reeks), val terug op de top erna -- dan is er geen vorige-cyclus-piek bekend.
+    top_voor = float(before_atl["High"].max()) if len(before_atl) >= 10 else None
+    top_na   = float(since_atl["High"].max()) if len(since_atl) > 0 else atl
+
+    # EXTENSIE (TP-zones): bodem -> vorige-cyclus-top, 1.618 projecteert omhoog.
+    if top_voor is not None and top_voor > atl:
+        ext_lo, ext_hi = atl, top_voor
     else:
-        # Geen geschiedenis vóór de bodem (bodem ligt helemaal aan het begin) →
-        # gebruik de herstel-top als terugval voor de TP-meting.
-        hist_top = None
+        ext_lo, ext_hi = atl, top_na          # terugval: geen vorige-cyclus-top bekend
 
-    # Herstel-top NÁ de bodem (de nieuwe stijging)
-    since_lo = daily[daily.index >= lo_idx]
-    recovery_top = float(since_lo["High"].max())         # bv. PL $51.76 van 2026
-
-    # ENTRY-swing (retracement): bodem → herstel-top
-    swing_hi = recovery_top
-
-    # TP-swing (extensie): historische top → bodem, omhoog geprojecteerd.
-    # calc_fibonacci projecteert ext van ext_low omhoog; we willen de 1.618 boven de
-    # HISTORISCHE top uitkomen. Dus ext_low = bodem, ext_high = historische top.
-    if hist_top is not None and hist_top > swing_lo:
-        ext_lo, ext_hi = swing_lo, hist_top
-    else:
-        # Terugval: geen historische top → gebruik de herstel-swing
-        ext_lo, ext_hi = swing_lo, recovery_top
-
-    # ══ TE KORT VENSTER: DE ECHTE OORZAAK ══════════════════════════════════════
-    # De TP-swing hierboven wordt gemeten op de DAILY-reeks, en die is 5 jaar lang.
-    # Voor de meeste aandelen is dat prima. Voor een aandeel dat een DIEPE crash heeft
-    # meegemaakt VOOR dat venster, is het rampzalig.
-    #
-    # MU, juli 2026 — wat het model ziet in 5 jaar:
-    #     bodem $47,52 (2022), hoogste top ervoor $96,24  ->  factor 2,0
-    #     -> 2.618 = $301.  Koers $973.  "3,2x voorbij de verste TP-zone."
-    #
-    # MU, wat er ECHT staat (24 jaar):
-    #     top $97 (juni 2000) -> bodem $1,59 (dec 2008)   ->  factor 61
-    #     -> 1.618 = $1231.  Koers $973.  "nadert de kern-winstzone."
-    #
-    # De candle stopte op $1254. Dat is de 1.618 van de 24-jaars swing, op 2% na.
-    # Dezelfde fib-verhoudingen; het VENSTER bepaalt alles.
-    #
-    # Gevolg van het te korte venster: bij elk aandeel dat sinds zijn 5-jaars bodem
-    # spectaculair is gestegen (MU, NVDA, PLTR, ANET...) liggen ALLE TP-zones onder de
-    # koers. Het model roept dan permanent "voorbij 2.618" en zet CAUTION -- niet omdat
-    # het aandeel overextended is, maar omdat de meetlat te kort is.
-    #
-    # Dit is dezelfde klasse fout als de bearish bias: KRACHT WORDT AFGESTRAFT.
-    # Toen kon STERK KOOP niet vuren; nu vuurt CAUTION te vaak. Beide keren straft het
-    # model precies de aandelen af waar je in wilt zitten.
-    #
-    # DE FIX: meet de TP-swing op de LANGE reeks (fib_daily, tot 'max' historie) als
-    # die beschikbaar is. De indicatoren (RSI/EMA/MACD) blijven op 5 jaar -- die hebben
-    # geen 25 jaar nodig en zouden er alleen trager van worden.
-    if fib_daily is not None and len(fib_daily) > len(daily):
-        _lo_idx_L   = fib_daily["Low"].idxmin()
-        _swing_lo_L = float(fib_daily["Low"].min())
-        _before_L   = fib_daily[fib_daily.index < _lo_idx_L]
-        _hist_top_L = float(_before_L["High"].max()) if len(_before_L) >= 10 else None
-
-        # ══ ALLEEN DE EXTENSIE KRIJGT DE LANGE SWING ═══════════════════════════
-        # Dit is de fout die ik vier keer heb gemaakt: ik overschreef OOK swing_lo en
-        # swing_hi -- de RETRACEMENT-swing. Dat is verkeerd, en het staat zelfs in de
-        # docstring van calc_fibonacci hierboven.
-        #
-        # Het zijn TWEE fibs met TWEE doelen:
-        #
-        #   RETRACEMENT = instapzones. "Waar koop ik bij een terugval?"
-        #     -> RECENTE swing (bodem -> herstel-top uit de 5-jaars reeks)
-        #     -> horizon: maanden. Je wilt weten waar de HUIDIGE beweging steun vindt.
-        #     -> meer historie is hier ACTIEF SCHADELIJK.
-        #
-        #   EXTENSIE = winstnemingszones. "Waar neem ik winst?"
-        #     -> HISTORISCHE swing (structurele top -> structurele bodem)
-        #     -> horizon: jaren. Je wilt weten waar de GROTE beweging uitgeput raakt.
-        #     -> hier IS lange historie nodig.
-        #
-        # Wat er misging bij MU toen ik beide overschreef: de golden pocket kwam uit op
-        # $11-20. Voor een aandeel van $973. Dat is geen instapzone, dat is de koers van
-        # 2010. Terwijl de instapzone gewoon uit de 5-jaars swing had moeten komen.
-        #
-        # swing_lo en swing_hi blijven dus ONAANGERAAKT. Alleen ext_lo/ext_hi veranderen.
-        _factor = (_hist_top_L / _swing_lo_L) if (_hist_top_L and _swing_lo_L > 0) else None
-        _geloofwaardig = (
-            _hist_top_L is not None
-            and _swing_lo_L > 0.05          # geen koersen onder 5 cent (data-artefact)
-            and _hist_top_L > _swing_lo_L
-            and _factor is not None
-            and _factor <= 200.0            # absurd grote swing = datafout
-        )
-        if _geloofwaardig:
-            ext_lo, ext_hi = _swing_lo_L, _hist_top_L
+    # RETRACEMENT (instapzones): bodem -> recente top (de moderne stijging).
+    swing_lo, swing_hi = atl, top_na
 
     fib = calc_fibonacci(swing_lo, swing_hi, ext_low=ext_lo, ext_high=ext_hi)
 
@@ -1231,28 +1185,28 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     _gp = _r.get("0.618")
 
     # -- Gedeelde bodem: een artefact-bodem breekt ALLES --
-    # Retracement en extensie kunnen verschillende swings gebruiken, maar delen de BODEM
-    # (swing_lo). Is die bodem een data-artefact -- een koers van $0,32 terwijl het
-    # aandeel op $973 staat, gevolg van opgestapelde dividendcorrectie over 25 jaar --
-    # dan zijn BEIDE fibs kapot, niet alleen de retracement. Deze check vangt dat aan de
-    # bron, zodat een kapotte bodem geen "geldige" winstzone van $3.314 kan opleveren.
-    _artefact_bodem = (last > 50.0 and swing_lo < 0.50)
+    # Dit is de ENIGE ondergrens-check die overblijft, en de belangrijkste. Retracement
+    # en extensie delen de bodem (de ATL). Is die bodem een data-artefact -- een koers
+    # van $0,34 terwijl het aandeel op $983 staat, gevolg van opgestapelde
+    # dividendcorrectie als auto_adjust=False niet pakte -- dan zijn BEIDE fibs kapot.
+    #
+    # LET OP: dit vervangt de oude "golden pocket 10x onder de koers"-check, die WEG moet.
+    # Met Rubens methode is de golden pocket BEWUST diep ($11-20 voor MU, gemeten vanaf
+    # de ATL van $1,59). Dat is geen fout maar de bedoelde instapzone. Alleen een echte
+    # artefact-bodem (< $0,50 bij een koers > $50) is een probleem.
+    _artefact_bodem = (last > 50.0 and atl < 0.50)
 
     # -- Retracement (instapzones) --
     _retr_ok = True
     _retr_reden = None
     if _artefact_bodem:
         _retr_ok, _retr_reden = False, (
-            f"de swing-bodem (${swing_lo:.2f}) is onmogelijk laag naast de koers "
-            f"(${last:.2f}) - opgestapelde dividendcorrectie, geen echte koers")
+            f"de swing-bodem (${atl:.2f}) is onmogelijk laag naast de koers "
+            f"(${last:.2f}) - vermoedelijk dividend-artefact, geen echte koers")
     elif not _r:
         _retr_ok, _retr_reden = False, "geen retracement-niveaus"
     elif any((v is None or v <= 0) for v in _r.values()):
         _retr_ok, _retr_reden = False, "een instapniveau kwam uit op nul of lager (datafout)"
-    elif _gp is not None and last > 0 and _gp < last / 10.0:
-        _retr_ok, _retr_reden = False, (
-            f"golden pocket (${_gp:.2f}) ligt onwaarschijnlijk ver onder de koers "
-            f"(${last:.2f}) - de swing is vrijwel zeker een data-artefact")
 
     # -- Extensie (winstnemingszones) --
     _ext_ok = True
@@ -1260,26 +1214,23 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     _tp = _e.get("1.618")
     if _artefact_bodem:
         _ext_ok, _ext_reden = False, (
-            f"de swing-bodem (${swing_lo:.2f}) is een data-artefact - "
+            f"de swing-bodem (${atl:.2f}) is een data-artefact - "
             f"winstzones erop zijn betekenisloos")
     elif not _e:
         _ext_ok, _ext_reden = False, "geen extensie-niveaus"
     elif any((v is None or v <= 0) for v in _e.values()):
         _ext_ok, _ext_reden = False, "een winstniveau kwam uit op nul of lager (datafout)"
     elif _tp is not None and last > 0 and _tp < last:
-        # De 1.618-TP ligt ONDER de koers -> geen winstdoel meer, maar een herinnering.
-        # Zonder deze check zou het model permanent "voorbij de TP-zone" roepen.
+        # De 1.618-TP (het kern-winstdoel) ligt ONDER de koers. Dan is het aandeel voorbij
+        # zijn projectie en is er geen zinnige winstzone meer. Zonder deze check zou het
+        # model permanent "voorbij de TP-zone" roepen -- MU's oude CAUTION-probleem.
+        #
+        # Merk op: dit kijkt naar 1.618, NIET naar 2.618. Met Rubens methode ligt 2.618
+        # astronomisch hoog ($75k voor MU) -- dat is bedoeld en geen probleem, want het
+        # kern-winstdoel is 1.618. De verste extensie mag "onbereikbaar" zijn.
         _ext_ok, _ext_reden = False, (
             f"de 1.618-TP (${_tp:.2f}) ligt onder de koers (${last:.2f}) - "
-            f"de swing is te kort om nog winstnemingszones op te leveren")
-    elif _tp is not None and last > 0 and _tp > last * 5.0:
-        # De 1.618-TP ligt meer dan 5x boven de koers. Een fib-extensie boven een gezonde
-        # swing ligt zelden meer dan 3-4x boven de huidige koers. 10x is geen technisch
-        # doel maar een fantasie -- symptoom van een te grote (log-geexplodeerde) swing.
-        # Dit ving MU's $9.488 dat anders als "geldig doel" was doorgekomen.
-        _ext_ok, _ext_reden = False, (
-            f"de 1.618-TP (${_tp:.2f}) ligt onwaarschijnlijk ver boven de koers "
-            f"(${last:.2f}) - de swing is te groot, het niveau is geen bereikbaar doel")
+            f"het aandeel is voorbij zijn kern-winstzone")
 
     if not _retr_ok:
         fib["retracements"] = {}
