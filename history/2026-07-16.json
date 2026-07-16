@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-07-16T00:28:59.177790+02:00",
-    "generatedAtHuman": "Thursday 16 July 2026 om 00:28",
+    "generatedAt": "2026-07-16T08:31:14.841715+02:00",
+    "generatedAtHuman": "Thursday 16 July 2026 om 08:31",
     "isFriday": false,
     "isWeekend": false,
     "version": "5.0",
@@ -27,6 +27,8 @@
       "valuation": {
         "currentPE": 30.2,
         "peg": 4.95,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -171,7 +173,7 @@
         "macdSigW": -0.0012,
         "bollUpper": 240.75,
         "bollLower": 211.52,
-        "volRatio": 0.52,
+        "volRatio": 0.72,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -204,7 +206,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "PLTR": {
@@ -227,6 +237,8 @@
       "valuation": {
         "currentPE": 140.8,
         "peg": 1.66,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -365,7 +377,7 @@
         "macdSigW": -6.4512,
         "bollUpper": 141.67,
         "bollLower": 108.54,
-        "volRatio": 0.57,
+        "volRatio": 0.58,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -405,7 +417,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "CAT": {
@@ -428,6 +448,8 @@
       "valuation": {
         "currentPE": 45.5,
         "peg": 3.82,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -613,7 +635,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 773.53,
+            "priceHigh2": 1064.9,
+            "indHigh1": 77.68,
+            "indHigh2": 65.36,
+            "barsApart": 95
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "ASML": {
@@ -636,6 +673,8 @@
       "valuation": {
         "currentPE": 50.0,
         "peg": 3.12,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -812,7 +851,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 1285.56,
+            "priceHigh2": 1721.4,
+            "indHigh1": 70.04,
+            "indHigh2": 68.79,
+            "barsApart": 86
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "ASMI": {
@@ -835,6 +889,8 @@
       "valuation": {
         "currentPE": 48.7,
         "peg": 3.04,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -1004,7 +1060,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "MU": {
@@ -1027,6 +1091,8 @@
       "valuation": {
         "currentPE": 20.3,
         "peg": 0.14,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -1189,7 +1255,7 @@
         "macdSigW": 159.4759,
         "bollUpper": 1223.34,
         "bollLower": 859.48,
-        "volRatio": 1.03,
+        "volRatio": 1.04,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -1229,7 +1295,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 465.59,
+            "priceHigh2": 1213.37,
+            "indHigh1": 66.14,
+            "indHigh2": 64.54,
+            "barsApart": 50
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "GOOGL": {
@@ -1252,6 +1333,8 @@
       "valuation": {
         "currentPE": 28.2,
         "peg": 2.1,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -1455,7 +1538,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "AMZN": {
@@ -1478,6 +1569,8 @@
       "valuation": {
         "currentPE": 30.5,
         "peg": 2.15,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -1648,7 +1741,7 @@
         "macdSigW": 6.7869,
         "bollUpper": 254.46,
         "bollLower": 228.29,
-        "volRatio": 0.7,
+        "volRatio": 0.74,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -1688,7 +1781,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ORCL": {
@@ -1711,6 +1812,8 @@
       "valuation": {
         "currentPE": 22.7,
         "peg": 1.3,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -1879,7 +1982,7 @@
         "macdSigW": -4.486,
         "bollUpper": 186.36,
         "bollLower": 116.24,
-        "volRatio": 1.31,
+        "volRatio": 1.32,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -1919,7 +2022,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "KO": {
@@ -1941,6 +2052,8 @@
       "valuation": {
         "currentPE": 28.6,
         "peg": 6.98,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -2093,7 +2206,7 @@
         "macdSigW": 2.4113,
         "bollUpper": 85.1,
         "bollLower": 78.78,
-        "volRatio": 0.58,
+        "volRatio": 0.91,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -2114,7 +2227,29 @@
           "rejectReason": "de swing-bodem ($0.18) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 80.48,
+            "priceHigh2": 84.14,
+            "indHigh1": 74.36,
+            "indHigh2": 64.98,
+            "barsApart": 86
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 80.48,
+            "priceHigh2": 84.14,
+            "indHigh1": 2.03,
+            "indHigh2": 0.83,
+            "barsApart": 86
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "MC": {
@@ -2129,6 +2264,7 @@
         "divYield": 2.4,
         "revenueGrowth": 0.1,
         "revenueGrowthPrev": 9.0,
+        "normalizedGrowth": 5.0,
         "eps": 27.31,
         "mktCap": "\u20ac277B",
         "beta": 1.05,
@@ -2137,6 +2273,8 @@
       "valuation": {
         "currentPE": 17.8,
         "peg": 178.0,
+        "pegNormalized": 3.56,
+        "normalizedGrowth": 5.0,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -2145,7 +2283,9 @@
         "priceRangePosition": null,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
-        "notes": []
+        "notes": [
+          "Cyclisch: PEG 178 nu is vertekend door bodemgroei (0.1%). Bij genormaliseerde groei (~5%) wordt PEG 3.6 \u2014 nog steeds prijzig"
+        ]
       },
       "timing": {
         "score": 30,
@@ -2320,7 +2460,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 448.44,
+            "priceLow2": 444.95,
+            "indLow1": 27.75,
+            "indLow2": 34.63,
+            "barsApart": 23
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 448.44,
+            "priceLow2": 444.95,
+            "indLow1": -20.91,
+            "indLow2": -7.63,
+            "barsApart": 23
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "LHX": {
@@ -2343,6 +2505,8 @@
       "valuation": {
         "currentPE": 33.6,
         "peg": 5.79,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -2508,7 +2672,7 @@
         "macdSigW": 0.1445,
         "bollUpper": 308.39,
         "bollLower": 279.17,
-        "volRatio": 0.36,
+        "volRatio": 0.63,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -2541,7 +2705,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "MOGA": {
@@ -2564,6 +2736,8 @@
       "valuation": {
         "currentPE": 27.1,
         "peg": 3.19,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -2722,7 +2896,7 @@
         "macdSigW": 30.9705,
         "bollUpper": 430.96,
         "bollLower": 389.0,
-        "volRatio": 0.77,
+        "volRatio": 0.88,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -2755,7 +2929,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 349.26,
+            "priceHigh2": 425.85,
+            "indHigh1": 84.38,
+            "indHigh2": 77.32,
+            "barsApart": 86
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "TDG": {
@@ -2778,6 +2967,8 @@
       "valuation": {
         "currentPE": 35.7,
         "peg": 2.23,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -2937,7 +3128,7 @@
         "macdSigW": -13.8095,
         "bollUpper": 1376.0,
         "bollLower": 1231.45,
-        "volRatio": 0.71,
+        "volRatio": 0.86,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -2970,7 +3161,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "KTOS": {
@@ -2993,6 +3192,8 @@
       "valuation": {
         "currentPE": 146.1,
         "peg": 6.46,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -3144,7 +3345,7 @@
         "macdSigW": -6.0828,
         "bollUpper": 56.81,
         "bollLower": 44.55,
-        "volRatio": 0.85,
+        "volRatio": 0.86,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -3184,7 +3385,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 65.28,
+            "priceLow2": 46.32,
+            "indLow1": 29.29,
+            "indLow2": 30.64,
+            "barsApart": 60
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 65.28,
+            "priceLow2": 46.32,
+            "indLow1": -5.43,
+            "indLow2": -3.0,
+            "barsApart": 60
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "RKLB": {
@@ -3207,6 +3430,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -3377,7 +3602,7 @@
         "macdSigW": 11.2865,
         "bollUpper": 112.12,
         "bollLower": 70.01,
-        "volRatio": 0.56,
+        "volRatio": 0.58,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -3417,7 +3642,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "OPEN": {
@@ -3440,6 +3673,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -3590,7 +3825,7 @@
         "macdSigW": -0.2214,
         "bollUpper": 5.2,
         "bollLower": 4.06,
-        "volRatio": 1.5,
+        "volRatio": 1.51,
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
@@ -3630,7 +3865,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 4.31,
+            "priceLow2": 4.2,
+            "indLow1": 38.86,
+            "indLow2": 39.25,
+            "barsApart": 51
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 4.31,
+            "priceLow2": 4.2,
+            "indLow1": -0.17,
+            "indLow2": -0.13,
+            "barsApart": 51
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "SDGR": {
@@ -3653,6 +3910,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -3850,7 +4109,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "BNGO": {
@@ -3873,6 +4140,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -4056,7 +4325,7 @@
         "macdSigW": -0.2692,
         "bollUpper": 1.19,
         "bollLower": 1.11,
-        "volRatio": 0.36,
+        "volRatio": 0.37,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -4096,7 +4365,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "GAW": {
@@ -4117,26 +4394,26 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 3285.3,
-        "peg": 309.93,
+        "currentPE": 31.6,
+        "peg": 2.98,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 91.1,
-        "verdict": "Duur (PEG > 3.5)",
-        "verdictColor": "red",
-        "notes": [
-          "P/E live: koers \u00f7 laatst bekende EPS"
-        ]
+        "priceRangePosition": null,
+        "verdict": "Aan de dure kant (PEG 2.5\u20133.5)",
+        "verdictColor": "orange",
+        "notes": []
       },
       "timing": {
-        "score": 45,
+        "score": 52,
         "label": "Neutrale setup",
         "color": "neutral",
         "trendScore": 77,
-        "entryScore": 37,
+        "entryScore": 55,
         "trendDaily": 25,
         "trendWeekly": 90,
         "trendMonthly": 90,
@@ -4149,7 +4426,7 @@
         "macdTurning": [
           "weekly"
         ],
-        "baseTimin": 61
+        "baseTimin": 68
       },
       "scores": {
         "quality": 89,
@@ -4160,14 +4437,14 @@
           "Lage schuld"
         ],
         "qualityFails": [],
-        "valuation": 8,
-        "timing": 45,
+        "valuation": 40,
+        "timing": 52,
         "marketAdj": 6,
-        "timingEffective": 51,
-        "composite": 50,
-        "opportunity": 46,
-        "opportunityLabel": "Zwakke kans",
-        "opportunityColor": "gray",
+        "timingEffective": 58,
+        "composite": 62,
+        "opportunity": 57,
+        "opportunityLabel": "Redelijke kans",
+        "opportunityColor": "orange",
         "opportunityWarning": null,
         "acceleration": 50,
         "accelLabel": "Stabiel",
@@ -4211,15 +4488,6 @@
           "icon": "\ud83d\udcc8",
           "title": "Uptrend (MONTHLY) \u2b50",
           "detail": "Monthly trendscore 90/100 \u2014 stijgend op de hoogste timeframe."
-        },
-        {
-          "type": "SELL",
-          "cat": "FIB",
-          "tf": "TP",
-          "weight": 6,
-          "icon": "\ud83d\udcc9",
-          "title": "Terugval uit 2.000 TP-zone \u2b50",
-          "detail": "Prijs zakte 13% van de recente top ($23539.02, bij de 2.000-TP-zone). MACD draait op 1 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -4232,10 +4500,10 @@
           "detail": "MACD: 864.185 | Signaal: 791.452"
         }
       ],
-      "overall": "CAUTION (overextended)",
+      "overall": "STERK KOOP",
       "buyWeight": 11,
-      "sellWeight": 6,
-      "baseOverall": "KOOP",
+      "sellWeight": 0,
+      "baseOverall": "STERK KOOP",
       "confluence": {
         "monthlyState": "bull",
         "weeklyBullTurn": true,
@@ -4245,67 +4513,70 @@
         "supportCount": 0,
         "supportFlags": []
       },
-      "conflict": true,
-      "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Prijs bij de 2.0-TP-zone (hoog in winst), geen bearish bevestiging - voorzichtig (overextended). Geen duidelijke confluence - signaal getemperd",
+      "conflict": false,
+      "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 12.9,
+      "pctOffHigh": 13.6,
       "indicators": {
-        "last": 20500.0,
-        "rsiDaily": 50.4,
+        "last": 20340.0,
+        "rsiDaily": 47.9,
         "rsiWeekly": 55.1,
-        "ema8d": 20463.45,
-        "ema21d": 20541.12,
+        "ema8d": 20453.01,
+        "ema21d": 20545.23,
         "ema8w": 20325.37,
         "ema21w": 19452.0,
-        "ma50": 20084.32,
-        "ma200": 18207.74,
-        "macdLine": 60.7133,
-        "macdSignal": 212.5228,
+        "ma50": 20072.8,
+        "ma200": 18177.77,
+        "macdLine": 70.2934,
+        "macdSignal": 214.4388,
         "macdLineW": 864.1852,
         "macdSigW": 791.4519,
-        "bollUpper": 22214.48,
-        "bollLower": 19536.58,
-        "volRatio": 0.62,
+        "bollUpper": 22215.11,
+        "bollLower": 19529.87,
+        "volRatio": 0.0,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
         "fib": {
-          "retracements": {
-            "0.000": 23540.0,
-            "0.236": 6456.39,
-            "0.382": 2900.18,
-            "0.500": 1518.85,
-            "0.618": 795.44,
-            "0.705": 493.74,
-            "0.786": 316.72,
-            "0.886": 183.07,
-            "1.000": 98.0,
-            "1.272": 22.07,
-            "1.618": 3.31
-          },
-          "extensions": {
-            "0.000": 98.0,
-            "1.000": 857.5,
-            "1.272": 1546.89,
-            "1.414": 2104.87,
-            "1.618": 3276.39,
-            "1.818": 5055.88,
-            "2.000": 7503.12,
-            "2.618": 28668.38
-          },
-          "goldenPocket": {
-            "low": 493.74,
-            "high": 795.44
-          },
-          "swingHigh": 23540.0,
-          "swingLow": 98.0,
-          "extSwingHigh": 857.5,
-          "extSwingLow": 98.0,
+          "retracements": {},
+          "extensions": {},
+          "goldenPocket": null,
+          "swingHigh": 20480.0,
+          "swingLow": 0.0,
+          "extSwingHigh": 23540.0,
+          "extSwingLow": 0.0,
           "logScale": true,
-          "rejected": false
+          "retrRejected": true,
+          "retrRejectReason": "de swing-bodem ($0.00) is onmogelijk laag naast de koers ($20340.00) - vermoedelijk dividend-artefact, geen echte koers",
+          "extRejected": true,
+          "extRejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos",
+          "rejected": true,
+          "rejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 20039.16,
+            "priceHigh2": 21939.08,
+            "indHigh1": 74.94,
+            "indHigh2": 73.24,
+            "barsApart": 48
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 20039.16,
+            "priceHigh2": 21939.08,
+            "indHigh1": 565.35,
+            "indHigh2": 544.35,
+            "barsApart": 48
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "MNST": {
@@ -4328,6 +4599,8 @@
       "valuation": {
         "currentPE": 46.5,
         "peg": 2.57,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -4492,7 +4765,7 @@
         "macdSigW": 4.4466,
         "bollUpper": 99.83,
         "bollLower": 91.6,
-        "volRatio": 0.78,
+        "volRatio": 1.04,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -4532,7 +4805,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "V": {
@@ -4555,6 +4836,8 @@
       "valuation": {
         "currentPE": 30.4,
         "peg": 2.11,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -4754,7 +5037,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "KPG": {
@@ -4775,14 +5066,16 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 49.4,
-        "peg": 2.74,
+        "currentPE": 50.1,
+        "peg": 2.78,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 9.0,
+        "priceRangePosition": 9.5,
         "verdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "verdictColor": "orange",
         "notes": [
@@ -4790,12 +5083,12 @@
         ]
       },
       "timing": {
-        "score": 34,
+        "score": 38,
         "label": "Zwakke setup",
         "color": "orange",
-        "trendScore": 30,
-        "entryScore": 53,
-        "trendDaily": 75,
+        "trendScore": 33,
+        "entryScore": 45,
+        "trendDaily": 90,
         "trendWeekly": 30,
         "trendMonthly": 10,
         "hasMonthly": true,
@@ -4804,10 +5097,8 @@
           "weekly": -0.3,
           "monthly": -32.7
         },
-        "macdTurning": [
-          "daily"
-        ],
-        "baseTimin": 39
+        "macdTurning": [],
+        "baseTimin": 38
       },
       "scores": {
         "quality": 55,
@@ -4820,10 +5111,10 @@
           "marge < 8%"
         ],
         "valuation": 40,
-        "timing": 34,
+        "timing": 38,
         "marketAdj": 6,
-        "timingEffective": 40,
-        "composite": 44,
+        "timingEffective": 44,
+        "composite": 46,
         "opportunity": null,
         "opportunityLabel": null,
         "opportunityColor": "gray",
@@ -4850,8 +5141,8 @@
           "tf": "1D",
           "weight": 3,
           "icon": "\ud83d\udcd0",
-          "title": "Fib 1.000 \u2014 take-profit zone: $3.96 (0.3% weg)",
-          "detail": "Prijs $3.95 raakt Fibonacci 1.000. Overweeg winstneming."
+          "title": "Fib 1.000 \u2014 take-profit zone: $3.96 (1.2% weg)",
+          "detail": "Prijs $4.01 raakt Fibonacci 1.000. Overweeg winstneming."
         },
         {
           "type": "SELL",
@@ -4884,10 +5175,10 @@
           "type": "SELL",
           "cat": "FIB",
           "tf": "TP",
-          "weight": 6,
+          "weight": 5,
           "icon": "\ud83d\udcc9",
-          "title": "Terugval uit 2.000 TP-zone \u2b50",
-          "detail": "Prijs zakte 26% van de recente top ($5.37, bij de 2.000-TP-zone). monthly MACD bearish, MACD draait op 1 TF \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "title": "Terugval uit 1.818 TP-zone \u2b50",
+          "detail": "Prijs zakte 21% van de recente top ($5.06, bij de 1.818-TP-zone). monthly MACD bearish \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -4905,11 +5196,18 @@
           "icon": "\u2139\ufe0f",
           "title": "MACD weekly momenteel bullish (crossover enkel vrijdag ge\u00ebvalueerd)",
           "detail": "MACD: -0.970 | Signaal: -1.091"
+        },
+        {
+          "type": "WATCH",
+          "cat": "FIB",
+          "tf": "1D",
+          "icon": "\ud83d\udcd0",
+          "title": "Nadert Fib 0.786 steunzone: $4.13 (3.0% weg)"
         }
       ],
       "overall": "VERKOOP",
       "buyWeight": 0,
-      "sellWeight": 20,
+      "sellWeight": 19,
       "baseOverall": "STERK VERKOOP",
       "confluence": {
         "monthlyState": "strong_bear",
@@ -4923,27 +5221,27 @@
       "conflict": false,
       "conflictNote": "Monthly sterk bearish (EMA-kruising + MACD bearish & dalend) - koop geblokkeerd",
       "nearTP": false,
-      "pctOffHigh": 71.0,
+      "pctOffHigh": 70.5,
       "indicators": {
-        "last": 3.95,
-        "rsiDaily": 53.4,
+        "last": 4.01,
+        "rsiDaily": 55.7,
         "rsiWeekly": 32.7,
-        "ema8d": 3.88,
-        "ema21d": 3.85,
+        "ema8d": 3.91,
+        "ema21d": 3.87,
         "ema8w": 3.97,
         "ema21w": 4.78,
         "ma50": 3.95,
-        "ma200": 6.52,
-        "macdLine": -0.0032,
-        "macdSignal": -0.0412,
+        "ma200": 6.49,
+        "macdLine": 0.0089,
+        "macdSignal": -0.0311,
         "macdLineW": -0.97,
         "macdSigW": -1.0911,
-        "bollUpper": 4.08,
-        "bollLower": 3.45,
-        "volRatio": 0.63,
+        "bollUpper": 4.11,
+        "bollLower": 3.44,
+        "volRatio": 2.16,
         "volKnown": true,
-        "highVolume": false,
-        "volNote": "(laag volume)",
+        "highVolume": true,
+        "volNote": "\u2713 hoog volume",
         "fib": {
           "retracements": {
             "0.000": 13.6,
@@ -4980,7 +5278,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 4.57,
+            "priceLow2": 3.4,
+            "indLow1": 24.41,
+            "indLow2": 27.68,
+            "barsApart": 63
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 4.57,
+            "priceLow2": 3.4,
+            "indLow1": -0.47,
+            "indLow2": -0.19,
+            "barsApart": 63
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "ADM": {
@@ -5001,27 +5321,27 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 18.6,
-        "peg": 2.07,
+        "currentPE": 16.5,
+        "peg": 1.83,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 95.8,
+        "priceRangePosition": null,
         "verdict": "Neutraal (PEG 1.5\u20132.5)",
         "verdictColor": "neutral",
-        "notes": [
-          "P/E live: koers \u00f7 laatst bekende EPS"
-        ]
+        "notes": []
       },
       "timing": {
-        "score": 55,
-        "label": "Neutrale setup",
-        "color": "neutral",
-        "trendScore": 86,
-        "entryScore": 43,
-        "trendDaily": 70,
+        "score": 61,
+        "label": "Gunstige setup",
+        "color": "green",
+        "trendScore": 83,
+        "entryScore": 50,
+        "trendDaily": 54,
         "trendWeekly": 90,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -5030,10 +5350,8 @@
           "weekly": 4.5,
           "monthly": 8.8
         },
-        "macdTurning": [
-          "daily"
-        ],
-        "baseTimin": 69
+        "macdTurning": [],
+        "baseTimin": 70
       },
       "scores": {
         "quality": 82,
@@ -5043,14 +5361,14 @@
           "Lage schuld"
         ],
         "qualityFails": [],
-        "valuation": 50,
-        "timing": 55,
+        "valuation": 62,
+        "timing": 61,
         "marketAdj": 6,
-        "timingEffective": 61,
-        "composite": 62,
-        "opportunity": 47,
-        "opportunityLabel": "Zwakke kans",
-        "opportunityColor": "gray",
+        "timingEffective": 67,
+        "composite": 68,
+        "opportunity": 51,
+        "opportunityLabel": "Redelijke kans",
+        "opportunityColor": "orange",
         "opportunityWarning": null,
         "acceleration": 15,
         "accelLabel": "Vertraagt sterk",
@@ -5111,13 +5429,6 @@
           "icon": "\u2139\ufe0f",
           "title": "MACD weekly momenteel bullish (crossover enkel vrijdag ge\u00ebvalueerd)",
           "detail": "MACD: 110.603 | Signaal: 72.700"
-        },
-        {
-          "type": "WATCH",
-          "cat": "FIB",
-          "tf": "1D",
-          "icon": "\ud83d\udcd0",
-          "title": "Nadert Fib 1.000 take-profit zone: $3694.01 (2.8% weg)"
         }
       ],
       "overall": "STERK KOOP",
@@ -5136,24 +5447,24 @@
       "conflict": false,
       "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 3.6,
+      "pctOffHigh": 4.2,
       "indicators": {
-        "last": 3594.0,
-        "rsiDaily": 57.4,
+        "last": 3572.0,
+        "rsiDaily": 55.5,
         "rsiWeekly": 60.5,
-        "ema8d": 3603.76,
-        "ema21d": 3548.21,
+        "ema8d": 3606.54,
+        "ema21d": 3543.63,
         "ema8w": 3477.07,
         "ema21w": 3337.98,
-        "ma50": 3413.48,
-        "ma200": 3201.25,
-        "macdLine": 62.8665,
-        "macdSignal": 67.6195,
+        "ma50": 3408.58,
+        "ma200": 3199.84,
+        "macdLine": 67.4803,
+        "macdSignal": 68.5423,
         "macdLineW": 110.6033,
         "macdSigW": 72.7005,
-        "bollUpper": 3777.5,
-        "bollLower": 3292.7,
-        "volRatio": 0.74,
+        "bollUpper": 3771.98,
+        "bollLower": 3281.42,
+        "volRatio": 0.0,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -5193,7 +5504,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 3301.11,
+            "priceHigh2": 3502.0,
+            "indHigh1": 74.74,
+            "indHigh2": 66.83,
+            "barsApart": 44
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 3301.11,
+            "priceHigh2": 3502.0,
+            "indHigh1": 106.14,
+            "indHigh2": 33.47,
+            "barsApart": 44
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "AON": {
@@ -5216,6 +5549,8 @@
       "valuation": {
         "currentPE": 20.8,
         "peg": 2.97,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -5352,7 +5687,7 @@
         "macdSigW": -4.2409,
         "bollUpper": 375.41,
         "bollLower": 305.47,
-        "volRatio": 0.48,
+        "volRatio": 0.7,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -5385,7 +5720,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 309.15,
+            "priceLow2": 308.27,
+            "indLow1": 31.21,
+            "indLow2": 38.54,
+            "barsApart": 58
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 309.15,
+            "priceLow2": 308.27,
+            "indLow1": -6.49,
+            "indLow2": -3.35,
+            "barsApart": 58
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "MELI": {
@@ -5408,6 +5765,8 @@
       "valuation": {
         "currentPE": 46.8,
         "peg": 0.96,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -5553,7 +5912,7 @@
         "macdSigW": -99.8601,
         "bollUpper": 1921.12,
         "bollLower": 1541.61,
-        "volRatio": 1.14,
+        "volRatio": 1.16,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -5593,7 +5952,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 1599.52,
+            "priceLow2": 1546.81,
+            "indLow1": 33.07,
+            "indLow2": 34.15,
+            "barsApart": 34
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 1599.52,
+            "priceLow2": 1546.81,
+            "indLow1": -77.43,
+            "indLow2": -55.98,
+            "barsApart": 34
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "III": {
@@ -5616,6 +5997,8 @@
       "valuation": {
         "currentPE": 6.3,
         "peg": 0.53,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -5737,61 +6120,64 @@
       "pctOffHigh": 40.9,
       "indicators": {
         "last": 2658.0,
-        "rsiDaily": 64.8,
+        "rsiDaily": 65.0,
         "rsiWeekly": 48.5,
-        "ema8d": 2636.52,
-        "ema21d": 2536.17,
+        "ema8d": 2635.8,
+        "ema21d": 2535.28,
         "ema8w": 2498.65,
         "ema21w": 2657.92,
-        "ma50": 2376.05,
-        "ma200": 3094.56,
-        "macdLine": 91.5789,
-        "macdSignal": 78.9479,
+        "ma50": 2375.67,
+        "ma200": 3094.47,
+        "macdLine": 91.4923,
+        "macdSignal": 78.5771,
         "macdLineW": -221.5524,
         "macdSigW": -278.2885,
-        "bollUpper": 2834.11,
-        "bollLower": 2187.69,
-        "volRatio": 0.94,
+        "bollUpper": 2831.86,
+        "bollLower": 2188.04,
+        "volRatio": 0.97,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
         "fib": {
-          "retracements": {
-            "0.000": 4497.0,
-            "0.236": 1249.96,
-            "0.382": 566.13,
-            "0.500": 298.47,
-            "0.618": 157.36,
-            "0.705": 98.16,
-            "0.786": 63.25,
-            "0.886": 36.77,
-            "1.000": 19.81,
-            "1.272": 4.53,
-            "1.618": 0.69
-          },
-          "extensions": {
-            "0.000": 19.81,
-            "1.000": 2444.0,
-            "1.272": 9055.49,
-            "1.414": 17941.76,
-            "1.618": 47915.18,
-            "1.818": 125521.03,
-            "2.000": 301521.26,
-            "2.618": 5911393.68
-          },
-          "goldenPocket": {
-            "low": 98.16,
-            "high": 157.36
-          },
-          "swingHigh": 4497.0,
-          "swingLow": 19.81,
-          "extSwingHigh": 2444.0,
-          "extSwingLow": 19.81,
+          "retracements": {},
+          "extensions": {},
+          "goldenPocket": null,
+          "swingHigh": 2724.0,
+          "swingLow": 0.0,
+          "extSwingHigh": 4497.0,
+          "extSwingLow": 0.0,
           "logScale": true,
-          "rejected": false
+          "retrRejected": true,
+          "retrRejectReason": "de swing-bodem ($0.00) is onmogelijk laag naast de koers ($2658.00) - vermoedelijk dividend-artefact, geen echte koers",
+          "extRejected": true,
+          "extRejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos",
+          "rejected": true,
+          "rejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 2298.52,
+            "priceLow2": 2081.57,
+            "indLow1": 23.04,
+            "indLow2": 27.81,
+            "barsApart": 34
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 2298.52,
+            "priceLow2": 2081.57,
+            "indLow1": -168.01,
+            "indLow2": -140.44,
+            "barsApart": 34
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "SHOP": {
@@ -5814,6 +6200,8 @@
       "valuation": {
         "currentPE": 93.6,
         "peg": 2.93,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -5933,7 +6321,7 @@
         "macdSigW": -6.512,
         "bollUpper": 128.72,
         "bollLower": 105.16,
-        "volRatio": 0.97,
+        "volRatio": 0.99,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -5973,7 +6361,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 110.66,
+            "priceLow2": 95.4,
+            "indLow1": -11.05,
+            "indLow2": -5.63,
+            "barsApart": 62
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "NET": {
@@ -5996,6 +6399,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -6148,18 +6553,18 @@
         "macdSigW": 9.1597,
         "bollUpper": 288.52,
         "bollLower": 206.34,
-        "volRatio": 0.76,
+        "volRatio": 0.9,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
         "fib": {
           "retracements": {
-            "0.000": 290.98,
-            "0.236": 179.27,
-            "0.382": 132.85,
+            "0.000": 291.0,
+            "0.236": 179.28,
+            "0.382": 132.86,
             "0.500": 104.28,
             "0.618": 81.85,
-            "0.705": 68.46,
+            "0.705": 68.47,
             "0.786": 57.98,
             "0.886": 47.22,
             "1.000": 37.37,
@@ -6177,10 +6582,10 @@
             "2.618": 3949.7
           },
           "goldenPocket": {
-            "low": 68.46,
+            "low": 68.47,
             "high": 81.85
           },
-          "swingHigh": 290.98,
+          "swingHigh": 291.0,
           "swingLow": 37.37,
           "extSwingHigh": 221.64,
           "extSwingLow": 37.37,
@@ -6188,7 +6593,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "CRWV": {
@@ -6211,6 +6624,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -6443,7 +6858,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "MSFT": {
@@ -6466,6 +6889,8 @@
       "valuation": {
         "currentPE": 23.5,
         "peg": 1.57,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -6612,7 +7037,7 @@
         "macdSigW": -13.8643,
         "bollUpper": 401.34,
         "bollLower": 358.76,
-        "volRatio": 0.7,
+        "volRatio": 0.77,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -6633,7 +7058,22 @@
           "rejectReason": "de swing-bodem ($0.09) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 356.0,
+            "priceLow2": 352.83,
+            "indLow1": 22.29,
+            "indLow2": 28.76,
+            "barsApart": 61
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "MTLS": {
@@ -6656,6 +7096,8 @@
       "valuation": {
         "currentPE": 66.8,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -6794,7 +7236,7 @@
         "macdSigW": 0.2213,
         "bollUpper": 7.4,
         "bollLower": 6.37,
-        "volRatio": 0.28,
+        "volRatio": 0.31,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -6834,7 +7276,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "SNAP": {
@@ -6857,6 +7307,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -7041,7 +7493,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "NVDA": {
@@ -7064,6 +7524,8 @@
       "valuation": {
         "currentPE": 32.4,
         "peg": 0.46,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -7218,7 +7680,7 @@
         "macdSigW": 7.1115,
         "bollUpper": 214.72,
         "bollLower": 189.71,
-        "volRatio": 0.83,
+        "volRatio": 0.86,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -7258,7 +7720,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "NKE": {
@@ -7281,6 +7751,8 @@
       "valuation": {
         "currentPE": 19.8,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -7420,7 +7892,7 @@
         "macdSigW": -4.7949,
         "bollUpper": 45.48,
         "bollLower": 40.44,
-        "volRatio": 0.42,
+        "volRatio": 0.49,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -7441,7 +7913,29 @@
           "rejectReason": "de koers ($42.77) ligt boven de verste extensie ($4.51) - geen winstdoel meer over, vermoedelijk een te korte swing"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 42.24,
+            "priceLow2": 40.75,
+            "indLow1": 22.84,
+            "indLow2": 35.56,
+            "barsApart": 53
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 42.24,
+            "priceLow2": 40.75,
+            "indLow1": -4.0,
+            "indLow2": -0.7,
+            "barsApart": 53
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "DIE": {
@@ -7464,6 +7958,8 @@
       "valuation": {
         "currentPE": 12.5,
         "peg": 2.08,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -7662,7 +8158,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "SOF": {
@@ -7685,6 +8189,8 @@
       "valuation": {
         "currentPE": 14.0,
         "peg": 2.8,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -7852,7 +8358,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "AIR": {
@@ -7875,6 +8389,8 @@
       "valuation": {
         "currentPE": 20.0,
         "peg": 2.5,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -8043,7 +8559,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ALFEN": {
@@ -8066,6 +8590,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -8249,7 +8775,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "LOTB": {
@@ -8272,6 +8806,8 @@
       "valuation": {
         "currentPE": 55.2,
         "peg": 5.52,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -8453,7 +8989,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 10670.0,
+            "priceHigh2": 11780.0,
+            "indHigh1": 88.8,
+            "indHigh2": 78.03,
+            "barsApart": 85
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 10670.0,
+            "priceHigh2": 11780.0,
+            "indHigh1": 538.96,
+            "indHigh2": 277.93,
+            "barsApart": 85
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "VOW": {
@@ -8476,6 +9034,8 @@
       "valuation": {
         "currentPE": 5.8,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -8683,7 +9243,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 80.04,
+            "priceLow2": 69.94,
+            "indLow1": -3.58,
+            "indLow2": -3.07,
+            "barsApart": 70
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "EL": {
@@ -8706,6 +9281,8 @@
       "valuation": {
         "currentPE": 53.1,
         "peg": 11.54,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -8883,7 +9460,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "META": {
@@ -8906,6 +9491,8 @@
       "valuation": {
         "currentPE": 25.1,
         "peg": 0.76,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -9058,7 +9645,7 @@
         "macdSigW": -15.6382,
         "bollUpper": 681.25,
         "bollLower": 514.98,
-        "volRatio": 0.86,
+        "volRatio": 0.92,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -9098,7 +9685,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "VST": {
@@ -9121,6 +9716,8 @@
       "valuation": {
         "currentPE": 19.5,
         "peg": 0.78,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -9281,7 +9878,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "COPX": {
@@ -9338,6 +9943,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -9503,7 +10110,15 @@
           "rejectReason": "de swing-bodem ($0.42) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "AAPL": {
@@ -9526,6 +10141,8 @@
       "valuation": {
         "currentPE": 39.5,
         "peg": 6.17,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -9691,7 +10308,7 @@
           "retracements": {},
           "extensions": {},
           "goldenPocket": null,
-          "swingHigh": 328.72,
+          "swingHigh": 328.73,
           "swingLow": 0.05,
           "extSwingHigh": 0.16,
           "extSwingLow": 0.05,
@@ -9704,7 +10321,15 @@
           "rejectReason": "de swing-bodem ($0.05) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "NFLX": {
@@ -9727,6 +10352,8 @@
       "valuation": {
         "currentPE": 23.2,
         "peg": 1.55,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -9880,7 +10507,7 @@
         "macdSigW": -4.6712,
         "bollUpper": 78.72,
         "bollLower": 70.28,
-        "volRatio": 0.65,
+        "volRatio": 0.66,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -9901,7 +10528,15 @@
           "rejectReason": "de swing-bodem ($0.03) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "DIS": {
@@ -9924,6 +10559,8 @@
       "valuation": {
         "currentPE": 17.8,
         "peg": 2.54,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -10062,7 +10699,7 @@
         "macdSigW": -1.8464,
         "bollUpper": 102.93,
         "bollLower": 93.62,
-        "volRatio": 0.83,
+        "volRatio": 0.86,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -10083,7 +10720,15 @@
           "rejectReason": "de swing-bodem ($0.05) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "BLK": {
@@ -10106,6 +10751,8 @@
       "valuation": {
         "currentPE": 22.7,
         "peg": 2.27,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -10250,7 +10897,7 @@
         "macdSigW": -6.2258,
         "bollUpper": 1086.52,
         "bollLower": 938.58,
-        "volRatio": 1.53,
+        "volRatio": 1.7,
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
@@ -10290,7 +10937,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "BABA": {
@@ -10313,6 +10968,8 @@
       "valuation": {
         "currentPE": 19.0,
         "peg": 6.33,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -10464,7 +11121,7 @@
         "macdSigW": -7.8406,
         "bollUpper": 118.33,
         "bollLower": 89.6,
-        "volRatio": 1.28,
+        "volRatio": 1.33,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -10504,7 +11161,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "NABTESCO": {
@@ -10525,14 +11190,16 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 30.1,
-        "peg": 4.63,
+        "currentPE": 29.2,
+        "peg": 4.49,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 87.6,
+        "priceRangePosition": 83.7,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -10540,12 +11207,12 @@
         ]
       },
       "timing": {
-        "score": 46,
-        "label": "Neutrale setup",
-        "color": "neutral",
-        "trendScore": 78,
-        "entryScore": 50,
-        "trendDaily": 65,
+        "score": 41,
+        "label": "Zwakke setup",
+        "color": "orange",
+        "trendScore": 70,
+        "entryScore": 62,
+        "trendDaily": 25,
         "trendWeekly": 70,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -10555,6 +11222,7 @@
           "monthly": 12.6
         },
         "macdTurning": [
+          "daily",
           "weekly",
           "monthly"
         ],
@@ -10570,11 +11238,11 @@
           "ROE < 12%",
           "marge < 8%"
         ],
-        "valuation": 8,
-        "timing": 46,
+        "valuation": 18,
+        "timing": 41,
         "marketAdj": 6,
-        "timingEffective": 52,
-        "composite": 35,
+        "timingEffective": 47,
+        "composite": 36,
         "opportunity": null,
         "opportunityLabel": null,
         "opportunityColor": "gray",
@@ -10595,6 +11263,15 @@
       "sector": "Robotica & automatisering",
       "currency": "\u00a5",
       "signals": [
+        {
+          "type": "SELL",
+          "cat": "EMA",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "\ud83d\udd00",
+          "title": "8 EMA kruist onder 21 EMA (daily) (laag volume)",
+          "detail": "EMA8 $5280.59 | EMA21 $5282.13 \u2014 bearish momentum."
+        },
         {
           "type": "BUY",
           "cat": "MACD",
@@ -10633,9 +11310,9 @@
           "detail": "MACD: 377.101 | Signaal: 384.429"
         }
       ],
-      "overall": "STERK KOOP",
+      "overall": "KOOP",
       "buyWeight": 11,
-      "sellWeight": 0,
+      "sellWeight": 3,
       "baseOverall": "STERK KOOP",
       "confluence": {
         "monthlyState": "bull",
@@ -10646,27 +11323,27 @@
         "supportCount": 0,
         "supportFlags": []
       },
-      "conflict": false,
-      "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
+      "conflict": true,
+      "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 12.1,
+      "pctOffHigh": 14.6,
       "indicators": {
-        "last": 5330.0,
-        "rsiDaily": 51.3,
+        "last": 5177.0,
+        "rsiDaily": 47.9,
         "rsiWeekly": 59.3,
-        "ema8d": 5310.19,
-        "ema21d": 5292.64,
+        "ema8d": 5280.59,
+        "ema21d": 5282.13,
         "ema8w": 5280.23,
         "ema21w": 4933.65,
-        "ma50": 5297.2,
-        "ma200": 4321.97,
-        "macdLine": 36.3547,
-        "macdSignal": 55.0031,
+        "ma50": 5296.53,
+        "ma200": 4331.41,
+        "macdLine": 22.7541,
+        "macdSignal": 48.5533,
         "macdLineW": 377.1007,
         "macdSigW": 384.4287,
-        "bollUpper": 5739.82,
-        "bollLower": 4912.07,
-        "volRatio": 0.83,
+        "bollUpper": 5737.7,
+        "bollLower": 4899.8,
+        "volRatio": 0.62,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -10695,11 +11372,33 @@
           "extSwingLow": 150.0,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($5330.00) ligt boven de verste extensie ($894.30) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($5177.00) ligt boven de verste extensie ($894.30) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 5042.15,
+            "priceHigh2": 5820.0,
+            "indHigh1": 74.55,
+            "indHigh2": 62.67,
+            "barsApart": 86
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 5042.15,
+            "priceHigh2": 5820.0,
+            "indHigh1": 213.66,
+            "indHigh2": 96.1,
+            "barsApart": 86
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "HARMONIC": {
@@ -10720,14 +11419,16 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 148.6,
-        "peg": 13.51,
+        "currentPE": 144.8,
+        "peg": 13.16,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 79.3,
+        "priceRangePosition": 76.6,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -10735,12 +11436,12 @@
         ]
       },
       "timing": {
-        "score": 41,
+        "score": 38,
         "label": "Zwakke setup",
         "color": "orange",
-        "trendScore": 82,
+        "trendScore": 77,
         "entryScore": 52,
-        "trendDaily": 49,
+        "trendDaily": 25,
         "trendWeekly": 90,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -10753,7 +11454,7 @@
           "daily",
           "weekly"
         ],
-        "baseTimin": 70
+        "baseTimin": 67
       },
       "scores": {
         "quality": 39,
@@ -10766,10 +11467,10 @@
           "marge < 8%"
         ],
         "valuation": 8,
-        "timing": 41,
+        "timing": 38,
         "marketAdj": 6,
-        "timingEffective": 47,
-        "composite": 33,
+        "timingEffective": 44,
+        "composite": 32,
         "opportunity": null,
         "opportunityLabel": null,
         "opportunityColor": "gray",
@@ -10790,6 +11491,15 @@
       "sector": "Robotica & automatisering",
       "currency": "\u00a5",
       "signals": [
+        {
+          "type": "SELL",
+          "cat": "EMA",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "\ud83d\udd00",
+          "title": "8 EMA kruist onder 21 EMA (daily) (laag volume)",
+          "detail": "EMA8 $7554.83 | EMA21 $7605.50 \u2014 bearish momentum."
+        },
         {
           "type": "BUY",
           "cat": "MACD",
@@ -10824,7 +11534,7 @@
           "weight": 4,
           "icon": "\ud83d\udcc9",
           "title": "Terugval uit 1.414 TP-zone \u2b50",
-          "detail": "Prijs zakte 19% van de recente top ($9150.00, bij de 1.414-TP-zone). MACD draait op 2 TF \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "detail": "Prijs zakte 21% van de recente top ($9150.00, bij de 1.414-TP-zone). MACD draait op 2 TF \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -10846,7 +11556,7 @@
       ],
       "overall": "KOOP",
       "buyWeight": 11,
-      "sellWeight": 4,
+      "sellWeight": 7,
       "baseOverall": "KOOP",
       "confluence": {
         "monthlyState": "bull",
@@ -10858,26 +11568,26 @@
         "supportFlags": []
       },
       "conflict": true,
-      "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
+      "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 2 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 18.8,
+      "pctOffHigh": 20.9,
       "indicators": {
-        "last": 7430.0,
-        "rsiDaily": 48.7,
+        "last": 7240.0,
+        "rsiDaily": 46.8,
         "rsiWeekly": 63.4,
-        "ema8d": 7644.78,
-        "ema21d": 7642.05,
+        "ema8d": 7554.83,
+        "ema21d": 7605.5,
         "ema8w": 7385.85,
         "ema21w": 6118.02,
-        "ma50": 7294.2,
-        "ma200": 4515.36,
-        "macdLine": 124.0708,
-        "macdSignal": 245.4643,
+        "ma50": 7324.8,
+        "ma200": 4535.83,
+        "macdLine": 78.8284,
+        "macdSignal": 212.1371,
         "macdLineW": 1137.0329,
         "macdSigW": 923.5568,
-        "bollUpper": 8821.87,
-        "bollLower": 6847.13,
-        "volRatio": 0.62,
+        "bollUpper": 8828.76,
+        "bollLower": 6787.24,
+        "volRatio": 0.59,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -10917,7 +11627,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "KEYENCE": {
@@ -10938,14 +11656,16 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 44.5,
-        "peg": 4.45,
+        "currentPE": 43.2,
+        "peg": 4.32,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 81.0,
+        "priceRangePosition": 75.2,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -10953,12 +11673,12 @@
         ]
       },
       "timing": {
-        "score": 52,
+        "score": 48,
         "label": "Neutrale setup",
         "color": "neutral",
-        "trendScore": 77,
-        "entryScore": 62,
-        "trendDaily": 25,
+        "trendScore": 74,
+        "entryScore": 70,
+        "trendDaily": 10,
         "trendWeekly": 90,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -10968,9 +11688,10 @@
           "monthly": 18.2
         },
         "macdTurning": [
+          "daily",
           "weekly"
         ],
-        "baseTimin": 71
+        "baseTimin": 72
       },
       "scores": {
         "quality": 74,
@@ -10981,11 +11702,11 @@
         ],
         "qualityFails": [],
         "valuation": 18,
-        "timing": 52,
+        "timing": 48,
         "marketAdj": 6,
-        "timingEffective": 58,
-        "composite": 51,
-        "opportunity": 43,
+        "timingEffective": 54,
+        "composite": 49,
+        "opportunity": 46,
         "opportunityLabel": "Zwakke kans",
         "opportunityColor": "gray",
         "opportunityWarning": null,
@@ -11041,6 +11762,13 @@
           "icon": "\u2139\ufe0f",
           "title": "MACD weekly momenteel bullish (crossover enkel vrijdag ge\u00ebvalueerd)",
           "detail": "MACD: 5197.993 | Signaal: 4838.187"
+        },
+        {
+          "type": "WATCH",
+          "cat": "BB",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Nadert Bollinger onderband ($73438.76)"
         }
       ],
       "overall": "STERK KOOP",
@@ -11059,24 +11787,24 @@
       "conflict": false,
       "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 9.0,
+      "pctOffHigh": 11.7,
       "indicators": {
-        "last": 76620.0,
-        "rsiDaily": 48.8,
+        "last": 74330.0,
+        "rsiDaily": 43.1,
         "rsiWeekly": 58.8,
-        "ema8d": 76862.41,
-        "ema21d": 77219.51,
+        "ema8d": 76299.65,
+        "ema21d": 76956.83,
         "ema8w": 76757.83,
         "ema21w": 71467.98,
-        "ma50": 77489.6,
-        "ma200": 63123.98,
-        "macdLine": 78.7096,
-        "macdSignal": 532.4773,
+        "ma50": 77389.2,
+        "ma200": 63213.34,
+        "macdLine": -151.7298,
+        "macdSignal": 395.6359,
         "macdLineW": 5197.9932,
         "macdSigW": 4838.1873,
-        "bollUpper": 81793.22,
-        "bollLower": 73883.78,
-        "volRatio": 0.77,
+        "bollUpper": 81919.24,
+        "bollLower": 73438.76,
+        "volRatio": 0.56,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -11105,11 +11833,19 @@
           "extSwingLow": 2224.45,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($76620.00) ligt boven de verste extensie ($15934.31) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($74330.00) ligt boven de verste extensie ($15934.31) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "FANUC": {
@@ -11130,14 +11866,16 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 39.3,
-        "peg": 5.17,
+        "currentPE": 39.4,
+        "peg": 5.18,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 73.6,
+        "priceRangePosition": 74.1,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -11205,8 +11943,8 @@
           "tf": "1D",
           "weight": 3,
           "icon": "\ud83d\udcd0",
-          "title": "Fib 1.818 \u2014 take-profit zone: $7086.20 (1.1% weg)",
-          "detail": "Prijs $7008.00 raakt Fibonacci 1.818. Overweeg winstneming."
+          "title": "Fib 1.818 \u2014 take-profit zone: $7086.20 (0.7% weg)",
+          "detail": "Prijs $7036.00 raakt Fibonacci 1.818. Overweeg winstneming."
         },
         {
           "type": "BUY",
@@ -11242,7 +11980,7 @@
           "weight": 5,
           "icon": "\ud83c\udfaf",
           "title": "Bij 1.818 TP-zone \u2b50 (licht winst nemen)",
-          "detail": "Prijs $7008.00 bij de 1.818-extensie ($7086.20). Ver in de winstzone; overweeg deels winst te nemen."
+          "detail": "Prijs $7036.00 bij de 1.818-extensie ($7086.20). Ver in de winstzone; overweeg deels winst te nemen."
         },
         {
           "type": "SELL",
@@ -11280,24 +12018,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 3 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": true,
-      "pctOffHigh": 21.1,
+      "pctOffHigh": 20.8,
       "indicators": {
-        "last": 7008.0,
-        "rsiDaily": 46.4,
+        "last": 7036.0,
+        "rsiDaily": 47.0,
         "rsiWeekly": 54.7,
-        "ema8d": 7019.65,
-        "ema21d": 7170.34,
+        "ema8d": 7023.28,
+        "ema21d": 7158.13,
         "ema8w": 7278.64,
         "ema21w": 6910.53,
-        "ma50": 7487.48,
-        "ma200": 6142.06,
-        "macdLine": -124.1536,
-        "macdSignal": -91.0636,
+        "ma50": 7486.3,
+        "ma200": 6156.34,
+        "macdLine": -118.1498,
+        "macdSignal": -96.4809,
         "macdLineW": 443.3144,
         "macdSigW": 496.2354,
-        "bollUpper": 7833.23,
-        "bollLower": 6642.97,
-        "volRatio": 0.68,
+        "bollUpper": 7787.68,
+        "bollLower": 6632.52,
+        "volRatio": 0.83,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -11337,7 +12075,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "YASKAWA": {
@@ -11360,12 +12106,14 @@
       "valuation": {
         "currentPE": 40.4,
         "peg": 50.5,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 57.5,
+        "priceRangePosition": 57.7,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -11430,15 +12178,6 @@
       "signals": [
         {
           "type": "BUY",
-          "cat": "BB",
-          "tf": "1D",
-          "weight": 2,
-          "icon": "\ud83c\udfaf",
-          "title": "Prijs raakt Bollinger onderband ($5711.57) \u2713 hoog volume",
-          "detail": "Statistische oversold conditie."
-        },
-        {
-          "type": "BUY",
           "cat": "MACD",
           "tf": "1M",
           "weight": 4,
@@ -11471,7 +12210,7 @@
           "weight": 6,
           "icon": "\ud83d\udcc9",
           "title": "Terugval uit 2.000 TP-zone \u2b50",
-          "detail": "Prijs zakte 31% van de recente top ($7915.00, bij de 2.000-TP-zone). MACD draait op 2 TF \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "detail": "Prijs zakte 30% van de recente top ($7915.00, bij de 2.000-TP-zone). MACD draait op 2 TF \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -11480,7 +12219,7 @@
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
-          "title": "RSI daily nadert oversold (35)"
+          "title": "RSI daily nadert oversold (36)"
         },
         {
           "type": "WATCH",
@@ -11496,10 +12235,17 @@
           "icon": "\u2139\ufe0f",
           "title": "MACD weekly momenteel bullish (crossover enkel vrijdag ge\u00ebvalueerd)",
           "detail": "MACD: 692.688 | Signaal: 612.601"
+        },
+        {
+          "type": "WATCH",
+          "cat": "BB",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Nadert Bollinger onderband ($5493.38)"
         }
       ],
       "overall": "CAUTION (overextended)",
-      "buyWeight": 13,
+      "buyWeight": 11,
       "sellWeight": 6,
       "baseOverall": "KOOP",
       "confluence": {
@@ -11512,26 +12258,26 @@
         "supportFlags": []
       },
       "conflict": true,
-      "conflictNote": "\u26a0\ufe0f CONFLICT: 4 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Prijs bij de 2.0-TP-zone (hoog in winst), geen bearish bevestiging - voorzichtig (overextended). Geen duidelijke confluence - signaal getemperd",
+      "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Prijs bij de 2.0-TP-zone (hoog in winst), geen bearish bevestiging - voorzichtig (overextended). Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 30.6,
+      "pctOffHigh": 30.5,
       "indicators": {
-        "last": 5490.0,
-        "rsiDaily": 35.4,
+        "last": 5501.0,
+        "rsiDaily": 35.6,
         "rsiWeekly": 61.4,
-        "ema8d": 6246.41,
-        "ema21d": 6629.6,
+        "ema8d": 6080.76,
+        "ema21d": 6527.0,
         "ema8w": 6838.01,
         "ema21w": 6113.08,
-        "ma50": 6799.4,
-        "ma200": 5113.91,
-        "macdLine": -205.2673,
-        "macdSignal": 4.2568,
+        "ma50": 6789.96,
+        "ma200": 5125.97,
+        "macdLine": -265.6849,
+        "macdSignal": -49.7315,
         "macdLineW": 692.6879,
         "macdSigW": 612.601,
-        "bollUpper": 8050.33,
-        "bollLower": 5711.57,
-        "volRatio": 1.88,
+        "bollUpper": 8093.32,
+        "bollLower": 5493.38,
+        "volRatio": 1.79,
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
@@ -11571,7 +12317,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "SOFTBANK": {
@@ -11592,14 +12346,16 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 3.0,
-        "peg": 0.39,
+        "currentPE": 2.8,
+        "peg": 0.37,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 70.1,
+        "priceRangePosition": 64.6,
         "verdict": "Aantrekkelijk (PEG < 1)",
         "verdictColor": "green",
         "notes": [
@@ -11607,12 +12363,12 @@
         ]
       },
       "timing": {
-        "score": 50,
+        "score": 46,
         "label": "Neutrale setup",
         "color": "neutral",
-        "trendScore": 82,
-        "entryScore": 55,
-        "trendDaily": 51,
+        "trendScore": 78,
+        "entryScore": 62,
+        "trendDaily": 30,
         "trendWeekly": 90,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -11622,10 +12378,11 @@
           "monthly": 14.7
         },
         "macdTurning": [
+          "daily",
           "weekly",
           "monthly"
         ],
-        "baseTimin": 71
+        "baseTimin": 72
       },
       "scores": {
         "quality": 56,
@@ -11636,11 +12393,11 @@
         ],
         "qualityFails": [],
         "valuation": 90,
-        "timing": 50,
+        "timing": 46,
         "marketAdj": 6,
-        "timingEffective": 56,
-        "composite": 66,
-        "opportunity": 74,
+        "timingEffective": 52,
+        "composite": 65,
+        "opportunity": 79,
         "opportunityLabel": "Uitstekende koopkans",
         "opportunityColor": "green",
         "opportunityWarning": null,
@@ -11694,7 +12451,7 @@
           "weight": 4,
           "icon": "\ud83d\udcc9",
           "title": "Terugval uit 1.272 TP-zone \u2b50",
-          "detail": "Prijs zakte 30% van de recente top ($9074.00, bij de 1.272-TP-zone). MACD draait op 2 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "detail": "Prijs zakte 35% van de recente top ($9074.00, bij de 1.272-TP-zone). MACD draait op 3 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -11723,24 +12480,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 29.9,
+      "pctOffHigh": 34.5,
       "indicators": {
-        "last": 6360.0,
-        "rsiDaily": 49.9,
+        "last": 5943.0,
+        "rsiDaily": 44.1,
         "rsiWeekly": 57.2,
-        "ema8d": 6257.28,
-        "ema21d": 6343.46,
+        "ema8d": 6187.44,
+        "ema21d": 6307.06,
         "ema8w": 6375.19,
         "ema21w": 5728.78,
-        "ma50": 6586.0,
-        "ma200": 5076.8,
-        "macdLine": -104.9321,
-        "macdSignal": -133.9093,
+        "ma50": 6576.38,
+        "ma200": 5083.76,
+        "macdLine": -122.5805,
+        "macdSignal": -131.6436,
         "macdLineW": 638.3683,
         "macdSigW": 589.7944,
-        "bollUpper": 7309.77,
-        "bollLower": 5405.93,
-        "volRatio": 0.85,
+        "bollUpper": 7182.62,
+        "bollLower": 5408.48,
+        "volRatio": 0.77,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -11780,7 +12537,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ROK": {
@@ -11803,6 +12568,8 @@
       "valuation": {
         "currentPE": 46.9,
         "peg": 3.91,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -11979,7 +12746,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "TER": {
@@ -12002,6 +12777,8 @@
       "valuation": {
         "currentPE": 63.5,
         "peg": 4.85,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -12138,7 +12915,7 @@
         "macdSigW": 45.7826,
         "bollUpper": 495.2,
         "bollLower": 309.34,
-        "volRatio": 0.58,
+        "volRatio": 0.59,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -12159,7 +12936,29 @@
           "rejectReason": "de swing-bodem ($0.31) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 342.69,
+            "priceHigh2": 483.84,
+            "indHigh1": 74.47,
+            "indHigh2": 62.81,
+            "barsApart": 86
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 342.69,
+            "priceHigh2": 483.84,
+            "indHigh1": 25.7,
+            "indHigh2": 25.43,
+            "barsApart": 86
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "ISRG": {
@@ -12182,6 +12981,8 @@
       "valuation": {
         "currentPE": 47.1,
         "peg": 2.2,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -12402,7 +13203,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bullish",
+            "priceLow1": 450.62,
+            "priceLow2": 397.68,
+            "indLow1": 35.88,
+            "indLow2": 37.69,
+            "barsApart": 55
+          },
+          "macd": {
+            "type": "bullish",
+            "priceLow1": 450.62,
+            "priceLow2": 397.68,
+            "indLow1": -10.29,
+            "indLow2": -8.39,
+            "barsApart": 55
+          },
+          "bullishConfirmed": true,
+          "bearishConfirmed": false,
+          "bullish": true,
+          "bearish": false
+        }
       }
     },
     "CGNX": {
@@ -12425,6 +13248,8 @@
       "valuation": {
         "currentPE": 60.2,
         "peg": 5.47,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -12568,7 +13393,7 @@
         "macdSigW": 5.5793,
         "bollUpper": 71.31,
         "bollLower": 61.39,
-        "volRatio": 1.0,
+        "volRatio": 1.04,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -12589,7 +13414,29 @@
           "rejectReason": "de swing-bodem ($0.32) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 58.62,
+            "priceHigh2": 72.42,
+            "indHigh1": 85.02,
+            "indHigh2": 66.52,
+            "barsApart": 93
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 58.62,
+            "priceHigh2": 72.42,
+            "indHigh1": 3.4,
+            "indHigh2": 1.67,
+            "barsApart": 93
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "NOVT": {
@@ -12612,6 +13459,8 @@
       "valuation": {
         "currentPE": 62.5,
         "peg": 6.58,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -12760,7 +13609,7 @@
         "macdSigW": 7.6322,
         "bollUpper": 165.99,
         "bollLower": 143.72,
-        "volRatio": 0.53,
+        "volRatio": 0.54,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -12800,7 +13649,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ANET": {
@@ -12823,6 +13680,8 @@
       "valuation": {
         "currentPE": 58.3,
         "peg": 1.66,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -13001,7 +13860,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "HOOD": {
@@ -13024,6 +13891,8 @@
       "valuation": {
         "currentPE": 79.7,
         "peg": 5.31,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -13167,7 +14036,7 @@
         "macdSigW": -2.1554,
         "bollUpper": 121.12,
         "bollLower": 93.06,
-        "volRatio": 0.71,
+        "volRatio": 0.72,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -13207,7 +14076,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "TSCO": {
@@ -13229,6 +14106,8 @@
       "valuation": {
         "currentPE": 14.9,
         "peg": 3.47,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -13376,7 +14255,7 @@
         "macdSigW": -5.2157,
         "bollUpper": 31.95,
         "bollLower": 29.08,
-        "volRatio": 0.6,
+        "volRatio": 0.63,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -13397,7 +14276,15 @@
           "rejectReason": "de koers ($30.17) ligt boven de verste extensie ($4.65) - geen winstdoel meer over, vermoedelijk een te korte swing"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ODFL": {
@@ -13419,6 +14306,8 @@
       "valuation": {
         "currentPE": 46.4,
         "peg": 11.05,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -13563,7 +14452,7 @@
         "macdSigW": 14.2557,
         "bollUpper": 231.66,
         "bollLower": 211.18,
-        "volRatio": 0.51,
+        "volRatio": 0.55,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -13584,7 +14473,15 @@
           "rejectReason": "de swing-bodem ($0.33) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "HWM": {
@@ -13606,6 +14503,8 @@
       "valuation": {
         "currentPE": 64.2,
         "peg": 3.38,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -13757,7 +14656,7 @@
         "macdSigW": 14.2284,
         "bollUpper": 282.81,
         "bollLower": 265.59,
-        "volRatio": 0.39,
+        "volRatio": 0.58,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -13790,7 +14689,29 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 264.99,
+            "priceHigh2": 283.23,
+            "indHigh1": 78.36,
+            "indHigh2": 67.22,
+            "barsApart": 75
+          },
+          "macd": {
+            "type": "bearish",
+            "priceHigh1": 264.99,
+            "priceHigh2": 283.23,
+            "indHigh1": 12.74,
+            "indHigh2": 4.74,
+            "barsApart": 75
+          },
+          "bullishConfirmed": false,
+          "bearishConfirmed": true,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "SNDK": {
@@ -13812,6 +14733,8 @@
       "valuation": {
         "currentPE": 53.8,
         "peg": 0.55,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -13979,7 +14902,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 952.5,
+            "priceHigh2": 2335.0,
+            "indHigh1": 74.15,
+            "indHigh2": 66.42,
+            "barsApart": 51
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "IONQ": {
@@ -14002,6 +14940,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -14221,7 +15161,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "RGTI": {
@@ -14244,6 +15192,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -14412,7 +15362,7 @@
         "macdSigW": -0.4377,
         "bollUpper": 22.25,
         "bollLower": 14.58,
-        "volRatio": 0.79,
+        "volRatio": 0.81,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -14452,7 +15402,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 19.81,
+            "priceHigh2": 27.03,
+            "indHigh1": 70.4,
+            "indHigh2": 69.16,
+            "barsApart": 28
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "QBTS": {
@@ -14475,6 +15440,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -14684,7 +15651,22 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": {
+            "type": "bearish",
+            "priceHigh1": 21.69,
+            "priceHigh2": 30.14,
+            "indHigh1": 70.15,
+            "indHigh2": 68.33,
+            "barsApart": 29
+          },
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": true
+        }
       }
     },
     "UBTECH": {
@@ -14707,12 +15689,14 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 20.1,
+        "priceRangePosition": 21.2,
         "verdict": "Lage P/E (absoluut)",
         "verdictColor": "green",
         "notes": [
@@ -14778,11 +15762,11 @@
           "Groei versnelt sterk (+15pp)"
         ],
         "flags": [
-          "Onder markt (-42%)"
+          "Onder markt (-39%)"
         ],
         "risk": "gemiddeld",
         "positionSizing": "vermijden / afwachten",
-        "relStrength": -42.0
+        "relStrength": -39.4
       },
       "isBagger": true,
       "isETF": false,
@@ -14834,24 +15818,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 1 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 73.9,
+      "pctOffHigh": 73.2,
       "indicators": {
-        "last": 85.75,
-        "rsiDaily": 40.3,
+        "last": 88.0,
+        "rsiDaily": 42.5,
         "rsiWeekly": 41.3,
         "ema8d": 88.01,
-        "ema21d": 94.79,
+        "ema21d": 94.17,
         "ema8w": 101.28,
         "ema21w": 107.73,
-        "ma50": 105.08,
-        "ma200": 118.1,
-        "macdLine": -6.0624,
-        "macdSignal": -4.9245,
+        "ma50": 104.68,
+        "ma200": 117.89,
+        "macdLine": -5.8106,
+        "macdSignal": -5.1017,
         "macdLineW": -4.9109,
         "macdSigW": -3.0307,
-        "bollUpper": 112.71,
-        "bollLower": 78.38,
-        "volRatio": 0.42,
+        "bollUpper": 111.14,
+        "bollLower": 78.02,
+        "volRatio": 0.44,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -14891,7 +15875,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "SYM": {
@@ -14914,6 +15906,8 @@
       "valuation": {
         "currentPE": 852.8,
         "peg": 37.08,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -15068,7 +16062,7 @@
         "macdSigW": -2.5696,
         "bollUpper": 45.51,
         "bollLower": 38.55,
-        "volRatio": 0.56,
+        "volRatio": 0.57,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -15108,7 +16102,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "SERV": {
@@ -15131,6 +16133,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -15283,7 +16287,7 @@
         "macdSigW": -0.8902,
         "bollUpper": 6.97,
         "bollLower": 5.53,
-        "volRatio": 0.54,
+        "volRatio": 0.55,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -15323,7 +16327,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "RR": {
@@ -15346,6 +16358,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -15512,7 +16526,7 @@
         "macdSigW": -0.252,
         "bollUpper": 2.26,
         "bollLower": 1.59,
-        "volRatio": 0.49,
+        "volRatio": 0.5,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -15552,7 +16566,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "PL": {
@@ -15575,6 +16597,8 @@
       "valuation": {
         "currentPE": 0,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -15783,7 +16807,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "RDDT": {
@@ -15806,6 +16838,8 @@
       "valuation": {
         "currentPE": 77.7,
         "peg": 1.13,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -15935,7 +16969,7 @@
         "macdSigW": -4.6282,
         "bollUpper": 214.94,
         "bollLower": 152.25,
-        "volRatio": 0.91,
+        "volRatio": 0.99,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -15975,7 +17009,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "NOW": {
@@ -15998,6 +17040,8 @@
       "valuation": {
         "currentPE": 62.7,
         "peg": 2.84,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -16184,7 +17228,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "GILD": {
@@ -16207,6 +17259,8 @@
       "valuation": {
         "currentPE": 20.1,
         "peg": 4.28,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -16365,7 +17419,15 @@
           "rejectReason": "de swing-bodem ($0.21) is een data-artefact - winstzones erop zijn betekenisloos"
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "DDOG": {
@@ -16388,6 +17450,8 @@
       "valuation": {
         "currentPE": 678.1,
         "peg": 21.19,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -16544,7 +17608,7 @@
         "macdSigW": 22.2612,
         "bollUpper": 283.06,
         "bollLower": 210.45,
-        "volRatio": 0.64,
+        "volRatio": 0.7,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -16584,7 +17648,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ARCC": {
@@ -16607,6 +17679,8 @@
       "valuation": {
         "currentPE": 11.6,
         "peg": 1.93,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -16781,7 +17855,7 @@
         "macdSigW": -0.127,
         "bollUpper": 19.06,
         "bollLower": 17.73,
-        "volRatio": 1.08,
+        "volRatio": 1.09,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -16821,7 +17895,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ONON": {
@@ -16844,6 +17926,8 @@
       "valuation": {
         "currentPE": 37.5,
         "peg": 1.42,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -16991,7 +18075,7 @@
         "macdSigW": -1.726,
         "bollUpper": 38.95,
         "bollLower": 34.86,
-        "volRatio": 0.52,
+        "volRatio": 0.64,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -17031,7 +18115,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     },
     "ARCG": {
@@ -17053,6 +18145,8 @@
       "valuation": {
         "currentPE": null,
         "peg": null,
+        "pegNormalized": null,
+        "normalizedGrowth": null,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
@@ -17239,7 +18333,15 @@
           "rejected": false
         },
         "isFriday": false,
-        "hasWeekly": true
+        "hasWeekly": true,
+        "divergence": {
+          "rsi": null,
+          "macd": null,
+          "bullishConfirmed": false,
+          "bearishConfirmed": false,
+          "bullish": false,
+          "bearish": false
+        }
       }
     }
   },
@@ -17270,7 +18372,7 @@
     "context": {
       "DXY": {
         "name": "Dollar-index",
-        "change3m": 2.5
+        "change3m": 2.3
       },
       "GOLD": {
         "name": "Goud (GLD)",
@@ -17440,6 +18542,19 @@
         "marketAdj": 6
       },
       {
+        "ticker": "ADM",
+        "name": "ADM",
+        "composite": 68,
+        "quality": 82,
+        "valuation": 62,
+        "timing": 61,
+        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
+        "timingLabel": "Gunstige setup",
+        "price": 3572.0,
+        "currency": "p",
+        "marketAdj": 6
+      },
+      {
         "ticker": "III",
         "name": "III",
         "composite": 68,
@@ -17468,13 +18583,13 @@
       {
         "ticker": "SOFTBANK",
         "name": "SOFTBANK",
-        "composite": 66,
+        "composite": 65,
         "quality": 56,
         "valuation": 90,
-        "timing": 50,
+        "timing": 46,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
         "timingLabel": "Neutrale setup",
-        "price": 6360.0,
+        "price": 5943.0,
         "currency": "\u00a5",
         "marketAdj": 6
       },
@@ -17492,15 +18607,15 @@
         "marketAdj": 6
       },
       {
-        "ticker": "ADM",
-        "name": "ADM",
+        "ticker": "GAW",
+        "name": "GAW",
         "composite": 62,
-        "quality": 82,
-        "valuation": 50,
-        "timing": 55,
-        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
+        "quality": 89,
+        "valuation": 40,
+        "timing": 52,
+        "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "timingLabel": "Neutrale setup",
-        "price": 3594.0,
+        "price": 20340.0,
         "currency": "p",
         "marketAdj": 6
       },
@@ -17726,19 +18841,6 @@
         "marketAdj": 6
       },
       {
-        "ticker": "KEYENCE",
-        "name": "KEYENCE",
-        "composite": 51,
-        "quality": 74,
-        "valuation": 18,
-        "timing": 52,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Neutrale setup",
-        "price": 76620.0,
-        "currency": "\u00a5",
-        "marketAdj": 6
-      },
-      {
         "ticker": "TER",
         "name": "TER",
         "composite": 51,
@@ -17765,19 +18867,6 @@
         "marketAdj": 6
       },
       {
-        "ticker": "GAW",
-        "name": "GAW",
-        "composite": 50,
-        "quality": 89,
-        "valuation": 8,
-        "timing": 45,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Neutrale setup",
-        "price": 20500.0,
-        "currency": "p",
-        "marketAdj": 6
-      },
-      {
         "ticker": "LOTB",
         "name": "LOTB",
         "composite": 49,
@@ -17801,6 +18890,19 @@
         "timingLabel": "Neutrale setup",
         "price": 327.5,
         "currency": "$",
+        "marketAdj": 6
+      },
+      {
+        "ticker": "KEYENCE",
+        "name": "KEYENCE",
+        "composite": 49,
+        "quality": 74,
+        "valuation": 18,
+        "timing": 48,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 74330.0,
+        "currency": "\u00a5",
         "marketAdj": 6
       },
       {
@@ -18046,13 +19148,13 @@
       {
         "ticker": "KPG",
         "name": "KPG",
-        "composite": 44,
+        "composite": 46,
         "quality": 55,
         "valuation": 40,
-        "timing": 34,
+        "timing": 38,
         "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "timingLabel": "Zwakke setup",
-        "price": 3.95,
+        "price": 4.01,
         "currency": "A$",
         "marketAdj": 6,
         "fails": [
@@ -18294,13 +19396,13 @@
       {
         "ticker": "NABTESCO",
         "name": "NABTESCO",
-        "composite": 35,
+        "composite": 36,
         "quality": 38,
-        "valuation": 8,
-        "timing": 46,
+        "valuation": 18,
+        "timing": 41,
         "valuationVerdict": "Duur (PEG > 3.5)",
-        "timingLabel": "Neutrale setup",
-        "price": 5330.0,
+        "timingLabel": "Zwakke setup",
+        "price": 5177.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -18311,13 +19413,13 @@
       {
         "ticker": "HARMONIC",
         "name": "HARMONIC",
-        "composite": 33,
+        "composite": 32,
         "quality": 39,
         "valuation": 8,
-        "timing": 41,
+        "timing": 38,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
-        "price": 7430.0,
+        "price": 7240.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -18334,7 +19436,7 @@
         "timing": 36,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
-        "price": 7008.0,
+        "price": 7036.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -18350,7 +19452,7 @@
         "timing": 42,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
-        "price": 5490.0,
+        "price": 5501.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -18434,7 +19536,7 @@
         "timing": 42,
         "valuationVerdict": "Lage P/E (absoluut)",
         "timingLabel": "Zwakke setup",
-        "price": 85.75,
+        "price": 88.0,
         "currency": "HK$",
         "marketAdj": 6,
         "fails": [
@@ -18608,15 +19710,15 @@
         "color": "red",
         "risk": "gemiddeld",
         "positionSizing": "vermijden / afwachten",
-        "relStrength": -42.0,
+        "relStrength": -39.4,
         "reasons": [
           "Omzetgroei +35%",
           "Groei versnelt sterk (+15pp)"
         ],
         "flags": [
-          "Onder markt (-42%)"
+          "Onder markt (-39%)"
         ],
-        "price": 85.75,
+        "price": 88.0,
         "currency": "HK$",
         "revenueGrowth": 35.0,
         "grossMarginTrend": null,
@@ -18928,8 +20030,8 @@
     "methodNote": "Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."
   },
   "weekly": {
-    "generatedAt": "2026-07-16T00:28:59.177790+02:00",
-    "generatedAtHuman": "Thursday 16 July 2026 om 00:28",
+    "generatedAt": "2026-07-16T08:31:14.841715+02:00",
+    "generatedAtHuman": "Thursday 16 July 2026 om 08:31",
     "periodLabel": "sinds ~1 week geleden",
     "changes": [
       {
@@ -18955,32 +20057,6 @@
             "type": "price",
             "dir": "down",
             "text": "Koers -8.5% deze week ($145\u2192$132)"
-          }
-        ]
-      },
-      {
-        "ticker": "SOFTBANK",
-        "daysAgo": 7,
-        "changes": [
-          {
-            "type": "composite",
-            "dir": "up",
-            "text": "Composiet 54 \u2191 66"
-          },
-          {
-            "type": "valuation",
-            "dir": "neutral",
-            "text": "Waardering: Neutraal (PEG 1.5\u20132.5) \u2192 Aantrekkelijk (PEG < 1)"
-          },
-          {
-            "type": "signal",
-            "dir": "neutral",
-            "text": "Signaal: STERK VERKOOP \u2192 KOOP"
-          },
-          {
-            "type": "price",
-            "dir": "up",
-            "text": "Koers +10.4% deze week ($5763\u2192$6360)"
           }
         ]
       },
@@ -19096,7 +20172,7 @@
           {
             "type": "composite",
             "dir": "down",
-            "text": "Composiet 60 \u2193 44"
+            "text": "Composiet 60 \u2193 46"
           },
           {
             "type": "gate",
@@ -19169,7 +20245,28 @@
           {
             "type": "price",
             "dir": "down",
-            "text": "Koers -17.3% deze week ($6636\u2192$5490)"
+            "text": "Koers -17.1% deze week ($6636\u2192$5501)"
+          }
+        ]
+      },
+      {
+        "ticker": "SOFTBANK",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "up",
+            "text": "Composiet 54 \u2191 65"
+          },
+          {
+            "type": "valuation",
+            "dir": "neutral",
+            "text": "Waardering: Neutraal (PEG 1.5\u20132.5) \u2192 Aantrekkelijk (PEG < 1)"
+          },
+          {
+            "type": "signal",
+            "dir": "neutral",
+            "text": "Signaal: STERK VERKOOP \u2192 KOOP"
           }
         ]
       },
@@ -19370,22 +20467,6 @@
         ]
       },
       {
-        "ticker": "GAW",
-        "daysAgo": 7,
-        "changes": [
-          {
-            "type": "composite",
-            "dir": "down",
-            "text": "Composiet 59 \u2193 50"
-          },
-          {
-            "type": "valuation",
-            "dir": "neutral",
-            "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
-          }
-        ]
-      },
-      {
         "ticker": "MNST",
         "daysAgo": 7,
         "changes": [
@@ -19414,22 +20495,6 @@
             "type": "valuation",
             "dir": "neutral",
             "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Neutraal (PEG 1.5\u20132.5)"
-          }
-        ]
-      },
-      {
-        "ticker": "ADM",
-        "daysAgo": 7,
-        "changes": [
-          {
-            "type": "composite",
-            "dir": "down",
-            "text": "Composiet 67 \u2193 62"
-          },
-          {
-            "type": "signal",
-            "dir": "neutral",
-            "text": "Signaal: KOOP \u2192 STERK KOOP"
           }
         ]
       },
@@ -19750,6 +20815,28 @@
         ]
       },
       {
+        "ticker": "GAW",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "signal",
+            "dir": "up",
+            "text": "Signaal: CAUTION (overextended) \u2192 STERK KOOP"
+          }
+        ]
+      },
+      {
+        "ticker": "ADM",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "signal",
+            "dir": "neutral",
+            "text": "Signaal: KOOP \u2192 STERK KOOP"
+          }
+        ]
+      },
+      {
         "ticker": "III",
         "daysAgo": 7,
         "changes": [
@@ -19811,7 +20898,7 @@
           {
             "type": "signal",
             "dir": "up",
-            "text": "Signaal: CAUTION (overextended) \u2192 STERK KOOP"
+            "text": "Signaal: CAUTION (overextended) \u2192 KOOP"
           }
         ]
       },
@@ -19822,7 +20909,7 @@
           {
             "type": "composite",
             "dir": "down",
-            "text": "Composiet 39 \u2193 33"
+            "text": "Composiet 39 \u2193 32"
           }
         ]
       },
