@@ -207,6 +207,19 @@ BAGGER_TICKERS = {"LHX", "MOGA", "TDG", "KTOS", "RKLB", "OPEN", "SDGR", "BNGO",
 # score en GEEN composiet. Ze verschijnen niet in de maandpick-allocatie.
 ETF_TICKERS = {"ARCG", "COPX", "ROBO"}
 
+# ── CYCLISCHE AANDELEN ──────────────────────────────────────────────────────
+# Aandelen waar de omzet door boom-bust cycli gaat, zodat de HUIDIGE groei een
+# piek of dal kan zijn i.p.v. de normale staat. Voor deze aandelen toont het
+# dashboard de PEG bij een REEKS groeivoeten (niet één "genormaliseerde" aanname),
+# zodat Ruben zelf ziet of een lage PEG op piekgroei rust. Bewust GEEN vast
+# "normaal groeicijfer" -- dat zou een gok zijn over waar de cyclus heen gaat.
+#
+# Per TICKER getagd, niet per sector: "Halfgeleiders & AI" bevat zowel de brute-
+# cyclische geheugenchips (MU, SNDK) als structurelere namen (NVDA logica, ASML
+# machines). Alleen de commodity-cyclische horen hier. Grondstoffen (ADM) idem.
+# Deze lijst breidt Ruben uit wanneer hij een cyclisch aandeel herkent.
+CYCLICAL_TICKERS = {"MU", "SNDK", "ADM"}
+
 # ── HANDMATIGE FIB-IJKPUNTEN ────────────────────────────────────────────────
 # Voor fibs is een handmatig ijkpunt BETER dan automatische detectie, niet slechter.
 # Jij leest de swing van de chart met je ogen; dat is betrouwbaarder dan welk
@@ -259,6 +272,12 @@ FIB_OVERRIDES = {
     # ($29-37); dat is de consequentie van de vaste regel, en bewust zo aanvaard.
     "NVDA": {"ath": 35.12, "atl": 10.91, "recent_hi": 236.54,
              "retr_atl": 11.90, "retr_hi": 236.54},
+    # MELI: extensie op de 2021-top ($2024) -> 2022 bear-bodem ($600), 1.618 = $4291
+    # kern-TP. Retracement op dezelfde bodem $600 -> ATH $2645.22 (2025). De 0.382
+    # valt op log-schaal exact op $1501 = de double-bottom steun die Ruben aanwees en
+    # die meerdere bronnen bevestigen (steunzone $1520). Golden pocket ligt dieper
+    # ($929-1057) als tweede instap onder de huidige vloer.
+    "MELI": {"ath": 2024.00, "atl": 600.00, "recent_hi": 2645.22},
 }
 
 # Valuta per aandeel (weergave). "p" = Britse pence (LSE noteert in pence!).
@@ -551,6 +570,68 @@ def calc_macd(series: pd.Series):
     signal = line.ewm(span=9, adjust=False, min_periods=9).mean()
     hist   = line - signal
     return line, signal, hist
+
+def detect_horizontal_support(weekly: pd.DataFrame, last: float,
+                              band_pct: float = 4.0, min_tests: int = 3,
+                              min_span_weeks: int = 17, lookback: int = 40):
+    """Detecteert BEWEZEN horizontale steun: een koersniveau waar de koers over een
+    langere periode meerdere keren een vloer heeft gevonden en telkens boven sloot.
+
+    Dit is fundamenteel sterker dan een fib- of MA-niveau: fib/MA zijn BEREKENDE
+    niveaus (theoretische steun), terwijl een vloer die zich over maanden herhaalt
+    BEWEZEN steun is -- de markt heeft er telkens gekocht. Precies wat een echte
+    bodem kenmerkt. Een aandeel dat -40% staat maar al een half jaar een vloer
+    houdt, vertelt iets heel anders dan een aandeel in vrije val.
+
+    Methode (op weekly, robuust tegen ruis):
+    - kijk naar de weekly lows van de laatste `lookback` weken
+    - clustert: voor elke low, tel hoeveel andere lows binnen +/- band_pct liggen
+    - het niveau met de meeste 'tests' is de kandidaat-vloer
+    - bevestigd als: >= min_tests aanrakingen, gespreid over >= min_span_weeks weken,
+      en de huidige koers ligt op of net boven de vloer (binnen ~1.5x de band)
+
+    Returns dict met level/tests/spanWeeks/pctAbove, of None als geen steun.
+    Bewust conservatief: liever geen steun melden dan een valse vloer.
+    """
+    if weekly is None or last is None or len(weekly) < min_span_weeks + 5:
+        return None
+    lows = weekly["Low"].dropna()
+    if len(lows) < min_tests:
+        return None
+    recent = lows.iloc[-lookback:] if len(lows) > lookback else lows
+    vals = recent.values
+    idxpos = list(range(len(vals)))
+
+    best = None
+    for i, base in enumerate(vals):
+        if base <= 0:
+            continue
+        lo, hi = base * (1 - band_pct/100), base * (1 + band_pct/100)
+        # welke lows raken deze band aan?
+        touch_pos = [j for j in idxpos if lo <= vals[j] <= hi]
+        if len(touch_pos) < min_tests:
+            continue
+        span = touch_pos[-1] - touch_pos[0]   # in weken (posities)
+        if span < min_span_weeks:
+            continue
+        # het steunniveau = mediaan van de rakende lows (robuust)
+        level = float(np.median([vals[j] for j in touch_pos]))
+        # kies de kandidaat met de MEESTE tests; bij gelijkspel de langste span
+        cand = {"level": round(level, 2), "tests": len(touch_pos), "spanWeeks": int(span)}
+        if best is None or (cand["tests"], cand["spanWeeks"]) > (best["tests"], best["spanWeeks"]):
+            best = cand
+
+    if best is None:
+        return None
+    # huidige koers moet op of net boven de vloer liggen (steun nu relevant)
+    lvl = best["level"]
+    if last < lvl * (1 - band_pct/100):
+        return None   # koers door de vloer gezakt -> geen steun meer, maar breuk
+    if last > lvl * (1 + band_pct*1.5/100):
+        return None   # koers te ver boven de vloer -> niet meer 'op steun'
+    best["pctAbove"] = round((last - lvl) / lvl * 100, 1)
+    return best
+
 
 def calc_bollinger(series: pd.Series, period: int = 20, mult: float = 2.0):
     mid = series.rolling(period).mean()
@@ -1208,6 +1289,17 @@ def _support_confluence(last, daily, weekly, monthly_state):
         if bl is not None and last <= bl * 1.02 and rsi_w < 40:
             flags.append("onderste weekly-Bollinger (oversold bounce)")
 
+    # BEWEZEN HORIZONTALE STEUN: een vloer die de koers over maanden herhaald test.
+    # Sterker dan fib/MA (berekende niveaus): dit is steun die de markt echt heeft
+    # gehouden. Vangt "gevallen kwaliteitsaandeel dat al een half jaar een bodem
+    # vormt" -- fundamenteel anders dan een vallend mes. Telt mee als steunbewijs.
+    hsupport = detect_horizontal_support(weekly, last)
+    if hsupport is not None:
+        maanden = round(hsupport["spanWeeks"] / 4.33, 1)
+        flags.append(
+            f"horizontale steun (€{hsupport['level']}, {hsupport['tests']}x getest "
+            f"over ~{maanden:.0f} mnd)")
+
     return len(flags), flags
 
 
@@ -1230,21 +1322,36 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     bb_u, bb_m, bb_l = calc_bollinger(close_d, 20)
     macd_l, macd_s, macd_h = calc_macd(close_d)
 
-    # Divergentie-detectie op dagbasis: koers vs RSI en koers vs MACD-lijn.
-    # We checken beide indicatoren; RSI-divergentie is de klassieke, MACD-divergentie
-    # bevestigt. Als beide bullish (of beide bearish) zijn, is het signaal sterker.
-    div_rsi  = detect_divergence(close_d, rsi_d,  left=5, right=5, max_lookback=60)
-    div_macd = detect_divergence(close_d, macd_l, left=5, right=5, max_lookback=60)
-    _div_types = [d["type"] for d in (div_rsi, div_macd) if d]
+    # Divergentie-detectie op WEEKBASIS: koers vs RSI en koers vs MACD-lijn.
+    # Bewust weekly, niet daily: op dagbasis geeft divergentie te veel ruis en valse
+    # signalen. Op weekly moet de divergentie zich over weken tot maanden ontvouwen --
+    # koersbodem/-top en indicator-bodem/-top liggen dan echt uit elkaar in de tijd.
+    # Dat is precies hoe je het op een weekchart met het oog afleest, en het maakt
+    # het signaal veel betrouwbaarder als vroege trendkeer-indicatie.
+    #
+    # Op weekly is een pivot-venster van 4 al ~een maand aan weerszijden; de lookback
+    # van 26 candles beslaat een half jaar, ruim genoeg voor twee bodems/toppen.
     divergence = {
-        "rsi":  div_rsi,
-        "macd": div_macd,
-        # "confirmed" = beide indicatoren tonen dezelfde richting op recente pivots
-        "bullishConfirmed": _div_types.count("bullish") == 2,
-        "bearishConfirmed": _div_types.count("bearish") == 2,
-        "bullish": "bullish" in _div_types,
-        "bearish": "bearish" in _div_types,
+        "rsi": None, "macd": None,
+        "bullishConfirmed": False, "bearishConfirmed": False,
+        "bullish": False, "bearish": False,
+        "timeframe": "weekly",
     }
+    if weekly is not None and len(weekly) >= 40:
+        close_w_div = weekly["Close"]
+        rsi_w_series  = calc_rsi(close_w_div, 14)
+        macd_w_l, _, _ = calc_macd(close_w_div)
+        div_rsi  = detect_divergence(close_w_div, rsi_w_series, left=4, right=4, max_lookback=26)
+        div_macd = detect_divergence(close_w_div, macd_w_l,     left=4, right=4, max_lookback=26)
+        _div_types = [d["type"] for d in (div_rsi, div_macd) if d]
+        divergence.update({
+            "rsi":  div_rsi,
+            "macd": div_macd,
+            "bullishConfirmed": _div_types.count("bullish") == 2,
+            "bearishConfirmed": _div_types.count("bearish") == 2,
+            "bullish": "bullish" in _div_types,
+            "bearish": "bearish" in _div_types,
+        })
 
     # Volume met NaN-guard
     vol_avg20 = vol_d.rolling(20).mean()
@@ -1991,6 +2098,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
              "supportCount": support_count, "supportFlags": support_flags}
     reasons_c = []
     overall = base_overall
+    _reversal_note = None
 
     # ── 1. MONTHLY STRONG-BEAR VETO: geen koop mogelijk ──
     if m_state == "strong_bear":
@@ -2000,17 +2108,32 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     else:
         # ── 2. KOOP-CONFLUENCE: weekly bullish draai + steunbewijs (fib-zone en/of MA/Bollinger) ──
         #    Monthly mag licht-bearish of neutraal zijn (niet sterk-bearish).
-        #    Steunbewijzen: fib-koopzone, 200-MA-steun, onderste weekly-Bollinger.
+        #    Steunbewijzen: fib-koopzone, 200-MA-steun, onderste weekly-Bollinger, horizontale steun.
         #    Hoe meer samenvallen, hoe sterker (bron: confluence verhoogt betrouwbaarheid).
+        #    Bullish divergence (weekly) telt mee als extra omslag-bewijs.
+        _div = divergence  # weekly bullish/bearish divergence (dict, al berekend)
+        bull_div = _div.get("bullish", False)
+        bull_div_confirmed = _div.get("bullishConfirmed", False)
         total_support = (1 if fib_depth >= 1 else 0) + support_count
+        # tel omslag-signalen: bullish draai, bullish divergence, elk steunbewijs
+        omslag_signalen = sum([
+            bool(w_turn.get("bullTurn")),
+            bool(w_turn.get("emaCrossUp")),
+            bull_div,
+            bull_div_confirmed,   # bevestigd = extra gewicht
+        ]) + total_support
+
         if w_turn.get("bullTurn") and total_support >= 1:
             # Sterk bij: diepe fib OF meerdere samenvallende steunen OF gezonde trend + oversold
+            # OF bevestigde bullish divergence bovenop de steun (extra omslag-bewijs)
             strong = (fib_depth >= 2) or (total_support >= 2) or \
-                     (m_state in ("bull", "neutral") and w_turn.get("oversold"))
+                     (m_state in ("bull", "neutral") and w_turn.get("oversold")) or \
+                     (bull_div_confirmed and total_support >= 1)
             overall = "STERK KOOP" if strong else "KOOP"
             bewijs = []
             if fib_depth >= 1: bewijs.append("fib " + (fib_zone or "koopzone"))
             bewijs.extend(support_flags)
+            if bull_div: bewijs.append("bullish divergence" + (" (bevestigd)" if bull_div_confirmed else ""))
             reasons_c.append("Confluence KOOP: weekly bullish draai + " + " + ".join(bewijs))
             if m_state == "light_bear":
                 reasons_c.append("Monthly licht bearish met keer-tekenen - vroege instap")
@@ -2018,6 +2141,23 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         elif w_turn.get("bearTurn") and net < 0:
             overall = "STERK VERKOOP" if (m_state in ("light_bear", "strong_bear") and net <= -4) else "VERKOOP"
             reasons_c.append("Confluence VERKOOP: weekly bearish draai + daily downtrend")
+        # ── 3b. OMSLAG-MILDERING: veel samenvallende omslag-signalen ──
+        #    Als er GEEN bullish draai + steun is (stap 2 niet gehaald), maar er stapelen
+        #    zich WEL meerdere omslag-tekenen op (bullish divergence + EMA-kruis + horizontale
+        #    steun + ...), dan is "VERKOOP" niet meer terecht. De koers keert mogelijk; dat is
+        #    een vroege heads-up, geen koopsignaal. We tillen het oordeel daarom naar minimaal
+        #    NEUTRAAL -- nooit meer VERKOOP bij >=3 samenvallende omslag-signalen. Bewust GEEN
+        #    KOOP: de trend is nog niet bevestigd, we halen alleen de verkoopdruk eraf.
+        elif omslag_signalen >= 3 and "VERKOOP" in overall:
+            bewijs = []
+            if w_turn.get("bullTurn") or w_turn.get("emaCrossUp"): bewijs.append("weekly 8/21-EMA draait op")
+            if bull_div: bewijs.append("bullish divergence" + (" (bevestigd)" if bull_div_confirmed else ""))
+            bewijs.extend(support_flags)
+            overall = "NEUTRAAL"
+            _reversal_note = (
+                "Omslag gaande - meerdere keer-signalen vallen samen (" + ", ".join(bewijs) +
+                "). Verkoopdruk droogt op; nog geen koopbevestiging, maar geen verkoop meer.")
+            reasons_c.append(_reversal_note)
         # ── 4. Geen confluence -> geen 'sterk', laat netto meespelen maar getemperd ──
         else:
             # ⚠ ASYMMETRIE-FIX. De temper-regel wiste ELK sterk koopsignaal uit: STERK KOOP
@@ -2131,6 +2271,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         "buyWeight": buy_w, "sellWeight": sell_w, "baseOverall": base_overall,
         "confluence": confl,
         "conflict": conflict, "conflictNote": conflict_note,
+        "reversalNote": _reversal_note,
         "nearTP": near_any_tp, "pctOffHigh": pct_off_high,
         "indicators": {
             "last": round(last, 2),
@@ -2208,6 +2349,7 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
 
     out = {
         "currentPE": current_pe, "peg": None, "pegNormalized": None, "normalizedGrowth": None,
+        "pegCurve": None, "isCyclical": False, "peakGrowthFlag": False,
         "pePercentile": None, "peMin": None, "peMedian": None, "peMax": None,
         "peSource": None, "priceRangePosition": None,
         "verdict": None, "verdictColor": None, "notes": [],
@@ -2219,17 +2361,40 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
     if current_pe and growth and growth > 0:
         out["peg"] = round(current_pe / growth, 2)
 
-    # GENORMALISEERDE PEG — voor cyclische aandelen waar de HUIDIGE groei een
-    # dieptepunt of piek is, niet de normale staat. Bij LVMH is de groei nu 0,1%
-    # (cyclische bodem), waardoor de gewone PEG "oneindig duur" toont. Met een
-    # genormaliseerde groeivoet (bv. het meerjarige gemiddelde, uit FUNDAMENTALS'
-    # "normalizedGrowth") zie je de waardering zoals die eruitziet als de cyclus
-    # normaliseert. Puur informatief -- het gewone PEG-verdict blijft leidend,
-    # zodat we een aandeel niet vals goedkoop rekenen op een optimistische aanname.
+    # GENORMALISEERDE / CYCLISCHE PEG.
+    # Twee mechanismen, afhankelijk van het aandeel:
+    #
+    # (a) Vaste normalizedGrowth (bv. LVMH): één meerjarig groeicijfer waar de
+    #     analistenconsensus redelijk vastligt. Toont PEG bij die ene groei.
+    #
+    # (b) Cyclische aandelen (MU, SNDK, ADM...): GEEN vast cijfer, want niemand
+    #     weet of de huidige piek/dal normaliseert -- dat zou een gok zijn in het
+    #     bull/bear-debat. In plaats daarvan een REEKS: de PEG bij meerdere
+    #     groeivoeten, zodat Ruben zelf ziet of de lage PEG op piekgroei rust.
+    #     De reeks is verankerd op de aandeel-eigen cijfers (huidige groei, vorig
+    #     jaar) plus vaste referentiepunten, zodat het geen willekeurige getallen zijn.
     norm_growth = fund.get("normalizedGrowth")
     if current_pe and isinstance(norm_growth, (int, float)) and norm_growth > 0:
         out["pegNormalized"] = round(current_pe / norm_growth, 2)
         out["normalizedGrowth"] = norm_growth
+
+    if current_pe and name in CYCLICAL_TICKERS:
+        g_now = fund.get("revenueGrowth")
+        g_prev = fund.get("revenueGrowthPrev")
+        # Bouw een reeks betekenisvolle groei-ankers: huidige groei, vorig jaar,
+        # en vaste referenties (30/15/10%) die een normalere cyclus representeren.
+        # Dubbele en niet-positieve waarden eruit; oplopend gesorteerd.
+        ankers = []
+        for g in [g_now, g_prev, 30, 15, 10]:
+            if isinstance(g, (int, float)) and g > 0:
+                ankers.append(round(float(g), 1))
+        ankers = sorted(set(ankers))
+        reeks = [{"growth": g, "peg": round(current_pe / g, 2)} for g in ankers]
+        out["pegCurve"] = reeks
+        out["isCyclical"] = True
+        # markeer of de HUIDIGE groei ver boven een normalere ~15% ligt (pieksignaal)
+        if isinstance(g_now, (int, float)) and g_now > 30:
+            out["peakGrowthFlag"] = True
 
     # Prijspositie in 5-jaars range (eerlijke context, géén waardering)
     lo, hi = float(close.min()), float(close.max())
@@ -2280,27 +2445,29 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
         else:                 verdict, color = "Zeer hoge P/E (absoluut)", "red"
         out["notes"].append("Geen groeicijfer — oordeel op absolute P/E")
 
-    # Cyclische nuance: als de gewone PEG duur/neutraal is MAAR de genormaliseerde
-    # PEG (op meerjarige groei) substantieel gunstiger, meld dat als context. We
-    # veranderen het verdict NIET -- de huidige groei blijft leidend -- maar tonen
-    # hoe de waardering eruitziet zodra de cyclus normaliseert. Zo ziet Ruben het
-    # blinde vlekje van PEG-op-dieptepunt zonder dat het model vals goedkoop rekent.
+    # LVMH-geval (bodemgroei): de genormaliseerde PEG (op meerjarig gemiddelde) is
+    # substantieel GUNSTIGER dan de gewone, die vertekend is door bodemgroei. Toon
+    # dat als context zodat de te-dure PEG niet afschrikt. Verdict blijft leidend.
     pegn = out.get("pegNormalized")
     if pegn is not None and peg is not None and color in ("red", "orange", "neutral"):
         ng = out.get("normalizedGrowth")
-        # toon alleen als genormaliseerd MINSTENS de helft lager is (echt verschil)
         if pegn < peg * 0.5:
-            if pegn < 1.5:
-                oordeel = "aantrekkelijk"
-            elif pegn < 2.5:
-                oordeel = "redelijk"
-            elif pegn < 3.5:
-                oordeel = "aan de dure kant maar houdbaar"
-            else:
-                oordeel = "nog steeds prijzig"
+            oordeel = ("aantrekkelijk" if pegn < 1.5 else "redelijk" if pegn < 2.5
+                       else "aan de dure kant maar houdbaar" if pegn < 3.5 else "nog steeds prijzig")
             out["notes"].append(
                 f"Cyclisch: PEG {peg:.0f} nu is vertekend door bodemgroei ({growth:.1f}%). "
                 f"Bij genormaliseerde groei (~{ng:.0f}%) wordt PEG {pegn:.1f} — {oordeel}")
+
+    # MU-geval (piekgroei): de lage PEG rust op hoge huidige groei. Toon de reeks
+    # zodat Ruben ziet dat die goedkoopte deels cyclisch is. Verdict blijft leidend
+    # -- op de huidige cijfers klopt de lage PEG -- maar de context voorkomt de
+    # cyclische val. Het model kiest geen kant in het bull/bear-debat.
+    if out.get("peakGrowthFlag") and out.get("pegCurve") and peg is not None and peg < 1.5:
+        conservatief = out["pegCurve"][0]  # laagste anker-groei (normalere cyclus)
+        out["notes"].append(
+            f"Cyclisch: PEG {peg:.1f} rust op piekgroei ({growth:.0f}%). "
+            f"Bij een normalere ~{conservatief['growth']:.0f}% wordt PEG {conservatief['peg']:.1f} — "
+            f"de goedkoopte is deels cyclisch, geen structureel koopje")
 
     out["verdict"], out["verdictColor"] = verdict, color
     return out
@@ -3869,8 +4036,17 @@ def main():
             "composite": sc["composite"], "quality": sc["quality"],
             "valuation": sc["valuation"], "timing": sc["timing"],
             "valuationVerdict": s.get("valuation", {}).get("verdict"),
+            "valuationColor": s.get("valuation", {}).get("verdictColor"),
+            "peg": s.get("valuation", {}).get("peg"),
+            "pegNormalized": s.get("valuation", {}).get("pegNormalized"),
+            "normalizedGrowth": s.get("valuation", {}).get("normalizedGrowth"),
+            "pegCurve": s.get("valuation", {}).get("pegCurve"),
+            "isCyclical": s.get("valuation", {}).get("isCyclical", False),
+            "peakGrowthFlag": s.get("valuation", {}).get("peakGrowthFlag", False),
             "timingLabel": s.get("timing", {}).get("label"),
             "price": s.get("indicators", {}).get("last"),
+            "pctOffHigh": s.get("pctOffHigh"),
+            "sector": s.get("sector"),
             "currency": CURRENCY.get(name, "$"),
             "marketAdj": sc.get("marketAdj", 0),
         }
@@ -3883,6 +4059,31 @@ def main():
     candidates.sort(key=lambda x: x["composite"], reverse=True)
 
     primary = candidates[0] if candidates else None
+
+    # ── DE SCHATKAMER ──────────────────────────────────────────────────────────
+    # Goedkoop geprijsde kwaliteitsaandelen die klaarliggen: de kwaliteitspoort
+    # gehaald EN redelijk/aantrekkelijk gewaardeerd. Dit is NIET de maandpick --
+    # de maandpick weegt timing zwaar en wil een aandeel dat NU koopwaardig oogt.
+    # De schatkamer is de voorraad: goede bedrijven tegen een faire prijs, die
+    # wachten op hun moment (een breakout). MU hoort hier -- goedkoop en kwaliteit,
+    # maar in een cyclische afdaling, dus geen maandpick tot het momentum keert.
+    #
+    # "Goedkoop" = waarderingsscore >= 55 OF een PEG-verdict dat niet rood is.
+    # Bewust ruim: liever een aandeel te veel in de schatkamer dan een koopje missen.
+    # Gesorteerd op waarderingsscore (goedkoopste eerst), niet op composiet.
+    schatkamer = []
+    for row in candidates:
+        val_ok = (row["valuation"] is not None and row["valuation"] >= 55)
+        verdict_ok = row.get("valuationColor") in ("green", "neutral")
+        if val_ok or verdict_ok:
+            schatkamer.append(row)
+    # Sorteer op waarderingsscore (goedkoopste eerst), MAAR cyclische piekgroei-
+    # aandelen zakken naar onderen: hun "goedkoopte" rust op piekgroei en is dus
+    # minder betrouwbaar dan een structureel lage waardering. Zo staan de echte
+    # koopjes bovenaan en de cyclische-schijn-koopjes (MU) onderaan met hun vlag.
+    schatkamer.sort(key=lambda x: (0 if x.get("peakGrowthFlag") else 1, x["valuation"] or 0), reverse=True)
+    # ────────────────────────────────────────────────────────────────────────────
+
     reasoning = None
     if primary:
         reasoning = (
@@ -3899,6 +4100,7 @@ def main():
         "primaryPick": primary,
         "reasoning": reasoning,
         "candidates": candidates,
+        "treasury": schatkamer,
         "gateFailed": gate_failed,
         "weights": {"quality": 0.30, "valuation": 0.30, "timing": 0.40},
         "note": ("Kwaliteitspoort-passers gerangschikt op composietscore (kwaliteit + waardering "
