@@ -278,6 +278,14 @@ FIB_OVERRIDES = {
     # die meerdere bronnen bevestigen (steunzone $1520). Golden pocket ligt dieper
     # ($929-1057) als tweede instap onder de huidige vloer.
     "MELI": {"ath": 2024.00, "atl": 600.00, "recent_hi": 2645.22},
+    # ASML: extensie op de swing top $1022 (jul'24) -> bodem $510 ('25). De koers
+    # ($1558) ligt op de 1.607-extensie, vrijwel op de 1.618 ($1570) -- de ATH $1741
+    # (jun'26) kwam tot de 1.77-extensie en de koers viel terug. Dat is precies een
+    # TP-zone-terugval, dus de overextensie/CAUTION-logica hoort hier te vuren. De
+    # auto-fib verwierp de extensies (pakte de ATH als swing-top), waardoor er geen
+    # TP-zones waren en ASML onterecht op KOOP bleef. Retracement op $510 -> $1741.
+    "ASML": {"ath": 1022.00, "atl": 510.00, "recent_hi": 1741.00,
+             "retr_atl": 510.00, "retr_hi": 1741.00},
 }
 
 # Valuta per aandeel (weergave). "p" = Britse pence (LSE noteert in pence!).
@@ -350,9 +358,9 @@ FUNDAMENTALS = {
     "WM":    {"pe":29.2,  "roe":29.9, "fcfYield":3.0,  "debtEquity":2.28, "netMargin":11.0, "divYield":1.69, "revenueGrowth":6.1,   "eps":7.72,  "mktCap":"$90B",   "beta":0.46, "lastUpdated":"2026-07"},
     "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07"},   # P/E 145 - extreme waardering
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.8,  "debtEquity":2.31, "netMargin":13.3, "divYield":0.63, "revenueGrowth":11.9,  "revenueGrowthPrev":4.0,  "eps":20.10, "mktCap":"$444B",  "beta":1.60, "lastUpdated":"2026-07"},
-    "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":29.50, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07"},
+    "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":29.50, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07", "earningsHistory":[[2021,5883],[2022,6456],[2023,8277],[2024,7966],[2025,10627]]},   # winst +10-33%, pauzejaar -4% in 2024; licht cyclisch maar structureel groeiend
     "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07"},
-    "MU":    {"pe":22.1,  "roe":66.6, "fcfYield":2.2,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.1,  "revenueGrowth":144.0, "revenueGrowthPrev":62.0, "eps":44.6,  "mktCap":"$1.1T",  "beta":2.14, "lastUpdated":"2026-07"},   # AI-geheugencyclus op piek - extreem cyclisch
+    "MU":    {"pe":22.1,  "roe":66.6, "fcfYield":2.2,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.1,  "revenueGrowth":144.0, "revenueGrowthPrev":62.0, "eps":44.6,  "mktCap":"$1.1T",  "beta":2.14, "lastUpdated":"2026-07", "earningsHistory":[[2021,5861],[2022,8687],[2023,-5833],[2024,778],[2025,8539]]},   # AI-geheugencyclus op piek - extreem cyclisch; winst: +48%/VERLIES/+998% = geen jaar representatief
     "GOOGL": {"pe":25.7,  "roe":38.9, "fcfYield":1.6,  "debtEquity":0.20, "netMargin":37.9, "divYield":0.3,  "revenueGrowth":13.4,  "revenueGrowthPrev":14.0, "eps":13.15, "mktCap":"$4.1T",  "beta":1.24, "lastUpdated":"2026-07"},
     "ANET":  {"pe":53.9,  "roe":31.5, "fcfYield":2.5,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.1,  "revenueGrowthPrev":28.9, "eps":2.95,  "mktCap":"$215B",  "beta":1.61, "lastUpdated":"2026-07"},
     "HOOD":  {"pe":42.0,  "roe":22.5, "fcfYield":2.8,  "debtEquity":0.42, "netMargin":32.0, "divYield":0,    "revenueGrowth":15.0,  "revenueGrowthPrev":58.0, "eps":1.45,  "mktCap":"$95B",   "beta":2.15, "lastUpdated":"2026-07"},
@@ -361,7 +369,7 @@ FUNDAMENTALS = {
     "HWM":   {"pe":62.0,  "roe":33.8, "fcfYield":1.5,  "debtEquity":0.88, "netMargin":20.2, "divYield":0.2,  "revenueGrowth":19.0,  "eps":4.35,  "mktCap":"$108B",  "beta":1.19, "lastUpdated":"2026-07"},
     "SNDK":  {"pe":68.0,  "roe":39.3, "fcfYield":2.0,  "debtEquity":0.02, "netMargin":34.2, "divYield":0,    "revenueGrowth":97.0,  "eps":30.0,  "mktCap":"$300B",  "beta":2.50, "lastUpdated":"2026-07"},
     "AMZN":  {"pe":29.3,  "roe":24.3, "fcfYield":0.3,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":14.2,  "revenueGrowthPrev":12.4, "eps":8.36,  "mktCap":"$2.6T",  "beta":1.46, "lastUpdated":"2026-07"},
-    "ORCL":  {"pe":24.1,  "roe":53.4, "fcfYield":0.5,  "debtEquity":3.89, "netMargin":25.4, "divYield":1.4,  "revenueGrowth":17.4,  "revenueGrowthPrev":8.0,  "eps":5.83,  "mktCap":"$402B",  "beta":1.71, "lastUpdated":"2026-07"},   # WAARSCHUWING: S&P-rating verlaagd, D/E 3.9
+    "ORCL":  {"pe":24.1,  "roe":53.4, "fcfYield":0.5,  "debtEquity":3.89, "netMargin":25.4, "divYield":1.4,  "revenueGrowth":17.4,  "revenueGrowthPrev":8.0,  "eps":5.83,  "mktCap":"$402B",  "beta":1.71, "lastUpdated":"2026-07", "earningsHistory":[[2021,13746],[2022,6717],[2023,8503],[2024,10467],[2025,12443]]},   # WAARSCHUWING: S&P-rating verlaagd, D/E 3.9; winst stabiel +19-27% (op 2022-dip na)
     "KO":    {"pe":24.8,  "roe":47.7, "fcfYield":3.4,  "debtEquity":1.63, "netMargin":22.6, "divYield":2.95, "revenueGrowth":4.1,   "eps":2.88,  "mktCap":"$305B",  "beta":0.45, "lastUpdated":"2026-07"},
     "MC":    {"pe":17.8,  "roe":15.7, "fcfYield":3.7,  "debtEquity":0.09, "netMargin":13.5, "divYield":2.4,  "revenueGrowth":0.1,   "revenueGrowthPrev":9.0,  "normalizedGrowth":5.0, "eps":27.31, "mktCap":"\u20ac277B",  "beta":1.05, "lastUpdated":"2026-07"},   # luxe in cyclische dip: ROE onder 10j-norm (~20), groei vlak; moat intact. normalizedGrowth = conservatief 10j-gem (Bain/Morningstar)
     # ── Bagger-kandidaten ── Extra velden: grossMargin, grossMarginTrend (pp YoY),
@@ -383,7 +391,7 @@ FUNDAMENTALS = {
     "KPG":   {"pe":52.0,  "roe":28.0, "fcfYield":3.5,  "debtEquity":3.60, "netMargin":5.5,  "divYield":1.0,  "revenueGrowth":18.0,  "revenueGrowthPrev":25.0, "eps":0.08,  "mktCap":"A$0.2B", "beta":1.15, "lastUpdated":"2026-07"},
     "ADM":   {"pe":16.5,  "roe":52.0, "fcfYield":5.5,  "debtEquity":0.35, "netMargin":10.5, "divYield":5.2,  "revenueGrowth":9.0,   "revenueGrowthPrev":22.0, "eps":193.0, "mktCap":"GBP10B", "beta":0.80, "lastUpdated":"2026-07"},
     "AON":   {"pe":16.8,  "roe":39.3, "fcfYield":3.8,  "debtEquity":1.40, "netMargin":24.0, "divYield":0.9,  "revenueGrowth":7.0,   "revenueGrowthPrev":5.0,  "eps":17.07, "mktCap":"$77B",   "beta":0.90, "lastUpdated":"2026-07"},
-    "MELI":  {"pe":40.0,  "roe":30.0, "fcfYield":1.0,  "debtEquity":1.80, "netMargin":6.0,  "divYield":0,    "revenueGrowth":49.0,  "revenueGrowthPrev":37.0, "eps":39.39, "mktCap":"$79B",   "beta":1.60, "lastUpdated":"2026-07"},   # marge ingestort 8.3->6.0 door capex
+    "MELI":  {"pe":40.0,  "roe":30.0, "fcfYield":1.0,  "debtEquity":1.80, "netMargin":6.0,  "divYield":0,    "revenueGrowth":49.0,  "revenueGrowthPrev":37.0, "eps":39.39, "mktCap":"$79B",   "beta":1.60, "lastUpdated":"2026-07", "earningsHistory":[[2021,83],[2022,482],[2023,987],[2024,1911],[2025,1997]]},   # marge ingestort 8.3->6.0 door capex; winstgroei +481/+105/+94/+5% = investeringsdip, geen verval
     "III":   {"pe":9.8,   "roe":22.0, "fcfYield":4.5,  "debtEquity":0.08, "netMargin":88.0, "divYield":1.8,  "revenueGrowth":12.0,  "revenueGrowthPrev":15.0, "eps":420.0, "mktCap":"GBP38B", "beta":1.25, "lastUpdated":"2026-07"},
     "SHOP":  {"pe":92.0,  "roe":14.5, "fcfYield":1.4,  "debtEquity":0.10, "netMargin":11.5, "divYield":0,    "revenueGrowth":31.9,  "revenueGrowthPrev":26.0, "eps":1.32,  "mktCap":"$185B",  "beta":2.35, "lastUpdated":"2026-07"},
     "NET":   {"pe":0,      "roe":-5.9, "fcfYield":0.5,  "debtEquity":2.31, "netMargin":-3.7, "divYield":0,    "revenueGrowth":34.0,  "revenueGrowthPrev":30.0, "eps":-0.25, "mktCap":"$59B",   "beta":1.67, "lastUpdated":"2026-07"},
@@ -1805,42 +1813,63 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                          "eerste winstnemingszone. Bij baggers al proportioneel; overweeg (deels) winst."})
             tp_fired = True
     else:
-        # Kwaliteit: 1.618 = CAUTION (geen verkoop), oplopend naar sterk verkoop bij 2.618
-        if _near("2.618"):
-            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":8,"icon":"🎯",
-                "title":"Bij 2.618 TP-zone ⭐⭐⭐ (uitzonderlijk — winst nemen)",
-                "detail":f"Prijs ${last:.2f} bij de 2.618-extensie (${_ext_val('2.618'):.2f}). "
-                         "Zelfs voor kwaliteit uitzonderlijk ver — sterk verkooppunt."})
-            tp_fired = True
-        elif _near("2.000"):
-            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":6,"icon":"🎯",
-                "title":"Bij 2.0 TP-zone ⭐⭐ (winst nemen)",
-                "detail":f"Prijs ${last:.2f} bij de 2.0-extensie (${_ext_val('2.000'):.2f}) — diep in de winstzone."})
-            tp_fired = True
-        elif _near("1.818"):
-            signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":5,"icon":"🎯",
-                "title":"Bij 1.818 TP-zone ⭐ (licht winst nemen)",
-                "detail":f"Prijs ${last:.2f} bij de 1.818-extensie (${_ext_val('1.818'):.2f}). "
-                         "Ver in de winstzone; overweeg deels winst te nemen."})
-            tp_fired = True
-        elif _near("1.618"):
-            # CAUTION, geen verkoop: winst laten lopen (GOOG brak door 1.618 en verdubbelde)
-            signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
-                "title":"Bij 1.618 TP-zone — overextended",
-                "detail":f"Prijs ${last:.2f} bij de 1.618-extensie (${_ext_val('1.618'):.2f}). "
-                         "Kern-winstzone, maar kwaliteitsaandelen breken hier vaak dwars doorheen. "
-                         "Voorzichtig (overextended), geen automatisch verkoopsignaal."})
-            tp_fired = True
-        elif _near("1.414") or _near("1.272"):
-            # Lagere TP-zones bij kwaliteit: CAUTION (waarschuwing dat je in winstzone
-            # zit), geen verkoop — een gemiste verkoop is hier niet erg voor kwaliteit.
-            lbl = "1.414" if _near("1.414") else "1.272"
-            signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
-                "title":f"Bij {lbl} TP-zone — winstzone",
-                "detail":f"Prijs ${last:.2f} bij de {lbl}-extensie (${_ext_val(lbl):.2f}) — "
-                         "eerste winstnemingszone. Voorzichtig; voor kwaliteit geen verkoop, "
-                         "maar wees bewust dat je in winstgebied zit."})
-            tp_fired = True
+        # ── KWALITEIT: ZONALE TP-LOGICA (Rubens regel) ──────────────────────────
+        # NIET "lig je toevallig binnen 4% van een fib-lijn" (dat liet gaten vallen:
+        # een koers op de 1.7-extensie zat tussen de 4%-banden van 1.618 en 1.818 in
+        # en kreeg GEEN signaal). In plaats daarvan: HOE VER VOORBIJ de 1.618 sta je.
+        # Afspraak: alles boven 1.618 evolueert van CAUTION -> licht verkoop -> verkoop
+        # -> sterk verkoop naarmate de koers dieper de winstzone in gaat.
+        #   koers in [1.618, 1.818)  -> CAUTION (overextended, geen verkoop)
+        #   koers in [1.818, 2.000)  -> LICHT VERKOOP (begin winst nemen)
+        #   koers in [2.000, 2.618)  -> VERKOOP (diep in winst)
+        #   koers >= 2.618           -> STERK VERKOOP (uitzonderlijk ver)
+        # De zones worden bepaald door de koers te vergelijken met de extensie-WAARDEN,
+        # niet door nabijheid. Zo valt er geen enkel gat meer tussen de niveaus.
+        e1618 = _ext_val("1.618"); e1818 = _ext_val("1.818")
+        e2000 = _ext_val("2.000"); e2618 = _ext_val("2.618")
+        # alleen zinvol als de extensies niet verworpen zijn en 1.618 bestaat
+        if not fib.get("extRejected") and e1618 is not None:
+            if e2618 is not None and last >= e2618:
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":8,"icon":"🎯",
+                    "title":"Voorbij 2.618-extensie ⭐⭐⭐ (uitzonderlijk ver)",
+                    "detail":f"Prijs ${last:.2f} ligt op/voorbij de 2.618-extensie (${e2618:.2f}). "
+                             "Zelfs voor kwaliteit uitzonderlijk ver in de winstzone — sterk verkooppunt."})
+                tp_fired = True
+            elif e2000 is not None and last >= e2000:
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":6,"icon":"🎯",
+                    "title":"Voorbij 2.0-extensie ⭐⭐ (diep in winst)",
+                    "detail":f"Prijs ${last:.2f} ligt voorbij de 2.0-extensie (${e2000:.2f}) — diep in de winstzone. Winst nemen."})
+                tp_fired = True
+            elif e1818 is not None and last >= e1818:
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":5,"icon":"🎯",
+                    "title":"Voorbij 1.818-extensie ⭐ (licht winst nemen)",
+                    "detail":f"Prijs ${last:.2f} ligt voorbij de 1.818-extensie (${e1818:.2f}). "
+                             "Ver in de winstzone; overweeg deels winst te nemen."})
+                tp_fired = True
+            elif last >= e1618:
+                # In de zone [1.618, 1.818): CAUTION. Kwaliteit breekt hier vaak dwars
+                # doorheen (GOOG verdubbelde na 1.618), dus waarschuwing, geen verkoop.
+                signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
+                    "title":"Bij/voorbij 1.618 TP-zone — overextended",
+                    "detail":f"Prijs ${last:.2f} ligt op/voorbij de 1.618-extensie (${e1618:.2f}). "
+                             "Kern-winstzone; kwaliteitsaandelen breken hier vaak doorheen. "
+                             "Voorzichtig (overextended), nog geen automatisch verkoopsignaal."})
+                tp_fired = True
+            else:
+                # Onder 1.618 maar mogelijk in een lagere winstzone (1.272-1.618).
+                e1414 = _ext_val("1.414"); e1272 = _ext_val("1.272")
+                if e1414 is not None and last >= e1414:
+                    signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
+                        "title":"Voorbij 1.414-extensie — winstzone",
+                        "detail":f"Prijs ${last:.2f} ligt voorbij de 1.414-extensie (${e1414:.2f}) — "
+                                 "winstzone. Voor kwaliteit geen verkoop, maar wees bewust dat je in winstgebied zit."})
+                    tp_fired = True
+                elif e1272 is not None and last >= e1272:
+                    signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
+                        "title":"Voorbij 1.272-extensie — winstzone",
+                        "detail":f"Prijs ${last:.2f} ligt voorbij de 1.272-extensie (${e1272:.2f}) — "
+                                 "eerste winstnemingszone. Voor kwaliteit geen verkoop, maar bewust van winstgebied."})
+                    tp_fired = True
 
     # ── B) TERUGVAL uit een TP-zone met verzwakkend momentum ──
     # Voorwaarden: (1) recente high raakte een TP-extensie ≥1.272, (2) prijs is nu
@@ -2141,23 +2170,6 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         elif w_turn.get("bearTurn") and net < 0:
             overall = "STERK VERKOOP" if (m_state in ("light_bear", "strong_bear") and net <= -4) else "VERKOOP"
             reasons_c.append("Confluence VERKOOP: weekly bearish draai + daily downtrend")
-        # ── 3b. OMSLAG-MILDERING: veel samenvallende omslag-signalen ──
-        #    Als er GEEN bullish draai + steun is (stap 2 niet gehaald), maar er stapelen
-        #    zich WEL meerdere omslag-tekenen op (bullish divergence + EMA-kruis + horizontale
-        #    steun + ...), dan is "VERKOOP" niet meer terecht. De koers keert mogelijk; dat is
-        #    een vroege heads-up, geen koopsignaal. We tillen het oordeel daarom naar minimaal
-        #    NEUTRAAL -- nooit meer VERKOOP bij >=3 samenvallende omslag-signalen. Bewust GEEN
-        #    KOOP: de trend is nog niet bevestigd, we halen alleen de verkoopdruk eraf.
-        elif omslag_signalen >= 3 and "VERKOOP" in overall:
-            bewijs = []
-            if w_turn.get("bullTurn") or w_turn.get("emaCrossUp"): bewijs.append("weekly 8/21-EMA draait op")
-            if bull_div: bewijs.append("bullish divergence" + (" (bevestigd)" if bull_div_confirmed else ""))
-            bewijs.extend(support_flags)
-            overall = "NEUTRAAL"
-            _reversal_note = (
-                "Omslag gaande - meerdere keer-signalen vallen samen (" + ", ".join(bewijs) +
-                "). Verkoopdruk droogt op; nog geen koopbevestiging, maar geen verkoop meer.")
-            reasons_c.append(_reversal_note)
         # ── 4. Geen confluence -> geen 'sterk', laat netto meespelen maar getemperd ──
         else:
             # ⚠ ASYMMETRIE-FIX. De temper-regel wiste ELK sterk koopsignaal uit: STERK KOOP
@@ -2208,45 +2220,44 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # maandstand). Zonder die bevestiging wordt het VERKOOP -- nog steeds een duidelijk
     # signaal, maar niet "sterk". Een aandeel dat ver in winst staat en gewoon dóórstijgt
     # is niet hetzelfde als een aandeel dat ver in winst staat en kantelt.
+    # ⚠ ZONALE KANTELING (Rubens afspraak, optie A). De koers-POSITIE t.o.v. de
+    # extensie bepaalt het oordeel, ALTIJD -- geen bearish bevestiging vereist. Dit is
+    # bewust strenger dan de eerdere "laat gezonde doorbraken lopen"-regel: Ruben kiest
+    # ervoor consequent winst te nemen in de zones, ook als dat soms vroeg uitstappen
+    # betekent bij een aandeel dat doorstijgt. De zones (uit de zonale TP-signalen):
+    #   voorbij 1.618  -> CAUTION (overextended)
+    #   voorbij 1.818  -> LICHT VERKOOP
+    #   voorbij 2.000  -> VERKOOP
+    #   voorbij 2.618  -> STERK VERKOOP
     fib_tp_sigs = [s for s in signals if s.get("cat") == "FIB" and s.get("tf") == "TP"]
     has_2618 = any("2.618" in s.get("title", "") for s in fib_tp_sigs)
-    has_2000 = any("2.0" in s.get("title", "") or "2.000" in s.get("title", "") for s in fib_tp_sigs)
+    has_2000 = any(("2.0" in s.get("title", "") or "2.000" in s.get("title", "")) for s in fib_tp_sigs)
+    has_1818 = any("1.818" in s.get("title", "") for s in fib_tp_sigs)
     has_1618 = any("1.618" in s.get("title", "") for s in fib_tp_sigs)
 
-    bearish_bevestiging = (w_turn.get("bearTurn") or w_turn.get("emaBearish")
-                           or m_state in ("light_bear", "strong_bear"))
+    # Rangorde van oordelen zodat we alleen naar een STRENGER (meer bearish) oordeel
+    # kantelen, nooit naar een milder. Zo overrulet de zone een koopsignaal, maar
+    # verzwakt hij geen bestaand sterker verkoopsignaal.
+    _rang = {"STERK KOOP": 0, "KOOP": 1, "LICHT KOOP": 2, "NEUTRAAL": 3,
+             "CAUTION (overextended)": 4, "LICHT VERKOOP": 5, "VERKOOP": 6, "STERK VERKOOP": 7}
+    def _kantel_naar(doel, note):
+        nonlocal overall, conflict_note
+        if _rang.get(doel, 0) > _rang.get(overall, 0):
+            overall = doel
+            conflict_note = (conflict_note + " " if conflict_note else "") + note
 
     if has_2618:
-        if bearish_bevestiging:
-            if overall != "STERK VERKOOP":
-                overall = "STERK VERKOOP"
-                conflict_note = (conflict_note + " " if conflict_note else "") + \
-                    "Prijs bij/terug van de 2.618-TP-zone (uitzonderlijk ver in winst) + bearish bevestiging - sterk verkoop."
-        elif overall not in ("STERK VERKOOP", "VERKOOP", "LICHT VERKOOP"):
-            # GEEN bearish bevestiging: uitzonderlijk ver in winst, maar het aandeel
-            # kantelt niet. Dat is een WAARSCHUWING, geen verkoopbevel -- precies de
-            # NET-les: een gezonde uitbraak is geen overextensie. Wie hier hard verkoopt,
-            # stapt uit bij de sterkste aandelen.
-            overall = "CAUTION (overextended)"
-            conflict_note = (conflict_note + " " if conflict_note else "") + \
-                "Prijs bij de 2.618-TP-zone (uitzonderlijk ver in winst), maar GEEN bearish bevestiging - " \
-                "waarschuwing, geen verkoopsignaal. Het aandeel stijgt gezond door."
+        _kantel_naar("STERK VERKOOP",
+            "Prijs op/voorbij de 2.618-extensie (uitzonderlijk ver in winst) - sterk verkoop.")
     elif has_2000:
-        if bearish_bevestiging:
-            if overall not in ("STERK VERKOOP", "VERKOOP"):
-                overall = "VERKOOP"
-                conflict_note = (conflict_note + " " if conflict_note else "") + \
-                    "Prijs bij/terug van de 2.0-TP-zone (hoog in winst) + bearish bevestiging - verkoop."
-        elif overall not in ("STERK VERKOOP", "VERKOOP", "LICHT VERKOOP"):
-            overall = "CAUTION (overextended)"
-            conflict_note = (conflict_note + " " if conflict_note else "") + \
-                "Prijs bij de 2.0-TP-zone (hoog in winst), geen bearish bevestiging - voorzichtig (overextended)."
+        _kantel_naar("VERKOOP",
+            "Prijs voorbij de 2.0-extensie (diep in winst) - verkoop.")
+    elif has_1818:
+        _kantel_naar("LICHT VERKOOP",
+            "Prijs voorbij de 1.818-extensie (ver in winst) - licht verkoop.")
     elif has_1618:
-        # Streng maar zacht: kantel naar CAUTION, geen harde verkoop.
-        if overall not in ("STERK VERKOOP", "VERKOOP", "LICHT VERKOOP"):
-            overall = "CAUTION (overextended)"
-            conflict_note = (conflict_note + " " if conflict_note else "") + \
-                "Prijs bij de 1.618-TP-zone (duidelijke winstzone) - voorzichtig (overextended), geen automatische verkoop."
+        _kantel_naar("CAUTION (overextended)",
+            "Prijs op/voorbij de 1.618-extensie (kern-winstzone) - voorzichtig (overextended).")
 
     if reasons_c:
         conflict_note = (conflict_note + " " if conflict_note else "") + " | ".join(reasons_c)
@@ -2254,8 +2265,12 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # ── 7. ULTIEME-KOOP OVERRULE: bij kwaliteit overrulet het ultieme EMA-koopsignaal
     # ALLES → STERK KOOP. De zeldzame samenloop (goudkruis na downtrend + oversold +
     # bodempatroon + monthly-bevestiging) wil je bij kwaliteit niet missen, ook niet als
-    # er nog wat bearish ruis of een TP-caution meespeelt.
-    if ema_ultimate_buy and not is_bagger:
+    # er nog wat bearish ruis of een TP-caution meespeelt. UITZONDERING: als de koers
+    # voorbij de 1.818-extensie staat (licht verkoop of erger via de zonale kanteling),
+    # dan NIET overrulen -- een ultiem koopsignaal hoog in de winstzone is tegenstrijdig
+    # (je koopt niet 'de bodem' als je op 2x je startpunt staat). Onder 1.818 mag het.
+    _te_ver_voor_ultimate = has_1818 or has_2000 or has_2618
+    if ema_ultimate_buy and not is_bagger and not _te_ver_voor_ultimate:
         overall = "STERK KOOP"
         conflict_note = (conflict_note + " " if conflict_note else "") + \
             "Ultiem EMA-koopmoment (goudkruis na downtrend + oversold + bodem + monthly-bevestiging) - overrulet naar sterk koop voor kwaliteit."
@@ -2265,6 +2280,36 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # instapscore maar staat NIET ver onder zijn top -- dat onderscheid maakt dit veld.
     near_any_tp = any(_near(l) for l in ("1.618", "1.818", "2.000", "2.618"))
     pct_off_high = round(max(0.0, (long_high - last) / long_high * 100.0), 1) if long_high > 0 else None
+
+    # ── 8. OMSLAG-MILDERING (LAAT): draait een VERKOOP terug bij genoeg omslag ─────
+    # Bewust NA alle kantelingen (stap 3 bearTurn, stap 5 overextensie, stap 6 fib-TP),
+    # want elk daarvan kan het oordeel op VERKOOP zetten -- een eerdere elif-plaatsing
+    # miste die gevallen. Als meerdere omslag-signalen samenvallen (bullish divergence
+    # + weekly 8/21-EMA-kruis omhoog + horizontale steun + ...), is "VERKOOP" niet meer
+    # terecht: de koers vormt mogelijk een bodem. We tillen het naar NEUTRAAL -- nooit
+    # meer verkoop bij >=3 omslag-signalen. Bewust GEEN koop (trend nog niet bevestigd),
+    # NIET bij monthly strong_bear (dan domineert de maandtrend nog en is een enkele
+    # weekly-draai te vroeg), en NIET bij STERK VERKOOP (te veel tegenkracht). Vroege
+    # heads-up, geen koopsein.
+    try:
+        _omslag = omslag_signalen
+    except NameError:
+        _omslag = 0   # strong_bear-tak zette omslag_signalen niet
+    if (m_state != "strong_bear" and _omslag >= 3
+            and ("VERKOOP" in overall) and overall != "STERK VERKOOP"):
+        _bewijs = []
+        if w_turn.get("bullTurn") or w_turn.get("emaCrossUp"): _bewijs.append("weekly 8/21-EMA draait op")
+        try:
+            if bull_div: _bewijs.append("bullish divergence" + (" (bevestigd)" if bull_div_confirmed else ""))
+        except NameError:
+            pass
+        _bewijs.extend(support_flags)
+        overall = "NEUTRAAL"
+        _reversal_note = (
+            "Omslag gaande - meerdere keer-signalen vallen samen (" + ", ".join(_bewijs) +
+            "). Verkoopdruk droogt op; nog geen koopbevestiging, maar geen verkoop meer.")
+        if _reversal_note not in reasons_c:
+            reasons_c.append(_reversal_note)
 
     return {
         "signals": signals, "alerts": alerts, "overall": overall,
@@ -2623,6 +2668,54 @@ def compute_timing(daily, weekly, monthly, fib_daily) -> dict:
     }
 
 # ── KWALITEIT (Buffett-poort) ─────────────────────────────────────────────────
+def compute_earnings_growth(fund: dict) -> dict:
+    """Zet de meerjarige winsthistorie om naar YoY-groei plus context. Het doel is
+    Rubens inzicht: een los YoY-cijfer misleidt zonder meerjarig kader. 30% groei na
+    jaren van daling is iets heel anders dan het zesde jaar op rij 30%. Deze functie
+    levert de reeks groeivoeten + een gemiddelde/mediaan, zodat de frontend het
+    huidige cijfer tegen de historie kan tonen.
+
+    earningsHistory in FUNDAMENTALS is [[jaar, winst], ...] (oplopend). Geeft None
+    als er geen historie is (de meeste aandelen)."""
+    hist = fund.get("earningsHistory")
+    if not hist or len(hist) < 2:
+        return None
+    reeks = []
+    for i in range(1, len(hist)):
+        jr_prev, w_prev = hist[i-1]
+        jr, w = hist[i]
+        if w_prev is None or w is None:
+            reeks.append({"year": jr, "growth": None, "note": "n.v.t."})
+        elif w_prev <= 0 < w:
+            reeks.append({"year": jr, "growth": None, "note": "verlies→winst"})
+        elif w_prev <= 0 and w <= 0:
+            reeks.append({"year": jr, "growth": None, "note": "verlies"})
+        else:
+            reeks.append({"year": jr, "growth": round((w - w_prev) / w_prev * 100, 0), "note": None})
+    pos = [r["growth"] for r in reeks if r["growth"] is not None]
+    out = {"series": reeks, "years": [h[0] for h in hist], "netIncome": [h[1] for h in hist]}
+    if pos:
+        out["avgGrowth"] = round(statistics.mean(pos), 0)
+        out["medianGrowth"] = round(statistics.median(pos), 0)
+        out["recentGrowth"] = pos[-1] if reeks[-1]["growth"] is not None else None
+        # Is de recente groei sterk afwijkend van de historie? Gebruik de MEDIAAN van
+        # de eerdere jaren (robuust tegen uitschieters zoals een crash-jaar), en
+        # vergelijk alleen als er genoeg eerdere positieve jaren zijn. Zo markeert een
+        # dip-jaar in de historie de trend niet ten onrechte als 'piek'.
+        if reeks[-1]["growth"] is not None and len(pos) >= 3:
+            eerder = pos[:-1]
+            eerder_pos = [g for g in eerder if g > 0]   # crash-jaren tellen niet als basis
+            if len(eerder_pos) >= 2:
+                med_eerder = statistics.median(eerder_pos)
+                recent = reeks[-1]["growth"]
+                if med_eerder > 0:
+                    if recent < med_eerder * 0.4:
+                        out["recentBelowTrend"] = True     # mogelijk tijdelijke dip
+                    elif recent > med_eerder * 2.5:
+                        out["recentAboveTrend"] = True     # mogelijk piek
+    return out
+
+
 def compute_quality(fund: dict) -> dict:
     """
     Kwaliteitsscore 0-100 + harde poort. Alleen poort-passers zijn koopkandidaten
@@ -2659,14 +2752,43 @@ def compute_quality(fund: dict) -> dict:
 
     score = min(100, max(0, s))
 
-    # Harde poort: minimale kwaliteit om investeerbaar te zijn in de kern
+    # Harde poort: minimale kwaliteit om investeerbaar te zijn in de kern.
+    # We tellen elk criterium apart, en meten HOE VER een fail is -- een marginale
+    # misser (bv. marge 6% vs drempel 8%) is iets heel anders dan een structurele
+    # (marge 2%). Dat onderscheid voorkomt dat een tijdelijke, kleine dip een
+    # kwaliteitsbedrijf volledig uit de score gooit (het MELI-probleem: de
+    # Brazilie-investeringen drukten de marge tijdelijk naar 6%).
     gate = True
     fails = []
-    if roe is None or roe < 12:        gate = False; fails.append("ROE < 12%")
-    if margin is None or margin < 8:   gate = False; fails.append("marge < 8%")
-    if de is not None and de > 4:      gate = False; fails.append("schuld te hoog (D/E > 4)")
+    marginal_fails = []   # net-fails, binnen een buffer
+    hard_fails = []       # structurele fails, ver onder de drempel
 
-    return {"score": score, "gate": gate, "reasons": reasons, "gateFails": fails}
+    def _check(waarde, drempel, naam, buffer_ondergrens):
+        # buffer_ondergrens = de waarde waarboven een fail 'marginaal' heet
+        nonlocal gate
+        if waarde is None or waarde < drempel:
+            gate = False
+            fails.append(naam)
+            if waarde is not None and waarde >= buffer_ondergrens:
+                marginal_fails.append(naam)
+            else:
+                hard_fails.append(naam)
+
+    _check(roe,    12, "ROE < 12%",              buffer_ondergrens=9)    # 9-12% = marginaal
+    _check(margin,  8, "marge < 8%",             buffer_ondergrens=5)    # 5-8% = marginaal
+    if de is not None and de > 4:
+        gate = False; fails.append("schuld te hoog (D/E > 4)")
+        (marginal_fails if de <= 5 else hard_fails).append("schuld te hoog (D/E > 4)")
+
+    # VOORWAARDELIJKE POORT: als de poort faalt op UITSLUITEND marginale missers
+    # (geen enkele harde fail), en het op precies EEN criterium is, dan is dit een
+    # kwaliteitsbedrijf met een tijdelijke smet -- geen structureel zwak bedrijf.
+    # We markeren dat apart zodat de kans-berekening het niet hard hoeft te blokkeren.
+    gate_marginal = (not gate) and (len(hard_fails) == 0) and (len(fails) == 1)
+
+    return {"score": score, "gate": gate, "gateMarginal": gate_marginal,
+            "reasons": reasons, "gateFails": fails,
+            "marginalFails": marginal_fails, "hardFails": hard_fails}
 
 def compute_acceleration(fund: dict) -> dict:
     """
@@ -2776,7 +2898,8 @@ def compute_composite(quality_score, valuation_score, timing_score, accel_bonus=
 
 
 def compute_opportunity(quality_score, entry_score, valuation_score, trend_score,
-                        quality_gate, pct_off_high=None, near_tp=False) -> dict:
+                        quality_gate, pct_off_high=None, near_tp=False,
+                        gate_marginal=False, marginal_fail_note=None) -> dict:
     """
     KOOPKANS-SCORE: kwaliteit die ECHT gevallen is en nu redelijk geprijsd staat.
 
@@ -2801,7 +2924,15 @@ def compute_opportunity(quality_score, entry_score, valuation_score, trend_score
       * VRIJE VAL: catastrofale trend (<15) -> de markt weet mogelijk iets wat de
         (per kwartaal bijgewerkte) fundamentals nog niet tonen. Denk aan TSCO.
     """
-    if not quality_gate or quality_score is None or entry_score is None:
+    # Harde blokkade alleen bij een ECHTE poort-fail. Een MARGINALE fail (het
+    # bedrijf mist net één criterium, bv. marge 6% vs 8%, geen structurele smet)
+    # blokkeert niet volledig -- we rekenen de kans wel, met een lichte penalty en
+    # een duidelijke waarschuwing. Zo verdwijnt een kwaliteitsbedrijf met een
+    # tijdelijke dip niet uit beeld (het MELI-geval), zonder dat we een echt zwak
+    # bedrijf doorlaten.
+    if quality_score is None or entry_score is None:
+        return {"score": None, "label": None, "color": "gray", "warning": None}
+    if not quality_gate and not gate_marginal:
         return {"score": None, "label": None, "color": "gray", "warning": None}
 
     val = valuation_score if valuation_score is not None else 50
@@ -2825,6 +2956,15 @@ def compute_opportunity(quality_score, entry_score, valuation_score, trend_score
 
     warning = None
     penalty = 0
+
+    # MARGINALE POORT: het bedrijf mist net één kwaliteitscriterium. We rekenen de
+    # kans wel, maar met een lichte penalty en een expliciete waarschuwing, zodat
+    # Ruben weet dat er een (mogelijk tijdelijke) smet is en zelf kan oordelen.
+    if gate_marginal:
+        penalty += 10
+        wm = marginal_fail_note or ("Kwaliteitspoort net niet gehaald op één criterium - "
+                                    "mogelijk tijdelijk, controleer of het een dip of verval is.")
+        warning = wm
 
     # REM 1: vlak onder een TP-zone = winstnemingsgebied, geen instapgebied.
     if near_tp:
@@ -3947,7 +4087,12 @@ def main():
                 quality["score"], timing.get("entryScore"), val_score,
                 timing.get("trendScore"), quality["gate"],
                 pct_off_high=analysis.get("pctOffHigh"),
-                near_tp=analysis.get("nearTP", False))
+                near_tp=analysis.get("nearTP", False),
+                gate_marginal=quality.get("gateMarginal", False),
+                marginal_fail_note=(
+                    "Kwaliteitspoort net gemist (" + ", ".join(quality.get("marginalFails", [])) +
+                    ") - mogelijk tijdelijk; weeg de meerjarige trend mee."
+                    if quality.get("gateMarginal") else None))
 
             # ETF's: een mandje aandelen heeft geen ROE, marge of schuld. De kwaliteits-
             # poort, waardering, versnelling en het composiet zijn dus betekenisloos en
@@ -3989,6 +4134,7 @@ def main():
             results["stocks"][name] = {
                 "name": name, "ticker": entry["ticker"],
                 "fund": fund, "valuation": valuation,
+                "earningsGrowth": compute_earnings_growth(fund),
                 "timing": timing, "scores": scores, "bagger": bagger,
                 "isBagger": name in BAGGER_TICKERS,
                 "isETF": name in ETF_TICKERS,
@@ -4049,6 +4195,8 @@ def main():
             "sector": s.get("sector"),
             "currency": CURRENCY.get(name, "$"),
             "marketAdj": sc.get("marketAdj", 0),
+            "overall": s.get("overall"),
+            "nearTP": s.get("nearTP", False),
         }
         if sc["qualityGate"]:
             candidates.append(row)
