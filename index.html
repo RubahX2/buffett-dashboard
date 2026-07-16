@@ -267,6 +267,36 @@ function ValuationPanel({ valuation, fund }) {
               </span>
             </div>
           )}
+          {v.isCyclical && Array.isArray(v.pegCurve) && v.pegCurve.length > 1 && (
+            <div style={{marginTop:8,paddingTop:8,borderTop:`1px solid ${C.border}`}}>
+              <div style={{color:C.textDim,fontSize:10,marginBottom:6,lineHeight:1.4}}>
+                <b style={{color:C.orange}}>Cyclisch aandeel</b> — de PEG hangt sterk af van de groei,
+                en die schommelt door de cyclus. Bekijk de PEG bij verschillende groeivoeten en
+                oordeel zelf welke representatief is:
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:2}}>
+                {v.pegCurve.map((pt,i)=>{
+                  const pc = pt.peg<1.5?C.green:pt.peg<2.5?C.textDim:pt.peg<3.5?C.orange:C.red;
+                  const isNow = v.peg!=null && Math.abs(pt.peg - v.peg) < 0.01;
+                  return (
+                    <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",
+                      padding:"3px 8px",borderRadius:4,
+                      background:isNow?"#1a1200":"transparent",
+                      border:isNow?`1px solid ${C.orange}`:"1px solid transparent"}}>
+                      <span style={{color:C.textDim,fontSize:11}}>
+                        groei {pt.growth}%{isNow?" (nu)":""}
+                      </span>
+                      <span style={{color:pc,fontWeight:700,fontSize:12}}>PEG {pt.peg}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{color:C.muted,fontSize:9,marginTop:5,lineHeight:1.4}}>
+                Een lage PEG bij piekgroei betekent niet dat het aandeel structureel goedkoop is —
+                als de cyclus draait, daalt de groei en stijgt de PEG.
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -1335,6 +1365,12 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                 ⚠ {data.conflictNote}
               </div>
             )}
+            {/* Omslag-signaal (positief: verkoopdruk droogt op) */}
+            {data?.reversalNote&&(
+              <div style={{marginTop:6,padding:"5px 8px",background:"#0a1e2e",border:`1px solid ${C.accent}`,borderRadius:5,fontSize:10,color:"#7dd3fc"}}>
+                🔄 {data.reversalNote}
+              </div>
+            )}
           </div>
           <button onClick={onClose} style={{background:"none",border:"none",color:C.textDim,fontSize:24,cursor:"pointer"}}>✕</button>
         </div>
@@ -1940,7 +1976,7 @@ function App() {
           <span style={{color:C.textDim,fontSize:11,marginLeft:10}}>Kwaliteit × Timing</span>
         </div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          {[["allocatie","🎯 Maandpick"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["momentum","🔄 Momentum"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
+          {[["allocatie","🎯 Maandpick"],["schatkamer","💰 Schatkamer"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["momentum","🔄 Momentum"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
             <button key={v} onClick={()=>setView(v)} style={{
               background:view===v?C.accent:"none",color:view===v?C.bg:C.textDim,
               border:`1px solid ${view===v?C.accent:C.border}`,borderRadius:5,
@@ -2131,6 +2167,92 @@ function App() {
               </div>
             </>
           )}
+        </div>
+      )}
+
+      {/* SCHATKAMER VIEW */}
+      {view==="schatkamer"&&(
+        <div style={{padding:"14px 16px"}}>
+          <div style={{marginBottom:14}}>
+            <div style={{color:"#facc15",fontSize:15,fontWeight:700,marginBottom:4}}>
+              💰 De schatkamer — goedkope kwaliteit die klaarligt
+            </div>
+            <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:660}}>
+              Kwaliteitsaandelen die de poort halen <b style={{color:C.text}}>én</b> redelijk tot
+              aantrekkelijk geprijsd staan. Dit is <b style={{color:C.text}}>niet</b> de maandpick —
+              de maandpick weegt timing zwaar en wil een aandeel dat nú koopwaardig oogt. De
+              schatkamer is de voorraad: goede bedrijven tegen een faire prijs die wachten op hun
+              moment (een uitbraak). Een aandeel kan hier staan terwijl het nog daalt.
+              <div style={{marginTop:6,paddingLeft:10,borderLeft:`2px solid ${C.border}`,color:C.muted}}>
+                Gesorteerd op waardering, maar <b style={{color:C.orange}}>cyclische piekgroei-aandelen
+                staan onderaan</b>: hun goedkoopte rust op piekgroei en is minder betrouwbaar dan een
+                structureel lage waardering. Let op de vlag.
+              </div>
+            </div>
+          </div>
+
+          {loadState==="ok"&&(()=>{
+            const sk = allocation?.treasury || [];
+            if(!sk.length) return <div style={{color:C.textDim,fontSize:12}}>Geen aandelen in de schatkamer op dit moment.</div>;
+            return (
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:10}}>
+                {sk.map(r=>{
+                  const col = r.valuationColor==="green"?C.green
+                            : r.valuationColor==="neutral"?C.textDim
+                            : r.valuationColor==="orange"?C.orange : C.textDim;
+                  const cur = r.currency||"$";
+                  return (
+                    <div key={r.ticker} onClick={()=>setSelected(r.ticker)}
+                      style={{background:C.panel,borderRadius:8,padding:"13px",cursor:"pointer",
+                        border:`1px solid ${C.border}`,borderLeft:`3px solid ${r.peakGrowthFlag?C.orange:col}`,
+                        transition:"transform 0.1s,border-color 0.12s"}}
+                      onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.borderColor=C.accent;}}
+                      onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.borderColor=C.border;}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                        <div>
+                          <div style={{color:C.accent,fontWeight:700,fontSize:15}}>{r.ticker}</div>
+                          <div style={{color:C.textDim,fontSize:10}}>{STOCK_NAMES[r.ticker]}</div>
+                        </div>
+                        <div style={{textAlign:"right"}}>
+                          <div style={{color:C.text,fontSize:15,fontWeight:700}}>
+                            {r.price!=null?`${cur}${r.price.toFixed(2)}`:"—"}
+                          </div>
+                          {r.pctOffHigh!=null && (
+                            <div style={{color:C.muted,fontSize:10}}>{r.pctOffHigh.toFixed(0)}% onder top</div>
+                          )}
+                        </div>
+                      </div>
+                      {r.peakGrowthFlag && (
+                        <div style={{background:"#2a1a00",border:`1px solid ${C.orange}`,borderRadius:5,
+                          padding:"4px 8px",marginBottom:8}}>
+                          <span style={{color:C.orange,fontSize:10,fontWeight:700}}>⚠ piekgroei-cyclisch</span>
+                          <span style={{color:C.textDim,fontSize:9,marginLeft:5}}>goedkoopte deels cyclisch</span>
+                        </div>
+                      )}
+                      <div style={{display:"flex",gap:6,marginBottom:6}}>
+                        <div style={{flex:1,background:C.bg,borderRadius:5,padding:"5px 7px"}}>
+                          <div style={{color:C.muted,fontSize:8}}>waardering</div>
+                          <div style={{color:col,fontSize:13,fontWeight:700}}>{r.valuation ?? "—"}</div>
+                        </div>
+                        <div style={{flex:1,background:C.bg,borderRadius:5,padding:"5px 7px"}}>
+                          <div style={{color:C.muted,fontSize:8}}>kwaliteit</div>
+                          <div style={{color:C.text,fontSize:13,fontWeight:700}}>{r.quality ?? "—"}</div>
+                        </div>
+                        <div style={{flex:1,background:C.bg,borderRadius:5,padding:"5px 7px"}}>
+                          <div style={{color:C.muted,fontSize:8}}>timing</div>
+                          <div style={{color:r.timing>=50?C.green:r.timing>=30?C.orange:C.red,fontSize:13,fontWeight:700}}>{r.timing ?? "—"}</div>
+                        </div>
+                      </div>
+                      <div style={{color:C.textDim,fontSize:10,borderTop:`1px solid ${C.border}`,paddingTop:5}}>
+                        {r.valuationVerdict}
+                        {r.peg!=null && <span style={{color:C.muted}}> · PEG {r.peg}</span>}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
       )}
 
