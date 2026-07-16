@@ -1569,6 +1569,46 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
             <MRow label="EPS (TTM)"         value={fund.eps}                               fmt={v=>`${cur}${(+v).toFixed(2)}`}/>
             <MRow label="Market Cap"        value={fund.mktCap}                            fmt={v=>String(v)}/>
             <MRow label="Beta"              value={fund.beta}                              fmt={v=>`${(+v).toFixed(2)}`}/>
+            {data?.earningsGrowth && Array.isArray(data.earningsGrowth.series) && (
+              <div style={{marginTop:12,paddingTop:12,borderTop:`1px solid ${C.border}`}}>
+                <div style={{color:C.text,fontSize:12,fontWeight:700,marginBottom:2}}>Winstgroei per jaar</div>
+                <div style={{color:C.textDim,fontSize:10,marginBottom:8,lineHeight:1.4}}>
+                  Eén jaar zegt weinig zonder de meerjarige lijn. Zo zie je of een cijfer een
+                  trend is of een uitschieter.
+                </div>
+                <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                  {data.earningsGrowth.series.map((r,i)=>{
+                    const g = r.growth;
+                    const col = g==null?C.muted : g>=40?C.green : g>=0?C.text : C.red;
+                    const label = g==null ? (r.note||"n.v.t.") : `${g>=0?"+":""}${g}%`;
+                    return (
+                      <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:12}}>
+                        <span style={{color:C.textDim}}>{r.year}</span>
+                        <span style={{color:col,fontWeight:700}}>{label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                {(data.earningsGrowth.medianGrowth!=null) && (
+                  <div style={{marginTop:8,paddingTop:8,borderTop:`1px solid ${C.border}`,display:"flex",justifyContent:"space-between",fontSize:11}}>
+                    <span style={{color:C.textDim}}>Mediaan (meerjarig)</span>
+                    <span style={{color:C.text,fontWeight:700}}>{data.earningsGrowth.medianGrowth>=0?"+":""}{data.earningsGrowth.medianGrowth}%</span>
+                  </div>
+                )}
+                {data.earningsGrowth.recentBelowTrend && (
+                  <div style={{marginTop:8,padding:"6px 9px",background:"#0a1e2e",border:`1px solid ${C.accent}`,borderRadius:5,fontSize:10,color:"#7dd3fc",lineHeight:1.5}}>
+                    🔄 De recente winstgroei ligt fors onder de meerjarige lijn — mogelijk een tijdelijke dip
+                    (bv. investeringen), niet per se verval. Weeg de oorzaak mee.
+                  </div>
+                )}
+                {data.earningsGrowth.recentAboveTrend && (
+                  <div style={{marginTop:8,padding:"6px 9px",background:"#2a1a00",border:`1px solid ${C.orange}`,borderRadius:5,fontSize:10,color:C.orange,lineHeight:1.5}}>
+                    ⚠ De recente winstgroei ligt fors boven de meerjarige lijn — mogelijk een piek.
+                    Een waardering op dit tempo kan de cyclus overschatten.
+                  </div>
+                )}
+              </div>
+            )}
             </>)}
           </div>
         )}
