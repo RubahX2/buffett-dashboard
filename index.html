@@ -257,6 +257,16 @@ function ValuationPanel({ valuation, fund }) {
           <div style={{display:"flex",justifyContent:"space-between",marginTop:3,fontSize:8,color:C.muted}}>
             <span>0 goedkoop</span><span>1</span><span>2.5</span><span>4+ duur</span>
           </div>
+          {v.pegNormalized != null && v.normalizedGrowth != null && (
+            <div style={{marginTop:8,paddingTop:8,borderTop:`1px solid ${C.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <span style={{color:C.textDim,fontSize:10}}>
+                Bij normale groei (~{v.normalizedGrowth}%)
+              </span>
+              <span style={{color:v.pegNormalized<2.5?C.green:v.pegNormalized<3.5?C.orange:C.textDim,fontWeight:700,fontSize:13}}>
+                PEG {v.pegNormalized}
+              </span>
+            </div>
+          )}
         </div>
       )}
 
@@ -1058,13 +1068,41 @@ function IndicatorGrid({ ind, cur="$" }) {
     {l:"Weekly eval.", v:ind.isFriday?"Vrijdag ✓":"Weekdag (W signalen vrijdag)", c:ind.isFriday?C.green:C.orange},
   ];
   return (
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
-      {items.map((item,i)=>(
-        <div key={i} style={{background:C.bg,borderRadius:5,padding:"7px 9px"}}>
-          <div style={{color:C.textDim,fontSize:9}}>{item.l}</div>
-          <div style={{color:item.c,fontSize:12,fontWeight:700}}>{item.v||"—"}</div>
-        </div>
-      ))}
+    <div>
+      {ind.divergence && (ind.divergence.bullish || ind.divergence.bearish) && (() => {
+        const dv = ind.divergence;
+        const isBull = dv.bullish;
+        const confirmed = dv.bullishConfirmed || dv.bearishConfirmed;
+        const bg = isBull ? "#0f2417" : "#2a0f0f";
+        const bd = isBull ? C.green : C.red;
+        const detail = dv.rsi || dv.macd;
+        const bron = dv.bullishConfirmed || dv.bearishConfirmed ? "RSI + MACD"
+                   : dv.rsi ? "RSI" : "MACD";
+        return (
+          <div style={{background:bg,border:`1px solid ${bd}`,borderRadius:8,padding:"9px 11px",marginBottom:8}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <span style={{color:bd,fontWeight:800,fontSize:13}}>
+                {isBull ? "▲ Bullish divergence" : "▼ Bearish divergence"}
+                {confirmed && <span style={{fontSize:9,marginLeft:6,opacity:0.85}}>bevestigd</span>}
+              </span>
+              <span style={{color:C.textDim,fontSize:10}}>{bron}</span>
+            </div>
+            <div style={{color:C.textDim,fontSize:10,marginTop:3,lineHeight:1.4}}>
+              {isBull
+                ? "Koers zet lagere bodem, momentum een hogere — verkoopdruk droogt op. Vroege heads-up, geen koopsignaal op zich."
+                : "Koers zet hogere top, momentum een lagere — koopkracht droogt op. Vroege waarschuwing, geen verkoopsignaal op zich."}
+            </div>
+          </div>
+        );
+      })()}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
+        {items.map((item,i)=>(
+          <div key={i} style={{background:C.bg,borderRadius:5,padding:"7px 9px"}}>
+            <div style={{color:C.textDim,fontSize:9}}>{item.l}</div>
+            <div style={{color:item.c,fontSize:12,fontWeight:700}}>{item.v||"—"}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -1902,7 +1940,7 @@ function App() {
           <span style={{color:C.textDim,fontSize:11,marginLeft:10}}>Kwaliteit × Timing</span>
         </div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          {[["allocatie","🎯 Maandpick"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
+          {[["allocatie","🎯 Maandpick"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["momentum","🔄 Momentum"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
             <button key={v} onClick={()=>setView(v)} style={{
               background:view===v?C.accent:"none",color:view===v?C.bg:C.textDim,
               border:`1px solid ${view===v?C.accent:C.border}`,borderRadius:5,
@@ -2233,6 +2271,104 @@ function App() {
                   );
                 })}
               </div>
+            );
+          })()}
+        </div>
+      )}
+
+      {view==="momentum"&&(
+        <div style={{padding:"14px 16px"}}>
+          <div style={{marginBottom:14}}>
+            <div style={{color:"#4ade80",fontSize:15,fontWeight:700,marginBottom:4}}>
+              🔄 Momentum — divergentie tussen koers en indicator
+            </div>
+            <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:640}}>
+              Aandelen waar de <b style={{color:C.text}}>koers en het momentum uit elkaar lopen</b>.
+              Bullish: koers zet een lagere bodem maar RSI/MACD een hogere — de verkoopdruk droogt op.
+              Bearish: het omgekeerde. Dit is een <b style={{color:C.text}}>vroege heads-up</b> dat een
+              trend kan keren, geen koop- of verkoopsignaal op zichzelf.
+              <div style={{marginTop:6,paddingLeft:10,borderLeft:`2px solid ${C.border}`,color:C.muted}}>
+                "Bevestigd" = zowel RSI als MACD tonen dezelfde divergentie op de recente bodems/toppen.
+                Divergentie kan meerdere keren optreden voordat een trend echt draait — wacht op
+                bevestiging (hogere bodem, EMA-herovering, volume) voor je erop handelt.
+              </div>
+            </div>
+          </div>
+
+          {loadState==="ok"&&(()=>{
+            const div = (t)=>(stocks[t]?.indicators||{}).divergence;
+            const bull = TICKER_ORDER.filter(t=>div(t)?.bullish);
+            const bear = TICKER_ORDER.filter(t=>div(t)?.bearish);
+            // bevestigde eerst, dan de rest
+            const sorter = (a,b)=>{
+              const da=div(a), db=div(b);
+              const ca=(da.bullishConfirmed||da.bearishConfirmed)?1:0;
+              const cb=(db.bullishConfirmed||db.bearishConfirmed)?1:0;
+              return cb-ca;
+            };
+            bull.sort(sorter); bear.sort(sorter);
+
+            const Card = (ticker, isBull)=>{
+              const d=stocks[ticker], dv=div(ticker);
+              const detail = dv.rsi || dv.macd;
+              const confirmed = dv.bullishConfirmed || dv.bearishConfirmed;
+              const col = isBull ? C.green : C.red;
+              const cur = d.currency||"$";
+              const bron = confirmed ? "RSI + MACD" : dv.rsi ? "RSI" : "MACD";
+              return (
+                <div key={ticker} onClick={()=>setSelected(ticker)}
+                  style={{background:C.panel,borderRadius:8,padding:"13px",cursor:"pointer",
+                    border:`1px solid ${C.border}`,borderLeft:`3px solid ${col}`,
+                    transition:"transform 0.1s,border-color 0.12s"}}
+                  onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.borderColor=C.accent;}}
+                  onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.borderColor=C.border;}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                    <div>
+                      <div style={{color:C.accent,fontWeight:700,fontSize:15}}>{ticker}</div>
+                      <div style={{color:C.textDim,fontSize:10}}>{STOCK_NAMES[ticker]}</div>
+                    </div>
+                    <div style={{textAlign:"right"}}>
+                      <div style={{color:col,fontSize:12,fontWeight:800}}>
+                        {isBull?"▲ bullish":"▼ bearish"}
+                      </div>
+                      <div style={{color:C.muted,fontSize:9}}>{bron}{confirmed?" · bevestigd":""}</div>
+                    </div>
+                  </div>
+                  {detail && (
+                    <div style={{fontSize:10,color:C.textDim,lineHeight:1.5,borderTop:`1px solid ${C.border}`,paddingTop:6}}>
+                      {isBull ? (
+                        <>koers {cur}{detail.priceLow1} → {cur}{detail.priceLow2} (lager),
+                        indicator {detail.indLow1} → {detail.indLow2} (hoger)</>
+                      ) : (
+                        <>koers {cur}{detail.priceHigh1} → {cur}{detail.priceHigh2} (hoger),
+                        indicator {detail.indHigh1} → {detail.indHigh2} (lager)</>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            };
+
+            return (
+              <>
+                <div style={{color:C.green,fontSize:13,fontWeight:700,marginBottom:8}}>
+                  ▲ Bullish divergence ({bull.length})
+                </div>
+                {bull.length ? (
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:10,marginBottom:20}}>
+                    {bull.map(t=>Card(t,true))}
+                  </div>
+                ) : <div style={{color:C.textDim,fontSize:12,marginBottom:20}}>Geen bullish divergence op dit moment.</div>}
+
+                <div style={{color:C.red,fontSize:13,fontWeight:700,marginBottom:8}}>
+                  ▼ Bearish divergence ({bear.length})
+                </div>
+                {bear.length ? (
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:10}}>
+                    {bear.map(t=>Card(t,false))}
+                  </div>
+                ) : <div style={{color:C.textDim,fontSize:12}}>Geen bearish divergence op dit moment.</div>}
+              </>
             );
           })()}
         </div>
