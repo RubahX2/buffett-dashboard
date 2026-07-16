@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-16T08:31:14.841715+02:00",
-  "generatedAtHuman": "Thursday 16 July 2026 om 08:31",
+  "generatedAt": "2026-07-16T15:04:29.039111+02:00",
+  "generatedAtHuman": "Thursday 16 July 2026 om 15:04",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -36,7 +36,7 @@
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 44 \u2191 61"
+          "text": "Composiet 44 \u2191 62"
         },
         {
           "type": "valuation",
@@ -214,7 +214,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -17.1% deze week ($6636\u2192$5501)"
+          "text": "Koers -17.2% deze week ($6636\u2192$5494)"
         }
       ]
     },
@@ -362,7 +362,7 @@
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 54 \u2191 59"
+          "text": "Composiet 54 \u2191 62"
         },
         {
           "type": "signal",
@@ -436,6 +436,22 @@
       ]
     },
     {
+      "ticker": "GAW",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 59 \u2193 50"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
+        }
+      ]
+    },
+    {
       "ticker": "MNST",
       "daysAgo": 7,
       "changes": [
@@ -464,6 +480,22 @@
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Neutraal (PEG 1.5\u20132.5)"
+        }
+      ]
+    },
+    {
+      "ticker": "ADM",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 67 \u2193 62"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: KOOP \u2192 STERK KOOP"
         }
       ]
     },
@@ -548,13 +580,45 @@
       ]
     },
     {
+      "ticker": "DIE",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 60 \u2193 52"
+        },
+        {
+          "type": "signal",
+          "dir": "down",
+          "text": "Signaal: KOOP \u2192 VERKOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "AIR",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 52 \u2193 44"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
+        }
+      ]
+    },
+    {
       "ticker": "ALFEN",
       "daysAgo": 7,
       "changes": [
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 41 \u2193 33"
+          "text": "Composiet 41 \u2193 36"
         },
         {
           "type": "valuation",
@@ -784,28 +848,6 @@
       ]
     },
     {
-      "ticker": "GAW",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: CAUTION (overextended) \u2192 STERK KOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "ADM",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 STERK KOOP"
-        }
-      ]
-    },
-    {
       "ticker": "III",
       "daysAgo": 7,
       "changes": [
@@ -824,17 +866,6 @@
           "type": "composite",
           "dir": "up",
           "text": "Composiet 46 \u2191 51"
-        }
-      ]
-    },
-    {
-      "ticker": "DIE",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "down",
-          "text": "Signaal: KOOP \u2192 VERKOOP"
         }
       ]
     },
@@ -1026,6 +1057,6 @@
       ]
     }
   ],
-  "changedCount": 67,
+  "changedCount": 68,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }

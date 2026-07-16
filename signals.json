@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-07-16T08:31:14.841715+02:00",
-    "generatedAtHuman": "Thursday 16 July 2026 om 08:31",
+    "generatedAt": "2026-07-16T15:04:29.039111+02:00",
+    "generatedAtHuman": "Thursday 16 July 2026 om 15:04",
     "isFriday": false,
     "isWeekend": false,
     "version": "5.0",
@@ -671,8 +671,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 50.0,
-        "peg": 3.12,
+        "currentPE": 52.7,
+        "peg": 3.29,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -680,17 +680,19 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 87.5,
         "verdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "verdictColor": "orange",
-        "notes": []
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
-        "score": 47,
+        "score": 50,
         "label": "Neutrale setup",
         "color": "neutral",
         "trendScore": 77,
-        "entryScore": 55,
+        "entryScore": 62,
         "trendDaily": 25,
         "trendWeekly": 90,
         "trendMonthly": 90,
@@ -703,7 +705,7 @@
         "macdTurning": [
           "weekly"
         ],
-        "baseTimin": 68
+        "baseTimin": 71
       },
       "scores": {
         "quality": 95,
@@ -716,10 +718,10 @@
         ],
         "qualityFails": [],
         "valuation": 30,
-        "timing": 47,
+        "timing": 50,
         "marketAdj": 6,
-        "timingEffective": 53,
-        "composite": 61,
+        "timingEffective": 56,
+        "composite": 62,
         "opportunity": 54,
         "opportunityLabel": "Redelijke kans",
         "opportunityColor": "orange",
@@ -801,24 +803,24 @@
       "conflict": false,
       "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 10.6,
+      "pctOffHigh": 10.8,
       "indicators": {
-        "last": 1555.8,
-        "rsiDaily": 49.8,
+        "last": 1553.8,
+        "rsiDaily": 49.7,
         "rsiWeekly": 67.7,
-        "ema8d": 1569.58,
-        "ema21d": 1570.45,
+        "ema8d": 1562.59,
+        "ema21d": 1567.2,
         "ema8w": 1531.11,
         "ema21w": 1371.43,
-        "ma50": 1487.51,
-        "ma200": 1163.2,
-        "macdLine": 16.1071,
-        "macdSignal": 29.7007,
+        "ma50": 1497.48,
+        "ma200": 1170.41,
+        "macdLine": 10.3896,
+        "macdSignal": 25.3071,
         "macdLineW": 152.8349,
         "macdSigW": 134.4493,
-        "bollUpper": 1710.61,
-        "bollLower": 1494.95,
-        "volRatio": 1.31,
+        "bollUpper": 1693.81,
+        "bollLower": 1488.83,
+        "volRatio": 0.38,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -847,7 +849,7 @@
           "extSwingLow": 1.62,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($1555.80) ligt boven de verste extensie ($29.33) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($1553.80) ligt boven de verste extensie ($29.33) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
@@ -887,8 +889,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 48.7,
-        "peg": 3.04,
+        "currentPE": 45.5,
+        "peg": 2.84,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -896,18 +898,20 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 78.3,
         "verdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "verdictColor": "orange",
-        "notes": []
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
         "score": 47,
         "label": "Neutrale setup",
         "color": "neutral",
-        "trendScore": 75,
-        "entryScore": 55,
-        "trendDaily": 15,
+        "trendScore": 74,
+        "entryScore": 70,
+        "trendDaily": 10,
         "trendWeekly": 90,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -917,9 +921,10 @@
           "monthly": 30.3
         },
         "macdTurning": [
+          "daily",
           "weekly"
         ],
-        "baseTimin": 67
+        "baseTimin": 72
       },
       "scores": {
         "quality": 90,
@@ -931,14 +936,14 @@
           "Groei +16%"
         ],
         "qualityFails": [],
-        "valuation": 30,
+        "valuation": 40,
         "timing": 47,
         "marketAdj": 6,
         "timingEffective": 53,
-        "composite": 59,
-        "opportunity": 56,
-        "opportunityLabel": "Redelijke kans",
-        "opportunityColor": "orange",
+        "composite": 62,
+        "opportunity": 63,
+        "opportunityLabel": "Goede koopkans",
+        "opportunityColor": "green",
         "opportunityWarning": null,
         "acceleration": 68,
         "accelLabel": "Versnelt",
@@ -1010,24 +1015,24 @@
       "conflict": false,
       "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 15.1,
+      "pctOffHigh": 18.8,
       "indicators": {
-        "last": 927.6,
-        "rsiDaily": 48.2,
+        "last": 887.2,
+        "rsiDaily": 43.2,
         "rsiWeekly": 58.8,
-        "ema8d": 924.17,
-        "ema21d": 942.7,
+        "ema8d": 915.82,
+        "ema21d": 936.06,
         "ema8w": 933.58,
         "ema21w": 842.05,
-        "ma50": 926.19,
-        "ma200": 700.56,
-        "macdLine": -7.407,
-        "macdSignal": 2.3533,
+        "ma50": 927.93,
+        "ma200": 704.48,
+        "macdLine": -10.7461,
+        "macdSignal": -0.3149,
         "macdLineW": 93.2613,
         "macdSigW": 89.5652,
-        "bollUpper": 1087.75,
-        "bollLower": 857.0,
-        "volRatio": 1.21,
+        "bollUpper": 1063.37,
+        "bollLower": 850.79,
+        "volRatio": 0.33,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -1056,7 +1061,7 @@
           "extSwingLow": 3.55,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($927.60) ligt boven de verste extensie ($11.71) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($887.20) ligt boven de verste extensie ($11.71) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
@@ -2271,29 +2276,30 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 17.8,
-        "peg": 178.0,
-        "pegNormalized": 3.56,
+        "currentPE": 18.0,
+        "peg": 180.0,
+        "pegNormalized": 3.6,
         "normalizedGrowth": 5.0,
         "pePercentile": null,
         "peMin": null,
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 16.1,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
-          "Cyclisch: PEG 178 nu is vertekend door bodemgroei (0.1%). Bij genormaliseerde groei (~5%) wordt PEG 3.6 \u2014 nog steeds prijzig"
+          "P/E live: koers \u00f7 laatst bekende EPS",
+          "Cyclisch: PEG 180 nu is vertekend door bodemgroei (0.1%). Bij genormaliseerde groei (~5%) wordt PEG 3.6 \u2014 nog steeds prijzig"
         ]
       },
       "timing": {
-        "score": 30,
+        "score": 25,
         "label": "Slechte instap (wachten)",
         "color": "red",
-        "trendScore": 22,
-        "entryScore": 55,
-        "trendDaily": 25,
+        "trendScore": 30,
+        "entryScore": 30,
+        "trendDaily": 65,
         "trendWeekly": 35,
         "trendMonthly": 10,
         "hasMonthly": true,
@@ -2305,7 +2311,7 @@
         "macdTurning": [
           "weekly"
         ],
-        "baseTimin": 35
+        "baseTimin": 30
       },
       "scores": {
         "quality": 62,
@@ -2316,11 +2322,11 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 30,
+        "timing": 25,
         "marketAdj": 6,
-        "timingEffective": 36,
-        "composite": 33,
-        "opportunity": 59,
+        "timingEffective": 31,
+        "composite": 31,
+        "opportunity": 57,
         "opportunityLabel": "Redelijke kans",
         "opportunityColor": "orange",
         "opportunityWarning": null,
@@ -2374,7 +2380,7 @@
           "weight": 6,
           "icon": "\ud83d\udcc9",
           "title": "Terugval uit 2.000 TP-zone \u2b50",
-          "detail": "Prijs zakte 10% van de recente top ($537.20, bij de 2.000-TP-zone). monthly MACD bearish, MACD draait op 1 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "detail": "Prijs zakte 8% van de recente top ($537.20, bij de 2.000-TP-zone). monthly MACD bearish, MACD draait op 1 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -2403,24 +2409,24 @@
       "conflict": false,
       "conflictNote": "Monthly sterk bearish (EMA-kruising + MACD bearish & dalend) - koop geblokkeerd",
       "nearTP": false,
-      "pctOffHigh": 42.8,
+      "pctOffHigh": 41.7,
       "indicators": {
-        "last": 482.95,
-        "rsiDaily": 46.3,
+        "last": 492.75,
+        "rsiDaily": 51.7,
         "rsiWeekly": 47.1,
-        "ema8d": 489.41,
-        "ema21d": 490.05,
+        "ema8d": 491.25,
+        "ema21d": 490.77,
         "ema8w": 489.52,
         "ema21w": 495.28,
-        "ma50": 482.48,
-        "ma200": 533.55,
-        "macdLine": 0.8169,
-        "macdSignal": 2.0232,
+        "ma50": 483.2,
+        "ma200": 533.4,
+        "macdLine": 1.2543,
+        "macdSignal": 1.9317,
         "macdLineW": -10.7729,
         "macdSigW": -16.1581,
-        "bollUpper": 507.52,
-        "bollLower": 476.88,
-        "volRatio": 1.04,
+        "bollUpper": 502.03,
+        "bollLower": 479.61,
+        "volRatio": 0.2,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -4394,8 +4400,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 31.6,
-        "peg": 2.98,
+        "currentPE": 3256.4,
+        "peg": 307.21,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -4403,17 +4409,19 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
-        "verdict": "Aan de dure kant (PEG 2.5\u20133.5)",
-        "verdictColor": "orange",
-        "notes": []
+        "priceRangePosition": 90.0,
+        "verdict": "Duur (PEG > 3.5)",
+        "verdictColor": "red",
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
-        "score": 52,
+        "score": 47,
         "label": "Neutrale setup",
         "color": "neutral",
         "trendScore": 77,
-        "entryScore": 55,
+        "entryScore": 42,
         "trendDaily": 25,
         "trendWeekly": 90,
         "trendMonthly": 90,
@@ -4426,7 +4434,7 @@
         "macdTurning": [
           "weekly"
         ],
-        "baseTimin": 68
+        "baseTimin": 63
       },
       "scores": {
         "quality": 89,
@@ -4437,14 +4445,14 @@
           "Lage schuld"
         ],
         "qualityFails": [],
-        "valuation": 40,
-        "timing": 52,
+        "valuation": 8,
+        "timing": 47,
         "marketAdj": 6,
-        "timingEffective": 58,
-        "composite": 62,
-        "opportunity": 57,
-        "opportunityLabel": "Redelijke kans",
-        "opportunityColor": "orange",
+        "timingEffective": 53,
+        "composite": 50,
+        "opportunity": 47,
+        "opportunityLabel": "Zwakke kans",
+        "opportunityColor": "gray",
         "opportunityWarning": null,
         "acceleration": 50,
         "accelLabel": "Stabiel",
@@ -4488,6 +4496,15 @@
           "icon": "\ud83d\udcc8",
           "title": "Uptrend (MONTHLY) \u2b50",
           "detail": "Monthly trendscore 90/100 \u2014 stijgend op de hoogste timeframe."
+        },
+        {
+          "type": "SELL",
+          "cat": "FIB",
+          "tf": "TP",
+          "weight": 6,
+          "icon": "\ud83d\udcc9",
+          "title": "Terugval uit 2.000 TP-zone \u2b50",
+          "detail": "Prijs zakte 14% van de recente top ($23539.02, bij de 2.000-TP-zone). MACD draait op 1 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -4500,10 +4517,10 @@
           "detail": "MACD: 864.185 | Signaal: 791.452"
         }
       ],
-      "overall": "STERK KOOP",
+      "overall": "CAUTION (overextended)",
       "buyWeight": 11,
-      "sellWeight": 0,
-      "baseOverall": "STERK KOOP",
+      "sellWeight": 6,
+      "baseOverall": "KOOP",
       "confluence": {
         "monthlyState": "bull",
         "weeklyBullTurn": true,
@@ -4513,45 +4530,64 @@
         "supportCount": 0,
         "supportFlags": []
       },
-      "conflict": false,
-      "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
+      "conflict": true,
+      "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Prijs bij de 2.0-TP-zone (hoog in winst), geen bearish bevestiging - voorzichtig (overextended). Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 13.6,
+      "pctOffHigh": 13.7,
       "indicators": {
-        "last": 20340.0,
-        "rsiDaily": 47.9,
+        "last": 20320.0,
+        "rsiDaily": 47.7,
         "rsiWeekly": 55.1,
-        "ema8d": 20453.01,
-        "ema21d": 20545.23,
+        "ema8d": 20431.58,
+        "ema21d": 20521.01,
         "ema8w": 20325.37,
         "ema21w": 19452.0,
-        "ma50": 20072.8,
-        "ma200": 18177.77,
-        "macdLine": 70.2934,
-        "macdSignal": 214.4388,
+        "ma50": 20091.44,
+        "ma200": 18236.71,
+        "macdLine": 38.1567,
+        "macdSignal": 177.6496,
         "macdLineW": 864.1852,
         "macdSigW": 791.4519,
-        "bollUpper": 22215.11,
-        "bollLower": 19529.87,
-        "volRatio": 0.0,
+        "bollUpper": 22217.47,
+        "bollLower": 19505.68,
+        "volRatio": 0.09,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
         "fib": {
-          "retracements": {},
-          "extensions": {},
-          "goldenPocket": null,
-          "swingHigh": 20480.0,
-          "swingLow": 0.0,
-          "extSwingHigh": 23540.0,
-          "extSwingLow": 0.0,
+          "retracements": {
+            "0.000": 23540.0,
+            "0.236": 6456.39,
+            "0.382": 2900.18,
+            "0.500": 1518.85,
+            "0.618": 795.44,
+            "0.705": 493.74,
+            "0.786": 316.72,
+            "0.886": 183.07,
+            "1.000": 98.0,
+            "1.272": 22.07,
+            "1.618": 3.31
+          },
+          "extensions": {
+            "0.000": 98.0,
+            "1.000": 857.5,
+            "1.272": 1546.89,
+            "1.414": 2104.87,
+            "1.618": 3276.39,
+            "1.818": 5055.88,
+            "2.000": 7503.12,
+            "2.618": 28668.38
+          },
+          "goldenPocket": {
+            "low": 493.74,
+            "high": 795.44
+          },
+          "swingHigh": 23540.0,
+          "swingLow": 98.0,
+          "extSwingHigh": 857.5,
+          "extSwingLow": 98.0,
           "logScale": true,
-          "retrRejected": true,
-          "retrRejectReason": "de swing-bodem ($0.00) is onmogelijk laag naast de koers ($20340.00) - vermoedelijk dividend-artefact, geen echte koers",
-          "extRejected": true,
-          "extRejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos",
-          "rejected": true,
-          "rejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos"
+          "rejected": false
         },
         "isFriday": false,
         "hasWeekly": true,
@@ -5321,8 +5357,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 16.5,
-        "peg": 1.83,
+        "currentPE": 18.3,
+        "peg": 2.03,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -5330,18 +5366,20 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 92.6,
         "verdict": "Neutraal (PEG 1.5\u20132.5)",
         "verdictColor": "neutral",
-        "notes": []
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
-        "score": 61,
-        "label": "Gunstige setup",
-        "color": "green",
-        "trendScore": 83,
+        "score": 55,
+        "label": "Neutrale setup",
+        "color": "neutral",
+        "trendScore": 82,
         "entryScore": 50,
-        "trendDaily": 54,
+        "trendDaily": 49,
         "trendWeekly": 90,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -5350,8 +5388,10 @@
           "weekly": 4.5,
           "monthly": 8.8
         },
-        "macdTurning": [],
-        "baseTimin": 70
+        "macdTurning": [
+          "daily"
+        ],
+        "baseTimin": 69
       },
       "scores": {
         "quality": 82,
@@ -5361,12 +5401,12 @@
           "Lage schuld"
         ],
         "qualityFails": [],
-        "valuation": 62,
-        "timing": 61,
+        "valuation": 50,
+        "timing": 55,
         "marketAdj": 6,
-        "timingEffective": 67,
-        "composite": 68,
-        "opportunity": 51,
+        "timingEffective": 61,
+        "composite": 62,
+        "opportunity": 49,
         "opportunityLabel": "Redelijke kans",
         "opportunityColor": "orange",
         "opportunityWarning": null,
@@ -5447,24 +5487,24 @@
       "conflict": false,
       "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 4.2,
+      "pctOffHigh": 5.3,
       "indicators": {
-        "last": 3572.0,
-        "rsiDaily": 55.5,
+        "last": 3532.0,
+        "rsiDaily": 50.8,
         "rsiWeekly": 60.5,
-        "ema8d": 3606.54,
-        "ema21d": 3543.63,
+        "ema8d": 3587.81,
+        "ema21d": 3546.74,
         "ema8w": 3477.07,
         "ema21w": 3337.98,
-        "ma50": 3408.58,
-        "ma200": 3199.84,
-        "macdLine": 67.4803,
-        "macdSignal": 68.5423,
+        "ma50": 3417.22,
+        "ma200": 3202.15,
+        "macdLine": 53.5894,
+        "macdSignal": 64.8135,
         "macdLineW": 110.6033,
         "macdSigW": 72.7005,
-        "bollUpper": 3771.98,
-        "bollLower": 3281.42,
-        "volRatio": 0.0,
+        "bollUpper": 3772.68,
+        "bollLower": 3314.52,
+        "volRatio": 0.12,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -5508,19 +5548,19 @@
         "divergence": {
           "rsi": {
             "type": "bearish",
-            "priceHigh1": 3301.11,
-            "priceHigh2": 3502.0,
-            "indHigh1": 74.74,
-            "indHigh2": 66.83,
-            "barsApart": 44
+            "priceHigh1": 3429.08,
+            "priceHigh2": 3674.0,
+            "indHigh1": 72.8,
+            "indHigh2": 67.68,
+            "barsApart": 55
           },
           "macd": {
             "type": "bearish",
-            "priceHigh1": 3301.11,
-            "priceHigh2": 3502.0,
-            "indHigh1": 106.14,
-            "indHigh2": 33.47,
-            "barsApart": 44
+            "priceHigh1": 3429.08,
+            "priceHigh2": 3674.0,
+            "indHigh1": 81.2,
+            "indHigh2": 80.53,
+            "barsApart": 55
           },
           "bullishConfirmed": false,
           "bearishConfirmed": true,
@@ -6004,7 +6044,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 47.1,
+        "priceRangePosition": 46.9,
         "verdict": "Aantrekkelijk (PEG < 1)",
         "verdictColor": "green",
         "notes": [
@@ -6090,7 +6130,7 @@
           "cat": "RSI",
           "tf": "1D",
           "icon": "\u26a0\ufe0f",
-          "title": "RSI daily nadert overbought (65)"
+          "title": "RSI daily nadert overbought (64)"
         },
         {
           "type": "INFO",
@@ -6117,42 +6157,61 @@
       "conflict": false,
       "conflictNote": "Monthly sterk bearish (EMA-kruising + MACD bearish & dalend) - koop geblokkeerd",
       "nearTP": false,
-      "pctOffHigh": 40.9,
+      "pctOffHigh": 41.0,
       "indicators": {
-        "last": 2658.0,
-        "rsiDaily": 65.0,
+        "last": 2651.0,
+        "rsiDaily": 64.1,
         "rsiWeekly": 48.5,
-        "ema8d": 2635.8,
-        "ema21d": 2535.28,
+        "ema8d": 2639.18,
+        "ema21d": 2545.8,
         "ema8w": 2498.65,
         "ema21w": 2657.92,
-        "ma50": 2375.67,
-        "ma200": 3094.47,
-        "macdLine": 91.4923,
-        "macdSignal": 78.5771,
+        "ma50": 2375.34,
+        "ma200": 3087.28,
+        "macdLine": 88.5896,
+        "macdSignal": 80.5796,
         "macdLineW": -221.5524,
         "macdSigW": -278.2885,
-        "bollUpper": 2831.86,
-        "bollLower": 2188.04,
-        "volRatio": 0.97,
+        "bollUpper": 2833.43,
+        "bollLower": 2227.07,
+        "volRatio": 0.27,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
         "fib": {
-          "retracements": {},
-          "extensions": {},
-          "goldenPocket": null,
-          "swingHigh": 2724.0,
-          "swingLow": 0.0,
-          "extSwingHigh": 4497.0,
-          "extSwingLow": 0.0,
+          "retracements": {
+            "0.000": 4497.0,
+            "0.236": 1249.96,
+            "0.382": 566.13,
+            "0.500": 298.47,
+            "0.618": 157.36,
+            "0.705": 98.16,
+            "0.786": 63.25,
+            "0.886": 36.77,
+            "1.000": 19.81,
+            "1.272": 4.53,
+            "1.618": 0.69
+          },
+          "extensions": {
+            "0.000": 19.81,
+            "1.000": 2444.0,
+            "1.272": 9055.49,
+            "1.414": 17941.76,
+            "1.618": 47915.18,
+            "1.818": 125521.03,
+            "2.000": 301521.26,
+            "2.618": 5911393.68
+          },
+          "goldenPocket": {
+            "low": 98.16,
+            "high": 157.36
+          },
+          "swingHigh": 4497.0,
+          "swingLow": 19.81,
+          "extSwingHigh": 2444.0,
+          "extSwingLow": 19.81,
           "logScale": true,
-          "retrRejected": true,
-          "retrRejectReason": "de swing-bodem ($0.00) is onmogelijk laag naast de koers ($2658.00) - vermoedelijk dividend-artefact, geen echte koers",
-          "extRejected": true,
-          "extRejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos",
-          "rejected": true,
-          "rejectReason": "de swing-bodem ($0.00) is een data-artefact - winstzones erop zijn betekenisloos"
+          "rejected": false
         },
         "isFriday": false,
         "hasWeekly": true,
@@ -7956,8 +8015,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 12.5,
-        "peg": 2.08,
+        "currentPE": 14.0,
+        "peg": 2.33,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -7965,18 +8024,20 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 82.3,
         "verdict": "Neutraal (PEG 1.5\u20132.5)",
         "verdictColor": "neutral",
-        "notes": []
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
-        "score": 59,
-        "label": "Gunstige setup",
-        "color": "green",
-        "trendScore": 71,
-        "entryScore": 55,
-        "trendDaily": 49,
+        "score": 45,
+        "label": "Neutrale setup",
+        "color": "neutral",
+        "trendScore": 74,
+        "entryScore": 30,
+        "trendDaily": 65,
         "trendWeekly": 85,
         "trendMonthly": 70,
         "hasMonthly": true,
@@ -7986,9 +8047,10 @@
           "monthly": 1.1
         },
         "macdTurning": [
+          "daily",
           "monthly"
         ],
-        "baseTimin": 65
+        "baseTimin": 56
       },
       "scores": {
         "quality": 57,
@@ -7998,11 +8060,11 @@
         ],
         "qualityFails": [],
         "valuation": 50,
-        "timing": 59,
+        "timing": 45,
         "marketAdj": 6,
-        "timingEffective": 65,
-        "composite": 58,
-        "opportunity": 28,
+        "timingEffective": 51,
+        "composite": 52,
+        "opportunity": 23,
         "opportunityLabel": "Zwakke kans",
         "opportunityColor": "gray",
         "opportunityWarning": "Vlak bij een TP-winstnemingszone: dit is een uitstapgebied, geen instapgebied.",
@@ -8022,6 +8084,15 @@
       "sector": "Consument & retail",
       "currency": "\u20ac",
       "signals": [
+        {
+          "type": "SELL",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "\ud83d\udcd0",
+          "title": "Fib 1.818 \u2014 take-profit zone: $172.47 (0.4% weg)",
+          "detail": "Prijs $173.10 raakt Fibonacci 1.818. Overweeg winstneming."
+        },
         {
           "type": "SELL",
           "cat": "MACD",
@@ -8056,7 +8127,7 @@
           "weight": 5,
           "icon": "\ud83c\udfaf",
           "title": "Bij 1.818 TP-zone \u2b50 (licht winst nemen)",
-          "detail": "Prijs $169.60 bij de 1.818-extensie ($172.47). Ver in de winstzone; overweeg deels winst te nemen."
+          "detail": "Prijs $173.10 bij de 1.818-extensie ($172.47). Ver in de winstzone; overweeg deels winst te nemen."
         },
         {
           "type": "SELL",
@@ -8065,7 +8136,7 @@
           "weight": 5,
           "icon": "\ud83d\udcc9",
           "title": "Terugval uit 1.818 TP-zone \u2b50",
-          "detail": "Prijs zakte 10% van de recente top ($188.63, bij de 1.818-TP-zone). monthly MACD bearish, MACD draait op 1 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "detail": "Prijs zakte 8% van de recente top ($188.63, bij de 1.818-TP-zone). monthly MACD bearish, MACD draait op 2 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -8076,19 +8147,12 @@
           "icon": "\u2139\ufe0f",
           "title": "MACD weekly momenteel bullish (crossover enkel vrijdag ge\u00ebvalueerd)",
           "detail": "MACD: 1.098 | Signaal: 0.900"
-        },
-        {
-          "type": "WATCH",
-          "cat": "FIB",
-          "tf": "1D",
-          "icon": "\ud83d\udcd0",
-          "title": "Nadert Fib 1.818 take-profit zone: $172.47 (1.7% weg)"
         }
       ],
       "overall": "VERKOOP",
       "buyWeight": 7,
-      "sellWeight": 14,
-      "baseOverall": "VERKOOP",
+      "sellWeight": 17,
+      "baseOverall": "STERK VERKOOP",
       "confluence": {
         "monthlyState": "light_bear",
         "weeklyBullTurn": true,
@@ -8099,26 +8163,26 @@
         "supportFlags": []
       },
       "conflict": true,
-      "conflictNote": "\u26a0\ufe0f CONFLICT: 2 koop vs 3 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
+      "conflictNote": "\u26a0\ufe0f CONFLICT: 2 koop vs 4 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": true,
-      "pctOffHigh": 14.1,
+      "pctOffHigh": 12.3,
       "indicators": {
-        "last": 169.6,
-        "rsiDaily": 47.6,
+        "last": 173.1,
+        "rsiDaily": 52.2,
         "rsiWeekly": 52.0,
-        "ema8d": 172.43,
-        "ema21d": 171.58,
+        "ema8d": 173.23,
+        "ema21d": 172.1,
         "ema8w": 170.98,
         "ema21w": 169.81,
-        "ma50": 168.95,
-        "ma200": 165.57,
-        "macdLine": 1.3118,
-        "macdSignal": 1.714,
+        "ma50": 168.75,
+        "ma200": 165.74,
+        "macdLine": 1.407,
+        "macdSignal": 1.6849,
         "macdLineW": 1.0978,
         "macdSigW": 0.9003,
-        "bollUpper": 181.85,
-        "bollLower": 160.85,
-        "volRatio": 1.11,
+        "bollUpper": 182.27,
+        "bollLower": 162.12,
+        "volRatio": 0.24,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -8187,8 +8251,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 14.0,
-        "peg": 2.8,
+        "currentPE": 12.9,
+        "peg": 2.58,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -8196,18 +8260,20 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 26.0,
         "verdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "verdictColor": "orange",
-        "notes": []
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
         "score": 37,
         "label": "Zwakke setup",
         "color": "orange",
-        "trendScore": 39,
+        "trendScore": 38,
         "entryScore": 50,
-        "trendDaily": 74,
+        "trendDaily": 65,
         "trendWeekly": 51,
         "trendMonthly": 15,
         "hasMonthly": true,
@@ -8289,7 +8355,7 @@
           "cat": "FIB",
           "tf": "1D",
           "icon": "\ud83d\udcd0",
-          "title": "Nadert Fib 0.236 steunzone: $220.46 (2.8% weg)"
+          "title": "Nadert Fib 0.236 steunzone: $220.46 (2.5% weg)"
         }
       ],
       "overall": "VERKOOP",
@@ -8308,24 +8374,24 @@
       "conflict": false,
       "conflictNote": "Monthly sterk bearish (EMA-kruising + MACD bearish & dalend) - koop geblokkeerd",
       "nearTP": false,
-      "pctOffHigh": 44.2,
+      "pctOffHigh": 44.3,
       "indicators": {
-        "last": 226.8,
-        "rsiDaily": 56.0,
+        "last": 226.2,
+        "rsiDaily": 54.7,
         "rsiWeekly": 50.3,
-        "ema8d": 226.66,
-        "ema21d": 224.57,
+        "ema8d": 226.44,
+        "ema21d": 224.84,
         "ema8w": 222.68,
         "ema21w": 224.28,
-        "ma50": 220.13,
-        "ma200": 231.37,
-        "macdLine": 2.1808,
-        "macdSignal": 2.1789,
+        "ma50": 220.42,
+        "ma200": 231.18,
+        "macdLine": 1.8762,
+        "macdSignal": 2.0916,
         "macdLineW": -3.4065,
         "macdSigW": -5.3017,
-        "bollUpper": 231.91,
-        "bollLower": 217.55,
-        "volRatio": 0.57,
+        "bollUpper": 232.12,
+        "bollLower": 218.1,
+        "volRatio": 0.15,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -8354,7 +8420,7 @@
           "extSwingLow": 24.1,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($226.80) ligt boven de verste extensie ($140.05) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($226.20) ligt boven de verste extensie ($140.05) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
@@ -8387,8 +8453,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 20.0,
-        "peg": 2.5,
+        "currentPE": 29.5,
+        "peg": 3.69,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -8396,18 +8462,20 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
-        "verdict": "Aan de dure kant (PEG 2.5\u20133.5)",
-        "verdictColor": "orange",
-        "notes": []
+        "priceRangePosition": 84.1,
+        "verdict": "Duur (PEG > 3.5)",
+        "verdictColor": "red",
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
-        "score": 51,
+        "score": 48,
         "label": "Neutrale setup",
         "color": "neutral",
-        "trendScore": 74,
+        "trendScore": 76,
         "entryScore": 50,
-        "trendDaily": 54,
+        "trendDaily": 65,
         "trendWeekly": 90,
         "trendMonthly": 70,
         "hasMonthly": true,
@@ -8417,9 +8485,10 @@
           "monthly": 6.8
         },
         "macdTurning": [
+          "daily",
           "weekly"
         ],
-        "baseTimin": 64
+        "baseTimin": 66
       },
       "scores": {
         "quality": 57,
@@ -8430,11 +8499,11 @@
         "qualityFails": [
           "marge < 8%"
         ],
-        "valuation": 40,
-        "timing": 51,
+        "valuation": 18,
+        "timing": 48,
         "marketAdj": 6,
-        "timingEffective": 57,
-        "composite": 52,
+        "timingEffective": 54,
+        "composite": 44,
         "opportunity": null,
         "opportunityLabel": null,
         "opportunityColor": "gray",
@@ -8509,24 +8578,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 2 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 9.8,
+      "pctOffHigh": 10.3,
       "indicators": {
-        "last": 195.94,
-        "rsiDaily": 55.0,
+        "last": 194.92,
+        "rsiDaily": 53.4,
         "rsiWeekly": 58.7,
-        "ema8d": 197.69,
-        "ema21d": 194.42,
+        "ema8d": 196.68,
+        "ema21d": 194.54,
         "ema8w": 189.29,
         "ema21w": 183.31,
-        "ma50": 183.71,
-        "ma200": 187.6,
-        "macdLine": 4.4588,
-        "macdSignal": 5.3331,
+        "ma50": 184.07,
+        "ma200": 187.61,
+        "macdLine": 3.5269,
+        "macdSignal": 4.8957,
         "macdLineW": 2.9644,
         "macdSigW": -0.8196,
-        "bollUpper": 207.54,
-        "bollLower": 184.79,
-        "volRatio": 0.76,
+        "bollUpper": 207.14,
+        "bollLower": 186.33,
+        "volRatio": 0.19,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -8555,7 +8624,7 @@
           "extSwingLow": 6.33,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($195.94) ligt boven de verste extensie ($127.65) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($194.92) ligt boven de verste extensie ($127.65) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
@@ -8597,7 +8666,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 4.7,
         "verdict": "Lage P/E (absoluut)",
         "verdictColor": "green",
         "notes": [
@@ -8605,11 +8674,11 @@
         ]
       },
       "timing": {
-        "score": 29,
-        "label": "Slechte instap (wachten)",
-        "color": "red",
+        "score": 36,
+        "label": "Zwakke setup",
+        "color": "orange",
         "trendScore": 45,
-        "entryScore": 55,
+        "entryScore": 72,
         "trendDaily": 10,
         "trendWeekly": 85,
         "trendMonthly": 30,
@@ -8622,7 +8691,7 @@
         "macdTurning": [
           "weekly"
         ],
-        "baseTimin": 49
+        "baseTimin": 56
       },
       "scores": {
         "quality": 14,
@@ -8633,10 +8702,10 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 29,
+        "timing": 36,
         "marketAdj": 6,
-        "timingEffective": 35,
-        "composite": 33,
+        "timingEffective": 42,
+        "composite": 36,
         "opportunity": null,
         "opportunityLabel": null,
         "opportunityColor": "gray",
@@ -8687,19 +8756,19 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "RSI",
+          "tf": "1D",
+          "icon": "\ud83d\udc40",
+          "title": "RSI daily nadert oversold (40)"
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
           "icon": "\u2139\ufe0f",
           "title": "MACD weekly momenteel bullish (crossover enkel vrijdag ge\u00ebvalueerd)",
           "detail": "MACD: 1.240 | Signaal: 1.113"
-        },
-        {
-          "type": "WATCH",
-          "cat": "FIB",
-          "tf": "1D",
-          "icon": "\ud83d\udcd0",
-          "title": "Nadert Fib 0.382 steunzone: $14.08 (2.3% weg)"
         }
       ],
       "overall": "LICHT KOOP",
@@ -8718,24 +8787,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 2 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 88.6,
+      "pctOffHigh": 88.8,
       "indicators": {
-        "last": 13.77,
-        "rsiDaily": 42.1,
+        "last": 13.48,
+        "rsiDaily": 39.8,
         "rsiWeekly": 52.7,
-        "ema8d": 13.91,
-        "ema21d": 14.52,
+        "ema8d": 13.77,
+        "ema21d": 14.36,
         "ema8w": 14.41,
         "ema21w": 13.1,
-        "ma50": 14.98,
-        "ma200": 11.34,
-        "macdLine": -0.4305,
-        "macdSignal": -0.2588,
+        "ma50": 15.02,
+        "ma200": 11.37,
+        "macdLine": -0.4542,
+        "macdSignal": -0.2991,
         "macdLineW": 1.2402,
         "macdSigW": 1.113,
-        "bollUpper": 16.95,
-        "bollLower": 12.88,
-        "volRatio": 0.4,
+        "bollUpper": 16.72,
+        "bollLower": 12.63,
+        "volRatio": 0.38,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -8804,8 +8873,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 55.2,
-        "peg": 5.52,
+        "currentPE": 51.5,
+        "peg": 5.15,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -8813,18 +8882,20 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 81.9,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
-        "notes": []
+        "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS"
+        ]
       },
       "timing": {
-        "score": 52,
+        "score": 51,
         "label": "Neutrale setup",
         "color": "neutral",
-        "trendScore": 76,
-        "entryScore": 55,
-        "trendDaily": 20,
+        "trendScore": 74,
+        "entryScore": 70,
+        "trendDaily": 10,
         "trendWeekly": 90,
         "trendMonthly": 90,
         "hasMonthly": true,
@@ -8834,9 +8905,10 @@
           "monthly": 15.0
         },
         "macdTurning": [
+          "daily",
           "weekly"
         ],
-        "baseTimin": 68
+        "baseTimin": 72
       },
       "scores": {
         "quality": 78,
@@ -8847,11 +8919,11 @@
         ],
         "qualityFails": [],
         "valuation": 8,
-        "timing": 52,
+        "timing": 51,
         "marketAdj": 6,
-        "timingEffective": 58,
+        "timingEffective": 57,
         "composite": 49,
-        "opportunity": 43,
+        "opportunity": 45,
         "opportunityLabel": "Zwakke kans",
         "opportunityColor": "gray",
         "opportunityWarning": null,
@@ -8920,7 +8992,7 @@
           "cat": "BB",
           "tf": "1D",
           "icon": "\ud83d\udcca",
-          "title": "Nadert Bollinger onderband ($10899.73)"
+          "title": "Nadert Bollinger onderband ($10812.50)"
         }
       ],
       "overall": "STERK KOOP",
@@ -8939,24 +9011,24 @@
       "conflict": false,
       "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 11.5,
+      "pctOffHigh": 11.7,
       "indicators": {
-        "last": 10940.0,
+        "last": 10920.0,
         "rsiDaily": 40.9,
         "rsiWeekly": 61.6,
-        "ema8d": 11206.96,
-        "ema21d": 11272.27,
+        "ema8d": 11107.42,
+        "ema21d": 11217.75,
         "ema8w": 11218.94,
         "ema21w": 10570.11,
-        "ma50": 11084.76,
-        "ma200": 9431.96,
-        "macdLine": 14.6601,
-        "macdSignal": 83.2244,
+        "ma50": 11097.15,
+        "ma200": 9462.77,
+        "macdLine": -30.7267,
+        "macdSignal": 56.9275,
         "macdLineW": 643.615,
         "macdSigW": 600.2685,
-        "bollUpper": 11766.27,
-        "bollLower": 10899.73,
-        "volRatio": 0.51,
+        "bollUpper": 11789.5,
+        "bollLower": 10812.5,
+        "volRatio": 0.1,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -8985,7 +9057,7 @@
           "extSwingLow": 37.5,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($10940.00) ligt boven de verste extensie ($199.44) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($10920.00) ligt boven de verste extensie ($199.44) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
@@ -9032,7 +9104,7 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 5.8,
+        "currentPE": 6.0,
         "peg": null,
         "pegNormalized": null,
         "normalizedGrowth": null,
@@ -9041,20 +9113,21 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": null,
+        "priceRangePosition": 7.1,
         "verdict": "Lage P/E (absoluut)",
         "verdictColor": "green",
         "notes": [
+          "P/E live: koers \u00f7 laatst bekende EPS",
           "Geen groeicijfer \u2014 oordeel op absolute P/E"
         ]
       },
       "timing": {
-        "score": 26,
+        "score": 28,
         "label": "Slechte instap (wachten)",
         "color": "red",
-        "trendScore": 10,
-        "entryScore": 75,
-        "trendDaily": 10,
+        "trendScore": 15,
+        "entryScore": 73,
+        "trendDaily": 35,
         "trendWeekly": 10,
         "trendMonthly": 10,
         "hasMonthly": true,
@@ -9067,7 +9140,7 @@
           "weekly",
           "monthly"
         ],
-        "baseTimin": 36
+        "baseTimin": 38
       },
       "scores": {
         "quality": 13,
@@ -9078,9 +9151,9 @@
           "marge < 8%"
         ],
         "valuation": 50,
-        "timing": 26,
+        "timing": 28,
         "marketAdj": 6,
-        "timingEffective": 32,
+        "timingEffective": 34,
         "composite": 32,
         "opportunity": null,
         "opportunityLabel": null,
@@ -9102,6 +9175,15 @@
       "sector": "Industrie & diversen",
       "currency": "E",
       "signals": [
+        {
+          "type": "BUY",
+          "cat": "FIB",
+          "tf": "1D",
+          "weight": 3,
+          "icon": "\ud83d\udcd0",
+          "title": "Fib 0.500 \u2014 steunzone: $73.31 (1.1% weg)",
+          "detail": "Prijs $74.10 raakt Fibonacci 0.500. Potenti\u00eble koopzone."
+        },
         {
           "type": "SELL",
           "cat": "MACD",
@@ -9136,17 +9218,10 @@
           "weight": 5,
           "icon": "\ud83d\udfe2",
           "title": "Uitgebodemd na TP-terugval \u2b50",
-          "detail": "Na een diepe terugval van de 1.414-TP-zone ($106.72) stabiliseert de prijs op $71.88: oversold, verkoopvolume daalt. Niet per se de bodem, wel een gunstige langetermijn-instap."
+          "detail": "Na een diepe terugval van de 1.414-TP-zone ($106.72) stabiliseert de prijs op $74.10: oversold, verkoopvolume daalt. Niet per se de bodem, wel een gunstige langetermijn-instap."
         }
       ],
       "alerts": [
-        {
-          "type": "WATCH",
-          "cat": "RSI",
-          "tf": "1D",
-          "icon": "\ud83d\udc40",
-          "title": "RSI daily nadert oversold (38)"
-        },
         {
           "type": "WATCH",
           "cat": "RSI",
@@ -9161,19 +9236,12 @@
           "icon": "\u2139\ufe0f",
           "title": "MACD weekly momenteel bearish (crossover enkel vrijdag ge\u00ebvalueerd)",
           "detail": "MACD: -3.874 | Signaal: -2.816"
-        },
-        {
-          "type": "WATCH",
-          "cat": "FIB",
-          "tf": "1D",
-          "icon": "\ud83d\udcd0",
-          "title": "Nadert Fib 0.500 steunzone: $73.31 (2.0% weg)"
         }
       ],
       "overall": "VERKOOP",
-      "buyWeight": 5,
+      "buyWeight": 8,
       "sellWeight": 11,
-      "baseOverall": "VERKOOP",
+      "baseOverall": "LICHT VERKOOP",
       "confluence": {
         "monthlyState": "strong_bear",
         "weeklyBullTurn": false,
@@ -9184,26 +9252,26 @@
         "supportFlags": []
       },
       "conflict": true,
-      "conflictNote": "\u26a0\ufe0f CONFLICT: 1 koop vs 3 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Monthly sterk bearish (EMA-kruising + MACD bearish & dalend) - koop geblokkeerd",
+      "conflictNote": "\u26a0\ufe0f CONFLICT: 2 koop vs 3 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Monthly sterk bearish (EMA-kruising + MACD bearish & dalend) - koop geblokkeerd",
       "nearTP": false,
-      "pctOffHigh": 44.9,
+      "pctOffHigh": 43.2,
       "indicators": {
-        "last": 71.88,
-        "rsiDaily": 37.6,
+        "last": 74.1,
+        "rsiDaily": 45.3,
         "rsiWeekly": 31.2,
-        "ema8d": 72.46,
-        "ema21d": 74.89,
+        "ema8d": 73.16,
+        "ema21d": 74.78,
         "ema8w": 77.62,
         "ema21w": 82.27,
-        "ma50": 79.83,
-        "ma200": 87.35,
-        "macdLine": -2.5028,
-        "macdSignal": -2.4656,
+        "ma50": 79.5,
+        "ma200": 87.24,
+        "macdLine": -1.999,
+        "macdSignal": -2.3272,
         "macdLineW": -3.8742,
         "macdSigW": -2.8161,
-        "bollUpper": 81.67,
-        "bollLower": 67.71,
-        "volRatio": 0.82,
+        "bollUpper": 80.1,
+        "bollLower": 68.14,
+        "volRatio": 0.17,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -11199,7 +11267,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 83.7,
+        "priceRangePosition": 83.6,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -11270,7 +11338,7 @@
           "weight": 3,
           "icon": "\ud83d\udd00",
           "title": "8 EMA kruist onder 21 EMA (daily) (laag volume)",
-          "detail": "EMA8 $5280.59 | EMA21 $5282.13 \u2014 bearish momentum."
+          "detail": "EMA8 $5279.48 | EMA21 $5281.67 \u2014 bearish momentum."
         },
         {
           "type": "BUY",
@@ -11326,24 +11394,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 14.6,
+      "pctOffHigh": 14.7,
       "indicators": {
-        "last": 5177.0,
-        "rsiDaily": 47.9,
+        "last": 5172.0,
+        "rsiDaily": 47.8,
         "rsiWeekly": 59.3,
-        "ema8d": 5280.59,
-        "ema21d": 5282.13,
+        "ema8d": 5279.48,
+        "ema21d": 5281.67,
         "ema8w": 5280.23,
         "ema21w": 4933.65,
-        "ma50": 5296.53,
-        "ma200": 4331.41,
-        "macdLine": 22.7541,
-        "macdSignal": 48.5533,
+        "ma50": 5296.43,
+        "ma200": 4331.39,
+        "macdLine": 22.3552,
+        "macdSignal": 48.4735,
         "macdLineW": 377.1007,
         "macdSigW": 384.4287,
-        "bollUpper": 5737.7,
-        "bollLower": 4899.8,
-        "volRatio": 0.62,
+        "bollUpper": 5737.79,
+        "bollLower": 4899.21,
+        "volRatio": 0.75,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -11372,7 +11440,7 @@
           "extSwingLow": 150.0,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($5177.00) ligt boven de verste extensie ($894.30) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($5172.00) ligt boven de verste extensie ($894.30) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
@@ -11419,8 +11487,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 144.8,
-        "peg": 13.16,
+        "currentPE": 144.0,
+        "peg": 13.09,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -11428,7 +11496,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 76.6,
+        "priceRangePosition": 76.0,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -11498,7 +11566,7 @@
           "weight": 3,
           "icon": "\ud83d\udd00",
           "title": "8 EMA kruist onder 21 EMA (daily) (laag volume)",
-          "detail": "EMA8 $7554.83 | EMA21 $7605.50 \u2014 bearish momentum."
+          "detail": "EMA8 $7545.94 | EMA21 $7601.87 \u2014 bearish momentum."
         },
         {
           "type": "BUY",
@@ -11570,24 +11638,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 2 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 20.9,
+      "pctOffHigh": 21.3,
       "indicators": {
-        "last": 7240.0,
-        "rsiDaily": 46.8,
+        "last": 7200.0,
+        "rsiDaily": 46.4,
         "rsiWeekly": 63.4,
-        "ema8d": 7554.83,
-        "ema21d": 7605.5,
+        "ema8d": 7545.94,
+        "ema21d": 7601.87,
         "ema8w": 7385.85,
         "ema21w": 6118.02,
-        "ma50": 7324.8,
-        "ma200": 4535.83,
-        "macdLine": 78.8284,
-        "macdSignal": 212.1371,
+        "ma50": 7324.0,
+        "ma200": 4535.63,
+        "macdLine": 75.6375,
+        "macdSignal": 211.4989,
         "macdLineW": 1137.0329,
         "macdSigW": 923.5568,
-        "bollUpper": 8828.76,
-        "bollLower": 6787.24,
-        "volRatio": 0.59,
+        "bollUpper": 8831.35,
+        "bollLower": 6780.65,
+        "volRatio": 0.65,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -11656,8 +11724,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 43.2,
-        "peg": 4.32,
+        "currentPE": 43.1,
+        "peg": 4.31,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -11665,7 +11733,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 75.2,
+        "priceRangePosition": 74.5,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -11706,7 +11774,7 @@
         "marketAdj": 6,
         "timingEffective": 54,
         "composite": 49,
-        "opportunity": 46,
+        "opportunity": 47,
         "opportunityLabel": "Zwakke kans",
         "opportunityColor": "gray",
         "opportunityWarning": null,
@@ -11768,7 +11836,7 @@
           "cat": "BB",
           "tf": "1D",
           "icon": "\ud83d\udcca",
-          "title": "Nadert Bollinger onderband ($73438.76)"
+          "title": "Nadert Bollinger onderband ($73379.02)"
         }
       ],
       "overall": "STERK KOOP",
@@ -11787,24 +11855,24 @@
       "conflict": false,
       "conflictNote": "Geen weekly draai, maar UNANIEM: 11 koopgewicht tegenover 0 verkoop op alle timeframes - geen tegenspraak om op te wachten.",
       "nearTP": false,
-      "pctOffHigh": 11.7,
+      "pctOffHigh": 12.0,
       "indicators": {
-        "last": 74330.0,
-        "rsiDaily": 43.1,
+        "last": 74050.0,
+        "rsiDaily": 42.5,
         "rsiWeekly": 58.8,
-        "ema8d": 76299.65,
-        "ema21d": 76956.83,
+        "ema8d": 76237.43,
+        "ema21d": 76931.37,
         "ema8w": 76757.83,
         "ema21w": 71467.98,
-        "ma50": 77389.2,
-        "ma200": 63213.34,
-        "macdLine": -151.7298,
-        "macdSignal": 395.6359,
+        "ma50": 77383.6,
+        "ma200": 63211.94,
+        "macdLine": -174.066,
+        "macdSignal": 391.1686,
         "macdLineW": 5197.9932,
         "macdSigW": 4838.1873,
-        "bollUpper": 81919.24,
-        "bollLower": 73438.76,
-        "volRatio": 0.56,
+        "bollUpper": 81950.98,
+        "bollLower": 73379.02,
+        "volRatio": 0.82,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -11833,7 +11901,7 @@
           "extSwingLow": 2224.45,
           "logScale": true,
           "extRejected": true,
-          "extRejectReason": "de koers ($74330.00) ligt boven de verste extensie ($15934.31) - geen winstdoel meer over, vermoedelijk een te korte swing",
+          "extRejectReason": "de koers ($74050.00) ligt boven de verste extensie ($15934.31) - geen winstdoel meer over, vermoedelijk een te korte swing",
           "rejected": false
         },
         "isFriday": false,
@@ -11866,8 +11934,8 @@
         "lastUpdated": "2026-07"
       },
       "valuation": {
-        "currentPE": 39.4,
-        "peg": 5.18,
+        "currentPE": 39.3,
+        "peg": 5.17,
         "pegNormalized": null,
         "normalizedGrowth": null,
         "pePercentile": null,
@@ -11875,7 +11943,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 74.1,
+        "priceRangePosition": 73.8,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -11943,8 +12011,8 @@
           "tf": "1D",
           "weight": 3,
           "icon": "\ud83d\udcd0",
-          "title": "Fib 1.818 \u2014 take-profit zone: $7086.20 (0.7% weg)",
-          "detail": "Prijs $7036.00 raakt Fibonacci 1.818. Overweeg winstneming."
+          "title": "Fib 1.818 \u2014 take-profit zone: $7086.20 (0.9% weg)",
+          "detail": "Prijs $7020.00 raakt Fibonacci 1.818. Overweeg winstneming."
         },
         {
           "type": "BUY",
@@ -11980,7 +12048,7 @@
           "weight": 5,
           "icon": "\ud83c\udfaf",
           "title": "Bij 1.818 TP-zone \u2b50 (licht winst nemen)",
-          "detail": "Prijs $7036.00 bij de 1.818-extensie ($7086.20). Ver in de winstzone; overweeg deels winst te nemen."
+          "detail": "Prijs $7020.00 bij de 1.818-extensie ($7086.20). Ver in de winstzone; overweeg deels winst te nemen."
         },
         {
           "type": "SELL",
@@ -12018,24 +12086,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 3 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": true,
-      "pctOffHigh": 20.8,
+      "pctOffHigh": 20.9,
       "indicators": {
-        "last": 7036.0,
-        "rsiDaily": 47.0,
+        "last": 7020.0,
+        "rsiDaily": 46.6,
         "rsiWeekly": 54.7,
-        "ema8d": 7023.28,
-        "ema21d": 7158.13,
+        "ema8d": 7019.72,
+        "ema21d": 7156.68,
         "ema8w": 7278.64,
         "ema21w": 6910.53,
-        "ma50": 7486.3,
-        "ma200": 6156.34,
-        "macdLine": -118.1498,
-        "macdSignal": -96.4809,
+        "ma50": 7485.98,
+        "ma200": 6156.26,
+        "macdLine": -119.4261,
+        "macdSignal": -96.7361,
         "macdLineW": 443.3144,
         "macdSigW": 496.2354,
-        "bollUpper": 7787.68,
-        "bollLower": 6632.52,
-        "volRatio": 0.83,
+        "bollUpper": 7787.88,
+        "bollLower": 6630.72,
+        "volRatio": 1.05,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -12113,7 +12181,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 57.7,
+        "priceRangePosition": 57.6,
         "verdict": "Duur (PEG > 3.5)",
         "verdictColor": "red",
         "notes": [
@@ -12210,7 +12278,7 @@
           "weight": 6,
           "icon": "\ud83d\udcc9",
           "title": "Terugval uit 2.000 TP-zone \u2b50",
-          "detail": "Prijs zakte 30% van de recente top ($7915.00, bij de 2.000-TP-zone). MACD draait op 2 TF \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "detail": "Prijs zakte 31% van de recente top ($7915.00, bij de 2.000-TP-zone). MACD draait op 2 TF \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -12219,7 +12287,7 @@
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
-          "title": "RSI daily nadert oversold (36)"
+          "title": "RSI daily nadert oversold (35)"
         },
         {
           "type": "WATCH",
@@ -12241,7 +12309,7 @@
           "cat": "BB",
           "tf": "1D",
           "icon": "\ud83d\udcca",
-          "title": "Nadert Bollinger onderband ($5493.38)"
+          "title": "Nadert Bollinger onderband ($5491.64)"
         }
       ],
       "overall": "CAUTION (overextended)",
@@ -12260,24 +12328,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Prijs bij de 2.0-TP-zone (hoog in winst), geen bearish bevestiging - voorzichtig (overextended). Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 30.5,
+      "pctOffHigh": 30.6,
       "indicators": {
-        "last": 5501.0,
-        "rsiDaily": 35.6,
+        "last": 5494.0,
+        "rsiDaily": 35.5,
         "rsiWeekly": 61.4,
-        "ema8d": 6080.76,
-        "ema21d": 6527.0,
+        "ema8d": 6079.21,
+        "ema21d": 6526.36,
         "ema8w": 6838.01,
         "ema21w": 6113.08,
-        "ma50": 6789.96,
-        "ma200": 5125.97,
-        "macdLine": -265.6849,
-        "macdSignal": -49.7315,
+        "ma50": 6789.82,
+        "ma200": 5125.93,
+        "macdLine": -266.2433,
+        "macdSignal": -49.8432,
         "macdLineW": 692.6879,
         "macdSigW": 612.601,
-        "bollUpper": 8093.32,
-        "bollLower": 5493.38,
-        "volRatio": 1.79,
+        "bollUpper": 8094.36,
+        "bollLower": 5491.64,
+        "volRatio": 1.9,
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
@@ -12355,7 +12423,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 64.6,
+        "priceRangePosition": 64.8,
         "verdict": "Aantrekkelijk (PEG < 1)",
         "verdictColor": "green",
         "notes": [
@@ -12451,7 +12519,7 @@
           "weight": 4,
           "icon": "\ud83d\udcc9",
           "title": "Terugval uit 1.272 TP-zone \u2b50",
-          "detail": "Prijs zakte 35% van de recente top ($9074.00, bij de 1.272-TP-zone). MACD draait op 3 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
+          "detail": "Prijs zakte 34% van de recente top ($9074.00, bij de 1.272-TP-zone). MACD draait op 3 TF, dalend volume \u2014 de draai vanaf de TP-zone is bezig, lagere prijzen in beeld."
         }
       ],
       "alerts": [
@@ -12480,24 +12548,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 3 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 34.5,
+      "pctOffHigh": 34.3,
       "indicators": {
-        "last": 5943.0,
-        "rsiDaily": 44.1,
+        "last": 5961.0,
+        "rsiDaily": 44.3,
         "rsiWeekly": 57.2,
-        "ema8d": 6187.44,
-        "ema21d": 6307.06,
+        "ema8d": 6191.44,
+        "ema21d": 6308.7,
         "ema8w": 6375.19,
         "ema21w": 5728.78,
-        "ma50": 6576.38,
-        "ma200": 5083.76,
-        "macdLine": -122.5805,
-        "macdSignal": -131.6436,
+        "ma50": 6576.74,
+        "ma200": 5083.85,
+        "macdLine": -121.1446,
+        "macdSignal": -131.3564,
         "macdLineW": 638.3683,
         "macdSigW": 589.7944,
-        "bollUpper": 7182.62,
-        "bollLower": 5408.48,
-        "volRatio": 0.77,
+        "bollUpper": 7182.12,
+        "bollLower": 5410.78,
+        "volRatio": 0.85,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -15696,7 +15764,7 @@
         "peMedian": null,
         "peMax": null,
         "peSource": null,
-        "priceRangePosition": 21.2,
+        "priceRangePosition": 21.5,
         "verdict": "Lage P/E (absoluut)",
         "verdictColor": "green",
         "notes": [
@@ -15766,7 +15834,7 @@
         ],
         "risk": "gemiddeld",
         "positionSizing": "vermijden / afwachten",
-        "relStrength": -39.4
+        "relStrength": -38.9
       },
       "isBagger": true,
       "isETF": false,
@@ -15818,24 +15886,24 @@
       "conflict": true,
       "conflictNote": "\u26a0\ufe0f CONFLICT: 1 koop vs 1 verkoop. Gebruik hogere timeframe als beslissend of wacht op bevestiging. Geen duidelijke confluence - signaal getemperd",
       "nearTP": false,
-      "pctOffHigh": 73.2,
+      "pctOffHigh": 73.0,
       "indicators": {
-        "last": 88.0,
-        "rsiDaily": 42.5,
+        "last": 88.7,
+        "rsiDaily": 43.2,
         "rsiWeekly": 41.3,
-        "ema8d": 88.01,
-        "ema21d": 94.17,
+        "ema8d": 88.16,
+        "ema21d": 94.23,
         "ema8w": 101.28,
         "ema21w": 107.73,
-        "ma50": 104.68,
-        "ma200": 117.89,
-        "macdLine": -5.8106,
-        "macdSignal": -5.1017,
+        "ma50": 104.69,
+        "ma200": 117.9,
+        "macdLine": -5.7548,
+        "macdSignal": -5.0905,
         "macdLineW": -4.9109,
         "macdSigW": -3.0307,
-        "bollUpper": 111.14,
-        "bollLower": 78.02,
-        "volRatio": 0.44,
+        "bollUpper": 111.12,
+        "bollLower": 78.11,
+        "volRatio": 0.57,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
@@ -18372,7 +18440,7 @@
     "context": {
       "DXY": {
         "name": "Dollar-index",
-        "change3m": 2.3
+        "change3m": 2.5
       },
       "GOLD": {
         "name": "Goud (GLD)",
@@ -18542,19 +18610,6 @@
         "marketAdj": 6
       },
       {
-        "ticker": "ADM",
-        "name": "ADM",
-        "composite": 68,
-        "quality": 82,
-        "valuation": 62,
-        "timing": 61,
-        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 3572.0,
-        "currency": "p",
-        "marketAdj": 6
-      },
-      {
         "ticker": "III",
         "name": "III",
         "composite": 68,
@@ -18563,7 +18618,7 @@
         "timing": 27,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
         "timingLabel": "Slechte instap (wachten)",
-        "price": 2658.0,
+        "price": 2651.0,
         "currency": "p",
         "marketAdj": 6
       },
@@ -18589,7 +18644,7 @@
         "timing": 46,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
         "timingLabel": "Neutrale setup",
-        "price": 5943.0,
+        "price": 5961.0,
         "currency": "\u00a5",
         "marketAdj": 6
       },
@@ -18607,29 +18662,42 @@
         "marketAdj": 6
       },
       {
-        "ticker": "GAW",
-        "name": "GAW",
+        "ticker": "ASML",
+        "name": "ASML",
         "composite": 62,
-        "quality": 89,
-        "valuation": 40,
-        "timing": 52,
+        "quality": 95,
+        "valuation": 30,
+        "timing": 50,
         "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "timingLabel": "Neutrale setup",
-        "price": 20340.0,
-        "currency": "p",
+        "price": 1553.8,
+        "currency": "\u20ac",
         "marketAdj": 6
       },
       {
-        "ticker": "ASML",
-        "name": "ASML",
-        "composite": 61,
-        "quality": 95,
-        "valuation": 30,
+        "ticker": "ASMI",
+        "name": "ASMI",
+        "composite": 62,
+        "quality": 90,
+        "valuation": 40,
         "timing": 47,
         "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "timingLabel": "Neutrale setup",
-        "price": 1555.8,
+        "price": 887.2,
         "currency": "\u20ac",
+        "marketAdj": 6
+      },
+      {
+        "ticker": "ADM",
+        "name": "ADM",
+        "composite": 62,
+        "quality": 82,
+        "valuation": 50,
+        "timing": 55,
+        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 3532.0,
+        "currency": "p",
         "marketAdj": 6
       },
       {
@@ -18685,19 +18753,6 @@
         "marketAdj": 6
       },
       {
-        "ticker": "ASMI",
-        "name": "ASMI",
-        "composite": 59,
-        "quality": 90,
-        "valuation": 30,
-        "timing": 47,
-        "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
-        "timingLabel": "Neutrale setup",
-        "price": 927.6,
-        "currency": "\u20ac",
-        "marketAdj": 6
-      },
-      {
         "ticker": "GOOGL",
         "name": "GOOGL",
         "composite": 58,
@@ -18708,19 +18763,6 @@
         "timingLabel": "Zwakke setup",
         "price": 370.92,
         "currency": "$",
-        "marketAdj": 6
-      },
-      {
-        "ticker": "DIE",
-        "name": "DIE",
-        "composite": 58,
-        "quality": 57,
-        "valuation": 50,
-        "timing": 59,
-        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
-        "timingLabel": "Gunstige setup",
-        "price": 169.6,
-        "currency": "\u20ac",
         "marketAdj": 6
       },
       {
@@ -18828,6 +18870,19 @@
         "marketAdj": 6
       },
       {
+        "ticker": "DIE",
+        "name": "DIE",
+        "composite": 52,
+        "quality": 57,
+        "valuation": 50,
+        "timing": 45,
+        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 173.1,
+        "currency": "\u20ac",
+        "marketAdj": 6
+      },
+      {
         "ticker": "SHOP",
         "name": "SHOP",
         "composite": 51,
@@ -18867,15 +18922,28 @@
         "marketAdj": 6
       },
       {
+        "ticker": "GAW",
+        "name": "GAW",
+        "composite": 50,
+        "quality": 89,
+        "valuation": 8,
+        "timing": 47,
+        "valuationVerdict": "Duur (PEG > 3.5)",
+        "timingLabel": "Neutrale setup",
+        "price": 20320.0,
+        "currency": "p",
+        "marketAdj": 6
+      },
+      {
         "ticker": "LOTB",
         "name": "LOTB",
         "composite": 49,
         "quality": 78,
         "valuation": 8,
-        "timing": 52,
+        "timing": 51,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Neutrale setup",
-        "price": 10940.0,
+        "price": 10920.0,
         "currency": "\u20ac",
         "marketAdj": 6
       },
@@ -18901,7 +18969,7 @@
         "timing": 48,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Neutrale setup",
-        "price": 74330.0,
+        "price": 74050.0,
         "currency": "\u00a5",
         "marketAdj": 6
       },
@@ -18999,13 +19067,13 @@
       {
         "ticker": "MC",
         "name": "MC",
-        "composite": 33,
+        "composite": 31,
         "quality": 62,
         "valuation": 8,
-        "timing": 30,
+        "timing": 25,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Slechte instap (wachten)",
-        "price": 482.95,
+        "price": 492.75,
         "currency": "\u20ac",
         "marketAdj": 6
       }
@@ -19270,7 +19338,7 @@
         "timing": 37,
         "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
         "timingLabel": "Zwakke setup",
-        "price": 226.8,
+        "price": 226.2,
         "currency": "\u20ac",
         "marketAdj": 6,
         "fails": [
@@ -19280,13 +19348,13 @@
       {
         "ticker": "AIR",
         "name": "AIR",
-        "composite": 52,
+        "composite": 44,
         "quality": 57,
-        "valuation": 40,
-        "timing": 51,
-        "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
+        "valuation": 18,
+        "timing": 48,
+        "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Neutrale setup",
-        "price": 195.94,
+        "price": 194.92,
         "currency": "\u20ac",
         "marketAdj": 6,
         "fails": [
@@ -19296,13 +19364,13 @@
       {
         "ticker": "ALFEN",
         "name": "ALFEN",
-        "composite": 33,
+        "composite": 36,
         "quality": 14,
         "valuation": 50,
-        "timing": 29,
+        "timing": 36,
         "valuationVerdict": "Lage P/E (absoluut)",
-        "timingLabel": "Slechte instap (wachten)",
-        "price": 13.77,
+        "timingLabel": "Zwakke setup",
+        "price": 13.48,
         "currency": "\u20ac",
         "marketAdj": 6,
         "fails": [
@@ -19316,10 +19384,10 @@
         "composite": 32,
         "quality": 13,
         "valuation": 50,
-        "timing": 26,
+        "timing": 28,
         "valuationVerdict": "Lage P/E (absoluut)",
         "timingLabel": "Slechte instap (wachten)",
-        "price": 71.88,
+        "price": 74.1,
         "currency": "E",
         "marketAdj": 6,
         "fails": [
@@ -19402,7 +19470,7 @@
         "timing": 41,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
-        "price": 5177.0,
+        "price": 5172.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -19419,7 +19487,7 @@
         "timing": 38,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
-        "price": 7240.0,
+        "price": 7200.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -19436,7 +19504,7 @@
         "timing": 36,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
-        "price": 7036.0,
+        "price": 7020.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -19452,7 +19520,7 @@
         "timing": 42,
         "valuationVerdict": "Duur (PEG > 3.5)",
         "timingLabel": "Zwakke setup",
-        "price": 5501.0,
+        "price": 5494.0,
         "currency": "\u00a5",
         "marketAdj": 6,
         "fails": [
@@ -19536,7 +19604,7 @@
         "timing": 42,
         "valuationVerdict": "Lage P/E (absoluut)",
         "timingLabel": "Zwakke setup",
-        "price": 88.0,
+        "price": 88.7,
         "currency": "HK$",
         "marketAdj": 6,
         "fails": [
@@ -19710,7 +19778,7 @@
         "color": "red",
         "risk": "gemiddeld",
         "positionSizing": "vermijden / afwachten",
-        "relStrength": -39.4,
+        "relStrength": -38.9,
         "reasons": [
           "Omzetgroei +35%",
           "Groei versnelt sterk (+15pp)"
@@ -19718,7 +19786,7 @@
         "flags": [
           "Onder markt (-39%)"
         ],
-        "price": 88.0,
+        "price": 88.7,
         "currency": "HK$",
         "revenueGrowth": 35.0,
         "grossMarginTrend": null,
@@ -20030,8 +20098,8 @@
     "methodNote": "Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."
   },
   "weekly": {
-    "generatedAt": "2026-07-16T08:31:14.841715+02:00",
-    "generatedAtHuman": "Thursday 16 July 2026 om 08:31",
+    "generatedAt": "2026-07-16T15:04:29.039111+02:00",
+    "generatedAtHuman": "Thursday 16 July 2026 om 15:04",
     "periodLabel": "sinds ~1 week geleden",
     "changes": [
       {
@@ -20067,7 +20135,7 @@
           {
             "type": "composite",
             "dir": "up",
-            "text": "Composiet 44 \u2191 61"
+            "text": "Composiet 44 \u2191 62"
           },
           {
             "type": "valuation",
@@ -20245,7 +20313,7 @@
           {
             "type": "price",
             "dir": "down",
-            "text": "Koers -17.1% deze week ($6636\u2192$5501)"
+            "text": "Koers -17.2% deze week ($6636\u2192$5494)"
           }
         ]
       },
@@ -20393,7 +20461,7 @@
           {
             "type": "composite",
             "dir": "up",
-            "text": "Composiet 54 \u2191 59"
+            "text": "Composiet 54 \u2191 62"
           },
           {
             "type": "signal",
@@ -20467,6 +20535,22 @@
         ]
       },
       {
+        "ticker": "GAW",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 59 \u2193 50"
+          },
+          {
+            "type": "valuation",
+            "dir": "neutral",
+            "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
+          }
+        ]
+      },
+      {
         "ticker": "MNST",
         "daysAgo": 7,
         "changes": [
@@ -20495,6 +20579,22 @@
             "type": "valuation",
             "dir": "neutral",
             "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Neutraal (PEG 1.5\u20132.5)"
+          }
+        ]
+      },
+      {
+        "ticker": "ADM",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 67 \u2193 62"
+          },
+          {
+            "type": "signal",
+            "dir": "neutral",
+            "text": "Signaal: KOOP \u2192 STERK KOOP"
           }
         ]
       },
@@ -20579,13 +20679,45 @@
         ]
       },
       {
+        "ticker": "DIE",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 60 \u2193 52"
+          },
+          {
+            "type": "signal",
+            "dir": "down",
+            "text": "Signaal: KOOP \u2192 VERKOOP"
+          }
+        ]
+      },
+      {
+        "ticker": "AIR",
+        "daysAgo": 7,
+        "changes": [
+          {
+            "type": "composite",
+            "dir": "down",
+            "text": "Composiet 52 \u2193 44"
+          },
+          {
+            "type": "valuation",
+            "dir": "neutral",
+            "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
+          }
+        ]
+      },
+      {
         "ticker": "ALFEN",
         "daysAgo": 7,
         "changes": [
           {
             "type": "composite",
             "dir": "down",
-            "text": "Composiet 41 \u2193 33"
+            "text": "Composiet 41 \u2193 36"
           },
           {
             "type": "valuation",
@@ -20815,28 +20947,6 @@
         ]
       },
       {
-        "ticker": "GAW",
-        "daysAgo": 7,
-        "changes": [
-          {
-            "type": "signal",
-            "dir": "up",
-            "text": "Signaal: CAUTION (overextended) \u2192 STERK KOOP"
-          }
-        ]
-      },
-      {
-        "ticker": "ADM",
-        "daysAgo": 7,
-        "changes": [
-          {
-            "type": "signal",
-            "dir": "neutral",
-            "text": "Signaal: KOOP \u2192 STERK KOOP"
-          }
-        ]
-      },
-      {
         "ticker": "III",
         "daysAgo": 7,
         "changes": [
@@ -20855,17 +20965,6 @@
             "type": "composite",
             "dir": "up",
             "text": "Composiet 46 \u2191 51"
-          }
-        ]
-      },
-      {
-        "ticker": "DIE",
-        "daysAgo": 7,
-        "changes": [
-          {
-            "type": "signal",
-            "dir": "down",
-            "text": "Signaal: KOOP \u2192 VERKOOP"
           }
         ]
       },
@@ -21057,7 +21156,7 @@
         ]
       }
     ],
-    "changedCount": 67,
+    "changedCount": 68,
     "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
   },
   "trackSummary": {
