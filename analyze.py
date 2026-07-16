@@ -344,7 +344,7 @@ FUNDAMENTALS = {
     "AMZN":  {"pe":29.3,  "roe":24.3, "fcfYield":0.3,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":14.2,  "revenueGrowthPrev":12.4, "eps":8.36,  "mktCap":"$2.6T",  "beta":1.46, "lastUpdated":"2026-07"},
     "ORCL":  {"pe":24.1,  "roe":53.4, "fcfYield":0.5,  "debtEquity":3.89, "netMargin":25.4, "divYield":1.4,  "revenueGrowth":17.4,  "revenueGrowthPrev":8.0,  "eps":5.83,  "mktCap":"$402B",  "beta":1.71, "lastUpdated":"2026-07"},   # WAARSCHUWING: S&P-rating verlaagd, D/E 3.9
     "KO":    {"pe":24.8,  "roe":47.7, "fcfYield":3.4,  "debtEquity":1.63, "netMargin":22.6, "divYield":2.95, "revenueGrowth":4.1,   "eps":2.88,  "mktCap":"$305B",  "beta":0.45, "lastUpdated":"2026-07"},
-    "MC":    {"pe":17.8,  "roe":15.7, "fcfYield":3.7,  "debtEquity":0.09, "netMargin":13.5, "divYield":2.4,  "revenueGrowth":0.1,   "revenueGrowthPrev":9.0,  "eps":27.31, "mktCap":"\u20ac277B",  "beta":1.05, "lastUpdated":"2026-07"},   # luxe in cyclische dip: ROE onder 10j-norm (~20), groei vlak; moat intact
+    "MC":    {"pe":17.8,  "roe":15.7, "fcfYield":3.7,  "debtEquity":0.09, "netMargin":13.5, "divYield":2.4,  "revenueGrowth":0.1,   "revenueGrowthPrev":9.0,  "normalizedGrowth":5.0, "eps":27.31, "mktCap":"\u20ac277B",  "beta":1.05, "lastUpdated":"2026-07"},   # luxe in cyclische dip: ROE onder 10j-norm (~20), groei vlak; moat intact. normalizedGrowth = conservatief 10j-gem (Bain/Morningstar)
     # ── Bagger-kandidaten ── Extra velden: grossMargin, grossMarginTrend (pp YoY),
     #    revenueGrowthPrev (voor versnelling), cashRunwayMonths (None = winstgevend/n.v.t.).
     #    Cijfers indicatief per begin 2026 — VERIFIEER en werk per kwartaal bij.
@@ -556,6 +556,120 @@ def calc_bollinger(series: pd.Series, period: int = 20, mult: float = 2.0):
     mid = series.rolling(period).mean()
     std = series.rolling(period).std(ddof=0)  # population std, zoals TradingView
     return mid + mult * std, mid, mid - mult * std
+
+def _find_swing_lows(series: pd.Series, left: int = 5, right: int = 5):
+    """Vind lokale koersbodems (pivot lows): een punt dat lager is dan `left`
+    punten ervoor en `right` erna. Geeft een lijst (positie-index, waarde).
+    De `right`-eis betekent dat de meest recente bodem pas bevestigd is als er
+    `right` candles overheen zijn -- dat voorkomt vals-alarm op een nog-dalende
+    koers, precies zoals een pivot op TradingView."""
+    vals = series.values
+    n = len(vals)
+    lows = []
+    for i in range(left, n - right):
+        v = vals[i]
+        if v is None or (isinstance(v, float) and np.isnan(v)):
+            continue
+        window_l = vals[i-left:i]
+        window_r = vals[i+1:i+1+right]
+        if len(window_l) == 0 or len(window_r) == 0:
+            continue
+        if v <= np.nanmin(window_l) and v <= np.nanmin(window_r):
+            lows.append((i, float(v)))
+    return lows
+
+def _find_swing_highs(series: pd.Series, left: int = 5, right: int = 5):
+    """Spiegelbeeld: lokale koerstoppen (pivot highs)."""
+    vals = series.values
+    n = len(vals)
+    highs = []
+    for i in range(left, n - right):
+        v = vals[i]
+        if v is None or (isinstance(v, float) and np.isnan(v)):
+            continue
+        window_l = vals[i-left:i]
+        window_r = vals[i+1:i+1+right]
+        if len(window_l) == 0 or len(window_r) == 0:
+            continue
+        if v >= np.nanmax(window_l) and v >= np.nanmax(window_r):
+            highs.append((i, float(v)))
+    return highs
+
+def detect_divergence(price: pd.Series, indicator: pd.Series,
+                      left: int = 5, right: int = 5, max_lookback: int = 60):
+    """Detecteer klassieke divergentie tussen koers en een momentum-indicator
+    (RSI of MACD-lijn) op de twee meest recente pivots.
+
+    BULLISH: koers zet een LAGERE bodem, indicator een HOGERE bodem.
+      -> verkoopdruk droogt op; mogelijke omkeer omhoog.
+    BEARISH: koers zet een HOGERE top, indicator een LAGERE top.
+      -> koopkracht droogt op; mogelijke omkeer omlaag.
+
+    Vergelijkt alleen pivots binnen `max_lookback` candles van elkaar (anders
+    zijn het losse gebeurtenissen, geen divergentie). Geeft een dict met het
+    type en de betrokken waarden, of None als er niets is.
+
+    Belangrijk: dit is een WAARSCHUWING, geen trigger. Divergentie kan meerdere
+    keren optreden voor een trend echt keert; het dashboard toont het als
+    vroege heads-up, niet als koopsignaal op zichzelf."""
+    if price is None or indicator is None:
+        return None
+    if len(price) < (left + right + 5) or len(indicator) < (left + right + 5):
+        return None
+
+    ind = indicator.reindex(price.index)
+    n = len(price)
+
+    # ── Bullish: anker op de LAAGSTE bodem in de recente periode ──
+    # Niet "de laatste pivot" (die is vaak het begin van een herstel, en hangt af
+    # van ruis). We nemen de laagste koersbodem binnen de recente `max_lookback`
+    # candles als anker, en vergelijken met de laagste bodem in de periode DAARVOOR
+    # (nog eens max_lookback terug). Divergentie: recente bodem lager, indicator hoger.
+    lows = _find_swing_lows(price, left, right)
+    bull = None
+    if len(lows) >= 2:
+        iv = ind.values
+        recent_grens = n - max_lookback
+        recent = [(i, p) for (i, p) in lows if i >= recent_grens]
+        eerder = [(i, p) for (i, p) in lows if i < recent_grens and i >= recent_grens - max_lookback]
+        if recent and eerder:
+            i2, p2 = min(recent, key=lambda t: t[1])   # laagste recente bodem
+            i1, p1 = min(eerder, key=lambda t: t[1])   # laagste eerdere bodem
+            ind1, ind2 = iv[i1], iv[i2]
+            if not (np.isnan(ind1) or np.isnan(ind2)):
+                if p2 < p1 and ind2 > ind1:
+                    bull = {
+                        "type": "bullish",
+                        "priceLow1": round(p1, 2), "priceLow2": round(p2, 2),
+                        "indLow1": round(float(ind1), 2), "indLow2": round(float(ind2), 2),
+                        "barsApart": int(i2 - i1),
+                    }
+
+    # ── Bearish: spiegelbeeld, anker op de HOOGSTE top in de recente periode ──
+    highs = _find_swing_highs(price, left, right)
+    bear = None
+    if len(highs) >= 2:
+        iv = ind.values
+        recent_grens = n - max_lookback
+        recent_h = [(j, q) for (j, q) in highs if j >= recent_grens]
+        eerder_h = [(j, q) for (j, q) in highs if j < recent_grens and j >= recent_grens - max_lookback]
+        if recent_h and eerder_h:
+            j2, q2 = max(recent_h, key=lambda t: t[1])
+            j1, q1 = max(eerder_h, key=lambda t: t[1])
+            indh1, indh2 = iv[j1], iv[j2]
+            if not (np.isnan(indh1) or np.isnan(indh2)):
+                if q2 > q1 and indh2 < indh1:
+                    bear = {
+                        "type": "bearish",
+                        "priceHigh1": round(q1, 2), "priceHigh2": round(q2, 2),
+                        "indHigh1": round(float(indh1), 2), "indHigh2": round(float(indh2), 2),
+                        "barsApart": int(j2 - j1),
+                    }
+
+    # Als beide bestaan, geef de MEEST RECENTE terug (hoogste anker-index)
+    if bull and bear:
+        return bull if bull["barsApart"] and (i2 >= j2) else bear
+    return bull or bear
 
 def calc_fibonacci(swing_low: float, swing_high: float,
                    ext_low: float = None, ext_high: float = None) -> dict:
@@ -1115,6 +1229,22 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     ma200_d = close_d.rolling(200).mean()
     bb_u, bb_m, bb_l = calc_bollinger(close_d, 20)
     macd_l, macd_s, macd_h = calc_macd(close_d)
+
+    # Divergentie-detectie op dagbasis: koers vs RSI en koers vs MACD-lijn.
+    # We checken beide indicatoren; RSI-divergentie is de klassieke, MACD-divergentie
+    # bevestigt. Als beide bullish (of beide bearish) zijn, is het signaal sterker.
+    div_rsi  = detect_divergence(close_d, rsi_d,  left=5, right=5, max_lookback=60)
+    div_macd = detect_divergence(close_d, macd_l, left=5, right=5, max_lookback=60)
+    _div_types = [d["type"] for d in (div_rsi, div_macd) if d]
+    divergence = {
+        "rsi":  div_rsi,
+        "macd": div_macd,
+        # "confirmed" = beide indicatoren tonen dezelfde richting op recente pivots
+        "bullishConfirmed": _div_types.count("bullish") == 2,
+        "bearishConfirmed": _div_types.count("bearish") == 2,
+        "bullish": "bullish" in _div_types,
+        "bearish": "bearish" in _div_types,
+    }
 
     # Volume met NaN-guard
     vol_avg20 = vol_d.rolling(20).mean()
@@ -2017,6 +2147,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "bollUpper": round(last_bb_u, 2), "bollLower": round(last_bb_l, 2),
             "volRatio": round(vol_ratio, 2), "volKnown": vol_known, "highVolume": high_volume, "volNote": vol_note.strip(),
             "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
+            "divergence": divergence,
         },
     }
 
@@ -2076,7 +2207,7 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
         pe_live = True
 
     out = {
-        "currentPE": current_pe, "peg": None,
+        "currentPE": current_pe, "peg": None, "pegNormalized": None, "normalizedGrowth": None,
         "pePercentile": None, "peMin": None, "peMedian": None, "peMax": None,
         "peSource": None, "priceRangePosition": None,
         "verdict": None, "verdictColor": None, "notes": [],
@@ -2087,6 +2218,18 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
     # PEG — primaire groei-gecorrigeerde maatstaf (Lynch)
     if current_pe and growth and growth > 0:
         out["peg"] = round(current_pe / growth, 2)
+
+    # GENORMALISEERDE PEG — voor cyclische aandelen waar de HUIDIGE groei een
+    # dieptepunt of piek is, niet de normale staat. Bij LVMH is de groei nu 0,1%
+    # (cyclische bodem), waardoor de gewone PEG "oneindig duur" toont. Met een
+    # genormaliseerde groeivoet (bv. het meerjarige gemiddelde, uit FUNDAMENTALS'
+    # "normalizedGrowth") zie je de waardering zoals die eruitziet als de cyclus
+    # normaliseert. Puur informatief -- het gewone PEG-verdict blijft leidend,
+    # zodat we een aandeel niet vals goedkoop rekenen op een optimistische aanname.
+    norm_growth = fund.get("normalizedGrowth")
+    if current_pe and isinstance(norm_growth, (int, float)) and norm_growth > 0:
+        out["pegNormalized"] = round(current_pe / norm_growth, 2)
+        out["normalizedGrowth"] = norm_growth
 
     # Prijspositie in 5-jaars range (eerlijke context, géén waardering)
     lo, hi = float(close.min()), float(close.max())
@@ -2136,6 +2279,28 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
         elif current_pe < 40: verdict, color = "Hoge P/E (absoluut)", "orange"
         else:                 verdict, color = "Zeer hoge P/E (absoluut)", "red"
         out["notes"].append("Geen groeicijfer — oordeel op absolute P/E")
+
+    # Cyclische nuance: als de gewone PEG duur/neutraal is MAAR de genormaliseerde
+    # PEG (op meerjarige groei) substantieel gunstiger, meld dat als context. We
+    # veranderen het verdict NIET -- de huidige groei blijft leidend -- maar tonen
+    # hoe de waardering eruitziet zodra de cyclus normaliseert. Zo ziet Ruben het
+    # blinde vlekje van PEG-op-dieptepunt zonder dat het model vals goedkoop rekent.
+    pegn = out.get("pegNormalized")
+    if pegn is not None and peg is not None and color in ("red", "orange", "neutral"):
+        ng = out.get("normalizedGrowth")
+        # toon alleen als genormaliseerd MINSTENS de helft lager is (echt verschil)
+        if pegn < peg * 0.5:
+            if pegn < 1.5:
+                oordeel = "aantrekkelijk"
+            elif pegn < 2.5:
+                oordeel = "redelijk"
+            elif pegn < 3.5:
+                oordeel = "aan de dure kant maar houdbaar"
+            else:
+                oordeel = "nog steeds prijzig"
+            out["notes"].append(
+                f"Cyclisch: PEG {peg:.0f} nu is vertekend door bodemgroei ({growth:.1f}%). "
+                f"Bij genormaliseerde groei (~{ng:.0f}%) wordt PEG {pegn:.1f} — {oordeel}")
 
     out["verdict"], out["verdictColor"] = verdict, color
     return out
