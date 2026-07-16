@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-07-16T22:46:46.088187+02:00"
+    "lastUpdate": "2026-07-17T00:03:34.370476+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -1273,7 +1273,7 @@
         "timing": 48
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "caution:ASMI:2026-07-14": {
       "ticker": "ASMI",
@@ -1305,7 +1305,7 @@
         "timing": 39
       },
       "outcomes": {},
-      "episodeDays": 9
+      "episodeDays": 10
     },
     "caution:GOOGL:2026-07-14": {
       "ticker": "GOOGL",
@@ -1481,7 +1481,7 @@
         "timing": 42
       },
       "outcomes": {},
-      "episodeDays": 11
+      "episodeDays": 12
     },
     "strong_signal:ARCG:2026-07-14": {
       "ticker": "ARCG",
@@ -1497,7 +1497,7 @@
         "timing": 41
       },
       "outcomes": {},
-      "episodeDays": 12
+      "episodeDays": 13
     },
     "strong_signal:AIR:2026-07-14": {
       "ticker": "AIR",
@@ -1657,7 +1657,7 @@
         "timing": 46
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     },
     "strong_signal:MU:2026-07-15": {
       "ticker": "MU",
@@ -1689,7 +1689,7 @@
         "timing": 49
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:RKLB:2026-07-15": {
       "ticker": "RKLB",
@@ -1737,7 +1737,7 @@
         "timing": 58
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     },
     "strong_signal:NABTESCO:2026-07-15": {
       "ticker": "NABTESCO",
@@ -1769,7 +1769,7 @@
         "timing": 52
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     },
     "strong_signal:FANUC:2026-07-15": {
       "ticker": "FANUC",
@@ -1833,7 +1833,7 @@
         "timing": 44
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     },
     "strong_signal:AMZN:2026-07-15": {
       "ticker": "AMZN",
@@ -1865,7 +1865,7 @@
         "timing": 16
       },
       "outcomes": {},
-      "episodeDays": 6
+      "episodeDays": 7
     },
     "strong_signal:BLK:2026-07-15": {
       "ticker": "BLK",
@@ -1881,7 +1881,7 @@
         "timing": 35
       },
       "outcomes": {},
-      "episodeDays": 6
+      "episodeDays": 7
     },
     "strong_signal:CGNX:2026-07-15": {
       "ticker": "CGNX",
@@ -1897,7 +1897,7 @@
         "timing": 49
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "caution:AMZN:2026-07-16": {
       "ticker": "AMZN",
@@ -1913,7 +1913,7 @@
         "timing": 45
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:NET:2026-07-16": {
       "ticker": "NET",
@@ -1929,7 +1929,7 @@
         "timing": 40
       },
       "outcomes": {},
-      "episodeDays": 4
+      "episodeDays": 5
     },
     "caution:META:2026-07-16": {
       "ticker": "META",
@@ -1961,7 +1961,7 @@
         "timing": 58
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     },
     "caution:RDDT:2026-07-16": {
       "ticker": "RDDT",
@@ -1975,6 +1975,54 @@
         "overall": "CAUTION (overextended)",
         "composite": 75,
         "timing": 48
+      },
+      "outcomes": {},
+      "episodeDays": 1
+    },
+    "strong_signal:ORCL:2026-07-17": {
+      "ticker": "ORCL",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-17",
+      "entryPrice": 124.21,
+      "benchEntry": 7533.77001953125,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 65,
+        "timing": 38
+      },
+      "outcomes": {},
+      "episodeDays": 1
+    },
+    "caution:HARMONIC:2026-07-17": {
+      "ticker": "HARMONIC",
+      "type": "caution",
+      "direction": "SELL",
+      "date": "2026-07-17",
+      "entryPrice": 7200.0,
+      "benchEntry": 7533.77001953125,
+      "currency": "\u00a5",
+      "snapshot": {
+        "overall": "CAUTION (overextended)",
+        "composite": 32,
+        "timing": 38
+      },
+      "outcomes": {},
+      "episodeDays": 1
+    },
+    "strong_signal:RGTI:2026-07-17": {
+      "ticker": "RGTI",
+      "type": "strong_signal",
+      "direction": "SELL",
+      "date": "2026-07-17",
+      "entryPrice": 14.1,
+      "benchEntry": 7533.77001953125,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK VERKOOP",
+        "composite": 45,
+        "timing": 38
       },
       "outcomes": {},
       "episodeDays": 1
@@ -2066,8 +2114,8 @@
     "baseRates": [
       {
         "action": "VERKOOP",
-        "n": 19,
-        "pct": 23.2,
+        "n": 23,
+        "pct": 28.0,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -2079,30 +2127,30 @@
         "color": "green"
       },
       {
-        "action": "STERK KOOP",
-        "n": 15,
-        "pct": 18.3,
+        "action": "STERK VERKOOP",
+        "n": 12,
+        "pct": 14.6,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "STERK VERKOOP",
-        "n": 9,
-        "pct": 11.0,
+        "action": "STERK KOOP",
+        "n": 12,
+        "pct": 14.6,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "CAUTION (overextended)",
-        "n": 7,
-        "pct": 8.5,
+        "n": 5,
+        "pct": 6.1,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "LICHT KOOP",
-        "n": 6,
-        "pct": 7.3,
+        "n": 4,
+        "pct": 4.9,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -2137,11 +2185,11 @@
         "cells": [
           1.0,
           0.18,
-          0.15,
+          0.19,
           0.33,
-          -0.38,
+          -0.37,
           0.78,
-          0.47
+          0.48
         ]
       },
       {
@@ -2150,24 +2198,24 @@
         "cells": [
           0.18,
           1.0,
-          -0.21,
-          -0.2,
-          0.04,
+          -0.17,
+          -0.18,
+          0.02,
           0.67,
-          0.73
+          0.72
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.15,
-          -0.21,
+          0.19,
+          -0.17,
           1.0,
-          0.7,
-          0.2,
-          0.28,
-          -0.44
+          0.68,
+          0.17,
+          0.32,
+          -0.35
         ]
       },
       {
@@ -2175,25 +2223,25 @@
         "key": "trd",
         "cells": [
           0.33,
-          -0.2,
-          0.7,
+          -0.18,
+          0.68,
           1.0,
-          -0.34,
+          -0.35,
           0.3,
-          -0.6
+          -0.45
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.38,
-          0.04,
-          0.2,
-          -0.34,
+          -0.37,
+          0.02,
+          0.17,
+          -0.35,
           1.0,
-          -0.13,
-          0.44
+          -0.14,
+          0.32
         ]
       },
       {
@@ -2202,23 +2250,23 @@
         "cells": [
           0.78,
           0.67,
-          0.28,
+          0.32,
           0.3,
-          -0.13,
+          -0.14,
           1.0,
-          0.66
+          0.65
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.47,
-          0.73,
-          -0.44,
-          -0.6,
-          0.44,
-          0.66,
+          0.48,
+          0.72,
+          -0.35,
+          -0.45,
+          0.32,
+          0.65,
           1.0
         ]
       }
@@ -2230,23 +2278,23 @@
     "WM": null,
     "PLTR": "sig:strong_signal:SELL",
     "CAT": null,
-    "ASML": "sig:strong_signal:BUY",
+    "ASML": "sig:caution:SELL",
     "ASMI": "sig:strong_signal:BUY",
     "MU": "sig:caution:SELL",
-    "GOOGL": "sig:caution:SELL",
-    "AMZN": null,
-    "ORCL": null,
+    "GOOGL": "sig:strong_signal:SELL",
+    "AMZN": "sig:caution:SELL",
+    "ORCL": "sig:strong_signal:SELL",
     "KO": "sig:strong_signal:BUY",
     "MC": null,
     "LHX": null,
     "MOGA": null,
     "TDG": null,
     "KTOS": "sig:strong_signal:SELL",
-    "RKLB": "sig:caution:SELL",
+    "RKLB": null,
     "OPEN": null,
     "SDGR": null,
     "BNGO": null,
-    "GAW": "sig:caution:SELL",
+    "GAW": null,
     "MNST": null,
     "V": null,
     "KPG": null,
@@ -2279,11 +2327,11 @@
     "DIS": null,
     "BLK": "sig:strong_signal:SELL",
     "BABA": "sig:strong_signal:SELL",
-    "NABTESCO": "sig:strong_signal:BUY",
-    "HARMONIC": null,
+    "NABTESCO": null,
+    "HARMONIC": "sig:caution:SELL",
     "KEYENCE": "sig:strong_signal:BUY",
     "FANUC": null,
-    "YASKAWA": "sig:caution:SELL",
+    "YASKAWA": null,
     "SOFTBANK": null,
     "ROK": "sig:strong_signal:BUY",
     "TER": "sig:strong_signal:BUY",
@@ -2294,17 +2342,17 @@
     "HOOD": null,
     "TSCO": null,
     "ODFL": null,
-    "HWM": "sig:strong_signal:BUY",
+    "HWM": null,
     "SNDK": null,
     "IONQ": null,
-    "RGTI": null,
+    "RGTI": "sig:strong_signal:SELL",
     "QBTS": "sig:strong_signal:BUY",
     "UBTECH": null,
     "SYM": "sig:strong_signal:SELL",
     "SERV": null,
     "RR": null,
     "PL": "sig:caution:SELL",
-    "RDDT": "sig:caution:SELL",
+    "RDDT": null,
     "NOW": null,
     "GILD": null,
     "DDOG": null,
