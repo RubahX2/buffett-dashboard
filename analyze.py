@@ -1516,12 +1516,17 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         _ext_ok, _ext_reden = False, "geen extensie-niveaus"
     elif any((v is None or v <= 0) for v in _e.values()):
         _ext_ok, _ext_reden = False, "een winstniveau kwam uit op nul of lager (datafout)"
-    elif _verste_ext is not None and last > 0 and _verste_ext < last:
+    elif _verste_ext is not None and last > 0 and _verste_ext < last and not _is_geijkt:
         # De koers ligt boven de VERSTE extensie (bv. 2.618). Dan is er geen enkel
         # winstdoel meer over -- dat is het echte artefact-symptoom (MU's oude $149-fib:
         # koers $973 lag boven alles). Zolang er nog EEN extensie boven de koers ligt
         # (zoals MNST's 2.618 = $107 boven koers $98) is de fib gewoon bruikbaar en
         # blijft hij staan -- ook al ligt 1.618 er inmiddels onder.
+        # GEIJKTE AANDELEN (FIB_OVERRIDES) zijn vrijgesteld: als jij de swing handmatig
+        # zette, is een koers boven de verste extensie GEEN datafout maar een aandeel dat
+        # echt uitzonderlijk ver is gestegen -- dan wil je juist het STERK VERKOOP-signaal
+        # behouden, niet de hele fib weggooien (dat maakte de rem stuk en gaf paradoxaal
+        # KOOP). Voor een geijkt aandeel projecteren we desnoods door boven 2.618.
         _ext_ok, _ext_reden = False, (
             f"de koers (${last:.2f}) ligt boven de verste extensie (${_verste_ext:.2f}) - "
             f"geen winstdoel meer over, vermoedelijk een te korte swing")
@@ -1846,25 +1851,35 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                     "detail":f"Prijs ${last:.2f} ligt voorbij de 1.818-extensie (${e1818:.2f}). "
                              "Ver in de winstzone; overweeg deels winst te nemen."})
                 tp_fired = True
-            elif last >= e1618:
-                # In de zone [1.618, 1.818): CAUTION. Kwaliteit breekt hier vaak dwars
-                # doorheen (GOOG verdubbelde na 1.618), dus waarschuwing, geen verkoop.
+            elif last >= e1618 * 0.97:
+                # Zone [0.97*1.618, 1.818): CAUTION. Bewust NET VOOR de 1.618 al, niet
+                # pas erop -- tegen de tijd dat je exact op de kern-winstzone zit ben je
+                # al laat. 3% eronder waarschuwt je terwijl je de zone nadert. Kwaliteit
+                # breekt hier vaak dwars doorheen (GOOG verdubbelde na 1.618), dus
+                # waarschuwing, geen verkoop.
+                _bijna = last < e1618
                 signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
-                    "title":"Bij/voorbij 1.618 TP-zone — overextended",
-                    "detail":f"Prijs ${last:.2f} ligt op/voorbij de 1.618-extensie (${e1618:.2f}). "
-                             "Kern-winstzone; kwaliteitsaandelen breken hier vaak doorheen. "
-                             "Voorzichtig (overextended), nog geen automatisch verkoopsignaal."})
+                    "title":("Nadert 1.618 TP-zone — overextended" if _bijna
+                             else "Bij/voorbij 1.618 TP-zone — overextended"),
+                    "detail":f"Prijs ${last:.2f} ligt {'vlak onder' if _bijna else 'op/voorbij'} de "
+                             f"1.618-extensie (${e1618:.2f}). Kern-winstzone; kwaliteitsaandelen breken "
+                             "hier vaak doorheen. Voorzichtig (overextended), nog geen automatisch verkoopsignaal."})
                 tp_fired = True
             else:
-                # Onder 1.618 maar mogelijk in een lagere winstzone (1.272-1.618).
+                # Onder 0.97*1.618 (nog geen CAUTION) maar mogelijk in een lagere
+                # winstzone (1.272-1.414). Alleen waarschuwing, geen oordeelkanteling --
+                # zoals afgesproken. Guard: bij een heel kleine swing kan het 1.414-niveau
+                # boven de 0.97*1.618-grens liggen; dan hoort die zone al bij CAUTION
+                # hierboven, dus we tonen de winstzone-waarschuwing alleen echt eronder.
+                _cautiongrens = e1618 * 0.97
                 e1414 = _ext_val("1.414"); e1272 = _ext_val("1.272")
-                if e1414 is not None and last >= e1414:
+                if e1414 is not None and last >= e1414 and e1414 < _cautiongrens:
                     signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
                         "title":"Voorbij 1.414-extensie — winstzone",
                         "detail":f"Prijs ${last:.2f} ligt voorbij de 1.414-extensie (${e1414:.2f}) — "
                                  "winstzone. Voor kwaliteit geen verkoop, maar wees bewust dat je in winstgebied zit."})
                     tp_fired = True
-                elif e1272 is not None and last >= e1272:
+                elif e1272 is not None and last >= e1272 and e1272 < _cautiongrens:
                     signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
                         "title":"Voorbij 1.272-extensie — winstzone",
                         "detail":f"Prijs ${last:.2f} ligt voorbij de 1.272-extensie (${e1272:.2f}) — "
@@ -2103,8 +2118,12 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # anders straffen we een uitbraak af (zoals NET die net boven de 1.0 uitbreekt).
     if near_tp_zone and far_above_ema:
         overext_flags.append(f"bij TP-zone én ver boven 8-EMA {overext_detail}")
-    # Een fib-CAUTION-signaal (kwaliteit bij 1.618) zet de overextensie-status ook aan.
-    if any(s.get("type") == "CAUTION" and s.get("cat") == "FIB" for s in signals):
+    # Een fib-CAUTION-signaal bij de KERN-winstzone (1.618) zet de overextensie-status
+    # ook aan. BELANGRIJK: alleen de 1.618-zone telt hier, NIET de lagere 1.272/1.414-
+    # winstzone-waarschuwingen -- die zijn bewust alleen een heads-up en mogen het
+    # oordeel niet kantelen (Rubens keuze). We herkennen de 1.618-zone aan de titel.
+    if any(s.get("type") == "CAUTION" and s.get("cat") == "FIB" and "1.618" in s.get("title", "")
+           for s in signals):
         overext_flags.append("bij 1.618 TP-zone (overextended)")
 
     if   net >=  8: base_overall = "STERK KOOP"
@@ -2259,6 +2278,20 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         _kantel_naar("CAUTION (overextended)",
             "Prijs op/voorbij de 1.618-extensie (kern-winstzone) - voorzichtig (overextended).")
 
+    # ── AFTOPPING IN DE WINSTZONE (1.272 / 1.414): STERK KOOP -> KOOP ──────────────
+    # Rubens keuze: zodra de koers in winstgebied zit (voorbij 1.272 of 1.414), is
+    # 'STERK KOOP' te sterk -- je staat al 21-33% boven de vorige top, geen moment voor
+    # volle koopovertuiging. KOOP blijft passend (nog steeds positief), maar de 'sterk'
+    # gaat eraf. Alleen deze twee zones; de 1.618 en hoger kantelen al naar CAUTION/
+    # verkoop hierboven. LICHT KOOP en KOOP blijven ongewijzigd -- alleen de TOP vlakt af.
+    has_winstzone = any(("1.272" in s.get("title", "") or "1.414" in s.get("title", ""))
+                        and s.get("cat") == "FIB" and s.get("type") == "CAUTION"
+                        for s in fib_tp_sigs)
+    if has_winstzone and overall == "STERK KOOP":
+        overall = "KOOP"
+        conflict_note = (conflict_note + " " if conflict_note else "") + \
+            "Prijs in de winstzone (voorbij 1.272/1.414-extensie) - koopsignaal afgetopt van sterk koop naar koop."
+
     if reasons_c:
         conflict_note = (conflict_note + " " if conflict_note else "") + " | ".join(reasons_c)
 
@@ -2269,7 +2302,12 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # voorbij de 1.818-extensie staat (licht verkoop of erger via de zonale kanteling),
     # dan NIET overrulen -- een ultiem koopsignaal hoog in de winstzone is tegenstrijdig
     # (je koopt niet 'de bodem' als je op 2x je startpunt staat). Onder 1.818 mag het.
-    _te_ver_voor_ultimate = has_1818 or has_2000 or has_2618
+    # De ultimate-buy mag NIET vuren als de koers al in of voorbij een winstzone staat.
+    # Boven 1.818 (licht verkoop e.h.) sowieso niet, maar ook niet in de 1.272/1.414-
+    # winstzone: een 'ultiem bodem-koopmoment' terwijl je 20-33% boven de vorige top
+    # staat is logisch tegenstrijdig -- je koopt geen bodem in winstgebied. Zo blijft
+    # ook de STERK KOOP -> KOOP aftopping overeind.
+    _te_ver_voor_ultimate = has_1818 or has_2000 or has_2618 or has_winstzone
     if ema_ultimate_buy and not is_bagger and not _te_ver_voor_ultimate:
         overall = "STERK KOOP"
         conflict_note = (conflict_note + " " if conflict_note else "") + \
@@ -4204,9 +4242,37 @@ def main():
             row["fails"] = sc.get("qualityFails", [])
             gate_failed.append(row)
 
-    candidates.sort(key=lambda x: x["composite"], reverse=True)
+    # ── MAANDPICK-SELECTIE MET OVEREXTENSIE-DEGRADATIE ─────────────────────────
+    # De maandpick mag GEEN aandeel zijn dat hoog in zijn winstzone staat of dat op
+    # een cyclische piek zit -- dat is het tegenovergestelde van "koop laag". Puur op
+    # composiet sorteren gaf MU als maandpick terwijl het -5% stond op een cyclische
+    # top (piekgroei duwde de composiet kunstmatig hoog). We DEGRADEREN daarom een
+    # kandidaat als een van deze waar is:
+    #   - overall is een verkoop/caution-oordeel (staat niet op koop -> kan geen pick zijn)
+    #   - de koers staat bij/voorbij een TP-zone (nearTP of overextended in het oordeel)
+    #   - peakGrowthFlag: de goedkoopte is cyclische schijn (piekgroei), geen echt koopje
+    # Gedegradeerde aandelen blijven kandidaat, maar komen ACHTER alle niet-gedegradeerde.
+    # Zo wint een niet-extended kwaliteitsaandeel altijd van een gevaarlijk-extended MU/ASML.
+    def _gedegradeerd(row):
+        ov = (row.get("overall") or "").upper()
+        # staat niet op koop? (verkoop, caution, of neutraal) -> kan geen maandpick zijn
+        niet_koop = ("VERKOOP" in ov) or ("CAUTION" in ov) or ("OVEREXTENDED" in ov)
+        # bij een TP-winstzone?
+        bij_tp = bool(row.get("nearTP"))
+        # cyclische piekgroei (schijnkoopje)?
+        piek = bool(row.get("peakGrowthFlag"))
+        return niet_koop or bij_tp or piek
+
+    def _pick_key(row):
+        # eerst niet-gedegradeerd (0) vóór gedegradeerd (1), dan op composiet aflopend
+        return (1 if _gedegradeerd(row) else 0, -(row["composite"] or 0))
+
+    candidates.sort(key=_pick_key)
 
     primary = candidates[0] if candidates else None
+    # Als de beste kandidaat toch gedegradeerd is (alles is extended/piek), dan is er
+    # geen zuivere maandpick -- markeer dat zodat de UI het eerlijk kan tonen.
+    primary_degraded = bool(primary and _gedegradeerd(primary))
 
     # ── DE SCHATKAMER ──────────────────────────────────────────────────────────
     # Goedkoop geprijsde kwaliteitsaandelen die klaarliggen: de kwaliteitspoort
@@ -4246,6 +4312,7 @@ def main():
     results["allocation"] = {
         "generatedForMonth": NOW.strftime("%B %Y"),
         "primaryPick": primary,
+        "primaryDegraded": primary_degraded,
         "reasoning": reasoning,
         "candidates": candidates,
         "treasury": schatkamer,
