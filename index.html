@@ -2106,7 +2106,13 @@ function App() {
               {allocation.primaryPick&&(
                 <div style={{background:`linear-gradient(135deg,${C.panel2},${C.panel})`,
                   border:`1px solid ${C.accent}`,borderRadius:12,padding:18,marginBottom:16}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:10}}>
+                  {allocation.primaryDegraded&&(
+                    <div style={{marginBottom:12,padding:"8px 11px",background:"#2a1a00",border:`1px solid ${C.orange}`,borderRadius:6,fontSize:11,color:C.orange,lineHeight:1.5}}>
+                      ⚠ Geen zuivere maandpick deze maand: alle kwaliteitskandidaten staan hoog in hun
+                      winstzone of op een cyclische piek. Deze pick is de minst overextende — wacht
+                      eventueel op een betere instap of kijk in de schatkamer.
+                    </div>
+                  )}
                     <div>
                       <div style={{color:C.textDim,fontSize:11,letterSpacing:1}}>AANBEVOLEN DEZE MAAND · {allocation.generatedForMonth}</div>
                       <div style={{display:"flex",alignItems:"center",gap:10,marginTop:4}}>
