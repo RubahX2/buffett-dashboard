@@ -709,38 +709,18 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     ind = indicator.reindex(price.index)
     n = len(price)
 
-    # ── Bullish: twee complementaire vergelijkingen ──
-    # (A) De twee LAATSTE opeenvolgende swing-bodems t.o.v. elkaar. Dit vangt een
-    #     double bottom / divergentie waar beide bodems recent en dicht bij elkaar
-    #     liggen (bv. maart vs mei) -- die vielen eerder samen in één 'recente' bak en
-    #     werden nooit met elkaar vergeleken.
-    # (B) FALLBACK: de laagste bodem in de recente periode t.o.v. de laagste bodem in
-    #     de periode daarvoor. Dit vangt een divergentie over een langere afstand.
-    # Divergentie (beide gevallen): koers zet een lagere/gelijke bodem, indicator hoger.
+    # ── Bullish: anker op de LAAGSTE bodem in de recente periode ──
+    # Niet "de laatste pivot" (die is vaak het begin van een herstel, en hangt af
+    # van ruis). We nemen de laagste koersbodem binnen de recente `max_lookback`
+    # candles als anker, en vergelijken met de laagste bodem in de periode DAARVOOR
+    # (nog eens max_lookback terug). Divergentie: recente bodem lager, indicator hoger.
+    # (Deze strikte aanpak gaf in v5.4 weinig, maar ECHTE signalen. Een eerdere poging
+    # om ook dicht-op-elkaar liggende dubbele bodems te vangen maakte de detector veel
+    # te gevoelig -- 67/84 aandelen 'divergentie' -- en is teruggedraaid.)
     lows = _find_swing_lows(price, left, right)
     bull = None
-    iv = ind.values
-    # (A) opeenvolgende bodems: de laatste twee pivots die niet te ver uiteen liggen
     if len(lows) >= 2:
-        for k in range(len(lows) - 1, 0, -1):
-            i2, p2 = lows[k]
-            i1, p1 = lows[k-1]
-            if i2 - i1 > max_lookback:
-                continue   # te ver uiteen -> losse gebeurtenissen, geen divergentie
-            ind1, ind2 = iv[i1], iv[i2]
-            if np.isnan(ind1) or np.isnan(ind2):
-                continue
-            # koers ~gelijk of lager (double bottom telt: binnen 2% hoger mag), indicator hoger
-            if p2 <= p1 * 1.02 and ind2 > ind1:
-                bull = {
-                    "type": "bullish",
-                    "priceLow1": round(p1, 2), "priceLow2": round(p2, 2),
-                    "indLow1": round(float(ind1), 2), "indLow2": round(float(ind2), 2),
-                    "barsApart": int(i2 - i1),
-                }
-                break
-    # (B) fallback over langere afstand, alleen als (A) niets vond
-    if bull is None and len(lows) >= 2:
+        iv = ind.values
         recent_grens = n - max_lookback
         recent = [(i, p) for (i, p) in lows if i >= recent_grens]
         eerder = [(i, p) for (i, p) in lows if i < recent_grens and i >= recent_grens - max_lookback]
@@ -4093,7 +4073,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "5.5-divergence-dubbelbodem-55ema",
+            "version": "5.6-divergence-hersteld-55ema",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
