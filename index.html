@@ -2033,6 +2033,7 @@ function App() {
           {loadState==="ok"&&(
             <span style={{color:C.green}}>
               ✓ Laatste update: {meta.generatedAtHuman||"onbekend"}
+              {meta.version&&<span style={{color:C.muted}}> · v{meta.version}</span>}
               {meta.isFriday&&" · 📅 Vrijdag: weekly signalen geëvalueerd"}
             </span>
           )}
