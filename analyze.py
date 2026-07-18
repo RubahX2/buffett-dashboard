@@ -260,6 +260,7 @@ FIB_OVERRIDES = {
     "MU":   {"ath": 97.00, "atl": 1.59,  "recent_hi": 1254.81,
              "retr_atl": 48.49, "retr_hi": 1254.81},
     "MNST": {"ath": 61.35, "atl": 43.34, "recent_hi": 99.03},
+    "RDDT": {"ath": 280.00, "atl": 119.00, "recent_hi": 280.00},
     "AMZN": {"ath": 187.50, "atl": 81.65, "recent_hi": 278.00},
     "ISRG": {"ath": 370.00, "atl": 180.17, "recent_hi": 616.11},
     # ORCL: retracement op de 2022/23 bear-bodem ($60.80). Ligt vlak bij de oude waarde,
@@ -358,11 +359,11 @@ FUNDAMENTALS = {
     "WM":    {"pe":29.2,  "roe":29.9, "fcfYield":3.0,  "debtEquity":2.28, "netMargin":11.0, "divYield":1.69, "revenueGrowth":6.1,   "eps":7.72,  "mktCap":"$90B",   "beta":0.46, "lastUpdated":"2026-07"},
     "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07"},   # P/E 145 - extreme waardering
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.8,  "debtEquity":2.31, "netMargin":13.3, "divYield":0.63, "revenueGrowth":11.9,  "revenueGrowthPrev":4.0,  "eps":20.10, "mktCap":"$444B",  "beta":1.60, "lastUpdated":"2026-07"},
-    "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":29.50, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07", "earningsHistory":[[2021,5883],[2022,6456],[2023,8277],[2024,7966],[2025,10627]]},   # winst +10-33%, pauzejaar -4% in 2024; licht cyclisch maar structureel groeiend
+    "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":25.00, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07", "earningsHistory":[[2021,5883],[2022,6456],[2023,8277],[2024,7966],[2025,9600]]},   # winst +10-30%, pauzejaar -4% in 2024, herstel +21% in 2025; licht cyclisch maar structureel groeiend
     "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07"},
     "MU":    {"pe":22.1,  "roe":66.6, "fcfYield":2.2,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.1,  "revenueGrowth":144.0, "revenueGrowthPrev":62.0, "eps":44.6,  "mktCap":"$1.1T",  "beta":2.14, "lastUpdated":"2026-07", "earningsHistory":[[2021,5861],[2022,8687],[2023,-5833],[2024,778],[2025,8539]]},   # AI-geheugencyclus op piek - extreem cyclisch; winst: +48%/VERLIES/+998% = geen jaar representatief
-    "GOOGL": {"pe":25.7,  "roe":38.9, "fcfYield":1.6,  "debtEquity":0.20, "netMargin":37.9, "divYield":0.3,  "revenueGrowth":13.4,  "revenueGrowthPrev":14.0, "eps":13.15, "mktCap":"$4.1T",  "beta":1.24, "lastUpdated":"2026-07"},
-    "ANET":  {"pe":53.9,  "roe":31.5, "fcfYield":2.5,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.1,  "revenueGrowthPrev":28.9, "eps":2.95,  "mktCap":"$215B",  "beta":1.61, "lastUpdated":"2026-07"},
+    "GOOGL": {"pe":25.7,  "roe":38.9, "fcfYield":1.6,  "debtEquity":0.20, "netMargin":37.9, "divYield":0.3,  "revenueGrowth":13.4,  "revenueGrowthPrev":14.0, "eps":13.15, "mktCap":"$4.1T",  "beta":1.24, "lastUpdated":"2026-07", "earningsHistory":[[2021,76033],[2022,59972],[2023,73795],[2024,100118],[2025,132170]]},   # 2022-dip (-21%, advertentiemarkt), daarna +23/+36/+32% -- versnelling door cloud/AI
+    "ANET":  {"pe":53.9,  "roe":31.5, "fcfYield":2.5,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.1,  "revenueGrowthPrev":28.9, "eps":2.95,  "mktCap":"$215B",  "beta":1.61, "lastUpdated":"2026-07", "earningsHistory":[[2021,841],[2022,1352],[2023,2087],[2024,2852],[2025,3511]]},   # ononderbroken sterke groei +61/+54/+37/+23%; groeitempo neemt geleidelijk af
     "HOOD":  {"pe":42.0,  "roe":22.5, "fcfYield":2.8,  "debtEquity":0.42, "netMargin":32.0, "divYield":0,    "revenueGrowth":15.0,  "revenueGrowthPrev":58.0, "eps":1.45,  "mktCap":"$95B",   "beta":2.15, "lastUpdated":"2026-07"},
     "TSCO":  {"pe":14.6,  "roe":45.5, "fcfYield":3.6,  "debtEquity":0.70, "netMargin":6.9,  "divYield":2.5,  "revenueGrowth":4.3,   "eps":2.03,  "mktCap":"$16B",   "beta":0.75, "lastUpdated":"2026-07"},
     "ODFL":  {"pe":40.0,  "roe":23.9, "fcfYield":1.9,  "debtEquity":0.03, "netMargin":18.5, "divYield":0.6,  "revenueGrowth":4.2,   "eps":4.85,  "mktCap":"$50B",   "beta":1.22, "lastUpdated":"2026-07"},
@@ -396,7 +397,7 @@ FUNDAMENTALS = {
     "SHOP":  {"pe":92.0,  "roe":14.5, "fcfYield":1.4,  "debtEquity":0.10, "netMargin":11.5, "divYield":0,    "revenueGrowth":31.9,  "revenueGrowthPrev":26.0, "eps":1.32,  "mktCap":"$185B",  "beta":2.35, "lastUpdated":"2026-07"},
     "NET":   {"pe":0,      "roe":-5.9, "fcfYield":0.5,  "debtEquity":2.31, "netMargin":-3.7, "divYield":0,    "revenueGrowth":34.0,  "revenueGrowthPrev":30.0, "eps":-0.25, "mktCap":"$59B",   "beta":1.67, "lastUpdated":"2026-07"},
     "CRWV":  {"pe":0,      "roe":-35.0,"fcfYield":-25.0,"debtEquity":3.85, "netMargin":-36.0,"divYield":0,    "revenueGrowth":112.0, "revenueGrowthPrev":737.0,"eps":-4.55, "mktCap":"$52B",   "beta":2.85, "lastUpdated":"2026-07"},
-    "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":39.3, "divYield":1.0,  "revenueGrowth":15.0,  "revenueGrowthPrev":16.0, "eps":16.85, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07"},
+    "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":39.3, "divYield":1.0,  "revenueGrowth":15.0,  "revenueGrowthPrev":16.0, "eps":16.85, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07", "earningsHistory":[[2021,61271],[2022,72738],[2023,72361],[2024,88136],[2025,101832]]},   # boekjaar eindigt 30 juni; stabiele groeier, vlakke plek in 2023 (-1%)
     "MTLS":  {"pe":78.0,  "roe":3.5,  "fcfYield":1.5,  "debtEquity":0.42, "netMargin":2.7,  "divYield":0,    "revenueGrowth":0.0,   "revenueGrowthPrev":3.0,  "eps":0.10,  "mktCap":"$0.4B",  "beta":1.55, "lastUpdated":"2026-07"},
     "SNAP":  {"pe":0,      "roe":-8.5, "fcfYield":2.0,  "debtEquity":1.85, "netMargin":-5.5, "divYield":0,    "revenueGrowth":8.0,   "revenueGrowthPrev":14.0, "eps":-0.15, "mktCap":"$13B",   "beta":1.95, "lastUpdated":"2026-07"},
     "NVDA":  {"pe":31.1,  "roe":114.3,"fcfYield":2.4,  "debtEquity":0.07, "netMargin":63.0, "divYield":0.5,  "revenueGrowth":70.7,  "revenueGrowthPrev":114.0,"eps":6.56,  "mktCap":"$4.9T",  "beta":2.21, "lastUpdated":"2026-07"},
@@ -405,10 +406,10 @@ FUNDAMENTALS = {
     "SOF":   {"pe":14.0,  "roe":8.5,  "fcfYield":2.0,  "debtEquity":0.12, "netMargin":85.0, "divYield":1.4,  "revenueGrowth":5.0,   "revenueGrowthPrev":-3.0, "eps":17.60, "mktCap":"E8.2B",  "beta":0.95, "lastUpdated":"2026-07"},
     "AIR":   {"pe":20.0,  "roe":20.0, "fcfYield":3.0,  "debtEquity":1.53, "netMargin":6.9,  "divYield":1.2,  "revenueGrowth":8.0,   "revenueGrowthPrev":6.0,  "eps":6.60,  "mktCap":"E137B",  "beta":1.35, "lastUpdated":"2026-07"},
     "ALFEN": {"pe":0,      "roe":-5.0, "fcfYield":-2.0, "debtEquity":0.55, "netMargin":-3.5, "divYield":0,    "revenueGrowth":-8.0,  "revenueGrowthPrev":-15.0,"eps":-0.35, "mktCap":"E0.3B",  "beta":1.75, "lastUpdated":"2026-07"},
-    "LOTB":  {"pe":55.2,  "roe":20.9, "fcfYield":1.0,  "debtEquity":0.36, "netMargin":12.7, "divYield":0.6,  "revenueGrowth":10.0,  "revenueGrowthPrev":9.0,  "eps":211.88,"mktCap":"E8.7B",  "beta":0.62, "lastUpdated":"2026-07"},
+    "LOTB":  {"pe":55.2,  "roe":20.9, "fcfYield":1.0,  "debtEquity":0.36, "netMargin":12.7, "divYield":0.6,  "revenueGrowth":10.0,  "revenueGrowthPrev":9.0,  "eps":211.88,"mktCap":"E8.7B",  "beta":0.62, "lastUpdated":"2026-07", "earningsHistory":[[2021,91],[2022,103],[2023,129],[2024,152],[2025,172]]},   # EUR mln; vijf jaar ononderbroken groei +14/+25/+18/+13%, geen dipjaar
     "MSTR":  {"pe":0,      "roe":-11.1,"fcfYield":-2.0, "debtEquity":1.15, "netMargin":-4401.0,"divYield":0,  "revenueGrowth":1.9,   "revenueGrowthPrev":-3.0, "eps":-44.0, "mktCap":"$51B",   "beta":3.45, "lastUpdated":"2026-07"},
-    "AAPL":  {"pe":38.0,  "roe":141.5,"fcfYield":2.1,  "debtEquity":0.80, "netMargin":27.2, "divYield":0.3,  "revenueGrowth":6.4,   "revenueGrowthPrev":4.0,  "eps":8.30,  "mktCap":"$4.6T",  "beta":1.10, "lastUpdated":"2026-07"},
-    "NFLX":  {"pe":24.4,  "roe":48.5, "fcfYield":4.0,  "debtEquity":0.54, "netMargin":28.5, "divYield":0,    "revenueGrowth":15.0,  "revenueGrowthPrev":16.0, "eps":3.18,  "mktCap":"$313B",  "beta":1.52, "lastUpdated":"2026-07"},
+    "AAPL":  {"pe":38.0,  "roe":141.5,"fcfYield":2.1,  "debtEquity":0.80, "netMargin":27.2, "divYield":0.3,  "revenueGrowth":6.4,   "revenueGrowthPrev":4.0,  "eps":8.30,  "mktCap":"$4.6T",  "beta":1.10, "lastUpdated":"2026-07", "earningsHistory":[[2021,94680],[2022,99803],[2023,96995],[2024,93736],[2025,112010]]},   # boekjaar eindigt sept; plateau 2023-2024 (-3%/-3%), sterk herstel 2025 (+19%)
+    "NFLX":  {"pe":24.4,  "roe":48.5, "fcfYield":4.0,  "debtEquity":0.54, "netMargin":28.5, "divYield":0,    "revenueGrowth":16.0,  "revenueGrowthPrev":16.0, "eps":3.18,  "mktCap":"$313B",  "beta":1.52, "lastUpdated":"2026-07", "earningsHistory":[[2021,5116],[2022,4492],[2023,5408],[2024,8712],[2025,10980]]},   # winst -12% in 2022 (wachtwoord-delen/concurrentie), daarna +20/+61/+26%
     "DIS":   {"pe":18.5,  "roe":10.2, "fcfYield":5.2,  "debtEquity":0.42, "netMargin":9.8,  "divYield":1.0,  "revenueGrowth":7.0,   "revenueGrowthPrev":5.0,  "eps":5.45,  "mktCap":"$182B",  "beta":1.35, "lastUpdated":"2026-07"},
     "BLK":   {"pe":20.0,  "roe":15.0, "fcfYield":4.5,  "debtEquity":0.35, "netMargin":30.0, "divYield":2.2,  "revenueGrowth":10.0,  "revenueGrowthPrev":6.0,  "eps":48.09, "mktCap":"$150B",  "beta":1.35, "lastUpdated":"2026-07"},
     "BABA":  {"pe":19.8,  "roe":9.8,  "fcfYield":1.2,  "debtEquity":0.28, "netMargin":10.0, "divYield":1.0,  "revenueGrowth":3.0,   "revenueGrowthPrev":6.0,  "eps":6.20,  "mktCap":"$300B",  "beta":1.45, "lastUpdated":"2026-07"},
@@ -421,7 +422,7 @@ FUNDAMENTALS = {
     "SOFTBANK":{"pe":6.5,   "roe":22.0, "fcfYield":-2.0, "debtEquity":2.95, "netMargin":45.0, "divYield":0.3,  "revenueGrowth":7.6,   "revenueGrowthPrev":5.0,  "eps":2100.0,"mktCap":"Y25T",   "beta":1.85, "lastUpdated":"2026-07"},
     "ROK":   {"pe":44.3,  "roe":23.7, "fcfYield":2.4,  "debtEquity":0.99, "netMargin":11.5, "divYield":1.28, "revenueGrowth":12.0,  "revenueGrowthPrev":4.0,  "eps":9.84,  "mktCap":"$49B",   "beta":1.52, "lastUpdated":"2026-07"},
     "TER":   {"pe":66.6,  "roe":22.0, "fcfYield":1.2,  "debtEquity":0.10, "netMargin":17.4, "divYield":0.1,  "revenueGrowth":13.1,  "revenueGrowthPrev":5.0,  "eps":5.39,  "mktCap":"$56B",   "beta":1.45, "lastUpdated":"2026-07"},
-    "ISRG":  {"pe":49.3,  "roe":17.2, "fcfYield":1.6,  "debtEquity":0.02, "netMargin":28.2, "divYield":0,    "revenueGrowth":21.4,  "revenueGrowthPrev":17.0, "eps":8.25,  "mktCap":"$144B",  "beta":1.42, "lastUpdated":"2026-07"},
+    "ISRG":  {"pe":49.3,  "roe":17.2, "fcfYield":1.6,  "debtEquity":0.02, "netMargin":28.2, "divYield":0,    "revenueGrowth":20.5,  "revenueGrowthPrev":17.0, "eps":8.23,  "mktCap":"$144B",  "beta":1.42, "lastUpdated":"2026-07", "earningsHistory":[[2021,1705],[2022,1322],[2023,1798],[2024,2323],[2025,2856]]},   # winst -22% in 2022, daarna +36/+29/+23%; 3 jaar op rij >20% EPS-groei
     "CGNX":  {"pe":48.5,  "roe":13.2, "fcfYield":2.5,  "debtEquity":0.02, "netMargin":14.8, "divYield":0.7,  "revenueGrowth":11.0,  "revenueGrowthPrev":3.0,  "eps":1.05,  "mktCap":"$8B",    "beta":1.45, "lastUpdated":"2026-07"},
     "NOVT":  {"pe":58.2,  "roe":12.5, "fcfYield":2.6,  "debtEquity":0.62, "netMargin":8.4,  "divYield":0,    "revenueGrowth":9.5,   "revenueGrowthPrev":5.0,  "eps":2.35,  "mktCap":"$5.6B",  "beta":1.38, "lastUpdated":"2026-07"},
     # Quantum baggers (waardering irrelevant; bagger-velden leidend)
@@ -491,7 +492,7 @@ FUNDAMENTALS = {
     # Dit is precies het soort vraag waar het model GEEN antwoord op heeft: de kwaliteit
     # is er (vandaag), maar de capex bepaalt of ze er over twee jaar nog is. De poort meet
     # het verleden.
-    "META":  {"pe":21.5,  "roe":35.0, "fcfYield":2.8,  "debtEquity":0.15, "netMargin":38.0, "divYield":0.4,  "revenueGrowth":33.0,  "revenueGrowthPrev":22.0, "eps":27.10, "mktCap":"$1.5T",  "beta":1.28, "lastUpdated":"2026-07"},
+    "META":  {"pe":21.5,  "roe":35.0, "fcfYield":2.8,  "debtEquity":0.15, "netMargin":38.0, "divYield":0.4,  "revenueGrowth":33.0,  "revenueGrowthPrev":22.0, "eps":27.10, "mktCap":"$1.5T",  "beta":1.28, "lastUpdated":"2026-07", "earningsHistory":[[2021,39370],[2022,23200],[2023,39098],[2024,62360],[2025,60458]]},   # metaverse-dip 2022 (-41%), explosief herstel +69/+59%, 2025 licht terug (-3%, AI-capex)
 
     # ── Vistra ──
     # HAALT DE POORT OP PAPIER, MAAR LEES DIT EERST.
@@ -1387,6 +1388,26 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "bullish": "bullish" in _div_types,
             "bearish": "bearish" in _div_types,
         })
+        # Divergentie als EEN VAN DE VELE signalen (Rubens keuze): een licht gewicht dat
+        # MEETELT in de netto-balans, maar het oordeel NIET op zichzelf overrulet. Een
+        # bevestigde divergentie (RSI EN MACD) weegt iets zwaarder dan een enkele, maar
+        # blijft licht (max 4) -- het is een vroeg signaal, geen doorslaggevend bewijs.
+        # De divergentie behoudt daarnaast zijn rol in de omslag-mildering (dat staat los
+        # van dit gewicht en gebeurt verderop).
+        if divergence["bullish"]:
+            _dw = 4 if divergence["bullishConfirmed"] else 3
+            signals.append({"type":"BUY","cat":"DIV","tf":"1W","weight":_dw,"icon":"🔀",
+                "title":"Bullish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bullishConfirmed"] else ""),
+                "detail":"Koers zet een lagere bodem terwijl de indicator (RSI/MACD) een hogere "
+                         "bodem maakt — verzwakkende verkoopdruk. Telt mee als koopsignaal, "
+                         "maar is op zichzelf geen koopbevel."})
+        if divergence["bearish"]:
+            _dw = 4 if divergence["bearishConfirmed"] else 3
+            signals.append({"type":"SELL","cat":"DIV","tf":"1W","weight":_dw,"icon":"🔀",
+                "title":"Bearish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bearishConfirmed"] else ""),
+                "detail":"Koers zet een hogere top terwijl de indicator (RSI/MACD) een lagere "
+                         "top maakt — verzwakkend koopmomentum. Telt mee als verkoopsignaal, "
+                         "maar is op zichzelf geen verkoopbevel."})
 
     # Volume met NaN-guard
     vol_avg20 = vol_d.rolling(20).mean()
@@ -1689,12 +1710,24 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                 "title":f"Nadert Bollinger bovenband (${last_bb_u:.2f})"})
 
     # ── 9. FIBONACCI ──
+    # De EXTENSIE-niveaus zijn take-profit-zones die relevant zijn in een UPTREND
+    # (koers bereikt ze van onderen). Als de koers NEERWAARTS door de extensies zakt
+    # (correctie vanaf een piek), zijn het geen winstneem-signalen meer -- dan gelden
+    # de RETRACEMENT-fibs als steun/koopzones. We tonen extensie-'take-profit'-signalen
+    # daarom alleen bij een opwaartse weekly-trend; de retracement-'steunzone'-signalen
+    # blijven altijd geldig (dat zijn de koopzones waar je bij een daling steun zoekt).
     PROX, NEAR = 1.5, 3.0
+    _fib_opwaarts = True
+    if has_weekly and last_ema8w is not None and last_ema21w is not None:
+        _fib_opwaarts = last_ema8w >= last_ema21w * 0.995
     all_fib = list(fib["retracements"].items()) + list(fib["extensions"].items())
     ext_keys = set(fib["extensions"].keys())
     for label, level in all_fib:
         dist = prox_pct(last, level)
         is_ext = label in ext_keys
+        # extensie-take-profit alleen bij uptrend; bij een daling die niveaus overslaan
+        if is_ext and not _fib_opwaarts:
+            continue
         styp = "SELL" if is_ext else "BUY"
         zone = "take-profit zone" if is_ext else "steunzone"
         if dist <= PROX:
@@ -1859,8 +1892,18 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         # niet door nabijheid. Zo valt er geen enkel gat meer tussen de niveaus.
         e1618 = _ext_val("1.618"); e1818 = _ext_val("1.818")
         e2000 = _ext_val("2.000"); e2618 = _ext_val("2.618")
-        # alleen zinvol als de extensies niet verworpen zijn en 1.618 bestaat
-        if not fib.get("extRejected") and e1618 is not None:
+        # RICHTING-CHECK: de extensie-fibs zijn WINSTNEEM-zones die de koers van
+        # ONDEREN bereikt in een uptrend. Als de koers vanuit een hogere zone
+        # NEERWAARTS terugzakt door deze niveaus (bv. van de 2.0 terug door de 1.618),
+        # dan zijn het GEEN winstzones meer -- dan corrigeert het aandeel en gelden de
+        # RETRACEMENT-fibs, niet de extensie-TP's. We vuren de extensie-TP-signalen
+        # daarom alleen bij een OPWAARTSE weekly-trend (8-EMA >= 21-EMA). Zo stopt het
+        # onterecht oplichten van 1.618/1.414/1.272 tijdens een afdaling.
+        _opwaarts = True
+        if has_weekly and last_ema8w is not None and last_ema21w is not None:
+            _opwaarts = last_ema8w >= last_ema21w * 0.995   # 8-EMA op/boven 21-EMA = uptrend
+        # alleen zinvol als de extensies niet verworpen zijn, 1.618 bestaat, EN opwaarts
+        if not fib.get("extRejected") and e1618 is not None and _opwaarts:
             if e2618 is not None and last >= e2618:
                 signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":8,"icon":"🎯",
                     "title":"Voorbij 2.618-extensie ⭐⭐⭐ (uitzonderlijk ver)",
@@ -4073,7 +4116,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "5.6-divergence-hersteld-55ema",
+            "version": "6.1-winsthistorie-12-lotus",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
