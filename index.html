@@ -2576,6 +2576,46 @@ function App() {
                     {bear.map(t=>Card(t,false))}
                   </div>
                 ) : <div style={{color:C.textDim,fontSize:12}}>Geen bearish divergence op dit moment.</div>}
+
+                {(()=>{
+                  const vt = (t)=>(stocks[t]?.indicators||{}).volTrend;
+                  const vol = TICKER_ORDER.filter(t=>vt(t)?.rising)
+                    .sort((a,b)=>(vt(b).ratio||0)-(vt(a).ratio||0));
+                  return (
+                    <div style={{marginTop:24,paddingTop:16,borderTop:`1px solid ${C.border}`}}>
+                      <div style={{color:"#7dd3fc",fontSize:13,fontWeight:700,marginBottom:6}}>
+                        📊 Toenemend volume ({vol.length})
+                      </div>
+                      <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:640,marginBottom:10}}>
+                        Aandelen waar het <b style={{color:C.text}}>mediane volume geleidelijk oploopt</b> —
+                        de laatste twee maanden structureel hoger dan het half jaar ervoor. Dit telt
+                        <b style={{color:C.text}}> niet mee</b> in enige score: het is een waarneming om te
+                        monitoren. Volume bevestigt een beweging, het voorspelt er geen.
+                      </div>
+                      {vol.length ? (
+                        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
+                          {vol.map(t=>{
+                            const v=vt(t), d=stocks[t];
+                            return (
+                              <div key={t} onClick={()=>setSelected(t)}
+                                style={{background:C.panel,borderRadius:8,padding:"11px",cursor:"pointer",
+                                  border:`1px solid ${C.border}`,borderLeft:"3px solid #7dd3fc"}}>
+                                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                                  <span style={{color:C.accent,fontWeight:700,fontSize:14}}>{t}</span>
+                                  <span style={{color:"#7dd3fc",fontSize:13,fontWeight:800}}>{v.ratio}×</span>
+                                </div>
+                                <div style={{color:C.textDim,fontSize:10,marginBottom:5}}>{STOCK_NAMES[t]}</div>
+                                <div style={{color:C.muted,fontSize:10,borderTop:`1px solid ${C.border}`,paddingTop:5}}>
+                                  {v.label} · {d?.overall||""}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : <div style={{color:C.textDim,fontSize:12}}>Geen aandeel met duidelijk oplopend volume.</div>}
+                    </div>
+                  );
+                })()}
               </>
             );
           })()}
