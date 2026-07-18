@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generatedAt": "2026-07-18T11:18:17.217514+02:00",
-    "generatedAtHuman": "Saturday 18 July 2026 om 11:18",
+    "generatedAt": "2026-07-18T11:28:09.823876+02:00",
+    "generatedAtHuman": "Saturday 18 July 2026 om 11:28",
     "isFriday": false,
     "isWeekend": true,
-    "version": "6.4-pegcurve-datagedreven",
+    "version": "6.5-volumetrend-observerend",
     "fundamentalsNote": "Fundamentals handmatig bijgehouden \u2014 controleer bij elk kwartaalrapport."
   },
   "stocks": {
@@ -187,6 +187,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 248.13,
@@ -401,6 +407,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 207.52,
@@ -571,6 +583,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (toenemend, 1.35x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -624,6 +644,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.35,
+          "steps": [
+            2608250,
+            2709450,
+            3523600
+          ],
+          "label": "toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 1073.46,
@@ -939,6 +969,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 1741.0,
@@ -1165,6 +1201,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 1092.5,
@@ -1448,6 +1490,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (licht toenemend, 1.29x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -1501,6 +1551,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.29,
+          "steps": [
+            40834450,
+            49260850,
+            52754150
+          ],
+          "label": "licht toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 1254.81,
@@ -1852,6 +1912,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 408.37,
@@ -2102,6 +2168,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 278.0,
@@ -2398,6 +2470,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 346.0,
@@ -2623,6 +2701,12 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -2846,6 +2930,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 904.6,
@@ -3106,6 +3196,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 379.23,
@@ -3335,6 +3431,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 430.52,
@@ -3567,6 +3669,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 1519.36,
@@ -3749,6 +3857,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (licht toenemend, 1.31x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -3808,6 +3924,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.31,
+          "steps": [
+            3675000,
+            3757350,
+            4796500
+          ],
+          "label": "licht toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 134.0,
@@ -4068,6 +4194,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 151.0,
@@ -4262,6 +4394,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (sterk toenemend, 2.22x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -4310,6 +4450,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 2.22,
+          "steps": [
+            39379550,
+            40636250,
+            87407800
+          ],
+          "label": "sterk toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 10.87,
@@ -4540,6 +4690,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 17.82,
@@ -4815,6 +4971,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 1.47,
@@ -5066,6 +5228,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 23540.0,
@@ -5324,6 +5492,12 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 99.03,
@@ -5572,6 +5746,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 375.0,
@@ -5815,6 +5995,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 13.6,
@@ -6088,6 +6274,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 3730.0,
@@ -6327,6 +6519,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 412.97,
@@ -6634,6 +6832,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 2645.22,
@@ -6860,6 +7064,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 4497.0,
@@ -7059,6 +7269,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 182.19,
@@ -7291,6 +7507,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 291.0,
@@ -7531,6 +7753,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 187.0,
@@ -7814,6 +8042,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -8030,6 +8264,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 7.5,
@@ -8285,6 +8525,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 6.36,
@@ -8532,6 +8778,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 236.54,
@@ -8719,6 +8971,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (toenemend, 1.42x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -8765,6 +9025,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.42,
+          "steps": [
+            17339600,
+            18804050,
+            24589000
+          ],
+          "label": "toenemend"
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -8987,6 +9257,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 228.4,
@@ -9201,6 +9477,12 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 436.8,
@@ -9414,6 +9696,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 221.3,
@@ -9639,6 +9927,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 19.9,
@@ -9933,6 +10227,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 12580.0,
@@ -10116,6 +10416,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (toenemend, 1.39x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\ud83d\udc40",
@@ -10168,6 +10476,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.39,
+          "steps": [
+            783556,
+            919506,
+            1091556
+          ],
+          "label": "toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 262.45,
@@ -10387,6 +10705,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 374.2,
@@ -10605,6 +10929,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (toenemend, 1.36x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -10653,6 +10985,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.36,
+          "steps": [
+            13504100,
+            17640650,
+            18335950
+          ],
+          "label": "toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 793.65,
@@ -10882,6 +11224,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 218.91,
@@ -11133,6 +11481,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -11364,6 +11718,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (licht toenemend, 1.27x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\u26a0\ufe0f",
@@ -11423,6 +11785,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.27,
+          "steps": [
+            42157050,
+            46866550,
+            53335950
+          ],
+          "label": "licht toenemend"
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -11716,6 +12088,12 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -11913,6 +12291,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -12127,6 +12511,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 1219.94,
@@ -12290,6 +12680,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (licht toenemend, 1.25x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -12343,6 +12741,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.25,
+          "steps": [
+            10010150,
+            11211100,
+            12554700
+          ],
+          "label": "licht toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 190.92,
@@ -12563,6 +12971,12 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 6113.0,
@@ -12756,6 +13170,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (toenemend, 1.39x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -12809,6 +13231,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.39,
+          "steps": [
+            1428800,
+            1717000,
+            1991450
+          ],
+          "label": "toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 9510.0,
@@ -13033,6 +13465,12 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 84170.0,
@@ -13270,6 +13708,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 8880.0,
@@ -13469,6 +13913,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (licht toenemend, 1.33x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -13524,6 +13976,16 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.33,
+          "steps": [
+            3987800,
+            4717550,
+            5311700
+          ],
+          "label": "licht toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 7915.0,
@@ -13774,6 +14236,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 9074.0,
@@ -14029,6 +14497,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 497.36,
@@ -14198,6 +14672,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (licht toenemend, 1.29x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -14250,6 +14732,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.29,
+          "steps": [
+            3108050,
+            3557300,
+            4023300
+          ],
+          "label": "licht toenemend"
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -14494,6 +14986,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (toenemend, 1.39x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -14548,6 +15048,16 @@
         "volKnown": true,
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.39,
+          "steps": [
+            1934400,
+            2211650,
+            2692950
+          ],
+          "label": "toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 616.11,
@@ -14779,6 +15289,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -14933,6 +15449,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (licht toenemend, 1.33x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -14979,6 +15503,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.33,
+          "steps": [
+            389550,
+            443850,
+            517100
+          ],
+          "label": "licht toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 187.61,
@@ -15269,6 +15803,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 189.82,
@@ -15488,6 +16028,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 153.86,
@@ -15714,6 +16260,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -15921,6 +16473,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -16134,6 +16692,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 290.63,
@@ -16366,6 +16930,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 2354.39,
@@ -16635,6 +17205,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 84.64,
@@ -16883,6 +17459,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 58.15,
@@ -17141,6 +17723,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 46.75,
@@ -17365,6 +17953,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 161.0,
@@ -17599,6 +18193,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 87.88,
@@ -17843,6 +18443,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 24.35,
@@ -18089,6 +18695,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 7.43,
@@ -18373,6 +18985,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 51.76,
@@ -18601,6 +19219,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 280.0,
@@ -18830,6 +19454,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 239.62,
@@ -19047,6 +19677,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {},
           "extensions": {},
@@ -19256,6 +19892,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 278.7,
@@ -19519,6 +20161,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 21.25,
@@ -19763,6 +20411,12 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": false,
+          "ratio": null,
+          "steps": null,
+          "label": null
+        },
         "fib": {
           "retracements": {
             "0.000": 64.05,
@@ -19952,6 +20606,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcca",
+          "title": "Opgepast: toenemend volume (sterk toenemend, 1.71x t.o.v. het half jaar ervoor)",
+          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\u26a0\ufe0f",
@@ -20004,6 +20666,16 @@
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
+        "volTrend": {
+          "rising": true,
+          "ratio": 1.71,
+          "steps": [
+            2548300,
+            3283800,
+            4357950
+          ],
+          "label": "sterk toenemend"
+        },
         "fib": {
           "retracements": {
             "0.000": 44.47,
@@ -23389,8 +24061,8 @@
     "methodNote": "Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."
   },
   "weekly": {
-    "generatedAt": "2026-07-18T11:18:17.217514+02:00",
-    "generatedAtHuman": "Saturday 18 July 2026 om 11:18",
+    "generatedAt": "2026-07-18T11:28:09.823876+02:00",
+    "generatedAtHuman": "Saturday 18 July 2026 om 11:28",
     "periodLabel": "sinds ~1 week geleden",
     "changes": [
       {
