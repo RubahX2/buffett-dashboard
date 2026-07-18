@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "6.8";
+const UI_VERSION = "7.1";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -1038,7 +1038,7 @@ function FibLevelRows({ entries, currentPrice, cur, accent }) {
     if (is(0.618) || is(0.65) || is(0.68) || is(0.705) || is(0.71)) return "#e5c100"; // geel (golden pocket)
     if (is(0.886) || is(1.818)) return "#3fae6b";               // groen
     if (is(2.618)) return "#e0533d";                            // rood (verre extensie)
-    if (is(3.618)) return "#a855c9";                            // paars
+    if (is(3.618) || is(4.236)) return "#a855c9";               // paars (extreem)
     return null;
   };
   return entries.map((f,i)=>{
