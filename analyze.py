@@ -260,6 +260,7 @@ FIB_OVERRIDES = {
     "MU":   {"ath": 97.00, "atl": 1.59,  "recent_hi": 1254.81,
              "retr_atl": 48.49, "retr_hi": 1254.81},
     "MNST": {"ath": 61.35, "atl": 43.34, "recent_hi": 99.03},
+    "CAT":  {"ath": 247.00, "atl": 161.00, "recent_hi": 1000.00},
     "V":    {"ath": 252.00, "atl": 175.00, "recent_hi": 375.00},
     "RDDT": {"ath": 280.00, "atl": 119.00, "recent_hi": 280.00},
     "AMZN": {"ath": 187.50, "atl": 81.65, "recent_hi": 278.00},
@@ -723,6 +724,8 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     bull = None
     if len(lows) >= 2:
         iv = ind.values
+        _ind_schaal_l = float(pd.Series(iv).dropna().abs().tail(max_lookback * 2).max() or 0.0)
+        _marge_l = _ind_schaal_l * 0.05
         recent_grens = n - max_lookback
         recent = [(i, p) for (i, p) in lows if i >= recent_grens]
         eerder = [(i, p) for (i, p) in lows if i < recent_grens and i >= recent_grens - max_lookback]
@@ -731,19 +734,27 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
             i1, p1 = min(eerder, key=lambda t: t[1])   # laagste eerdere bodem
             ind1, ind2 = iv[i1], iv[i2]
             if not (np.isnan(ind1) or np.isnan(ind2)):
-                if p2 < p1 and ind2 > ind1:
+                if p2 < p1 and (ind2 - ind1) > _marge_l:
                     bull = {
                         "type": "bullish",
                         "priceLow1": round(p1, 2), "priceLow2": round(p2, 2),
                         "indLow1": round(float(ind1), 2), "indLow2": round(float(ind2), 2),
-                        "barsApart": int(i2 - i1),
+                        "barsApart": int(i2 - i1), "anchorIdx": int(i2),
                     }
 
     # ── Bearish: spiegelbeeld, anker op de HOOGSTE top in de recente periode ──
+    # MARGE-EIS: de indicator moet MERKBAAR lager staan, niet een duizendste.
+    # De MACD-lijn meet SNELHEID, geen niveau. Een stijging die van steil naar
+    # gestaag gaat laat de MACD dalen terwijl de koers gewoon doorstijgt -- zonder
+    # marge levert dat een "bearish divergentie" op bij een gezonde trend. We eisen
+    # daarom dat het verschil minstens 5% is van de typische indicator-uitslag.
+    # Geijkt op gemeten valse gevallen: die zaten op 0,3% en 4,0% van de schaal.
     highs = _find_swing_highs(price, left, right)
     bear = None
     if len(highs) >= 2:
         iv = ind.values
+        _ind_schaal = float(pd.Series(iv).dropna().abs().tail(max_lookback * 2).max() or 0.0)
+        _marge = _ind_schaal * 0.05
         recent_grens = n - max_lookback
         recent_h = [(j, q) for (j, q) in highs if j >= recent_grens]
         eerder_h = [(j, q) for (j, q) in highs if j < recent_grens and j >= recent_grens - max_lookback]
@@ -752,17 +763,19 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
             j1, q1 = max(eerder_h, key=lambda t: t[1])
             indh1, indh2 = iv[j1], iv[j2]
             if not (np.isnan(indh1) or np.isnan(indh2)):
-                if q2 > q1 and indh2 < indh1:
+                if q2 > q1 and (indh1 - indh2) > _marge:
                     bear = {
                         "type": "bearish",
                         "priceHigh1": round(q1, 2), "priceHigh2": round(q2, 2),
                         "indHigh1": round(float(indh1), 2), "indHigh2": round(float(indh2), 2),
-                        "barsApart": int(j2 - j1),
+                        "barsApart": int(j2 - j1), "anchorIdx": int(j2),
                     }
 
-    # Als beide bestaan, geef de MEEST RECENTE terug (hoogste anker-index)
+    # Als beide bestaan, geef de MEEST RECENTE terug (hoogste anker-index).
+    # De ankerindices staan in de dicts zelf, zodat we niet afhangen van lokale
+    # variabelen die alleen binnen een geslaagde tak zijn toegewezen.
     if bull and bear:
-        return bull if bull["barsApart"] and (i2 >= j2) else bear
+        return bull if bull.get("anchorIdx", -1) >= bear.get("anchorIdx", -1) else bear
     return bull or bear
 
 def calc_fibonacci(swing_low: float, swing_high: float,
@@ -814,7 +827,8 @@ def calc_fibonacci(swing_low: float, swing_high: float,
         e_lo, e_hi = swing_low, swing_high
     ext = {lbl: _logfib(e_lo, e_hi, pct) for lbl, pct in
            [("0.000",0.000),("1.000",1.000),("1.272",1.272),("1.414",1.414),
-            ("1.618",1.618),("1.818",1.818),("2.000",2.000),("2.618",2.618)]}
+            ("1.618",1.618),("1.818",1.818),("2.000",2.000),("2.618",2.618),
+            ("3.618",3.618),("4.236",4.236)]}
 
     return {"retracements": retr, "extensions": ext,
             "goldenPocket": {"low": gp_low, "high": gp_high},
@@ -1760,11 +1774,32 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             signals.append({"type":"SELL","cat":"MACD","tf":"1W","weight":4,"icon":"🔴",
                 "title":"MACD bearish crossover (WEEKLY) ⭐",
                 "detail":f"Weekly MACD {last_macd_wl:.3f} kruist onder {last_macd_ws:.3f}. Krachtig."})
-    elif has_weekly and not IS_FRIDAY and last_macd_wl is not None:
+    elif has_weekly and not IS_FRIDAY and last_macd_wl is not None and last_macd_ws is not None:
+        # Buiten vrijdag is de weekcandle nog niet af, dus een VERSE kruising kan nog
+        # omdraaien. Maar de weekly MACD helemaal negeren is te ver doorgeschoten: een
+        # stand die al DUIDELIJK is (histogram ruim van nul af) verandert niet meer door
+        # de laatste dagen van de week, en zou zes dagen per week onzichtbaar zijn in de
+        # balans. Zo'n bevestigde stand telt daarom mee met een lichter gewicht (2 i.p.v.
+        # 4); is de stand nog nipt, dan blijft het een informatieve alert.
+        _mw_hist = (macd_wl - macd_ws).dropna()
+        _mw_schaal = float(_mw_hist.abs().tail(26).max()) if len(_mw_hist) >= 26 else None
+        _mw_duidelijk = (_mw_schaal is not None and _mw_schaal > 0
+                         and abs(last_macd_wl - last_macd_ws) > _mw_schaal * 0.20)
         direction = "bullish" if last_macd_wl > last_macd_ws else "bearish"
-        alerts.append({"type":"INFO","cat":"MACD","tf":"1W","icon":"ℹ️",
-            "title":f"MACD weekly momenteel {direction} (crossover enkel vrijdag geëvalueerd)",
-            "detail":f"MACD: {last_macd_wl:.3f} | Signaal: {last_macd_ws:.3f}"})
+        if _mw_duidelijk:
+            signals.append({
+                "type": "BUY" if direction == "bullish" else "SELL",
+                "cat":"MACD","tf":"1W","weight":2,
+                "icon":"🟢" if direction=="bullish" else "🔴",
+                "title":f"MACD weekly {direction} (stand)",
+                "detail":f"Weekly MACD {last_macd_wl:.3f} vs signaal {last_macd_ws:.3f} — "
+                         "de stand is duidelijk en verandert niet meer door de rest van de "
+                         "week. Telt lichter mee dan een crossover op vrijdag (gewicht 2 "
+                         "i.p.v. 4)."})
+        else:
+            alerts.append({"type":"INFO","cat":"MACD","tf":"1W","icon":"ℹ️",
+                "title":f"MACD weekly momenteel {direction}, nog nipt (crossover vrijdag geëvalueerd)",
+                "detail":f"MACD: {last_macd_wl:.3f} | Signaal: {last_macd_ws:.3f}"})
 
     # ── 5. EMA 8/21 DAILY ──
     if crossed_up(ema8_d, ema21_d):
@@ -2029,6 +2064,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         # niet door nabijheid. Zo valt er geen enkel gat meer tussen de niveaus.
         e1618 = _ext_val("1.618"); e1818 = _ext_val("1.818")
         e2000 = _ext_val("2.000"); e2618 = _ext_val("2.618")
+        e3618 = _ext_val("3.618"); e4236 = _ext_val("4.236")
         # RICHTING-CHECK: de extensie-fibs zijn WINSTNEEM-zones die de koers van
         # ONDEREN bereikt in een uptrend. Als de koers vanuit een hogere zone
         # NEERWAARTS terugzakt door deze niveaus (bv. van de 2.0 terug door de 1.618),
@@ -2041,16 +2077,31 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             _opwaarts = last_ema8w >= last_ema21w * 0.995   # 8-EMA op/boven 21-EMA = uptrend
         # alleen zinvol als de extensies niet verworpen zijn, 1.618 bestaat, EN opwaarts
         if not fib.get("extRejected") and e1618 is not None and _opwaarts:
-            if e2618 is not None and last >= e2618:
+            if e4236 is not None and last >= e4236:
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":9,"icon":"🎯",
+                    "title":"Voorbij 4.236-extensie ⭐⭐⭐ (extreem)",
+                    "detail":f"Prijs ${last:.2f} ligt op/voorbij de 4.236-extensie (${e4236:.2f}). "
+                             "Dit niveau wordt zelden bereikt; historisch een uitputtingszone."})
+                tp_fired = True
+            elif e3618 is not None and last >= e3618:
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":9,"icon":"🎯",
+                    "title":"Voorbij 3.618-extensie ⭐⭐⭐ (extreem)",
+                    "detail":f"Prijs ${last:.2f} ligt op/voorbij de 3.618-extensie (${e3618:.2f}). "
+                             "Uitzonderlijk ver boven de projectie — sterk verkooppunt."})
+                tp_fired = True
+            elif e2618 is not None and last >= e2618:
                 signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":8,"icon":"🎯",
                     "title":"Voorbij 2.618-extensie ⭐⭐⭐ (uitzonderlijk ver)",
                     "detail":f"Prijs ${last:.2f} ligt op/voorbij de 2.618-extensie (${e2618:.2f}). "
                              "Zelfs voor kwaliteit uitzonderlijk ver in de winstzone — sterk verkooppunt."})
                 tp_fired = True
             elif e2000 is not None and last >= e2000:
-                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":6,"icon":"🎯",
-                    "title":"Voorbij 2.0-extensie ⭐⭐ (diep in winst)",
-                    "detail":f"Prijs ${last:.2f} ligt voorbij de 2.0-extensie (${e2000:.2f}) — diep in de winstzone. Winst nemen."})
+                # Rubens regel: alles vanaf 2.0 duidt STERK VERKOOP aan (gewicht 8,
+                # gelijk aan 2.618), niet slechts "diep in winst" met gewicht 6.
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":8,"icon":"🎯",
+                    "title":"Voorbij 2.0-extensie ⭐⭐⭐ (diep in winst)",
+                    "detail":f"Prijs ${last:.2f} ligt voorbij de 2.0-extensie (${e2000:.2f}) — "
+                             "diep in de winstzone. Vanaf dit niveau geldt sterk verkoop."})
                 tp_fired = True
             elif e1818 is not None and last >= e1818:
                 signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":5,"icon":"🎯",
@@ -2100,7 +2151,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # Fase 1: raakte de prijs in de LAATSTE 3 MAANDEN een TP-zone? (verse terugval)
     # Loop van HOOG naar laag en pak het HOOGSTE niveau dat de recente top raakte —
     # zo krijgt een top die bv. bij 2.618 lag ook echt het label 2.618 (niet 1.618).
-    _ext_levels = ("2.618", "2.000", "1.818", "1.618", "1.414", "1.272")
+    _ext_levels = ("4.236", "3.618", "2.618", "2.000", "1.818", "1.618", "1.414", "1.272")
     tp_recent = None
     for lbl in _ext_levels:
         lvl = _ext_val(lbl)
@@ -2164,10 +2215,12 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             #   2.618 → sterk verkoop (w8) voor élk aandeel (uitzonderlijk ver).
             #   2.000 → w6-7. 1.818/1.618 → kwaliteit w5, bagger w6.
             #   lagere niveaus → kwaliteit lichter, bagger zwaarder.
-            if lbl == "2.618":
+            if lbl in ("4.236", "3.618"):
+                w = 9
+            elif lbl == "2.618":
                 w = 8
             elif lbl == "2.000":
-                w = 7 if is_bagger else 6
+                w = 8   # Rubens regel: vanaf 2.0 is het sterk verkoop
             elif lbl in ("1.818", "1.618"):
                 w = 6 if is_bagger else 5
             else:  # 1.414, 1.272
@@ -2312,7 +2365,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     #    Zo vloeken de twee niet: één bron van waarheid voor "bij een TP-zone".
     near_tp_zone = any(
         (_ext_val(l) is not None and prox_pct(last, _ext_val(l)) < 4.0)
-        for l in ("1.272", "1.414", "1.618", "1.818", "2.000", "2.618")
+        for l in ("1.272", "1.414", "1.618", "1.818", "2.000", "2.618", "3.618", "4.236")
     )
     # b) Ver boven 8-EMA op weekly/monthly?
     wk_close = weekly["Close"] if (weekly is not None and len(weekly) >= 10) else None
@@ -2456,8 +2509,10 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     #   voorbij 2.000  -> VERKOOP
     #   voorbij 2.618  -> STERK VERKOOP
     fib_tp_sigs = [s for s in signals if s.get("cat") == "FIB" and s.get("tf") == "TP"]
+    has_4236 = any("4.236" in s.get("title", "") for s in fib_tp_sigs)
+    has_3618 = any("3.618" in s.get("title", "") for s in fib_tp_sigs)
     has_2618 = any("2.618" in s.get("title", "") for s in fib_tp_sigs)
-    has_2000 = any(("2.0" in s.get("title", "") or "2.000" in s.get("title", "")) for s in fib_tp_sigs)
+    has_2000 = any((("2.0-" in s.get("title", "")) or ("2.000" in s.get("title", ""))) for s in fib_tp_sigs)
     has_1818 = any("1.818" in s.get("title", "") for s in fib_tp_sigs)
     has_1618 = any("1.618" in s.get("title", "") for s in fib_tp_sigs)
 
@@ -2472,12 +2527,19 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             overall = doel
             conflict_note = (conflict_note + " " if conflict_note else "") + note
 
-    if has_2618:
+    # Rubens regel: ALLES vanaf de 2.0-extensie duidt sterk verkoop aan.
+    if has_4236:
+        _kantel_naar("STERK VERKOOP",
+            "Prijs op/voorbij de 4.236-extensie (extreem, zelden bereikt) - sterk verkoop.")
+    elif has_3618:
+        _kantel_naar("STERK VERKOOP",
+            "Prijs op/voorbij de 3.618-extensie (extreem ver in winst) - sterk verkoop.")
+    elif has_2618:
         _kantel_naar("STERK VERKOOP",
             "Prijs op/voorbij de 2.618-extensie (uitzonderlijk ver in winst) - sterk verkoop.")
     elif has_2000:
-        _kantel_naar("VERKOOP",
-            "Prijs voorbij de 2.0-extensie (diep in winst) - verkoop.")
+        _kantel_naar("STERK VERKOOP",
+            "Prijs voorbij de 2.0-extensie (diep in winst) - sterk verkoop.")
     elif has_1818:
         _kantel_naar("LICHT VERKOOP",
             "Prijs voorbij de 1.818-extensie (ver in winst) - licht verkoop.")
@@ -4288,7 +4350,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "6.8-volume-ma-obv",
+            "version": "7.1-cat-fib-extreem",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
