@@ -1011,13 +1011,17 @@ function FibLevelRows({ entries, currentPrice, cur, accent }) {
   // de verre 2.618/3.618 rood/groen. Ruben herkent de zones zo in een oogopslag.
   const fibColor = (label)=>{
     const l = String(label);
-    if (l==="0.618"||l==="0.65"||l==="0.68"||l==="0.705"||l==="0.71"||l==="0.786") return "#e5c100"; // geel (golden pocket + entry)
-    if (l==="0.5"||l==="1.414") return "#e0533d";   // rood
-    if (l==="0.886"||l==="1.818") return "#3fae6b";  // groen
-    if (l==="1.618") return "#3d7ee0";               // blauw (kern-TP)
-    if (l==="2.618"||l==="1.272") return "#e0533d";  // rood (verre extensie)
-    if (l==="3.618") return "#a855c9";               // paars
-    return null; // 0.236 / 0.382 / 1.0 / 0.0 -> neutraal
+    // Rubens kleurschema, zodat de niveaus hier hetzelfde ogen als op zijn chart.
+    if (l==="0.000"||l==="0.0"||l==="0"||l==="1.000"||l==="1.0"||l==="1") return "#8a8f98"; // grijs (swing-uiteinden)
+    if (l==="0.236"||l==="0.382"||l==="1.272") return "#e8eaed";  // wit
+    if (l==="0.5"||l==="1.414") return "#e0533d";                  // rood
+    if (l==="0.786") return "#6fb7e8";                             // lichtblauw
+    if (l==="1.618") return "#3d7ee0";                             // blauw (kern-TP)
+    if (l==="0.618"||l==="0.65"||l==="0.68"||l==="0.705"||l==="0.71") return "#e5c100"; // geel (golden pocket)
+    if (l==="0.886"||l==="1.818") return "#3fae6b";                // groen
+    if (l==="2.618") return "#e0533d";                             // rood (verre extensie)
+    if (l==="3.618") return "#a855c9";                             // paars
+    return null;
   };
   return entries.map((f,i)=>{
     const dist = Math.abs((currentPrice-f.price)/currentPrice*100);
@@ -2147,6 +2151,28 @@ function App() {
                       padding:"8px 16px",fontWeight:700,fontSize:12,cursor:"pointer"}}>
                     Bekijk volledige analyse →
                   </button>
+                  {allocation.pickTop3&&allocation.pickTop3.length>1&&(
+                    <div style={{marginTop:14,paddingTop:12,borderTop:`1px solid ${C.border}`}}>
+                      <div style={{color:C.textDim,fontSize:10,fontWeight:700,letterSpacing:0.5,marginBottom:8}}>
+                        TOP 3 — VERGELIJK DE KANDIDATEN
+                      </div>
+                      {allocation.pickTop3.map((p,i)=>(
+                        <div key={p.ticker} onClick={()=>setSelected(p.ticker)}
+                          style={{display:"flex",alignItems:"center",gap:8,padding:"7px 9px",marginBottom:5,
+                            background:i===0?C.bg:"transparent",border:`1px solid ${i===0?C.accent:C.border}`,
+                            borderRadius:6,cursor:"pointer"}}>
+                          <span style={{color:i===0?C.accent:C.textDim,fontSize:12,fontWeight:900,minWidth:16}}>{i+1}</span>
+                          <span style={{color:i===0?C.accent:C.text,fontSize:13,fontWeight:800,minWidth:52}}>{p.ticker}</span>
+                          <span style={{color:C.textDim,fontSize:10,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                            {STOCK_NAMES[p.ticker]||p.sector}
+                          </span>
+                          {p.degraded&&<span title="geen zuivere pick" style={{fontSize:11}}>⚠</span>}
+                          <span style={{color:C.textDim,fontSize:9}}>K{p.quality}</span>
+                          <span style={{color:i===0?C.accent:C.text,fontSize:14,fontWeight:900,minWidth:26,textAlign:"right"}}>{p.composite}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
