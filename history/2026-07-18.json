@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generatedAt": "2026-07-18T11:28:09.823876+02:00",
-    "generatedAtHuman": "Saturday 18 July 2026 om 11:28",
+    "generatedAt": "2026-07-18T15:05:24.247966+02:00",
+    "generatedAtHuman": "Saturday 18 July 2026 om 15:05",
     "isFriday": false,
     "isWeekend": true,
-    "version": "6.5-volumetrend-observerend",
+    "version": "6.8-volume-ma-obv",
     "fundamentalsNote": "Fundamentals handmatig bijgehouden \u2014 controleer bij elk kwartaalrapport."
   },
   "stocks": {
@@ -190,8 +190,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.067,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -410,8 +420,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.004,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -586,9 +606,9 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (toenemend, 1.35x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.23x de 50d-MA, koers +8.3%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "INFO",
@@ -646,13 +666,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.35,
-          "steps": [
-            2608250,
-            2709450,
-            3523600
-          ],
-          "label": "toenemend"
+          "ratio": 1.23,
+          "vma20": 3934445,
+          "vma50": 3206426,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 8.3,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.04,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -910,6 +936,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bearish): koers +7.4% maar OBV daalt",
+          "detail": "De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt gedragen door steeds minder volume. Dat kan wijzen op uitholling. Waarneming, geen verkoopsignaal."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\u26a0\ufe0f",
@@ -972,8 +1006,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.164,
+          "trend": "dalend",
+          "divergence": "bearish"
         },
         "fib": {
           "retracements": {
@@ -1204,8 +1248,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.009,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -1490,14 +1544,6 @@
       ],
       "alerts": [
         {
-          "type": "WATCH",
-          "cat": "VOL",
-          "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (licht toenemend, 1.29x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
-        },
-        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -1552,14 +1598,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": true,
-          "ratio": 1.29,
-          "steps": [
-            40834450,
-            49260850,
-            52754150
-          ],
-          "label": "licht toenemend"
+          "rising": false,
+          "ratio": null,
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.0,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -1915,8 +1967,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.269,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -2120,6 +2182,22 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.25x de 50d-MA, koers -9.2%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bullish): koers -6.7% maar OBV stijgt",
+          "detail": "De On-Balance Volume loopt op terwijl de koers daalt: er wordt meer volume verhandeld op stijgende dagen dan op dalende. Dat kan wijzen op accumulatie onder de oppervlakte. Waarneming, geen koopsignaal."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -2169,10 +2247,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.25,
+          "vma20": 61281020,
+          "vma50": 48864730,
+          "label": "toenemend",
+          "direction": "bearish",
+          "priceChange": -9.2,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.08,
+          "trend": "stijgend",
+          "divergence": "bullish"
         },
         "fib": {
           "retracements": {
@@ -2418,6 +2506,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.31x de 50d-MA, koers -27.4%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\ud83d\udc40",
@@ -2471,10 +2567,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.31,
+          "vma20": 39788365,
+          "vma50": 30482016,
+          "label": "toenemend",
+          "direction": "bearish",
+          "priceChange": -27.4,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.36,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -2655,6 +2761,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.17x de 50d-MA, koers +3.4%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -2702,10 +2816,20 @@
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.17,
+          "vma20": 20944865,
+          "vma50": 17939140,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 3.4,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.038,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -2877,6 +3001,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bearish): koers +3.6% maar OBV daalt",
+          "detail": "De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt gedragen door steeds minder volume. Dat kan wijzen op uitholling. Waarneming, geen verkoopsignaal."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -2933,8 +3065,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.056,
+          "trend": "dalend",
+          "divergence": "bearish"
         },
         "fib": {
           "retracements": {
@@ -3128,6 +3270,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.15x de 50d-MA, koers -5.0%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -3197,10 +3347,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.15,
+          "vma20": 1519905,
+          "vma50": 1318596,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -5.0,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.045,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -3379,6 +3539,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.12x de 50d-MA, koers +24.2%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\u26a0\ufe0f",
@@ -3432,10 +3600,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.12,
+          "vma20": 341585,
+          "vma50": 305444,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 24.2,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.227,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -3672,8 +3850,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.073,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -3859,9 +4047,9 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (licht toenemend, 1.31x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.13x de 50d-MA, koers -13.8%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "WATCH",
@@ -3926,13 +4114,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.31,
-          "steps": [
-            3675000,
-            3757350,
-            4796500
-          ],
-          "label": "licht toenemend"
+          "ratio": 1.13,
+          "vma20": 5879860,
+          "vma50": 5184534,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -13.8,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.134,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -4197,8 +4391,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.227,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -4397,9 +4601,9 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (sterk toenemend, 2.22x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.46x de 50d-MA, koers -3.4%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "INFO",
@@ -4452,13 +4656,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 2.22,
-          "steps": [
-            39379550,
-            40636250,
-            87407800
-          ],
-          "label": "sterk toenemend"
+          "ratio": 1.46,
+          "vma20": 83817540,
+          "vma50": 57234582,
+          "label": "toenemend",
+          "direction": "bearish",
+          "priceChange": -3.4,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.185,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -4693,8 +4903,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.285,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -4974,8 +5194,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.035,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -5221,7 +5451,7 @@
         "macdLine": 12.7993,
         "macdSignal": 144.169,
         "macdLineW": 818.1948,
-        "macdSigW": 796.8004,
+        "macdSigW": 796.8005,
         "bollUpper": 22221.78,
         "bollLower": 19487.45,
         "volRatio": 0.61,
@@ -5231,8 +5461,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.016,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -5495,8 +5735,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.19,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -5687,6 +5937,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.15x de 50d-MA, koers +6.8%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\u26a0\ufe0f",
@@ -5747,10 +6005,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.15,
+          "vma20": 9891825,
+          "vma50": 8566398,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 6.8,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.032,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -5998,8 +6266,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.06,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -6208,6 +6486,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bearish): koers +4.8% maar OBV daalt",
+          "detail": "De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt gedragen door steeds minder volume. Dat kan wijzen op uitholling. Waarneming, geen verkoopsignaal."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\u26a0\ufe0f",
@@ -6277,8 +6563,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.083,
+          "trend": "dalend",
+          "divergence": "bearish"
         },
         "fib": {
           "retracements": {
@@ -6522,8 +6818,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.049,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -6835,8 +7141,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.16,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -6986,7 +7302,7 @@
           "weight": 2,
           "icon": "\ud83d\udd34",
           "title": "MACD bearish crossover (daily) (laag volume)",
-          "detail": "MACD 78.830 kruist onder signaal 80.128."
+          "detail": "MACD 78.776 kruist onder signaal 80.355."
         },
         {
           "type": "SELL",
@@ -7018,6 +7334,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bearish): koers +11.5% maar OBV daalt",
+          "detail": "De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt gedragen door steeds minder volume. Dat kan wijzen op uitholling. Waarneming, geen verkoopsignaal."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -7046,29 +7370,39 @@
       "pctOffHigh": 42.7,
       "indicators": {
         "last": 2576.0,
-        "rsiDaily": 55.4,
+        "rsiDaily": 55.3,
         "rsiWeekly": 45.4,
-        "ema8d": 2623.75,
-        "ema21d": 2547.89,
+        "ema8d": 2624.19,
+        "ema21d": 2548.62,
         "ema8w": 2515.84,
         "ema21w": 2650.48,
-        "ma50": 2374.34,
-        "ma200": 3079.42,
-        "macdLine": 78.8302,
-        "macdSignal": 80.1276,
+        "ma50": 2374.72,
+        "ma200": 3079.51,
+        "macdLine": 78.7761,
+        "macdSignal": 80.3554,
         "macdLineW": -200.7442,
         "macdSigW": -262.7796,
-        "bollUpper": 2811.37,
-        "bollLower": 2285.73,
-        "volRatio": 1.47,
+        "bollUpper": 2813.35,
+        "bollLower": 2285.65,
+        "volRatio": 1.41,
         "volKnown": true,
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.1,
+          "trend": "dalend",
+          "divergence": "bearish"
         },
         "fib": {
           "retracements": {
@@ -7272,8 +7606,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.086,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -7510,8 +7854,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.266,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -7756,8 +8110,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.154,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -7994,6 +8358,22 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.15x de 50d-MA, koers -9.6%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bullish): koers -6.3% maar OBV stijgt",
+          "detail": "De On-Balance Volume loopt op terwijl de koers daalt: er wordt meer volume verhandeld op stijgende dagen dan op dalende. Dat kan wijzen op accumulatie onder de oppervlakte. Waarneming, geen koopsignaal."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -8043,10 +8423,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.15,
+          "vma20": 46852100,
+          "vma50": 40601446,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -9.6,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.066,
+          "trend": "stijgend",
+          "divergence": "bullish"
         },
         "fib": {
           "retracements": {},
@@ -8267,8 +8657,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.42,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -8528,8 +8928,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.209,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -8781,8 +9191,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.21,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -8975,8 +9395,8 @@
           "cat": "VOL",
           "tf": "1D",
           "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (toenemend, 1.42x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "title": "Volume trekt aan - koers blijft hangen - let op distributie (20d-MA 1.20x de 50d-MA, koers -1.7%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers nauwelijks beweegt. Veel handel zonder koersvoortgang kan betekenen dat grote partijen verkopen aan wie instapt. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "INFO",
@@ -9027,13 +9447,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.42,
-          "steps": [
-            17339600,
-            18804050,
-            24589000
-          ],
-          "label": "toenemend"
+          "ratio": 1.2,
+          "vma20": 29007570,
+          "vma50": 24131764,
+          "label": "licht toenemend",
+          "direction": "neutraal",
+          "priceChange": -1.7,
+          "verdict": "koers blijft hangen - let op distributie"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.112,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -9260,8 +9686,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.122,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -9480,8 +9916,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.204,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -9699,8 +10145,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.207,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -9930,8 +10386,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.254,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -10230,8 +10696,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.016,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -10418,9 +10894,9 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (toenemend, 1.39x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.11x de 50d-MA, koers -11.9%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "WATCH",
@@ -10478,13 +10954,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.39,
-          "steps": [
-            783556,
-            919506,
-            1091556
-          ],
-          "label": "toenemend"
+          "ratio": 1.11,
+          "vma20": 1151396,
+          "vma50": 1037127,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -11.9,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.352,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -10657,6 +11139,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bearish): koers +5.4% maar OBV daalt",
+          "detail": "De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt gedragen door steeds minder volume. Dat kan wijzen op uitholling. Waarneming, geen verkoopsignaal."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -10708,8 +11198,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.093,
+          "trend": "dalend",
+          "divergence": "bearish"
         },
         "fib": {
           "retracements": {
@@ -10933,8 +11433,8 @@
           "cat": "VOL",
           "tf": "1D",
           "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (toenemend, 1.36x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "title": "Volume trekt aan - koers blijft hangen - let op distributie (20d-MA 1.14x de 50d-MA, koers -1.2%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers nauwelijks beweegt. Veel handel zonder koersvoortgang kan betekenen dat grote partijen verkopen aan wie instapt. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "INFO",
@@ -10987,13 +11487,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.36,
-          "steps": [
-            13504100,
-            17640650,
-            18335950
-          ],
-          "label": "toenemend"
+          "ratio": 1.14,
+          "vma20": 20907800,
+          "vma50": 18414312,
+          "label": "licht toenemend",
+          "direction": "neutraal",
+          "priceChange": -1.2,
+          "verdict": "koers blijft hangen - let op distributie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.077,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -11227,8 +11733,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.102,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -11429,6 +11945,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.24x de 50d-MA, koers -42.5%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\ud83d\udc40",
@@ -11482,10 +12006,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.24,
+          "vma20": 26373725,
+          "vma50": 21212416,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -42.5,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.283,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -11721,8 +12255,8 @@
           "cat": "VOL",
           "tf": "1D",
           "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (licht toenemend, 1.27x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "title": "Volume trekt aan - koers blijft hangen - let op distributie (20d-MA 1.20x de 50d-MA, koers +1.2%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers nauwelijks beweegt. Veel handel zonder koersvoortgang kan betekenen dat grote partijen verkopen aan wie instapt. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "WATCH",
@@ -11787,13 +12321,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.27,
-          "steps": [
-            42157050,
-            46866550,
-            53335950
-          ],
-          "label": "licht toenemend"
+          "ratio": 1.2,
+          "vma20": 67415835,
+          "vma50": 56372528,
+          "label": "licht toenemend",
+          "direction": "neutraal",
+          "priceChange": 1.2,
+          "verdict": "koers blijft hangen - let op distributie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.178,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -12027,6 +12567,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.26x de 50d-MA, koers -15.2%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -12089,10 +12637,20 @@
         "highVolume": true,
         "volNote": "\u2713 hoog volume",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.26,
+          "vma20": 54986840,
+          "vma50": 43531320,
+          "label": "toenemend",
+          "direction": "bearish",
+          "priceChange": -15.2,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.26,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -12245,6 +12803,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.15x de 50d-MA, koers -5.0%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -12292,10 +12858,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.15,
+          "vma20": 11755765,
+          "vma50": 10220600,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -5.0,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.197,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -12450,6 +13026,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.23x de 50d-MA, koers -4.0%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\u26a0\ufe0f",
@@ -12512,10 +13096,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.23,
+          "vma20": 968045,
+          "vma50": 785646,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -4.0,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.1,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -12680,14 +13274,6 @@
       ],
       "alerts": [
         {
-          "type": "WATCH",
-          "cat": "VOL",
-          "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (licht toenemend, 1.25x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
-        },
-        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -12742,14 +13328,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": true,
-          "ratio": 1.25,
-          "steps": [
-            10010150,
-            11211100,
-            12554700
-          ],
-          "label": "licht toenemend"
+          "rising": false,
+          "ratio": null,
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.225,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -12925,6 +13517,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bullish): koers -14.8% maar OBV stijgt",
+          "detail": "De On-Balance Volume loopt op terwijl de koers daalt: er wordt meer volume verhandeld op stijgende dagen dan op dalende. Dat kan wijzen op accumulatie onder de oppervlakte. Waarneming, geen koopsignaal."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -12974,8 +13574,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.071,
+          "trend": "stijgend",
+          "divergence": "bullish"
         },
         "fib": {
           "retracements": {
@@ -13171,11 +13781,11 @@
       "alerts": [
         {
           "type": "WATCH",
-          "cat": "VOL",
+          "cat": "OBV",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (toenemend, 1.39x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bullish): koers -15.5% maar OBV stijgt",
+          "detail": "De On-Balance Volume loopt op terwijl de koers daalt: er wordt meer volume verhandeld op stijgende dagen dan op dalende. Dat kan wijzen op accumulatie onder de oppervlakte. Waarneming, geen koopsignaal."
         },
         {
           "type": "INFO",
@@ -13232,14 +13842,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": true,
-          "ratio": 1.39,
-          "steps": [
-            1428800,
-            1717000,
-            1991450
-          ],
-          "label": "toenemend"
+          "rising": false,
+          "ratio": null,
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.102,
+          "trend": "stijgend",
+          "divergence": "bullish"
         },
         "fib": {
           "retracements": {
@@ -13468,8 +14084,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.014,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -13711,8 +14337,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.122,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -13915,9 +14551,9 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (licht toenemend, 1.33x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.23x de 50d-MA, koers -3.2%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "WATCH",
@@ -13978,13 +14614,19 @@
         "volNote": "\u2713 hoog volume",
         "volTrend": {
           "rising": true,
-          "ratio": 1.33,
-          "steps": [
-            3987800,
-            4717550,
-            5311700
-          ],
-          "label": "licht toenemend"
+          "ratio": 1.23,
+          "vma20": 7631840,
+          "vma50": 6196970,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -3.2,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.091,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -14239,8 +14881,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.03,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -14445,6 +15097,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.16x de 50d-MA, koers +4.7%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\u26a0\ufe0f",
@@ -14498,10 +15158,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.16,
+          "vma20": 938825,
+          "vma50": 807062,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 4.7,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.008,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -14674,9 +15344,17 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (licht toenemend, 1.29x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.21x de 50d-MA, koers +8.3%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bullish): koers -6.3% maar OBV stijgt",
+          "detail": "De On-Balance Volume loopt op terwijl de koers daalt: er wordt meer volume verhandeld op stijgende dagen dan op dalende. Dat kan wijzen op accumulatie onder de oppervlakte. Waarneming, geen koopsignaal."
         },
         {
           "type": "WATCH",
@@ -14734,13 +15412,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.29,
-          "steps": [
-            3108050,
-            3557300,
-            4023300
-          ],
-          "label": "licht toenemend"
+          "ratio": 1.21,
+          "vma20": 5355645,
+          "vma50": 4439928,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 8.3,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.059,
+          "trend": "stijgend",
+          "divergence": "bullish"
         },
         "fib": {
           "retracements": {},
@@ -14988,9 +15672,9 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (toenemend, 1.39x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.22x de 50d-MA, koers -6.4%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "WATCH",
@@ -15050,13 +15734,19 @@
         "volNote": "\u2713 hoog volume",
         "volTrend": {
           "rising": true,
-          "ratio": 1.39,
-          "steps": [
-            1934400,
-            2211650,
-            2692950
-          ],
-          "label": "toenemend"
+          "ratio": 1.22,
+          "vma20": 3434780,
+          "vma50": 2809686,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -6.4,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.041,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -15292,8 +15982,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.038,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -15449,14 +16149,6 @@
       ],
       "alerts": [
         {
-          "type": "WATCH",
-          "cat": "VOL",
-          "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (licht toenemend, 1.33x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
-        },
-        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -15504,14 +16196,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": true,
-          "ratio": 1.33,
-          "steps": [
-            389550,
-            443850,
-            517100
-          ],
-          "label": "licht toenemend"
+          "rising": false,
+          "ratio": null,
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.048,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -15806,8 +16504,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.162,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -16031,8 +16739,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.2,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -16263,8 +16981,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.082,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -16476,8 +17204,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.168,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {},
@@ -16640,6 +17378,22 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.15x de 50d-MA, koers +4.5%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bearish): koers +4.3% maar OBV daalt",
+          "detail": "De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt gedragen door steeds minder volume. Dat kan wijzen op uitholling. Waarneming, geen verkoopsignaal."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1W",
           "icon": "\u26a0\ufe0f",
@@ -16693,10 +17447,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.15,
+          "vma20": 3392665,
+          "vma50": 2949784,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 4.5,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.205,
+          "trend": "dalend",
+          "divergence": "bearish"
         },
         "fib": {
           "retracements": {
@@ -16933,8 +17697,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.025,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -17208,8 +17982,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.226,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -17400,6 +18184,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bullish): koers -16.4% maar OBV stijgt",
+          "detail": "De On-Balance Volume loopt op terwijl de koers daalt: er wordt meer volume verhandeld op stijgende dagen dan op dalende. Dat kan wijzen op accumulatie onder de oppervlakte. Waarneming, geen koopsignaal."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -17462,8 +18254,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.102,
+          "trend": "stijgend",
+          "divergence": "bullish"
         },
         "fib": {
           "retracements": {
@@ -17664,6 +18466,14 @@
       "alerts": [
         {
           "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bullish): koers -13.3% maar OBV stijgt",
+          "detail": "De On-Balance Volume loopt op terwijl de koers daalt: er wordt meer volume verhandeld op stijgende dagen dan op dalende. Dat kan wijzen op accumulatie onder de oppervlakte. Waarneming, geen koopsignaal."
+        },
+        {
+          "type": "WATCH",
           "cat": "RSI",
           "tf": "1D",
           "icon": "\ud83d\udc40",
@@ -17726,8 +18536,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.101,
+          "trend": "stijgend",
+          "divergence": "bullish"
         },
         "fib": {
           "retracements": {
@@ -17907,6 +18727,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "VOL",
+          "tf": "1D",
+          "icon": "\ud83d\udcc9",
+          "title": "Volume trekt aan - koers daalt - distributie of paniek (20d-MA 1.15x de 50d-MA, koers -16.4%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, terwijl de koers daalt. Toenemend volume in een daling wijst op verkoopdruk, niet op een bodem. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -17954,10 +18782,20 @@
         "highVolume": false,
         "volNote": "(laag volume)",
         "volTrend": {
-          "rising": false,
-          "ratio": null,
-          "steps": null,
-          "label": null
+          "rising": true,
+          "ratio": 1.15,
+          "vma20": 12368660,
+          "vma50": 10789372,
+          "label": "licht toenemend",
+          "direction": "bearish",
+          "priceChange": -16.4,
+          "verdict": "koers daalt - distributie of paniek"
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.174,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -18196,8 +19034,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.01,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -18446,8 +19294,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.147,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -18698,8 +19556,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.032,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -18988,8 +19856,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.093,
+          "trend": "dalend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -19222,8 +20100,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.085,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -19457,8 +20345,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.035,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -19631,6 +20529,14 @@
       ],
       "alerts": [
         {
+          "type": "WATCH",
+          "cat": "OBV",
+          "tf": "1D",
+          "icon": "\ud83d\udd0e",
+          "title": "OBV-divergentie (bearish): koers +3.4% maar OBV daalt",
+          "detail": "De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt gedragen door steeds minder volume. Dat kan wijzen op uitholling. Waarneming, geen verkoopsignaal."
+        },
+        {
           "type": "INFO",
           "cat": "MACD",
           "tf": "1W",
@@ -19680,8 +20586,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.164,
+          "trend": "dalend",
+          "divergence": "bearish"
         },
         "fib": {
           "retracements": {},
@@ -19895,8 +20811,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.008,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -20164,8 +21090,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.099,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -20414,8 +21350,18 @@
         "volTrend": {
           "rising": false,
           "ratio": null,
-          "steps": null,
-          "label": null
+          "vma20": null,
+          "vma50": null,
+          "label": null,
+          "direction": null,
+          "priceChange": null,
+          "verdict": null
+        },
+        "obv": {
+          "known": true,
+          "slope": -0.022,
+          "trend": "vlak",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -20608,9 +21554,9 @@
           "type": "WATCH",
           "cat": "VOL",
           "tf": "1D",
-          "icon": "\ud83d\udcca",
-          "title": "Opgepast: toenemend volume (sterk toenemend, 1.71x t.o.v. het half jaar ervoor)",
-          "detail": "Het mediane volume loopt de laatste twee maanden gestaag op t.o.v. de periode daarvoor. Dit is een waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
+          "icon": "\ud83d\udcc8",
+          "title": "Volume trekt aan - koers stijgt mee - accumulatie (20d-MA 1.23x de 50d-MA, koers +31.3%)",
+          "detail": "Het 20-daags gemiddelde volume ligt boven het 50-daags gemiddelde, en de koers stijgt mee. Volume dat een opwaartse beweging begeleidt, maakt die geloofwaardiger. Waarneming om te monitoren, geen koop- of verkoopsignaal: volume bevestigt een beweging, het voorspelt er geen."
         },
         {
           "type": "WATCH",
@@ -20668,13 +21614,19 @@
         "volNote": "(laag volume)",
         "volTrend": {
           "rising": true,
-          "ratio": 1.71,
-          "steps": [
-            2548300,
-            3283800,
-            4357950
-          ],
-          "label": "sterk toenemend"
+          "ratio": 1.23,
+          "vma20": 4345270,
+          "vma50": 3520654,
+          "label": "licht toenemend",
+          "direction": "bullish",
+          "priceChange": 31.3,
+          "verdict": "koers stijgt mee - accumulatie"
+        },
+        "obv": {
+          "known": true,
+          "slope": 0.218,
+          "trend": "stijgend",
+          "divergence": null
         },
         "fib": {
           "retracements": {
@@ -24061,8 +25013,8 @@
     "methodNote": "Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."
   },
   "weekly": {
-    "generatedAt": "2026-07-18T11:28:09.823876+02:00",
-    "generatedAtHuman": "Saturday 18 July 2026 om 11:28",
+    "generatedAt": "2026-07-18T15:05:24.247966+02:00",
+    "generatedAtHuman": "Saturday 18 July 2026 om 15:05",
     "periodLabel": "sinds ~1 week geleden",
     "changes": [
       {
