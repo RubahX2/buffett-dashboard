@@ -260,6 +260,7 @@ FIB_OVERRIDES = {
     "MU":   {"ath": 97.00, "atl": 1.59,  "recent_hi": 1254.81,
              "retr_atl": 48.49, "retr_hi": 1254.81},
     "MNST": {"ath": 61.35, "atl": 43.34, "recent_hi": 99.03},
+    "V":    {"ath": 252.00, "atl": 175.00, "recent_hi": 375.00},
     "RDDT": {"ath": 280.00, "atl": 119.00, "recent_hi": 280.00},
     "AMZN": {"ath": 187.50, "atl": 81.65, "recent_hi": 278.00},
     "ISRG": {"ath": 370.00, "atl": 180.17, "recent_hi": 616.11},
@@ -1755,11 +1756,36 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         macd_ml, macd_ms, _ = calc_macd(close_m)
         mm_l, mm_s = safe_last(macd_ml), safe_last(macd_ms)
         if mm_l is not None and mm_s is not None:
+            # KRUL-DETECTIE: een bearish monthly MACD die OMHOOG krult en waarvan de
+            # lijnen dicht bij elkaar komen, is geen zuivere tegenwind meer maar een
+            # naderend keerpunt. Zonder deze nuance telt zo'n aandeel vol bearish mee
+            # terwijl de omslag juist aanstaande is (Rubens observatie bij VISA).
+            _m_hist = (macd_ml - macd_ms).dropna()
+            # De MACD kruist per definitie op het moment dat het histogram van dalend
+            # naar stijgend gaat. "Bearish EN al stijgend" bestaat dus nauwelijks. Wat
+            # Ruben ziet is het venster VLAK ERVOOR: het histogram daalt niet verder
+            # (bodem in de maak) en de lijnen staan dicht bij elkaar. Dat vangen we hier.
+            _m_krult_op = (len(_m_hist) >= 3
+                           and _m_hist.iloc[-1] >= _m_hist.iloc[-2] * 0.98)  # niet verder dalend
+            # "dicht bij kruisen": gat kleiner dan 20% van de recente uitslag
+            _m_ref = float(_m_hist.abs().tail(12).max()) if len(_m_hist) >= 12 else None
+            _m_dichtbij = (_m_ref is not None and _m_ref > 0
+                           and abs(mm_l - mm_s) < _m_ref * 0.20)
             if mm_l < mm_s:
-                signals.append({"type":"SELL","cat":"MACD","tf":"1M","weight":4,"icon":"🔴",
-                    "title":"MACD bearish (MONTHLY) ⭐⭐",
-                    "detail":f"MACD {mm_l:.2f} onder signaal {mm_s:.2f} op maandbasis — "
-                             "zwaarste momentum-tegenwind. Hoogste timeframe."})
+                if _m_krult_op and _m_dichtbij:
+                    # keerpunt in de maak: milder verkoopgewicht + expliciete melding
+                    signals.append({"type":"SELL","cat":"MACD","tf":"1M","weight":2,"icon":"🔄",
+                        "title":"MACD bearish maar KEERT (MONTHLY) ⭐",
+                        "detail":f"MACD {mm_l:.2f} nog onder signaal {mm_s:.2f}, maar het histogram "
+                                 "krult drie maanden omhoog en de lijnen naderen elkaar — "
+                                 "monthly keerpunt in de maak. Verkoopdruk neemt af."})
+                    alerts.append({"type":"WATCH","cat":"MACD","tf":"1M","icon":"🔄",
+                        "title":"Monthly MACD op punt van bullish kruisen — omslag bevestigen"})
+                else:
+                    signals.append({"type":"SELL","cat":"MACD","tf":"1M","weight":4,"icon":"🔴",
+                        "title":"MACD bearish (MONTHLY) ⭐⭐",
+                        "detail":f"MACD {mm_l:.2f} onder signaal {mm_s:.2f} op maandbasis — "
+                                 "zwaarste momentum-tegenwind. Hoogste timeframe."})
             else:
                 signals.append({"type":"BUY","cat":"MACD","tf":"1M","weight":4,"icon":"🟢",
                     "title":"MACD bullish (MONTHLY) ⭐⭐",
@@ -4116,7 +4142,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "6.1-winsthistorie-12-lotus",
+            "version": "6.2-top3-visa-macdkrul-fibkleuren",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -4344,6 +4370,20 @@ def main():
     # geen zuivere maandpick -- markeer dat zodat de UI het eerlijk kan tonen.
     primary_degraded = bool(primary and _gedegradeerd(primary))
 
+    # TOP 3: vergelijken is waardevol -- de nummers 2 en 3 laten zien of de pick
+    # ruim wint of dat het kantje boord is. Elke kandidaat draagt zijn eigen
+    # degradatie-vlag mee, zodat de UI kan tonen welke zuiver zijn.
+    pick_top3 = []
+    for _row in candidates[:3]:
+        pick_top3.append({
+            "ticker":    _row.get("ticker"),
+            "composite": _row.get("composite"),
+            "quality":   _row.get("quality"),
+            "overall":   _row.get("overall"),
+            "sector":    _row.get("sector"),
+            "degraded":  bool(_gedegradeerd(_row)),
+        })
+
     # ── DE SCHATKAMER ──────────────────────────────────────────────────────────
     # Goedkoop geprijsde kwaliteitsaandelen die klaarliggen: de kwaliteitspoort
     # gehaald EN redelijk/aantrekkelijk gewaardeerd. Dit is NIET de maandpick --
@@ -4383,6 +4423,7 @@ def main():
         "generatedForMonth": NOW.strftime("%B %Y"),
         "primaryPick": primary,
         "primaryDegraded": primary_degraded,
+        "pickTop3": pick_top3,
         "reasoning": reasoning,
         "candidates": candidates,
         "treasury": schatkamer,
