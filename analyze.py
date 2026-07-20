@@ -724,8 +724,13 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     bull = None
     if len(lows) >= 2:
         iv = ind.values
-        _ind_schaal_l = float(pd.Series(iv).dropna().abs().tail(max_lookback * 2).max() or 0.0)
-        _marge_l = _ind_schaal_l * 0.05
+        # De marge moet op de SPREIDING van de indicator gebaseerd zijn, niet op de
+        # absolute waarde. Bij RSI (altijd 0-100) is |max| ~78, dus 5% daarvan is bijna
+        # 4 RSI-punten -- willekeurig streng. De afstand tussen de recente hoogste en
+        # laagste waarde is wel een eerlijke maat voor "een merkbaar verschil".
+        _reeks_l = pd.Series(iv).dropna().tail(max_lookback * 2)
+        _ind_schaal_l = float(_reeks_l.max() - _reeks_l.min()) if len(_reeks_l) else 0.0
+        _marge_l = _ind_schaal_l * 0.15
         recent_grens = n - max_lookback
         recent = [(i, p) for (i, p) in lows if i >= recent_grens]
         eerder = [(i, p) for (i, p) in lows if i < recent_grens and i >= recent_grens - max_lookback]
@@ -748,13 +753,15 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     # gestaag gaat laat de MACD dalen terwijl de koers gewoon doorstijgt -- zonder
     # marge levert dat een "bearish divergentie" op bij een gezonde trend. We eisen
     # daarom dat het verschil minstens 5% is van de typische indicator-uitslag.
-    # Geijkt op gemeten valse gevallen: die zaten op 0,3% en 4,0% van de schaal.
+    # Gemeten op spreiding (max-min), niet op absolute waarde: bij RSI (altijd 0-100)
+    # zou een percentage van |max| willekeurig streng uitpakken.
     highs = _find_swing_highs(price, left, right)
     bear = None
     if len(highs) >= 2:
         iv = ind.values
-        _ind_schaal = float(pd.Series(iv).dropna().abs().tail(max_lookback * 2).max() or 0.0)
-        _marge = _ind_schaal * 0.05
+        _reeks = pd.Series(iv).dropna().tail(max_lookback * 2)
+        _ind_schaal = float(_reeks.max() - _reeks.min()) if len(_reeks) else 0.0
+        _marge = _ind_schaal * 0.15
         recent_grens = n - max_lookback
         recent_h = [(j, q) for (j, q) in highs if j >= recent_grens]
         eerder_h = [(j, q) for (j, q) in highs if j < recent_grens and j >= recent_grens - max_lookback]
@@ -1409,20 +1416,34 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         # blijft licht (max 4) -- het is een vroeg signaal, geen doorslaggevend bewijs.
         # De divergentie behoudt daarnaast zijn rol in de omslag-mildering (dat staat los
         # van dit gewicht en gebeurt verderop).
+        def _div_bron(d):
+            """Welke indicator(en) vuren, met hun concrete waarden."""
+            delen = []
+            for _nm, _dd in (("RSI", d.get("rsi")), ("MACD", d.get("macd"))):
+                if not _dd:
+                    continue
+                if _dd["type"] == "bullish":
+                    delen.append(f"{_nm} {_dd['indLow1']} -> {_dd['indLow2']} "
+                                 f"(koers {_dd['priceLow1']} -> {_dd['priceLow2']})")
+                else:
+                    delen.append(f"{_nm} {_dd['indHigh1']} -> {_dd['indHigh2']} "
+                                 f"(koers {_dd['priceHigh1']} -> {_dd['priceHigh2']})")
+            return "; ".join(delen) if delen else "geen details"
+
         if divergence["bullish"]:
             _dw = 4 if divergence["bullishConfirmed"] else 3
             signals.append({"type":"BUY","cat":"DIV","tf":"1W","weight":_dw,"icon":"🔀",
                 "title":"Bullish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bullishConfirmed"] else ""),
-                "detail":"Koers zet een lagere bodem terwijl de indicator (RSI/MACD) een hogere "
-                         "bodem maakt — verzwakkende verkoopdruk. Telt mee als koopsignaal, "
-                         "maar is op zichzelf geen koopbevel."})
+                "detail":"Koers zet een lagere bodem terwijl de indicator een hogere bodem maakt "
+                         "— verzwakkende verkoopdruk. Gemeten: " + _div_bron(divergence) +
+                         ". Telt mee als koopsignaal, maar is op zichzelf geen koopbevel."})
         if divergence["bearish"]:
             _dw = 4 if divergence["bearishConfirmed"] else 3
             signals.append({"type":"SELL","cat":"DIV","tf":"1W","weight":_dw,"icon":"🔀",
                 "title":"Bearish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bearishConfirmed"] else ""),
-                "detail":"Koers zet een hogere top terwijl de indicator (RSI/MACD) een lagere "
-                         "top maakt — verzwakkend koopmomentum. Telt mee als verkoopsignaal, "
-                         "maar is op zichzelf geen verkoopbevel."})
+                "detail":"Koers zet een hogere top terwijl de indicator een lagere top maakt "
+                         "— verzwakkend koopmomentum. Gemeten: " + _div_bron(divergence) +
+                         ". Telt mee als verkoopsignaal, maar is op zichzelf geen verkoopbevel."})
 
     # Volume met NaN-guard
     vol_avg20 = vol_d.rolling(20).mean()
@@ -1764,17 +1785,21 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "title":f"MACD bearish crossover (daily){vol_note}",
             "detail":f"MACD {last_macd_l:.3f} kruist onder signaal {last_macd_s:.3f}."})
 
-    # ── 4. MACD WEEKLY — alleen vrijdag, volledige candle ──
+    # ── 4. MACD WEEKLY — crossover alleen vrijdag (volledige candle); de STAND
+    #      telt elke dag als fallback, anders verschuiven de oordelen elke vrijdag ──
+    _w_macd_geplaatst = False
     if has_weekly and IS_FRIDAY:
         if crossed_up(macd_wl, macd_ws):
             signals.append({"type":"BUY","cat":"MACD","tf":"1W","weight":4,"icon":"🟢",
                 "title":"MACD bullish crossover (WEEKLY) ⭐",
                 "detail":f"Weekly MACD {last_macd_wl:.3f} kruist boven {last_macd_ws:.3f}. Krachtig."})
+            _w_macd_geplaatst = True
         elif crossed_down(macd_wl, macd_ws):
             signals.append({"type":"SELL","cat":"MACD","tf":"1W","weight":4,"icon":"🔴",
                 "title":"MACD bearish crossover (WEEKLY) ⭐",
                 "detail":f"Weekly MACD {last_macd_wl:.3f} kruist onder {last_macd_ws:.3f}. Krachtig."})
-    elif has_weekly and not IS_FRIDAY and last_macd_wl is not None and last_macd_ws is not None:
+            _w_macd_geplaatst = True
+    if has_weekly and not _w_macd_geplaatst and last_macd_wl is not None and last_macd_ws is not None:
         # Buiten vrijdag is de weekcandle nog niet af, dus een VERSE kruising kan nog
         # omdraaien. Maar de weekly MACD helemaal negeren is te ver doorgeschoten: een
         # stand die al DUIDELIJK is (histogram ruim van nul af) verandert niet meer door
@@ -4350,7 +4375,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "7.1-cat-fib-extreem",
+            "version": "7.3-weekly-stand-vrijdagfix",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
