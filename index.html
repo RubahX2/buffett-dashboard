@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "7.2";
+const UI_VERSION = "7.4";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -1927,6 +1927,7 @@ function App() {
   const stocks = jsonData?.stocks || {};
   const meta   = jsonData?.meta || {};
   const allocation = jsonData?.allocation || null;
+  const verdictChanges = jsonData?.verdictChanges || null;
   const weekly = jsonData?.weekly || null;
   const baggers = jsonData?.baggers || null;
   const market = jsonData?.market || null;
@@ -2097,6 +2098,25 @@ function App() {
         )}
       </div>
 
+      {/* STALENESS: waarschuw als de dagelijkse Actions-run niet meer draait */}
+      {loadState==="ok"&&meta.generatedAt&&(()=>{
+        // Tel WERKDAGEN tussen de datadatum en vandaag: zaterdag/zondag tellen
+        // niet, dus vrijdag-data geeft in het weekend en op maandag geen alarm.
+        const gen=new Date(meta.generatedAt); const nu=new Date();
+        let d=new Date(gen.getFullYear(),gen.getMonth(),gen.getDate()), n=0;
+        const eind=new Date(nu.getFullYear(),nu.getMonth(),nu.getDate());
+        while(d<eind){ d.setDate(d.getDate()+1); const wd=d.getDay(); if(wd!==0&&wd!==6) n++; }
+        if(n<2) return null;
+        return (
+          <div style={{background:"#3a1418",borderBottom:`1px solid ${C.red}`,padding:"10px 18px",
+            color:"#ff9b9b",fontSize:12,fontWeight:600}}>
+            ⚠ Deze data is {n} werkdagen oud ({String(meta.generatedAt).slice(0,10)}). De dagelijkse
+            analyse draait mogelijk niet meer — controleer de "Dagelijkse Signaalanalyse" onder
+            Actions op GitHub en start hem desnoods handmatig.
+          </div>
+        );
+      })()}
+
       {/* SETUP INSTRUCTIE (als nog niet geconfigureerd) */}
       {loadState==="unconfigured"&&(
         <div style={{margin:16,padding:16,background:"#1c1206",border:"1px solid #854d0e",borderRadius:8}}>
@@ -2196,6 +2216,40 @@ function App() {
               )}
 
               {/* Weekly changelog */}
+              {verdictChanges&&verdictChanges.changes&&verdictChanges.changes.length>0&&(()=>{
+                const RANG=["STERK KOOP","KOOP","LICHT KOOP","NEUTRAAL","CAUTION (overextended)","LICHT VERKOOP","VERKOOP","STERK VERKOOP"];
+                const richting=(c)=>RANG.indexOf(c.to)>RANG.indexOf(c.from)?C.red:C.teal;
+                return (
+                  <div style={{background:C.panel2,border:`1px solid ${C.border}`,borderRadius:10,
+                    padding:"14px 16px",marginBottom:16}}>
+                    <div style={{color:C.accent,fontSize:12,fontWeight:800,letterSpacing:0.5,marginBottom:4}}>
+                      🔁 VERANDERD SINDS {String(verdictChanges.since||"").slice(5)}
+                    </div>
+                    <div style={{color:C.textDim,fontSize:10,marginBottom:10}}>
+                      Oordelen die sinds de vorige rundag kantelden — groen richting koop, rood richting verkoop.
+                    </div>
+                    {verdictChanges.pickFrom&&(
+                      <div style={{color:C.accent,fontSize:12,fontWeight:700,marginBottom:8,
+                        padding:"6px 10px",background:C.bg,borderRadius:6,border:`1px solid ${C.accent}55`}}>
+                        🎯 Maandpick gewisseld: {verdictChanges.pickFrom} → {verdictChanges.pickTo}
+                      </div>
+                    )}
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:6}}>
+                      {verdictChanges.changes.map(c=>(
+                        <div key={c.ticker} onClick={()=>setSelected(c.ticker)}
+                          style={{display:"flex",alignItems:"center",gap:8,padding:"7px 10px",cursor:"pointer",
+                            background:C.panel,border:`1px solid ${C.border}`,borderRadius:6,
+                            borderLeft:`3px solid ${richting(c)}`}}>
+                          <span style={{color:C.accent,fontWeight:800,fontSize:12,minWidth:48}}>{c.ticker}</span>
+                          <span style={{color:C.textDim,fontSize:10,flex:1}}>{c.from}</span>
+                          <span style={{color:richting(c),fontSize:11}}>→</span>
+                          <span style={{color:richting(c),fontSize:10,fontWeight:700}}>{c.to}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
               <WeeklyChangelog weekly={weekly} onSelect={setSelected}/>
 
               {/* Ranked candidates */}
