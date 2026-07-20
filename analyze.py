@@ -4375,7 +4375,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "7.3-weekly-stand-vrijdagfix",
+            "version": "7.4-delta-staleness-selftest",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -4804,6 +4804,38 @@ def main():
         print(f"  Maandpick 4w accuraatheid: {mp_4w['accuracy']}% (n={mp_4w['n']})")
     elif mp_4w.get("n", 0) > 0:
         print(f"  Maandpick 4w: {mp_4w['status']} (gem. relatief {mp_4w.get('avgRelativeReturn')}%)")
+
+    # ── DELTA: welke oordelen kantelden sinds de vorige rundag? ───────────────
+    # Doel: dagelijks in een oogopslag zien wat er veranderde, i.p.v. 84 aandelen
+    # aflopen. De historie leeft in track_record.json onder _verdictHistory:
+    # {datum: {"verdicts": {ticker: overall}, "pick": ticker}}. Een herrun op
+    # dezelfde dag overschrijft zijn eigen entry en vergelijkt altijd met de
+    # jongste ANDERE datum -- daardoor blijft de output idempotent binnen de dag.
+    _vh = track.setdefault("_verdictHistory", {})
+    _huidig = {tk: s.get("overall") for tk, s in results["stocks"].items()}
+    _alloc = results.get("allocation") or {}
+    _pick_nu = (_alloc.get("primaryPick") or {}).get("ticker")
+    _andere_dagen = sorted(d for d in _vh.keys() if d != TODAY.isoformat())
+    _since = _andere_dagen[-1] if _andere_dagen else None
+    _changes = []
+    _pick_from = None
+    if _since:
+        _oud = _vh[_since].get("verdicts", {})
+        for _tk, _nu_v in sorted(_huidig.items()):
+            _was = _oud.get(_tk)
+            if _was is not None and _nu_v is not None and _was != _nu_v:
+                _changes.append({"ticker": _tk, "from": _was, "to": _nu_v})
+        _p_oud = _vh[_since].get("pick")
+        if _p_oud and _pick_nu and _p_oud != _pick_nu:
+            _pick_from = _p_oud
+    results["verdictChanges"] = {"since": _since, "changes": _changes,
+                                 "pickFrom": _pick_from,
+                                 "pickTo": _pick_nu if _pick_from else None}
+    _vh[TODAY.isoformat()] = {"verdicts": _huidig, "pick": _pick_nu}
+    for _d in sorted(_vh.keys())[:-12]:   # bewaar de laatste 12 rundagen
+        del _vh[_d]
+    if _changes:
+        print(f"  Oordeel-kantelingen sinds {_since}: {len(_changes)}")
 
     # signals.json krijgt een compacte samenvatting mee (dashboard leest track_record.json apart)
     results["trackSummary"] = {
