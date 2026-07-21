@@ -1,0 +1,37 @@
+# Capture fixture: legt de ECHTE marktdata van vandaag vast als bevroren
+# testset in fixtures/, en commit die naar de repo. Daarna test de selftest
+# automatisch ook tegen deze echte data (ronde 2).
+#
+# Eenmalig draaien via: Actions -> "Capture fixture" -> Run workflow.
+# Later opnieuw draaien = de fixture verversen (bijv. na nieuwe tickers).
+#
+# UPLOADEN: dit bestand moet naar .github/workflows/capture-fixture.yml
+#   GitHub -> Add file -> Create new file -> naam: .github/workflows/capture-fixture.yml
+name: Capture fixture
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Dependencies
+        run: pip install pandas numpy yfinance
+      - name: Capture
+        run: python capture_fixture.py
+      - name: Commit fixture
+        run: |
+          git config user.name "fixture-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add fixtures/
+          git commit -m "Fixture: bevroren marktdata $(date +%F)" || echo "geen wijzigingen"
+          git push
