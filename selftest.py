@@ -133,6 +133,85 @@ def main():
     check("signals.json inhoudelijk identiek bij herrun", _norm(raw1) == _norm(raw3),
           f"{len(raw1)} vs {len(raw3)} bytes")
 
+    # ── Ronde 2 (optioneel): replay van ECHTE marktdata uit fixtures/ ────────
+    # De synthetische ronde hierboven test extremen die in de echte 84 toevallig
+    # niet voorkomen; deze ronde test tegen de rommeligheid van echte data. De
+    # fixture is bevroren (capture_fixture.py via de "Capture fixture"-Action),
+    # dus de uitkomsten zijn deterministisch.
+    fixdir = os.path.join(REPO, "fixtures")
+    fixidx = os.path.join(fixdir, "index.json")
+    if os.path.exists(fixidx):
+        print("\n-- Ronde 2: replay van echte marktdata (fixtures/) --")
+        index = json.load(open(fixidx))
+
+        def _key(tickers, kwargs):
+            t = tickers if isinstance(tickers, str) else sorted(list(tickers))
+            return json.dumps({"t": t, "period": kwargs.get("period"),
+                               "interval": kwargs.get("interval")}, sort_keys=True)
+        _cache = {}
+        def replay(tickers, *a, **k):
+            key = _key(tickers, k)
+            if key not in index:
+                raise KeyError("Fixture mist deze aanroep -- analyze.py vraagt nieuwe data. "
+                               "Draai de 'Capture fixture'-Action opnieuw. Aanroep: " + key)
+            if key not in _cache:
+                meta = index[key]
+                hdr = [0, 1] if meta["nlevels"] == 2 else 0
+                _cache[key] = pd.read_csv(os.path.join(REPO, meta["file"]),
+                                          header=hdr, index_col=0,
+                                          parse_dates=True, compression="gzip")
+            return _cache[key].copy()
+        yf.download = replay
+
+        os.chdir(tempfile.mkdtemp(prefix="buffett-fixture-"))
+        json.dump({"_meta": {}, "records": {}, "_outcomeFormulaVersion": 2},
+                  open("track_record.json", "w"))
+        ec2 = 0
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                exec(src, {"__name__": "__main__"})
+        except SystemExit as e:
+            ec2 = e.code or 0
+        except KeyError as e:
+            print(f"  [FAIL] {e}")
+            FOUT.append("fixture dekt de aanroepen")
+            ec2 = None
+        if ec2 is not None:
+            check("fixture: exitcode 0", ec2 == 0, f"exitcode={ec2}")
+            fraw1 = open("signals.json", "rb").read()
+            fsig = json.loads(fraw1.decode("ascii"))
+            fst = fsig.get("stocks", {})
+            check("fixture: 84 aandelen", len(fst) == 84, f"{len(fst)}")
+            check("fixture: 0 errors", len(fsig.get("errors", [])) == 0,
+                  str(fsig.get("errors", []))[:120])
+            check("fixture: alle prijzen > 0",
+                  all(((s.get("indicators") or {}).get("last") or 0) > 0
+                      for s in fst.values()))
+            # Door Ruben op de chart geverifieerde niveaus -- de overrides maken
+            # deze exact voorspelbaar, onafhankelijk van de koers van de dag:
+            fe = (fst.get("V", {}).get("indicators") or {}).get("fib", {}).get("extensions", {})
+            check("fixture: VISA 1.618 = ~$316", 300 < (fe.get("1.618") or 0) < 330,
+                  f"{fe.get('1.618')}")
+            ce = (fst.get("CAT", {}).get("indicators") or {}).get("fib", {}).get("extensions", {})
+            check("fixture: CAT 4.236 = ~$987", 950 < (ce.get("4.236") or 0) < 1030,
+                  f"{ce.get('4.236')}")
+            check("fixture: CAT 3.618 = ~$757", 720 < (ce.get("3.618") or 0) < 800,
+                  f"{ce.get('3.618')}")
+            lg = fst.get("LOTB", {}).get("earningsGrowth") or {}
+            check("fixture: LOTB winsthistorie (mediaan 16%)",
+                  lg.get("medianGrowth") == 16.0, f"{lg.get('medianGrowth')}")
+            # Idempotentie ook op echte data
+            try:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    exec(src, {"__name__": "__main__"})
+            except SystemExit:
+                pass
+            fraw2 = open("signals.json", "rb").read()
+            check("fixture: herrun inhoudelijk identiek", _norm(fraw1) == _norm(fraw2))
+    else:
+        print("\n(fixtures/ niet gevonden -- ronde 2 overgeslagen; draai eenmalig de "
+              "'Capture fixture'-Action om ook tegen echte data te testen)")
+
     print()
     if FOUT:
         print(f"RESULTAAT: {len(FOUT)} check(s) ROOD: {', '.join(FOUT)}")
