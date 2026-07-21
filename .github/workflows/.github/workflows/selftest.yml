@@ -15,6 +15,7 @@ on:
     paths:
       - "analyze.py"
       - "selftest.py"
+      - "fixtures/**"
 
 jobs:
   selftest:
