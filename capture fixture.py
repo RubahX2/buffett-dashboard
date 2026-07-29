@@ -55,13 +55,34 @@ def main():
 
     os.makedirs(FIXDIR, exist_ok=True)
     index = {}
+    overgeslagen = []
     for i, (key, df) in enumerate(calls.items()):
-        fn = os.path.join(FIXDIR, f"call_{i:03d}.csv.gz")
-        df.to_csv(fn, compression="gzip")
-        index[key] = {"file": fn, "nlevels": int(df.columns.nlevels),
-                      "rows": int(len(df))}
+        # Een dode ticker geeft None of een leeg frame terug. Dat mag de capture
+        # niet laten crashen (dat gaf exit code 2): sla zo'n opname over, net zoals
+        # analyze.py zelf doorgaat bij een ticker-fout. De replay vraagt die data
+        # dan ook niet op, want analyze.py verwerkte hem evenmin.
+        try:
+            if df is None or not hasattr(df, "columns") or len(df) == 0:
+                overgeslagen.append((key, "leeg of None"))
+                continue
+            fn = os.path.join(FIXDIR, f"call_{i:03d}.csv.gz")
+            df.to_csv(fn, compression="gzip")
+            index[key] = {"file": fn, "nlevels": int(df.columns.nlevels),
+                          "rows": int(len(df))}
+        except Exception as e:
+            overgeslagen.append((key, f"{type(e).__name__}: {e}"))
+            continue
+    if not index:
+        print("FOUT: geen enkele bruikbare opname (alle aanroepen leeg of mislukt)")
+        return 1
     with open(os.path.join(FIXDIR, "index.json"), "w") as f:
         json.dump(index, f, indent=1, sort_keys=True)
+    if overgeslagen:
+        print(f"Overgeslagen: {len(overgeslagen)} lege/mislukte opname(s):")
+        for key, reden in overgeslagen:
+            k = json.loads(key)
+            t = k["t"] if isinstance(k["t"], str) else f"{len(k['t'])} tickers"
+            print(f"  {t} (period={k['period']} interval={k['interval']}): {reden}")
 
     totaal = sum(os.path.getsize(v["file"]) for v in index.values())
     print(f"Vastgelegd: {len(calls)} aanroepen, {totaal/1e6:.1f} MB in {FIXDIR}/")
