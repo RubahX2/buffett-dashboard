@@ -144,8 +144,8 @@ WATCHLIST = [
     ("META",     "META",    None),   # Meta Platforms
     ("VST",      "VST",     None),   # Vistra - stroom voor datacenters
     # ── ETF's ──
-    ("COPX",     "COPX.AS", None),   # Global X Copper Miners UCITS (Euronext Amsterdam)
-    ("ROBO",     "RBOT.AS", None),   # iShares Automation & Robotics UCITS (2B76)
+    ("COPX",     "COPX.MI", None),   # Global X Copper Miners UCITS (Milaan, EUR)
+    ("ROBO",     "RBOE.AS", None),   # iShares Automation & Robotics UCITS (Amsterdam, EUR; 2B76)
                                      # Zit in de DEGIRO Kernselectie -> EUR 1 per order.
     ("MSTR",     "MSTR",    None),   # Strategy (bitcoin-proxy — poort zal falen, bewust)
     ("AAPL",     "AAPL",    None),   # Apple
@@ -359,10 +359,10 @@ DEFAULT_SECTOR = "Industrie & diversen"
 # Fundamentals — handmatig bijgehouden per kwartaal. Laatste update: juni 2026.
 FUNDAMENTALS = {
     "WM":    {"pe":29.2,  "roe":29.9, "fcfYield":3.0,  "debtEquity":2.28, "netMargin":11.0, "divYield":1.69, "revenueGrowth":6.1,   "eps":7.72,  "mktCap":"$90B",   "beta":0.46, "lastUpdated":"2026-07"},
-    "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07"},   # P/E 145 - extreme waardering
+    "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07", "earningsHistory":[[2021,-520],[2022,-374],[2023,210],[2024,462],[2025,1625]]},   # P/E 145 - extreme waardering; winstgevend sinds 2023, daarna +120/+252% -- jonge winstcurve, mediaan misleidt door lage basis
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.8,  "debtEquity":2.31, "netMargin":13.3, "divYield":0.63, "revenueGrowth":11.9,  "revenueGrowthPrev":4.0,  "eps":20.10, "mktCap":"$444B",  "beta":1.60, "lastUpdated":"2026-07"},
     "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":25.00, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07", "earningsHistory":[[2021,5883],[2022,6456],[2023,8277],[2024,7966],[2025,9600]]},   # winst +10-30%, pauzejaar -4% in 2024, herstel +21% in 2025; licht cyclisch maar structureel groeiend
-    "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07"},
+    "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07", "earningsHistory":[[2021,507],[2022,627],[2023,583],[2024,708],[2025,741]]},   # GENORMALISEERD (excl. ASMPT-belang/impairments; vanaf 2024 "adjusted" genoemd) -- IFRS is grillig door ASMPT: FY2023 IFRS EUR752M maar genormaliseerd -7%, FY2025 IFRS EUR724M; +24/-7/+21/+5% toont de echte operationele trend
     "MU":    {"pe":22.1,  "roe":66.6, "fcfYield":2.2,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.1,  "revenueGrowth":144.0, "revenueGrowthPrev":62.0, "eps":44.6,  "mktCap":"$1.1T",  "beta":2.14, "lastUpdated":"2026-07", "earningsHistory":[[2021,5861],[2022,8687],[2023,-5833],[2024,778],[2025,8539]]},   # AI-geheugencyclus op piek - extreem cyclisch; winst: +48%/VERLIES/+998% = geen jaar representatief
     "GOOGL": {"pe":25.7,  "roe":38.9, "fcfYield":1.6,  "debtEquity":0.20, "netMargin":37.9, "divYield":0.3,  "revenueGrowth":13.4,  "revenueGrowthPrev":14.0, "eps":13.15, "mktCap":"$4.1T",  "beta":1.24, "lastUpdated":"2026-07", "earningsHistory":[[2021,76033],[2022,59972],[2023,73795],[2024,100118],[2025,132170]]},   # 2022-dip (-21%, advertentiemarkt), daarna +23/+36/+32% -- versnelling door cloud/AI
     "ANET":  {"pe":53.9,  "roe":31.5, "fcfYield":2.5,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.1,  "revenueGrowthPrev":28.9, "eps":2.95,  "mktCap":"$215B",  "beta":1.61, "lastUpdated":"2026-07", "earningsHistory":[[2021,841],[2022,1352],[2023,2087],[2024,2852],[2025,3511]]},   # ononderbroken sterke groei +61/+54/+37/+23%; groeitempo neemt geleidelijk af
@@ -370,7 +370,7 @@ FUNDAMENTALS = {
     "TSCO":  {"pe":14.6,  "roe":45.5, "fcfYield":3.6,  "debtEquity":0.70, "netMargin":6.9,  "divYield":2.5,  "revenueGrowth":4.3,   "eps":2.03,  "mktCap":"$16B",   "beta":0.75, "lastUpdated":"2026-07"},
     "ODFL":  {"pe":40.0,  "roe":23.9, "fcfYield":1.9,  "debtEquity":0.03, "netMargin":18.5, "divYield":0.6,  "revenueGrowth":4.2,   "eps":4.85,  "mktCap":"$50B",   "beta":1.22, "lastUpdated":"2026-07"},
     "HWM":   {"pe":62.0,  "roe":33.8, "fcfYield":1.5,  "debtEquity":0.88, "netMargin":20.2, "divYield":0.2,  "revenueGrowth":19.0,  "eps":4.35,  "mktCap":"$108B",  "beta":1.19, "lastUpdated":"2026-07"},
-    "SNDK":  {"pe":68.0,  "roe":39.3, "fcfYield":2.0,  "debtEquity":0.02, "netMargin":34.2, "divYield":0,    "revenueGrowth":97.0,  "eps":30.0,  "mktCap":"$300B",  "beta":2.50, "lastUpdated":"2026-07"},
+    "SNDK":  {"pe":68.0,  "roe":39.3, "fcfYield":2.0,  "debtEquity":0.02, "netMargin":34.2, "divYield":0,    "revenueGrowth":97.0,  "eps":30.0,  "mktCap":"$300B",  "beta":2.50, "lastUpdated":"2026-07", "earningsHistory":[[2023,-2140],[2024,-672],[2025,-1641]]},   # carve-out (spin-off feb 2025), FY eindigt eind juni; slechts 3 jaar historie; FY2025 bevat $1.8B goodwill-impairment (zonder ~break-even) -- NAND-omslagjaar verwacht bij FY2026-rapportage (aug 2026)
     "AMZN":  {"pe":29.3,  "roe":24.3, "fcfYield":0.3,  "debtEquity":0.53, "netMargin":12.2, "divYield":0,    "revenueGrowth":14.2,  "revenueGrowthPrev":12.4, "eps":8.36,  "mktCap":"$2.6T",  "beta":1.46, "lastUpdated":"2026-07"},
     "ORCL":  {"pe":24.1,  "roe":53.4, "fcfYield":0.5,  "debtEquity":3.89, "netMargin":25.4, "divYield":1.4,  "revenueGrowth":17.4,  "revenueGrowthPrev":8.0,  "eps":5.83,  "mktCap":"$402B",  "beta":1.71, "lastUpdated":"2026-07", "earningsHistory":[[2021,13746],[2022,6717],[2023,8503],[2024,10467],[2025,12443]]},   # WAARSCHUWING: S&P-rating verlaagd, D/E 3.9; winst stabiel +19-27% (op 2022-dip na)
     "KO":    {"pe":24.8,  "roe":47.7, "fcfYield":3.4,  "debtEquity":1.63, "netMargin":22.6, "divYield":2.95, "revenueGrowth":4.1,   "eps":2.88,  "mktCap":"$305B",  "beta":0.45, "lastUpdated":"2026-07"},
@@ -397,12 +397,12 @@ FUNDAMENTALS = {
     "MELI":  {"pe":40.0,  "roe":30.0, "fcfYield":1.0,  "debtEquity":1.80, "netMargin":6.0,  "divYield":0,    "revenueGrowth":49.0,  "revenueGrowthPrev":37.0, "eps":39.39, "mktCap":"$79B",   "beta":1.60, "lastUpdated":"2026-07", "earningsHistory":[[2021,83],[2022,482],[2023,987],[2024,1911],[2025,1997]]},   # marge ingestort 8.3->6.0 door capex; winstgroei +481/+105/+94/+5% = investeringsdip, geen verval
     "III":   {"pe":9.8,   "roe":22.0, "fcfYield":4.5,  "debtEquity":0.08, "netMargin":88.0, "divYield":1.8,  "revenueGrowth":12.0,  "revenueGrowthPrev":15.0, "eps":420.0, "mktCap":"GBP38B", "beta":1.25, "lastUpdated":"2026-07"},
     "SHOP":  {"pe":92.0,  "roe":14.5, "fcfYield":1.4,  "debtEquity":0.10, "netMargin":11.5, "divYield":0,    "revenueGrowth":31.9,  "revenueGrowthPrev":26.0, "eps":1.32,  "mktCap":"$185B",  "beta":2.35, "lastUpdated":"2026-07"},
-    "NET":   {"pe":0,      "roe":-5.9, "fcfYield":0.5,  "debtEquity":2.31, "netMargin":-3.7, "divYield":0,    "revenueGrowth":34.0,  "revenueGrowthPrev":30.0, "eps":-0.25, "mktCap":"$59B",   "beta":1.67, "lastUpdated":"2026-07"},
+    "NET":   {"pe":0,      "roe":-5.9, "fcfYield":0.5,  "debtEquity":2.31, "netMargin":-3.7, "divYield":0,    "revenueGrowth":34.0,  "revenueGrowthPrev":30.0, "eps":-0.25, "mktCap":"$59B",   "beta":1.67, "lastUpdated":"2026-07", "earningsHistory":[[2021,-260],[2022,-193],[2023,-184],[2024,-79],[2025,-102]]},   # nooit GAAP-winstgevend; verlies versmalde richting 2024 maar liep in 2025 weer op -- omzet groeit 30%+/jr, maar winst blijft uit
     "CRWV":  {"pe":0,      "roe":-35.0,"fcfYield":-25.0,"debtEquity":3.85, "netMargin":-36.0,"divYield":0,    "revenueGrowth":112.0, "revenueGrowthPrev":737.0,"eps":-4.55, "mktCap":"$52B",   "beta":2.85, "lastUpdated":"2026-07"},
     "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":39.3, "divYield":1.0,  "revenueGrowth":15.0,  "revenueGrowthPrev":16.0, "eps":16.85, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07", "earningsHistory":[[2021,61271],[2022,72738],[2023,72361],[2024,88136],[2025,101832]]},   # boekjaar eindigt 30 juni; stabiele groeier, vlakke plek in 2023 (-1%)
     "MTLS":  {"pe":78.0,  "roe":3.5,  "fcfYield":1.5,  "debtEquity":0.42, "netMargin":2.7,  "divYield":0,    "revenueGrowth":0.0,   "revenueGrowthPrev":3.0,  "eps":0.10,  "mktCap":"$0.4B",  "beta":1.55, "lastUpdated":"2026-07"},
     "SNAP":  {"pe":0,      "roe":-8.5, "fcfYield":2.0,  "debtEquity":1.85, "netMargin":-5.5, "divYield":0,    "revenueGrowth":8.0,   "revenueGrowthPrev":14.0, "eps":-0.15, "mktCap":"$13B",   "beta":1.95, "lastUpdated":"2026-07"},
-    "NVDA":  {"pe":31.1,  "roe":114.3,"fcfYield":2.4,  "debtEquity":0.07, "netMargin":63.0, "divYield":0.5,  "revenueGrowth":70.7,  "revenueGrowthPrev":114.0,"eps":6.56,  "mktCap":"$4.9T",  "beta":2.21, "lastUpdated":"2026-07"},
+    "NVDA":  {"pe":31.1,  "roe":114.3,"fcfYield":2.4,  "debtEquity":0.07, "netMargin":63.0, "divYield":0.5,  "revenueGrowth":70.7,  "revenueGrowthPrev":114.0,"eps":6.56,  "mktCap":"$4.9T",  "beta":2.21, "lastUpdated":"2026-07", "earningsHistory":[[2021,9752],[2022,4368],[2023,29760],[2024,72880],[2025,120067]]},   # fiscale jaren (eindigt eind jan) gemapt op kalenderjaar; -55% crash 2022, dan +581/+145/+65% AI-explosie -- extreem cyclisch, geen enkel jaar representatief
     "NKE":   {"pe":36.5,  "roe":24.8, "fcfYield":3.1,  "debtEquity":0.87, "netMargin":6.9,  "divYield":2.35, "revenueGrowth":0.0,   "revenueGrowthPrev":-9.8, "eps":2.16,  "mktCap":"$96B",   "beta":1.12, "lastUpdated":"2026-07"},
     "DIE":   {"pe":12.5,  "roe":18.5, "fcfYield":6.0,  "debtEquity":1.15, "netMargin":9.5,  "divYield":2.8,  "revenueGrowth":6.0,   "revenueGrowthPrev":8.0,  "eps":12.40, "mktCap":"E8.5B",  "beta":1.05, "lastUpdated":"2026-07"},
     "SOF":   {"pe":14.0,  "roe":8.5,  "fcfYield":2.0,  "debtEquity":0.12, "netMargin":85.0, "divYield":1.4,  "revenueGrowth":5.0,   "revenueGrowthPrev":-3.0, "eps":17.60, "mktCap":"E8.2B",  "beta":0.95, "lastUpdated":"2026-07"},
@@ -528,7 +528,7 @@ FUNDAMENTALS = {
     "ROBO":  {"pe":None, "roe":None, "fcfYield":None, "debtEquity":None, "netMargin":None,
               "divYield":None, "revenueGrowth":None, "eps":None, "mktCap":"E4.2B",  "beta":1.30, "lastUpdated":"2026-07"},
     # ── Nieuwe kanshebbers (juli 2026) ───────────────────────────────────────
-    "RDDT":  {"pe":45.0,  "roe":26.2, "fcfYield":2.0,  "debtEquity":0.05, "netMargin":28.6, "divYield":0,    "revenueGrowth":69.0,  "revenueGrowthPrev":62.0, "eps":2.55,  "mktCap":"$32B",   "beta":2.10, "lastUpdated":"2026-07"},
+    "RDDT":  {"pe":45.0,  "roe":26.2, "fcfYield":2.0,  "debtEquity":0.05, "netMargin":28.6, "divYield":0,    "revenueGrowth":69.0,  "revenueGrowthPrev":62.0, "eps":2.55,  "mktCap":"$32B",   "beta":2.10, "lastUpdated":"2026-07", "earningsHistory":[[2021,-128],[2022,-159],[2023,-91],[2024,-484],[2025,530]]},   # IPO maart 2024; verlies leek te herstellen maar knalde in 2024 naar -484M door IPO-gerelateerde SBC, daarna omslag naar +530M winst in 2025 -- jong winstgevend
     "NOW":   {"pe":53.3,  "roe":16.1, "fcfYield":3.5,  "debtEquity":0.21, "netMargin":13.0, "divYield":0,    "revenueGrowth":22.1,  "revenueGrowthPrev":22.5, "eps":1.67,  "mktCap":"$92B",   "beta":0.93, "lastUpdated":"2026-07"},
     "GILD":  {"pe":22.9,  "roe":40.7, "fcfYield":5.5,  "debtEquity":1.16, "netMargin":28.9, "divYield":2.5,  "revenueGrowth":4.7,   "revenueGrowthPrev":3.5,  "eps":6.54,  "mktCap":"$158B",  "beta":0.39, "lastUpdated":"2026-07"},
     # DDOG: sterke groei (32%) en kasstroom, MAAR minimale boekwinst (marge 3.7%, ROE 3.9%)
@@ -2786,27 +2786,51 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
                 _toon_curve = True
                 _curve_reden = (f"huidige groei {_g_now:.0f}% ligt ver onder de mediane "
                                 f"winstgroei van {_mediaan_groei:.0f}% - mogelijk een dip")
+        # TWEEDE TRIGGER (recente versnelling): de mediaan is traag en mist een
+        # bedrijf dat NET begint te versnellen of vertragen. revenueGrowthPrev vangt
+        # dat wel. Toon de curve zodra de groei duidelijk afwijkt van vorig jaar
+        # (>= 4pp), mits minstens een zijde substantieel is (>= 8%) zodat 3%->7%
+        # geen curve oproept. Zo zie je bij een MSFT/META/ORCL die aantrekt meteen
+        # wat dat met de PEG doet -- precies het moment waarop het telt.
+        if not _toon_curve:
+            _g_prev = fund.get("revenueGrowthPrev")
+            if isinstance(_g_prev, (int, float)):
+                _accel = _g_now - _g_prev
+                if max(_g_now, _g_prev) >= 8 and abs(_accel) >= 4:
+                    _toon_curve = True
+                    if _accel > 0:
+                        _curve_reden = (f"groei versnelt van {_g_prev:.0f}% naar {_g_now:.0f}% "
+                                        f"(+{_accel:.0f}pp t.o.v. vorig jaar) - PEG verbetert mee")
+                    else:
+                        _curve_reden = (f"groei vertraagt van {_g_prev:.0f}% naar {_g_now:.0f}% "
+                                        f"({_accel:.0f}pp t.o.v. vorig jaar) - PEG verslechtert mee")
 
     if current_pe and _toon_curve:
         g_now = _g_now
         g_prev = fund.get("revenueGrowthPrev")
         # Bouw een reeks betekenisvolle groei-ankers: huidige groei, vorig jaar,
         # de historische mediaan (als die er is) en vaste referenties (30/15/10%).
-        # Dubbele en niet-positieve waarden eruit; oplopend gesorteerd.
+        # Ondergrens 3%: bij groei richting nul ontploft PEG (P/E gedeeld door ~0
+        # geeft honderden) -- die ankers zijn zinloos, dus eruit. Dubbele en
+        # niet-positieve waarden ook eruit; oplopend gesorteerd.
         ankers = []
         for g in [g_now, g_prev, _mediaan_groei, 30, 15, 10]:
-            if isinstance(g, (int, float)) and g > 0:
+            if isinstance(g, (int, float)) and g >= 3.0:
                 ankers.append(round(float(g), 1))
         ankers = sorted(set(ankers))
         reeks = [{"growth": g, "peg": round(current_pe / g, 2)} for g in ankers]
-        out["pegCurve"] = reeks
-        out["isCyclical"] = True
-        out["pegCurveReason"] = _curve_reden
-        if isinstance(_mediaan_groei, (int, float)) and _mediaan_groei > 0:
-            out["medianGrowthRef"] = _mediaan_groei
-        # markeer of de HUIDIGE groei ver boven een normalere ~15% ligt (pieksignaal)
-        if isinstance(g_now, (int, float)) and g_now > 30:
-            out["peakGrowthFlag"] = True
+        # Als ELK anker een absurde PEG (> 10) geeft, is de curve nutteloos: het
+        # aandeel is bij elk realistisch groeitempo extreem duur (bv. DDOG P/E 683).
+        # Dan de curve weglaten i.p.v. een reeks onbruikbare getallen tonen.
+        if reeks and min(p["peg"] for p in reeks) <= 10.0:
+            out["pegCurve"] = reeks
+            out["isCyclical"] = True
+            out["pegCurveReason"] = _curve_reden
+            if isinstance(_mediaan_groei, (int, float)) and _mediaan_groei > 0:
+                out["medianGrowthRef"] = _mediaan_groei
+            # markeer of de HUIDIGE groei ver boven een normalere ~15% ligt (pieksignaal)
+            if isinstance(g_now, (int, float)) and g_now > 30:
+                out["peakGrowthFlag"] = True
 
     # Prijspositie in 5-jaars range (eerlijke context, géén waardering)
     lo, hi = float(close.min()), float(close.max())
@@ -4375,7 +4399,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "7.4-delta-staleness-selftest",
+            "version": "7.6-pegcurve-versnelling",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
