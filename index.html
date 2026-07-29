@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "7.4";
+const UI_VERSION = "7.6";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -278,6 +278,8 @@ function ValuationPanel({ valuation, fund }) {
               <div style={{color:C.textDim,fontSize:10,marginBottom:6,lineHeight:1.4}}>
                 <b style={{color:C.orange}}>
                   {v.pegCurveReason && v.pegCurveReason.indexOf("cyclisch")===0 ? "Cyclisch aandeel"
+                    : v.pegCurveReason && v.pegCurveReason.indexOf("versnelt")>=0 ? "Groei versnelt t.o.v. vorig jaar"
+                    : v.pegCurveReason && v.pegCurveReason.indexOf("vertraagt")>=0 ? "Groei vertraagt t.o.v. vorig jaar"
                     : v.pegCurveReason && v.pegCurveReason.indexOf("boven")>=0 ? "Groei ligt boven het historische patroon"
                     : v.pegCurveReason && v.pegCurveReason.indexOf("onder")>=0 ? "Groei ligt onder het historische patroon"
                     : "Groei wijkt af van het patroon"}
@@ -306,8 +308,9 @@ function ValuationPanel({ valuation, fund }) {
                 })}
               </div>
               <div style={{color:C.muted,fontSize:9,marginTop:5,lineHeight:1.4}}>
-                Een lage PEG bij piekgroei betekent niet dat het aandeel structureel goedkoop is —
-                als de cyclus draait, daalt de groei en stijgt de PEG.
+                De PEG die je nu ziet geldt bij de huidige groei. Verandert het groeitempo —
+                omhoog of omlaag — dan schuift de PEG mee langs deze reeks. Oordeel welke
+                groeivoet houdbaar is voordat je de PEG als goedkoop of duur leest.
               </div>
             </div>
           )}
