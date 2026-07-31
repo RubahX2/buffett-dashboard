@@ -2,8 +2,22 @@ name: Dagelijkse Signaalanalyse
 
 on:
   schedule:
-    # Elke werkdag om 07:30 UTC (dekt winter- en zomertijd voor ~08:00 Brussels)
-    - cron: '30 7 * * 1-5'
+    # DRIE runs per werkdag: 09:40 · 16:00 · 22:30 Brusselse tijd.
+    #
+    # GitHub-cron rekent ALTIJD in UTC en kent geen zomer-/wintertijd. Daarom staan
+    # hier zes regels: de zomer- én de winteroffset van dezelfde drie momenten.
+    # analyze.py bevat een tijdvenster-guard die zelf beslist welke daarvan echt telt
+    # en de andere drie meteen afbreekt. Zo klopt het jaarrond zonder dat je twee keer
+    # per jaar moet sleutelen bij de klokwissel.
+    #
+    # zomertijd (CEST, UTC+2)
+    - cron: '40 7 * * 1-5'     # 09:40 Brussel — na de Europese opening
+    - cron: '0 14 * * 1-5'     # 16:00 Brussel — na de Amerikaanse opening
+    - cron: '30 20 * * 1-5'    # 22:30 Brussel — na de Amerikaanse slotkoers
+    # wintertijd (CET, UTC+1)
+    - cron: '40 8 * * 1-5'     # 09:40 Brussel
+    - cron: '0 15 * * 1-5'     # 16:00 Brussel
+    - cron: '30 21 * * 1-5'    # 22:30 Brussel
   workflow_dispatch:        # Handmatig starten via GitHub website
 
 # Minimale permissies (security: alleen wat nodig is)
@@ -51,8 +65,13 @@ jobs:
           # bestaat pas zodra je een positie logt. Stond het in een gecombineerde
           # `git add`-regel, dan kon de hele stap falen op dat ene ontbrekende bestand
           # -- en werd er NIETS gecommit, ook universe.jsonl niet.
+          #
+          # earnings_dates.json is de cache met rapportagedatums. Die MOET meegecommit
+          # worden: de runner start elke keer schoon, dus zonder commit bestaat het
+          # bestand de volgende run niet meer en vervalt de "hooguit 1x per dag"-regel.
+          # Je zou dan bij elke run opnieuw ~84 API-calls doen.
           for f in signals.json timeline.json weekly.json track_record.json \
-                   universe.jsonl fills.jsonl; do
+                   earnings_dates.json universe.jsonl fills.jsonl; do
             if [ -f "$f" ]; then
               git add "$f" || true
               echo "  toegevoegd: $f"
