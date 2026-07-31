@@ -44,7 +44,11 @@ except ImportError as e:
 BRUSSELS_TZ = ZoneInfo("Europe/Brussels")
 NOW         = datetime.now(BRUSSELS_TZ)
 TODAY       = NOW.date()
-IS_FRIDAY   = TODAY.weekday() == 4
+# De weekcandle is pas AF na de Amerikaanse slotkoers. Bij drie runs per dag zou
+# "vrijdag = week klaar" anders al om 09:40 gelden: dan krijgen weekly kruisingen
+# het volle gewicht 4 terwijl er nog een hele handelsdag komt, en kan het oordeel
+# 's avonds weer omslaan. Vandaar de tijdsvoorwaarde.
+IS_FRIDAY   = TODAY.weekday() == 4 and NOW.hour >= 22
 IS_WEEKEND  = TODAY.weekday() >= 5
 
 OUTPUT_FILE   = "signals.json"
@@ -732,6 +736,8 @@ _PRIJS_MARGE = 0.003   # 0,3%: een lagere bodem/hogere top moet merkbaar zijn, g
 _DB_TOLERANTIE = 0.04  # 4%: de twee bodems moeten op ~hetzelfde niveau liggen
 _DB_NEK_MIN    = 0.08  # 8%: de tussentop moet duidelijk boven de bodems uitkomen
 _DB_BREUK      = 0.03  # 3% onder de laagste bodem = patroon mislukt
+_DB_DALING_MIN = 0.15  # 15%: er moet een echte daling aan de eerste bodem voorafgaan
+_DB_ONDER_TOP  = 0.15  # bodems moeten >=15% onder de eigen top liggen (geen pauze vlak onder de top)
 
 
 def detect_divergence(price: pd.Series, indicator: pd.Series,
@@ -901,6 +907,27 @@ def detect_double_bottom(price: pd.Series, volume: pd.Series = None,
         return None
     if abs(p2 - p1) / bodem > _DB_TOLERANTIE:          # eis 1
         return None
+
+    # ── eis 0: er moet een DALING aan voorafgaan ────────────────────────────
+    # Een dubbele bodem is een OMKEERpatroon: zonder voorafgaande daling is er
+    # niets om te keren. Zonder deze eis telden twee gelijke bodempjes in een
+    # consolidatie -- of vlak onder een TP-zone -- ook mee, en dat is geen W.
+    voor = vals[max(0, i1 - max_lookback): i1 + 1]
+    if len(voor) < 5:
+        return None
+    top_voor = float(np.nanmax(voor))
+    if not np.isfinite(top_voor) or top_voor <= 0:
+        return None
+    if (top_voor - p1) / top_voor < _DB_DALING_MIN:
+        return None
+
+    # ── eis 0b: niet vlak onder de eigen top ────────────────────────────────
+    # Daar vormt zich per definitie geen bodem maar een pauze. Dit sluit ook het
+    # geval uit waar de koers net onder een TP-zone hangt.
+    hoogste = float(np.nanmax(vals))
+    if np.isfinite(hoogste) and hoogste > 0 and bodem > hoogste * (1.0 - _DB_ONDER_TOP):
+        return None
+
     nek = float(np.nanmax(vals[i1:i2 + 1]))            # eis 3
     if not np.isfinite(nek) or nek < bodem * (1.0 + _DB_NEK_MIN):
         return None
@@ -930,6 +957,165 @@ def detect_double_bottom(price: pd.Series, volume: pd.Series = None,
         "volumeDroogtOp": vol_droogt_op,
         "diepte": round((nek - bodem) / nek * 100.0, 1),
     }
+
+
+def detect_double_top(price: pd.Series, volume: pd.Series = None,
+                      left: int = 4, right: int = 4, max_lookback: int = 40):
+    """Klassieke DUBBELE TOP (M-patroon) — het spiegelbeeld van de dubbele bodem.
+
+    Bewust NIET geïmplementeerd door de koers te negeren en de bodem-detector te
+    hergebruiken: de procentdrempels (4% / 8% / 3%) spiegelen niet onder een negatief
+    grondtal, dus dat zou stilzwijgend verkeerde niveaus opleveren.
+
+    Vier eisen, alle vier verplicht:
+      1. TWEE toppen op ongeveer HETZELFDE niveau (binnen _DB_TOLERANTIE).
+      2. Voldoende TIJD ertussen (min. _MIN_GAP, max. max_lookback).
+      3. Een duidelijk TUSSENDAL (de 'nek') minstens _DB_NEK_MIN ONDER de toppen.
+         Zonder dat dal is het een vlakke topzone, geen M-patroon.
+      4. NIET ONGELDIG: de koers mag niet boven de hoogste top zijn uitgebroken.
+
+    Status:
+      'vormend'   -> patroon compleet, nek nog NIET gebroken. Waarnemen, niet verkopen.
+      'bevestigd' -> slotkoers ONDER de nek = klassieke bevestiging (breakdown).
+
+    Volume hoort volgens de leer AF te nemen op de tweede top (de vraag droogt op).
+    Koersdoel: nek - (top - nek), de patroonhoogte omlaag geprojecteerd."""
+    if price is None or len(price) < (left + right + 10):
+        return None
+    highs = _find_swing_highs(price, left, right)
+    if len(highs) < 2:
+        return None
+    vals = price.values
+    n = len(vals)
+    last = float(vals[-1])
+    if not np.isfinite(last) or last <= 0:
+        return None
+
+    kandidaten = [(j, q) for (j, q) in highs if j >= n - max_lookback]
+    if not kandidaten:
+        return None
+    j2, q2 = max(kandidaten, key=lambda t: t[0])          # meest recente top
+    eerder = [(j, q) for (j, q) in highs
+              if (j2 - max_lookback) <= j <= (j2 - _MIN_GAP(left, right))]
+    if not eerder:
+        return None
+    j1, q1 = min(eerder, key=lambda t: abs(t[1] - q2))    # top die het best op gelijke hoogte ligt
+
+    top_laag, top_hoog = float(min(q1, q2)), float(max(q1, q2))
+    if top_laag <= 0:
+        return None
+    if abs(q2 - q1) / top_laag > _DB_TOLERANTIE:          # eis 1
+        return None
+    nek = float(np.nanmin(vals[j1:j2 + 1]))               # eis 3
+    if not np.isfinite(nek) or nek > top_laag * (1.0 - _DB_NEK_MIN):
+        return None
+    if last > top_hoog * (1.0 + _DB_BREUK):               # eis 4: uitgebroken = geen top
+        return None
+
+    bevestigd = last < nek
+    vol_droogt_op = None
+    if volume is not None and len(volume) == n:
+        vv = volume.values
+        def _gem(idx):
+            a = vv[max(0, idx - 2): idx + 3]
+            a = a[np.isfinite(a)]
+            return float(a.mean()) if len(a) else None
+        v1, v2 = _gem(j1), _gem(j2)
+        if v1 and v2:
+            vol_droogt_op = bool(v2 < v1)
+
+    return {
+        "status": "bevestigd" if bevestigd else "vormend",
+        "top1": round(float(q1), 2), "top2": round(float(q2), 2),
+        "nek": round(nek, 2), "top": round(top_hoog, 2),
+        "doel": round(nek - (top_hoog - nek), 2),          # klassieke projectie omlaag
+        "pctNaarNek": round((last - nek) / last * 100.0, 1) if last > 0 else None,
+        "barsApart": int(j2 - j1),
+        "volumeDroogtOp": vol_droogt_op,
+        "diepte": round((top_hoog - nek) / top_hoog * 100.0, 1),
+    }
+
+
+def _instorting_fase(daily, close_d, ema8_d, ema21_d,
+                     weekly_macd_bearish, monthly_macd_bullish,
+                     val_min=20.0, venster=40):
+    """VERSE INSTORTING + herstelladder (Rubens fasen).
+
+    Dit vangt iets anders dan de falling-knife-guard. Die kijkt naar een TRAGE
+    structurele afbraak (koers onder een dalende 200-MA). Hier gaat het om een
+    SNELLE breuk vanaf een top terwijl de maandtrend nog nabloeit -- precies het
+    geval waarin ASMI (1100 -> 660) op KOOP bleef staan omdat al het koopgewicht
+    uit de traagste timeframe kwam en een val van 40% nauwelijks verkoopgewicht
+    genereerde.
+
+    TRIGGER: koers >= val_min% onder de 6-maandstop, die top ligt minder dan
+    `venster` beursdagen achter ons (snel, geen afkalving), EN de weekly MACD
+    staat bearish. Bij zo'n val is kopen gokken.
+
+    LADDER -- elke run opnieuw uit de koershistorie berekend, geen opgeslagen
+    state die kan verlopen of corrumperen:
+      fase 1  HOLD        niets hersteld; geen koop
+      fase 2  LICHT KOOP  twee slotkoersen terug boven de daily 21-EMA. Vroeg,
+                          bewust: bij kwaliteit liever te vroeg dan te laat.
+      fase 3  KOOP        8/21 bullish cross op daily, BEVESTIGD door twee groene
+                          candles boven de 21-EMA, EN monthly MACD bullish.
+                          Twee groene candles boven een kruising = bevestigde
+                          kruising. Het kan alsnog een lower high blijken; dat
+                          risico is bewust aanvaard in ruil voor snelheid.
+
+    Geeft None als er geen instorting speelt."""
+    if daily is None or close_d is None or len(daily) < 130:
+        return None
+    try:
+        hi = daily["High"].iloc[-126:]
+        if len(hi) < 60:
+            return None
+        top = float(hi.max())
+        pos = int(np.argmax(hi.values))          # waar stond die top?
+        last = float(close_d.iloc[-1])
+        if not (np.isfinite(top) and np.isfinite(last)) or top <= 0:
+            return None
+        # De val is een GEBEURTENIS, geen momentopname: meet van de top tot de
+        # laagste stand daarna. Zou je "huidige koers vs top" meten, dan krimpt het
+        # percentage zodra het herstel begint en schakelt de ladder zichzelf uit
+        # vóór fase 2 ooit bereikt wordt -- precies wat we niet willen.
+        lo_na_top = daily["Low"].iloc[-126:].iloc[pos:]
+        if len(lo_na_top) < 2:
+            return None
+        bodem_koers = float(lo_na_top.min())
+        if not np.isfinite(bodem_koers) or bodem_koers <= 0:
+            return None
+        val_pct = (top - bodem_koers) / top * 100.0
+        if val_pct < val_min:
+            return None
+        # SNELHEID: de val zelf moet snel zijn gegaan (top -> bodem). Een trage
+        # afkalving is een ander mechanisme en wordt door de falling-knife-guard
+        # afgehandeld. Bewust NIET "top tot vandaag", want dan verloopt de trigger
+        # tijdens het herstel.
+        dagen_top_naar_bodem = int(np.argmin(lo_na_top.values))
+        if dagen_top_naar_bodem > venster:
+            return None
+        # HERSTELD: terug tot aan de oude top -> de instorting is uitgewerkt.
+        if last >= top * 0.97:
+            return None
+        if not weekly_macd_bearish:
+            return None
+
+        fase = 1
+        e21 = ema21_d.iloc[-2:]
+        e8_l, e21_l = float(ema8_d.iloc[-1]), float(ema21_d.iloc[-1])
+        c2, o2 = daily["Close"].iloc[-2:], daily["Open"].iloc[-2:]
+        boven21 = bool((close_d.iloc[-2:].values > e21.values).all())
+        if boven21:
+            fase = 2
+            twee_groen = bool((c2.values > o2.values).all())
+            if e8_l > e21_l and twee_groen and monthly_macd_bullish:
+                fase = 3
+        return {"fase": fase, "valPct": round(val_pct, 1),
+                "dagenVal": dagen_top_naar_bodem, "top": round(top, 2),
+                "bodem": round(bodem_koers, 2), "boven21": boven21}
+    except Exception:
+        return None
 
 
 def calc_fibonacci(swing_low: float, swing_high: float,
@@ -1707,6 +1893,57 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                          f"koers boven de nek ${double_bottom['nek']} sluiten "
                          f"({double_bottom['pctNaarNek']}% hoger). Tot die uitbraak is dit een "
                          f"waarneming, geen koopsignaal: telt met gewicht 0.{_db_voltxt}"})
+
+    # ── DUBBELE TOP (M-patroon), weekly ──────────────────────────────────────
+    # Spiegelbeeld van de dubbele bodem, en de greed-kant van het verhaal: twee keer
+    # falen op hetzelfde niveau betekent dat de vraag opdroogt. Zelfde regel: pas de
+    # BREUK door de nek bevestigt. Daarvoor is het een waarneming (gewicht 0).
+    double_top = None
+    if weekly is not None and len(weekly) >= 30:
+        double_top = detect_double_top(
+            weekly["Close"], weekly["Volume"] if "Volume" in weekly.columns else None,
+            left=4, right=4, max_lookback=40)
+    if double_top:
+        _dt_vol = double_top.get("volumeDroogtOp")
+        _dt_voltxt = ("" if _dt_vol is None else
+                      (" Volume nam af op de tweede top — de vraag droogt op, "
+                       "precies zoals het patroon voorschrijft." if _dt_vol else
+                       " Let op: het volume nam NIET af op de tweede top — "
+                       "zwakker exemplaar dan het boekje voorschrijft."))
+        _dt_basis = (f"Toppen ${double_top['top1']} en ${double_top['top2']} "
+                     f"({double_top['barsApart']} weken uit elkaar), nek ${double_top['nek']}, "
+                     f"patroonhoogte {double_top['diepte']}%.")
+        if double_top["status"] == "bevestigd":
+            signals.append({"type":"SELL","cat":"PATROON","tf":"1W","weight":3,"icon":"〽️",
+                "title":"Dubbele top BEVESTIGD (weekly)",
+                "detail":f"Klassiek M-patroon: {_dt_basis} De koers sloot ONDER de nek — "
+                         f"dat is de bevestiging. Klassiek koersdoel ${double_top['doel']} "
+                         f"(nek - patroonhoogte).{_dt_voltxt}"})
+        else:
+            signals.append({"type":"WATCH","cat":"PATROON","tf":"1W","weight":0,"icon":"〽️",
+                "title":"Dubbele top in de maak (weekly)",
+                "detail":f"Mogelijk M-patroon: {_dt_basis} Nog NIET bevestigd — daarvoor moet de "
+                         f"koers onder de nek ${double_top['nek']} sluiten "
+                         f"({double_top['pctNaarNek']}% lager). Tot die breuk is dit een "
+                         f"waarneming, geen verkoopsignaal: telt met gewicht 0.{_dt_voltxt}"})
+
+    # ── CIJFER-STATUS: zijn de handmatige fundamentals achterhaald? ──────────
+    # Puur informatief (gewicht 0). Het dashboard tikt je op de schouder in plaats
+    # van dat jij moet onthouden wie wanneer rapporteert.
+    _cijfers = cijfer_status(name, FUNDAMENTALS.get(name) or {})
+    if _cijfers:
+        if _cijfers["verouderd"]:
+            signals.append({"type":"WATCH","cat":"CIJFERS","tf":"—","weight":0,"icon":"📋",
+                "title":"Cijfers verouderd — nieuw rapport verschenen",
+                "detail":f"Er is gerapporteerd op {_cijfers['laatsteRapport']}, terwijl de "
+                         f"fundamentals in het dashboard van {_cijfers['cijfersVan']} zijn. "
+                         "Omzet-, winst- en EPS-velden zijn dus nog van vóór dat rapport."})
+        elif _cijfers["dagenTotRapport"] is not None and 0 <= _cijfers["dagenTotRapport"] <= 7:
+            signals.append({"type":"WATCH","cat":"CIJFERS","tf":"—","weight":0,"icon":"📋",
+                "title":f"Rapporteert over {_cijfers['dagenTotRapport']} dagen",
+                "detail":f"Kwartaalcijfers worden verwacht op {_cijfers['volgendRapport']}. "
+                         "Rond zo'n datum kan de koers scherp bewegen; de technische "
+                         "signalen houden daar geen rekening mee."})
 
     # Volume met NaN-guard
     vol_avg20 = vol_d.rolling(20).mean()
@@ -2847,8 +3084,8 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # Rangorde van oordelen zodat we alleen naar een STRENGER (meer bearish) oordeel
     # kantelen, nooit naar een milder. Zo overrulet de zone een koopsignaal, maar
     # verzwakt hij geen bestaand sterker verkoopsignaal.
-    _rang = {"STERK KOOP": 0, "KOOP": 1, "LICHT KOOP": 2, "NEUTRAAL": 3,
-             "CAUTION (overextended)": 4, "LICHT VERKOOP": 5, "VERKOOP": 6, "STERK VERKOOP": 7}
+    _rang = {"STERK KOOP": 0, "KOOP": 1, "LICHT KOOP": 2, "NEUTRAAL": 3, "HOLD": 4,
+             "CAUTION (overextended)": 5, "LICHT VERKOOP": 6, "VERKOOP": 7, "STERK VERKOOP": 8}
     def _kantel_naar(doel, note):
         nonlocal overall, conflict_note
         if _rang.get(doel, 0) > _rang.get(overall, 0):
@@ -2914,6 +3151,65 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         _kantel_naar("KOOP", f"Herstel maar nog {_pct_onder_top:.0f}% onder de eigen top - "
                              "geen 'sterke' koop: structuur nog beschadigd.")
 
+    # ── VERSE INSTORTING: HOLD als plafond op kopen ──────────────────────────
+    # Bewust een PLAFOND OP KOPEN en geen bodem onder verkopen: _kantel_naar gaat
+    # alleen naar een strenger oordeel, dus een zwaarder verkoopoordeel wint gewoon.
+    # Verloopt op signalen, niet op tijd: bereikt hij fase 3 dan mag koop terug,
+    # blijft hij vallen dan neemt VERKOOP het over.
+    # Weekly bearish: nu OF ergens in de laatste ~12 weken. Draait de weekly tijdens
+    # het herstel bij, dan mag de ladder niet ineens uitvallen -- fase 3 hangt bewust
+    # aan de daily kruising + monthly MACD, niet aan de weekly.
+    _wk_bear = (last_macd_wl is not None and last_macd_ws is not None
+                and last_macd_wl < last_macd_ws)
+    try:
+        if not _wk_bear and has_weekly:
+            _d12 = (macd_wl - macd_ws).dropna().tail(12)
+            _wk_bear = bool((_d12 < 0).any())
+    except Exception:
+        pass
+    _mm_bull = False
+    try:
+        if close_m is not None and len(close_m) >= 35:
+            _ml_i, _ms_i, _ = calc_macd(close_m)
+            _a_i, _b_i = safe_last(_ml_i), safe_last(_ms_i)
+            _mm_bull = (_a_i is not None and _b_i is not None and _a_i > _b_i)
+    except Exception:
+        _mm_bull = False
+    _inst = _instorting_fase(daily, close_d, ema8_d, ema21_d, _wk_bear, _mm_bull)
+    if _inst:
+        _uit_tp = " De val kwam uit de winstzone." if _wz is not None else ""
+        if _inst["fase"] == 1:
+            _kantel_naar("HOLD",
+                f"Verse instorting: val van {_inst['valPct']}% vanaf de top in "
+                f"{_inst['dagenVal']} beursdagen, weekly MACD bearish."
+                f"{_uit_tp} Fase 1 van 3 - geen koop, wachten op slotkoersen boven "
+                "de daily 21-EMA.")
+            signals.append({"type":"WATCH","cat":"INSTORTING","tf":"1D","weight":0,"icon":"🪂",
+                "title":"Verse instorting — HOLD (fase 1 van 3)",
+                "detail":f"De koers viel {_inst['valPct']}% vanaf €{_inst['top']} naar €{_inst['bodem']} "
+                         f"in {_inst['dagenVal']} beursdagen, en de weekly MACD is "
+                         f"bearish.{_uit_tp} Bij zo'n scherpe val is kopen gokken. "
+                         "Volgende stap: twee slotkoersen boven de daily 21-EMA (fase 2, licht "
+                         "koop), daarna een bevestigde 8/21-kruising met twee groene candles "
+                         "plus bullish monthly MACD (fase 3, koop)."})
+        elif _inst["fase"] == 2:
+            _kantel_naar("LICHT KOOP",
+                f"Herstel na instorting van {_inst['valPct']}%: slotkoersen terug boven de "
+                "daily 21-EMA (fase 2 van 3). Licht koop - de 8/21-kruising moet nog komen.")
+            signals.append({"type":"WATCH","cat":"INSTORTING","tf":"1D","weight":0,"icon":"🪂",
+                "title":"Herstel na instorting — fase 2 van 3",
+                "detail":f"Na een val van {_inst['valPct']}% staan de laatste slotkoersen weer "
+                         "boven de daily 21-EMA. Vroeg signaal dat de trend keert; bewust vroeg, "
+                         "want bij kwaliteit is te laat duurder dan te vroeg. Volledige koop "
+                         "vraagt nog een bevestigde 8/21-kruising (twee groene candles) plus "
+                         "bullish monthly MACD."})
+        else:
+            signals.append({"type":"WATCH","cat":"INSTORTING","tf":"1D","weight":0,"icon":"🪂",
+                "title":"Instorting hersteld — fase 3 van 3",
+                "detail":f"Na een val van {_inst['valPct']}% is de 8/21-kruising op daily "
+                         "bevestigd door twee groene candles boven de 21-EMA, met een bullish "
+                         "monthly MACD erachter. Het koopplafond is opgeheven."})
+
     # ── AFTOPPING IN DE WINSTZONE (1.272 / 1.414): STERK KOOP -> KOOP ──────────────
     # Rubens keuze: zodra de koers in winstgebied zit (voorbij 1.272 of 1.414), is
     # 'STERK KOOP' te sterk -- je staat al 21-33% boven de vorige top, geen moment voor
@@ -2948,7 +3244,8 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # de daling waarin de kaarten niet vuren. Samen sluitend. 1.618/3.618/4.236 stonden
     # hier eerder NIET in -- daar kon een ultiem koopsignaal dus nog doorheen glippen.
     _te_ver_voor_ultimate = ((_wz is not None) or has_winstzone or has_1618
-                             or has_1818 or has_2000 or has_2618 or has_3618 or has_4236)
+                             or has_1818 or has_2000 or has_2618 or has_3618 or has_4236
+                             or bool(_inst and _inst["fase"] < 3))   # instorting nog niet hersteld
     if ema_ultimate_buy and not is_bagger and not _te_ver_voor_ultimate:
         overall = "STERK KOOP"
         conflict_note = (conflict_note + " " if conflict_note else "") + \
@@ -3012,7 +3309,8 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "bollUpper": round(last_bb_u, 2), "bollLower": round(last_bb_l, 2),
             "volRatio": round(vol_ratio, 2), "volKnown": vol_known, "highVolume": high_volume, "volNote": vol_note.strip(),
             "volTrend": vol_trend, "obv": obv_state, "squeeze": squeeze_state,
-            "doubleBottom": double_bottom,
+            "doubleBottom": double_bottom, "doubleTop": double_top,
+            "cijferStatus": _cijfers,
             "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
             "divergence": divergence,
         },
@@ -4682,6 +4980,89 @@ def compute_accuracy_stats(track, min_observations, horizons_weeks):
         stats[rec_type] = per_horizon
     return stats
 
+EARNINGS_FILE = "earnings_dates.json"
+EARNINGS = {}   # dashboard_naam -> {"laatste": "YYYY-MM-DD", "volgende": "YYYY-MM-DD"}
+
+
+def laad_earnings_cache():
+    if os.path.exists(EARNINGS_FILE):
+        try:
+            with open(EARNINGS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            print("  ⚠ earnings_dates.json onleesbaar, start opnieuw")
+    return {}
+
+
+def ververs_earnings_cache(paren):
+    """Haalt per aandeel de laatste en eerstvolgende rapportagedatum op.
+
+    Hooguit EEN keer per dag: bij drie runs per dag hergebruiken de andere twee de
+    cache. Dat scheelt ~84 API-calls per run en houdt de output binnen dezelfde dag
+    identiek (de selftest controleert dat een herrun exact hetzelfde oplevert).
+
+    Alles faalt STIL en per ticker: geen datum betekent gewoon geen badge. Een
+    hapering bij Yahoo mag nooit de hele analyse breken -- de koersdata en de
+    signalen zijn het product, dit is een hulpje."""
+    cache = laad_earnings_cache()
+    if cache.get("_datum") == str(TODAY):
+        return cache
+    nieuw = {"_datum": str(TODAY)}
+    gelukt = 0
+    for naam, sym, _fallback in paren:
+        vorige = cache.get(naam)
+        try:
+            df = yf.Ticker(sym).earnings_dates
+            if df is None or len(df) == 0:
+                raise ValueError("leeg")
+            datums = sorted({d.date() for d in pd.to_datetime(df.index)})
+            verleden = [d for d in datums if d <= TODAY]
+            toekomst = [d for d in datums if d > TODAY]
+            nieuw[naam] = {"laatste": str(verleden[-1]) if verleden else None,
+                           "volgende": str(toekomst[0]) if toekomst else None}
+            gelukt += 1
+        except Exception:
+            if vorige:                      # oude datum is beter dan geen datum
+                nieuw[naam] = vorige
+    print(f"  Rapportagedatums: {gelukt}/{len(paren)} opgehaald "
+          f"({len(nieuw) - 1} in cache)")
+    try:
+        with open(EARNINGS_FILE, "w", encoding="utf-8") as f:
+            json.dump(nieuw, f, indent=1, sort_keys=True)
+    except IOError:
+        pass
+    return nieuw
+
+
+def cijfer_status(naam, fund):
+    """Zijn de handmatige cijfers in FUNDAMENTALS achterhaald door een nieuw rapport?
+
+    Vergelijkt het `lastUpdated`-veld (formaat "YYYY-MM", eventueel met een suffix
+    als "2026-07 (Q2'26)") met de laatste rapportagedatum. Rapporteerde het bedrijf
+    in een LATERE maand dan je laatste update, dan staan er verouderde cijfers in."""
+    e = EARNINGS.get(naam) or {}
+    laatste, volgende = e.get("laatste"), e.get("volgende")
+    if not (laatste or volgende):
+        return None
+    verouderd, maanden = False, None
+    lu = (fund or {}).get("lastUpdated") or ""
+    if laatste and len(lu) >= 7:
+        try:
+            lu_jaar, lu_maand = int(lu[:4]), int(lu[5:7])
+            r_jaar, r_maand = int(laatste[:4]), int(laatste[5:7])
+            verouderd = (r_jaar, r_maand) > (lu_jaar, lu_maand)
+        except (ValueError, IndexError):
+            verouderd = False
+    if volgende:
+        try:
+            maanden = (date.fromisoformat(volgende) - TODAY).days
+        except ValueError:
+            maanden = None
+    return {"laatsteRapport": laatste, "volgendRapport": volgende,
+            "verouderd": bool(verouderd), "dagenTotRapport": maanden,
+            "cijfersVan": lu or None}
+
+
 def load_track_record():
     if os.path.exists(TRACK_FILE):
         try:
@@ -4739,6 +5120,24 @@ def main():
             print("Weekend — beurs gesloten. Bestaande data blijft geldig. Analyse overgeslagen.")
             sys.exit(0)
 
+    # ── TIJDVENSTER: drie geplande runs per dag (Brusselse tijd) ─────────────
+    # GitHub-cron rekent altijd in UTC en kent geen zomer-/wintertijd. Daarom staan
+    # in de workflow ZES cron-regels (zomer- én winteroffset) en beslist deze guard
+    # welke daarvan echt telt. Zo klopt het jaarrond zonder twee keer per jaar te
+    # sleutelen. De vensters zijn ruim omdat GitHub-cron routineus 5-20 minuten te
+    # laat vuurt. Handmatige runs slaan deze guard over.
+    VENSTERS = ((930, 1030, "ochtend — na de Europese opening"),
+                (1550, 1650, "middag — na de Amerikaanse opening"),
+                (2220, 2320, "avond — na de Amerikaanse slotkoers"))
+    if os.environ.get("GITHUB_EVENT_NAME") == "schedule":
+        _nu = NOW.hour * 100 + NOW.minute
+        _slot = next((naam for a, b, naam in VENSTERS if a <= _nu <= b), None)
+        if _slot is None:
+            print(f"Buiten het tijdvenster ({NOW:%H:%M} Brussel) — dit is de cron van "
+                  "de andere seizoenstijd. Run overgeslagen.")
+            sys.exit(0)
+        print(f"Run-venster: {_slot}")
+
     os.makedirs(HISTORY_DIR, exist_ok=True)
     timeline = load_timeline()
 
@@ -4752,6 +5151,10 @@ def main():
         },
         "stocks": {}, "errors": [],
     }
+
+    # Rapportagedatums (max 1x per dag; faalt stil) -> badge "cijfers verouderd"
+    global EARNINGS
+    EARNINGS = ververs_earnings_cache(WATCHLIST)
 
     # Batch ophalen
     fetched = fetch_all(WATCHLIST)
