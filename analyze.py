@@ -362,7 +362,7 @@ FUNDAMENTALS = {
     "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07", "earningsHistory":[[2021,-520],[2022,-374],[2023,210],[2024,462],[2025,1625]]},   # P/E 145 - extreme waardering; winstgevend sinds 2023, daarna +120/+252% -- jonge winstcurve, mediaan misleidt door lage basis
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.8,  "debtEquity":2.31, "netMargin":13.3, "divYield":0.63, "revenueGrowth":11.9,  "revenueGrowthPrev":4.0,  "eps":20.10, "mktCap":"$444B",  "beta":1.60, "lastUpdated":"2026-07"},
     "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":25.00, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07", "earningsHistory":[[2021,5883],[2022,6456],[2023,8277],[2024,7966],[2025,9600]]},   # winst +10-30%, pauzejaar -4% in 2024, herstel +21% in 2025; licht cyclisch maar structureel groeiend
-    "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07", "earningsHistory":[[2021,507],[2022,627],[2023,583],[2024,708],[2025,741]]},   # GENORMALISEERD (excl. ASMPT-belang/impairments; vanaf 2024 "adjusted" genoemd) -- IFRS is grillig door ASMPT: FY2023 IFRS EUR752M maar genormaliseerd -7%, FY2025 IFRS EUR724M; +24/-7/+21/+5% toont de echte operationele trend
+    "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":24.0,  "revenueGrowthPrev":16.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07 (Q2'26)", "earningsHistory":[[2021,507],[2022,627],[2023,583],[2024,708],[2025,741]]},   # GENORMALISEERD (excl. ASMPT-belang/impairments; vanaf 2024 "adjusted" genoemd) -- IFRS is grillig door ASMPT: FY2023 IFRS EUR752M maar genormaliseerd -7%, FY2025 IFRS EUR724M; +24/-7/+21/+5% toont de echte operationele trend. Q2'26: omzet EUR1003M (+24% cc), adjusted nettowinst EUR293M vs EUR173M (+69% YoY); FY2026 loopt nog -> GEEN jaarrij tot Q4. eps 19.50 NIET geupdate: rol vereist gerapporteerde diluted adjusted EPS (heb enkel absolute winst, niet aandelenaantal)
     "MU":    {"pe":22.1,  "roe":66.6, "fcfYield":2.2,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.1,  "revenueGrowth":144.0, "revenueGrowthPrev":62.0, "eps":44.6,  "mktCap":"$1.1T",  "beta":2.14, "lastUpdated":"2026-07", "earningsHistory":[[2021,5861],[2022,8687],[2023,-5833],[2024,778],[2025,8539]]},   # AI-geheugencyclus op piek - extreem cyclisch; winst: +48%/VERLIES/+998% = geen jaar representatief
     "GOOGL": {"pe":25.7,  "roe":38.9, "fcfYield":1.6,  "debtEquity":0.20, "netMargin":37.9, "divYield":0.3,  "revenueGrowth":13.4,  "revenueGrowthPrev":14.0, "eps":13.15, "mktCap":"$4.1T",  "beta":1.24, "lastUpdated":"2026-07", "earningsHistory":[[2021,76033],[2022,59972],[2023,73795],[2024,100118],[2025,132170]]},   # 2022-dip (-21%, advertentiemarkt), daarna +23/+36/+32% -- versnelling door cloud/AI
     "ANET":  {"pe":53.9,  "roe":31.5, "fcfYield":2.5,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.1,  "revenueGrowthPrev":28.9, "eps":2.95,  "mktCap":"$215B",  "beta":1.61, "lastUpdated":"2026-07", "earningsHistory":[[2021,841],[2022,1352],[2023,2087],[2024,2852],[2025,3511]]},   # ononderbroken sterke groei +61/+54/+37/+23%; groeitempo neemt geleidelijk af
@@ -399,7 +399,7 @@ FUNDAMENTALS = {
     "SHOP":  {"pe":92.0,  "roe":14.5, "fcfYield":1.4,  "debtEquity":0.10, "netMargin":11.5, "divYield":0,    "revenueGrowth":31.9,  "revenueGrowthPrev":26.0, "eps":1.32,  "mktCap":"$185B",  "beta":2.35, "lastUpdated":"2026-07"},
     "NET":   {"pe":0,      "roe":-5.9, "fcfYield":0.5,  "debtEquity":2.31, "netMargin":-3.7, "divYield":0,    "revenueGrowth":34.0,  "revenueGrowthPrev":30.0, "eps":-0.25, "mktCap":"$59B",   "beta":1.67, "lastUpdated":"2026-07", "earningsHistory":[[2021,-260],[2022,-193],[2023,-184],[2024,-79],[2025,-102]]},   # nooit GAAP-winstgevend; verlies versmalde richting 2024 maar liep in 2025 weer op -- omzet groeit 30%+/jr, maar winst blijft uit
     "CRWV":  {"pe":0,      "roe":-35.0,"fcfYield":-25.0,"debtEquity":3.85, "netMargin":-36.0,"divYield":0,    "revenueGrowth":112.0, "revenueGrowthPrev":737.0,"eps":-4.55, "mktCap":"$52B",   "beta":2.85, "lastUpdated":"2026-07"},
-    "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":39.3, "divYield":1.0,  "revenueGrowth":15.0,  "revenueGrowthPrev":16.0, "eps":16.85, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07", "earningsHistory":[[2021,61271],[2022,72738],[2023,72361],[2024,88136],[2025,101832]]},   # boekjaar eindigt 30 juni; stabiele groeier, vlakke plek in 2023 (-1%)
+    "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":40.3, "divYield":1.0,  "revenueGrowth":18.0,  "revenueGrowthPrev":15.0, "eps":17.95, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07 (Q4 FY26)", "earningsHistory":[[2021,61271],[2022,72738],[2023,72361],[2024,88136],[2025,101832],[2026,133700]]},   # boekjaar eindigt 30 juni; stabiele groeier, vlakke plek in 2023 (-1%). FY2026 afgesloten: omzet $331.8B (+18%), GAAP nettowinst $133.7B (+31%) — LET OP: incl. ~$5B eenmalige OpenAI/Anthropic-winst; schone operationele groei ~+22% (non-GAAP $128.7B). eps=GAAP diluted FY2026 $17.95
     "MTLS":  {"pe":78.0,  "roe":3.5,  "fcfYield":1.5,  "debtEquity":0.42, "netMargin":2.7,  "divYield":0,    "revenueGrowth":0.0,   "revenueGrowthPrev":3.0,  "eps":0.10,  "mktCap":"$0.4B",  "beta":1.55, "lastUpdated":"2026-07"},
     "SNAP":  {"pe":0,      "roe":-8.5, "fcfYield":2.0,  "debtEquity":1.85, "netMargin":-5.5, "divYield":0,    "revenueGrowth":8.0,   "revenueGrowthPrev":14.0, "eps":-0.15, "mktCap":"$13B",   "beta":1.95, "lastUpdated":"2026-07"},
     "NVDA":  {"pe":31.1,  "roe":114.3,"fcfYield":2.4,  "debtEquity":0.07, "netMargin":63.0, "divYield":0.5,  "revenueGrowth":70.7,  "revenueGrowthPrev":114.0,"eps":6.56,  "mktCap":"$4.9T",  "beta":2.21, "lastUpdated":"2026-07", "earningsHistory":[[2021,9752],[2022,4368],[2023,29760],[2024,72880],[2025,120067]]},   # fiscale jaren (eindigt eind jan) gemapt op kalenderjaar; -55% crash 2022, dan +581/+145/+65% AI-explosie -- extreem cyclisch, geen enkel jaar representatief
@@ -494,7 +494,7 @@ FUNDAMENTALS = {
     # Dit is precies het soort vraag waar het model GEEN antwoord op heeft: de kwaliteit
     # is er (vandaag), maar de capex bepaalt of ze er over twee jaar nog is. De poort meet
     # het verleden.
-    "META":  {"pe":21.5,  "roe":35.0, "fcfYield":2.8,  "debtEquity":0.15, "netMargin":38.0, "divYield":0.4,  "revenueGrowth":33.0,  "revenueGrowthPrev":22.0, "eps":27.10, "mktCap":"$1.5T",  "beta":1.28, "lastUpdated":"2026-07", "earningsHistory":[[2021,39370],[2022,23200],[2023,39098],[2024,62360],[2025,60458]]},   # metaverse-dip 2022 (-41%), explosief herstel +69/+59%, 2025 licht terug (-3%, AI-capex)
+    "META":  {"pe":21.5,  "roe":35.0, "fcfYield":2.8,  "debtEquity":0.15, "netMargin":38.0, "divYield":0.4,  "revenueGrowth":28.0,  "revenueGrowthPrev":22.0, "eps":26.14, "mktCap":"$1.5T",  "beta":1.28, "lastUpdated":"2026-07 (Q2'26)", "earningsHistory":[[2021,39370],[2022,23200],[2023,39098],[2024,62360],[2025,60458]]},   # metaverse-dip 2022 (-41%), explosief herstel +69/+59%, 2025 licht terug (-3%, AI-capex). Q2'26: omzet +28% MAAR nettowinst -14% ($15.85B vs $18.34B), EPS $6.18 miss — kostenexplosie +55% (AI-capex + $2.4B legal + $1.18B severance). revenueGrowth vangt deze winstcompressie NIET (zie twee-assen-idee). netMargin op 38 gelaten: Q2-kwartaal was 26% maar door eenmalige lasten vertekend
 
     # ── Vistra ──
     # HAALT DE POORT OP PAPIER, MAAR LEES DIT EERST.
@@ -649,6 +649,33 @@ def calc_bollinger(series: pd.Series, period: int = 20, mult: float = 2.0):
     std = series.rolling(period).std(ddof=0)  # population std, zoals TradingView
     return mid + mult * std, mid, mid - mult * std
 
+def bollinger_squeeze(series: pd.Series, period: int = 20, lookback: int = 120):
+    """Meet hoe strak de Bollinger-banden staan t.o.v. hun EIGEN recente historie.
+
+    De bandbreedte = (bovenband - onderband) / middenband. Een squeeze is niet
+    'de banden zijn absoluut smal' -- elk aandeel heeft zijn eigen volatiliteit --
+    maar 'ze zijn smaller dan ze de afgelopen ~half jaar waren'. We drukken dat uit
+    als percentiel: 0 = strakst in de lookback, 100 = wijdst. Lage volatiliteit gaat
+    historisch vooraf aan een uitbraak, maar de squeeze is RICHTINGLOOS -- hij zegt
+    'er komt een grote beweging', niet welke kant op. Daarom puur observerend, als
+    confluence naast OBV/divergentie, nooit als koop- of verkoopsignaal.
+
+    Geeft None als er te weinig historie is."""
+    u, m, l = calc_bollinger(series, period)
+    bw = ((u - l) / m).dropna()
+    if len(bw) < 40:
+        return None
+    recent = bw.tail(lookback)
+    huidig = float(bw.iloc[-1])
+    pct = float((recent < huidig).sum()) / len(recent) * 100.0
+    med = float(recent.median())
+    ratio = huidig / med if med > 0 else 1.0
+    return {"bandwidth": round(huidig, 4),
+            "pct": round(pct, 1),
+            "ratio": round(ratio, 2),
+            "squeeze": pct <= 20.0,        # onderste vijfde = opvallend strak
+            "expansie": pct >= 85.0}       # bovenste zevende = net uitgebroken/wild
+
 def _find_swing_lows(series: pd.Series, left: int = 5, right: int = 5):
     """Vind lokale koersbodems (pivot lows): een punt dat lager is dan `left`
     punten ervoor en `right` erna. Geeft een lijst (positie-index, waarde).
@@ -687,6 +714,26 @@ def _find_swing_highs(series: pd.Series, left: int = 5, right: int = 5):
             highs.append((i, float(v)))
     return highs
 
+def _MIN_GAP(left, right):
+    """Minimale afstand tussen twee pivots: dichter op elkaar zijn het geen twee
+    afzonderlijke swings maar ruis binnen dezelfde beweging."""
+    return max(3, left + right)
+
+
+def _MAX_SPAN(max_lookback):
+    """Maximale afstand tussen de twee pivots. Verder uit elkaar zijn het losse
+    gebeurtenissen uit verschillende cycli, geen divergentie."""
+    return max_lookback * 2
+
+
+_PRIJS_MARGE = 0.003   # 0,3%: een lagere bodem/hogere top moet merkbaar zijn, geen ruis
+
+# ── Dubbele bodem (W-patroon) ───────────────────────────────────────────────
+_DB_TOLERANTIE = 0.04  # 4%: de twee bodems moeten op ~hetzelfde niveau liggen
+_DB_NEK_MIN    = 0.08  # 8%: de tussentop moet duidelijk boven de bodems uitkomen
+_DB_BREUK      = 0.03  # 3% onder de laagste bodem = patroon mislukt
+
+
 def detect_divergence(price: pd.Series, indicator: pd.Series,
                       left: int = 5, right: int = 5, max_lookback: int = 60):
     """Detecteer klassieke divergentie tussen koers en een momentum-indicator
@@ -719,7 +766,9 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     # (nog eens max_lookback terug). Divergentie: recente bodem lager, indicator hoger.
     # (Deze strikte aanpak gaf in v5.4 weinig, maar ECHTE signalen. Een eerdere poging
     # om ook dicht-op-elkaar liggende dubbele bodems te vangen maakte de detector veel
-    # te gevoelig -- 67/84 aandelen 'divergentie' -- en is teruggedraaid.)
+    # te gevoelig -- 67/84 aandelen 'divergentie' -- en is teruggedraaid. De huidige
+    # anker-relatieve variant houdt die strengheid: de koers moet onder de laagste
+    # bodem van de hele voorafgaande periode duiken, en er geldt een koersmarge.)
     lows = _find_swing_lows(price, left, right)
     bull = None
     if len(lows) >= 2:
@@ -731,15 +780,28 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
         _reeks_l = pd.Series(iv).dropna().tail(max_lookback * 2)
         _ind_schaal_l = float(_reeks_l.max() - _reeks_l.min()) if len(_reeks_l) else 0.0
         _marge_l = _ind_schaal_l * 0.15
-        recent_grens = n - max_lookback
-        recent = [(i, p) for (i, p) in lows if i >= recent_grens]
-        eerder = [(i, p) for (i, p) in lows if i < recent_grens and i >= recent_grens - max_lookback]
+        # ANKER-RELATIEF VENSTER (was: twee vaste vensterhelften). De oude aanpak eiste
+        # dat de ene bodem in [n-2L, n-L) lag en de andere in [n-L, n]. Daardoor was een
+        # klassieke divergentie waarvan BEIDE bodems in de recente periode liggen
+        # (bv. 16 weken uit elkaar) structureel onvindbaar -- terwijl dat juist de
+        # meest voorkomende vorm is. Nu: anker = laagste recente bodem, vergelijking =
+        # laagste bodem DAARVOOR binnen een bereik. Even streng (de koers moet onder de
+        # laagste bodem van de hele vorige periode duiken), maar zonder het blinde gat.
+        recent = [(i, p) for (i, p) in lows if i >= n - max_lookback]
+        if recent:
+            i2, p2 = min(recent, key=lambda t: t[1])   # anker: laagste recente bodem
+            eerder = [(i, p) for (i, p) in lows
+                      if (i2 - _MAX_SPAN(max_lookback)) <= i <= (i2 - _MIN_GAP(left, right))]
+        else:
+            eerder = []
         if recent and eerder:
-            i2, p2 = min(recent, key=lambda t: t[1])   # laagste recente bodem
-            i1, p1 = min(eerder, key=lambda t: t[1])   # laagste eerdere bodem
+            i1, p1 = min(eerder, key=lambda t: t[1])   # laagste bodem vóór het anker
             ind1, ind2 = iv[i1], iv[i2]
             if not (np.isnan(ind1) or np.isnan(ind2)):
-                if p2 < p1 and (ind2 - ind1) > _marge_l:
+                # KOERSMARGE: een "lagere bodem" moet merkbaar lager zijn. Zonder deze
+                # eis telde een bodem die 0,01% lager lag (feitelijk een dubbele bodem)
+                # als divergentie -- de indicator had wel een marge, de koers niet.
+                if p2 < p1 * (1.0 - _PRIJS_MARGE) and (ind2 - ind1) > _marge_l:
                     bull = {
                         "type": "bullish",
                         "priceLow1": round(p1, 2), "priceLow2": round(p2, 2),
@@ -752,7 +814,7 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     # De MACD-lijn meet SNELHEID, geen niveau. Een stijging die van steil naar
     # gestaag gaat laat de MACD dalen terwijl de koers gewoon doorstijgt -- zonder
     # marge levert dat een "bearish divergentie" op bij een gezonde trend. We eisen
-    # daarom dat het verschil minstens 5% is van de typische indicator-uitslag.
+    # daarom dat het verschil minstens 15% is van de typische indicator-uitslag.
     # Gemeten op spreiding (max-min), niet op absolute waarde: bij RSI (altijd 0-100)
     # zou een percentage van |max| willekeurig streng uitpakken.
     highs = _find_swing_highs(price, left, right)
@@ -762,15 +824,18 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
         _reeks = pd.Series(iv).dropna().tail(max_lookback * 2)
         _ind_schaal = float(_reeks.max() - _reeks.min()) if len(_reeks) else 0.0
         _marge = _ind_schaal * 0.15
-        recent_grens = n - max_lookback
-        recent_h = [(j, q) for (j, q) in highs if j >= recent_grens]
-        eerder_h = [(j, q) for (j, q) in highs if j < recent_grens and j >= recent_grens - max_lookback]
+        recent_h = [(j, q) for (j, q) in highs if j >= n - max_lookback]
+        if recent_h:
+            j2, q2 = max(recent_h, key=lambda t: t[1])   # anker: hoogste recente top
+            eerder_h = [(j, q) for (j, q) in highs
+                        if (j2 - _MAX_SPAN(max_lookback)) <= j <= (j2 - _MIN_GAP(left, right))]
+        else:
+            eerder_h = []
         if recent_h and eerder_h:
-            j2, q2 = max(recent_h, key=lambda t: t[1])
-            j1, q1 = max(eerder_h, key=lambda t: t[1])
+            j1, q1 = max(eerder_h, key=lambda t: t[1])   # hoogste top vóór het anker
             indh1, indh2 = iv[j1], iv[j2]
             if not (np.isnan(indh1) or np.isnan(indh2)):
-                if q2 > q1 and (indh1 - indh2) > _marge:
+                if q2 > q1 * (1.0 + _PRIJS_MARGE) and (indh1 - indh2) > _marge:
                     bear = {
                         "type": "bearish",
                         "priceHigh1": round(q1, 2), "priceHigh2": round(q2, 2),
@@ -784,6 +849,88 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     if bull and bear:
         return bull if bull.get("anchorIdx", -1) >= bear.get("anchorIdx", -1) else bear
     return bull or bear
+
+def detect_double_bottom(price: pd.Series, volume: pd.Series = None,
+                         left: int = 4, right: int = 4, max_lookback: int = 40):
+    """Klassieke DUBBELE BODEM (W-patroon) volgens de regels van de kunst.
+
+    Vier eisen, alle vier verplicht:
+      1. TWEE bodems op ongeveer HETZELFDE niveau (binnen _DB_TOLERANTIE). Ligt de
+         tweede bodem duidelijk lager, dan is het geen W maar een voortgaande daling
+         (en mogelijk een bullish divergentie -- dat is een ander signaal).
+      2. Voldoende TIJD ertussen. Twee bodems vlak na elkaar zijn ruis binnen dezelfde
+         beweging. Ook niet te ver: dan zijn het losse gebeurtenissen.
+      3. Een duidelijke TUSSENTOP (de 'nek') minstens _DB_NEK_MIN boven de bodems.
+         Zonder die tussentop is het een vlakke bodemzone, geen W-patroon.
+      4. NIET ONGELDIG: de koers mag niet onder de laagste bodem zijn gezakt. Gebeurt
+         dat wel, dan is het patroon per definitie mislukt.
+
+    Status:
+      'vormend'   -> patroon compleet, nek nog NIET gebroken. Waarnemen, niet kopen:
+                     een dubbele bodem is pas een dubbele bodem als hij bevestigd is.
+      'bevestigd' -> slotkoers boven de nek = klassieke bevestiging (uitbraak).
+
+    Volume hoort volgens de leer AF te nemen op de tweede bodem (verkopers raken op)
+    en TOE te nemen bij de uitbraak. Dat rapporteren we als kwaliteitskenmerk.
+    Koersdoel: nek + (nek - bodem), de klassieke projectie van de patroonhoogte."""
+    if price is None or len(price) < (left + right + 10):
+        return None
+    lows = _find_swing_lows(price, left, right)
+    if len(lows) < 2:
+        return None
+    vals = price.values
+    n = len(vals)
+    last = float(vals[-1])
+    if not np.isfinite(last) or last <= 0:
+        return None
+
+    # Bodem 2 = de meest recente BEVESTIGDE bodem binnen het venster.
+    kandidaten = [(i, p) for (i, p) in lows if i >= n - max_lookback]
+    if not kandidaten:
+        return None
+    i2, p2 = max(kandidaten, key=lambda t: t[0])
+    # Bodem 1 = de bodem daarvoor die het dichtst op gelijke hoogte ligt.
+    eerder = [(i, p) for (i, p) in lows
+              if (i2 - max_lookback) <= i <= (i2 - _MIN_GAP(left, right))]
+    if not eerder:
+        return None
+    i1, p1 = min(eerder, key=lambda t: abs(t[1] - p2))
+
+    bodem = float(min(p1, p2))
+    if bodem <= 0:
+        return None
+    if abs(p2 - p1) / bodem > _DB_TOLERANTIE:          # eis 1
+        return None
+    nek = float(np.nanmax(vals[i1:i2 + 1]))            # eis 3
+    if not np.isfinite(nek) or nek < bodem * (1.0 + _DB_NEK_MIN):
+        return None
+    if last < bodem * (1.0 - _DB_BREUK):               # eis 4
+        return None
+
+    bevestigd = last > nek
+    # Volume-kenmerken (optioneel; ontbreekt volume, dan gewoon None).
+    vol_droogt_op = None
+    if volume is not None and len(volume) == n:
+        vv = volume.values
+        def _gem(idx):
+            a = vv[max(0, idx - 2): idx + 3]
+            a = a[np.isfinite(a)]
+            return float(a.mean()) if len(a) else None
+        v1, v2 = _gem(i1), _gem(i2)
+        if v1 and v2:
+            vol_droogt_op = bool(v2 < v1)
+
+    return {
+        "status": "bevestigd" if bevestigd else "vormend",
+        "bodem1": round(float(p1), 2), "bodem2": round(float(p2), 2),
+        "nek": round(nek, 2), "bodem": round(bodem, 2),
+        "doel": round(nek + (nek - bodem), 2),          # klassieke projectie
+        "pctNaarNek": round((nek - last) / last * 100.0, 1) if last > 0 else None,
+        "barsApart": int(i2 - i1),
+        "volumeDroogtOp": vol_droogt_op,
+        "diepte": round((nek - bodem) / nek * 100.0, 1),
+    }
+
 
 def calc_fibonacci(swing_low: float, swing_high: float,
                    ext_low: float = None, ext_high: float = None) -> dict:
@@ -1258,17 +1405,76 @@ def _weekly_turn(weekly):
     return d
 
 
-def _fib_buy_depth(last, fib):
-    """Hoe diep in de koop-retracement zit de prijs? 0 = niet, 1..N = toenemend interessant.
-    Koopzone = golden pocket (0.618/0.705) t/m 1.818 (dieper = interessanter).
+_WZ_LEVELS = ("4.236", "3.618", "2.618", "2.000", "1.818", "1.618", "1.414", "1.272")
+
+
+def _winstzone_level(last, fib, long_high=None):
+    """Diepste extensie waar de prijs op/voorbij staat -> (label, koers) of (None, None).
+    Puur prijs-vs-niveau: GEEN trendfilter. De TP-kaarten hangen achter _opwaarts en
+    verdwijnen dus in een daling; deze functie niet, zodat de zwaarte van het oordeel
+    klopt of de koers nu stijgt of valt (dat gat liet ASMI op koop staan)."""
+    if not fib or fib.get("extRejected"):
+        return None, None
+    # ── STALE-SWING-GUARD ────────────────────────────────────────────────────
+    # Een winstzone geprojecteerd vanaf een OUDE, veel lagere top is betekenisloos
+    # zodra het aandeel intussen veel hoger heeft gestaan en nu ver onder die echte
+    # top noteert. Zonder deze guard riep een herstellend aandeel (gevallen van 303
+    # naar 180, terug naar 234) "voorbij de 2.0-extensie - diep in winst" en werd het
+    # STERK VERKOOP -- terwijl het 23% ONDER zijn eigen top stond. Je kunt niet diep
+    # in winst staan en tegelijk ver onder je eigen top. Beide voorwaarden moeten
+    # gelden: de projectie is verouderd EN de koers staat ver onder de echte top.
+    if long_high and long_high > 0:
+        _proj_top = fib.get("extSwingHigh")
+        _verouderd = _proj_top is not None and _proj_top < long_high * 0.80
+        _ver_onder_top = last < long_high * 0.90
+        if _verouderd and _ver_onder_top:
+            return None, None
+    e = fib.get("extensions", {}) or {}
+    for lbl in _WZ_LEVELS:                      # hoog -> laag: pak het diepste niveau
+        lvl = e.get(lbl)
+        if lvl is not None and last >= lvl:
+            return lbl, lvl
+    l1272 = e.get("1.272")                      # nadert de vloer -> al caution (4%,
+    if l1272 is not None and last >= l1272 * 0.96:   # zelfde nabijheid als de TP-kaarten)
+        return "1.272", l1272
+    return None, None
+
+
+def _winstzone_state(last, fib, long_high=None):
+    """Fear/greed-regime op de fib-EXTENSIES (winstzone, bodem->top omhoog geprojecteerd).
+      None      = niet in de winstzone
+      'caution' = nadert 1.272 t/m 1.414 -> CAUTION (overextended); greed onderdrukken, geen koop
+      'sell'    = 1.618 / 1.818        -> be fearful when greedy -> verkoop
+      'strong'  = >=2.000              -> diep in greed -> sterk verkoop
+    Vereist geldige extensies (niet verworpen door de plausibiliteitstoets)."""
+    lbl, _ = _winstzone_level(last, fib, long_high)
+    if lbl is None:
+        return None
+    if lbl in ("4.236", "3.618", "2.618", "2.000"):
+        return "strong"
+    if lbl in ("1.818", "1.618"):
+        return "sell"
+    return "caution"
+
+
+def _fib_buy_depth(last, fib, long_high=None):
+    """Hoe diep in de koop-retracement (FEAR-zone) zit de prijs? 0 = niet, 1..N = toenemend interessant.
+    Koopzone = golden pocket (0.618/0.705) t/m de voortzetting ONDER de swing-low.
+    FEAR/GREED-REGEL: in de winstzone (>=1.272-extensie) bestaat er GEEN koop -- greed
+    onderdrukken -> hier 0 teruggeven. Koop hoort alleen in de fear-zone (diepe terugval).
     """
     if not fib:
+        return 0, None
+    # be fearful when greedy: in de winstzone nooit koopdiepte (killt de valse KOOP bij ASMI).
+    if _winstzone_state(last, fib, long_high) is not None:
         return 0, None
     retr = fib.get("retracements", {})
     # Levels van ondiep->diep die als koopzone tellen (vanaf 0.618 dieper)
     order = ["0.618","0.705","0.786","0.886","1.000"]
-    # 1.0 -> swing low; nog dieper (richting 1.272..1.818 onder de bodem) ook koop
-    deeper = ["1.272","1.414","1.618","1.818"]  # deze staan in extensions bij een DALING onder de low
+    # Onder de swing-low: de retracement-VOORTZETTING (top->bodem) projecteert 1.272..1.618
+    # ONDER de low -- dat zijn de echte diepere fear-steunen. NIET fib["extensions"]
+    # (dat is de opwaartse winstzone; die als koop lezen wás de bug).
+    deeper = ["1.272","1.414","1.618"]
     zone_level = None
     depth = 0
     for i, lbl in enumerate(order, start=1):
@@ -1276,13 +1482,12 @@ def _fib_buy_depth(last, fib):
         if lvl is not None and last <= lvl * 1.02:  # prijs op of onder dit level
             depth = i
             zone_level = lbl
-    # Nog dieper dan de swing low? (prijs onder 1.000) -> extra diepte via extensies
+    # Nog dieper dan de swing low? (prijs onder 1.000) -> extra diepte via de retr-voortzetting
     lvl_100 = retr.get("1.000")
     if lvl_100 is not None and last < lvl_100:
-        exts = fib.get("extensions", {})
         for j, lbl in enumerate(deeper, start=len(order)+1):
-            lvl = exts.get(lbl)
-            if lvl is not None and last <= lvl:
+            lvl = retr.get(lbl)                       # retr, niet exts
+            if lvl is not None and lvl < lvl_100 and last <= lvl:  # écht onder de low
                 depth = j; zone_level = lbl
     return depth, zone_level
 
@@ -1430,20 +1635,78 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                                  f"(koers {_dd['priceHigh1']} -> {_dd['priceHigh2']})")
             return "; ".join(delen) if delen else "geen details"
 
+        # ── OVERSOLD/OVERBOUGHT-CONTEXT (regels van de kunst) ────────────────
+        # Een divergentie die zich ontvouwt vanuit een momentum-EXTREEM is volgens de
+        # leer (Murphy, Elder) aanzienlijk betrouwbaarder dan dezelfde figuur ergens in
+        # het midden van de range: bij RSI 25 -> 34 droogt echte capitulatie op, bij
+        # RSI 48 -> 52 is het ruis. We meten op de RSI-divergentie zelf en eisen dat
+        # MINSTENS EEN van de twee bodems (resp. toppen) in de extreemzone lag -- niet
+        # allebei, want de tweede bodem hoort per definitie hoger te liggen (dat IS de
+        # divergentie). Levert +1 gewicht, dus max 5 in plaats van 4.
+        _rsi_div = divergence.get("rsi") or {}
+        _oversold_ctx = (_rsi_div.get("type") == "bullish" and
+                         min(_rsi_div.get("indLow1", 99), _rsi_div.get("indLow2", 99)) <= 30)
+        _overbought_ctx = (_rsi_div.get("type") == "bearish" and
+                           max(_rsi_div.get("indHigh1", 0), _rsi_div.get("indHigh2", 0)) >= 70)
+        divergence["oversoldContext"] = bool(_oversold_ctx)
+        divergence["overboughtContext"] = bool(_overbought_ctx)
+
         if divergence["bullish"]:
-            _dw = 4 if divergence["bullishConfirmed"] else 3
+            _dw = (4 if divergence["bullishConfirmed"] else 3) + (1 if _oversold_ctx else 0)
             signals.append({"type":"BUY","cat":"DIV","tf":"1W","weight":_dw,"icon":"🔀",
-                "title":"Bullish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bullishConfirmed"] else ""),
+                "title":"Bullish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bullishConfirmed"] else "")
+                        + (" · uit oversold" if _oversold_ctx else ""),
                 "detail":"Koers zet een lagere bodem terwijl de indicator een hogere bodem maakt "
                          "— verzwakkende verkoopdruk. Gemeten: " + _div_bron(divergence) +
+                         (". De RSI stond daarbij in de oversold-zone (<=30) — volgens de leer maakt "
+                          "dat de divergentie betrouwbaarder, vandaar extra gewicht" if _oversold_ctx else "") +
                          ". Telt mee als koopsignaal, maar is op zichzelf geen koopbevel."})
         if divergence["bearish"]:
-            _dw = 4 if divergence["bearishConfirmed"] else 3
+            _dw = (4 if divergence["bearishConfirmed"] else 3) + (1 if _overbought_ctx else 0)
             signals.append({"type":"SELL","cat":"DIV","tf":"1W","weight":_dw,"icon":"🔀",
-                "title":"Bearish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bearishConfirmed"] else ""),
+                "title":"Bearish divergentie (weekly)" + (" ⭐ bevestigd" if divergence["bearishConfirmed"] else "")
+                        + (" · uit overbought" if _overbought_ctx else ""),
                 "detail":"Koers zet een hogere top terwijl de indicator een lagere top maakt "
                          "— verzwakkend koopmomentum. Gemeten: " + _div_bron(divergence) +
+                         (". De RSI stond daarbij in de overbought-zone (>=70) — volgens de leer maakt "
+                          "dat de divergentie betrouwbaarder, vandaar extra gewicht" if _overbought_ctx else "") +
                          ". Telt mee als verkoopsignaal, maar is op zichzelf geen verkoopbevel."})
+
+    # ── DUBBELE BODEM (W-patroon), weekly ────────────────────────────────────
+    # Bewust weekly, net als de divergentie: op dagbasis levert dit patroon vooral
+    # ruis op. 'Vormend' is een WAARNEMING met gewicht 0 -- een dubbele bodem die
+    # zijn nek nog niet brak is geen dubbele bodem, dat is de klassieke regel.
+    # Pas de UITBRAAK boven de nek is bevestiging, en die telt licht mee als koop:
+    # precies het soort onafhankelijke omkeerbevestiging dat een koop ná een val
+    # verdient (het fib-niveau waar de koers naartoe viel is dat nooit).
+    double_bottom = None
+    if weekly is not None and len(weekly) >= 30:
+        double_bottom = detect_double_bottom(
+            weekly["Close"], weekly["Volume"] if "Volume" in weekly.columns else None,
+            left=4, right=4, max_lookback=40)
+    if double_bottom:
+        _db_vol = double_bottom.get("volumeDroogtOp")
+        _db_voltxt = ("" if _db_vol is None else
+                      (" Volume nam af op de tweede bodem — verkopers raken op, "
+                       "zoals het hoort bij dit patroon." if _db_vol else
+                       " Let op: het volume nam NIET af op de tweede bodem — "
+                       "zwakker exemplaar dan het boekje voorschrijft."))
+        _db_basis = (f"Bodems ${double_bottom['bodem1']} en ${double_bottom['bodem2']} "
+                     f"({double_bottom['barsApart']} weken uit elkaar), nek ${double_bottom['nek']}, "
+                     f"patroonhoogte {double_bottom['diepte']}%.")
+        if double_bottom["status"] == "bevestigd":
+            signals.append({"type":"BUY","cat":"PATROON","tf":"1W","weight":3,"icon":"〽️",
+                "title":"Dubbele bodem BEVESTIGD (weekly)",
+                "detail":f"Klassiek W-patroon: {_db_basis} De koers sloot boven de nek — "
+                         f"dat is de bevestiging. Klassiek koersdoel ${double_bottom['doel']} "
+                         f"(nek + patroonhoogte).{_db_voltxt}"})
+        else:
+            signals.append({"type":"WATCH","cat":"PATROON","tf":"1W","weight":0,"icon":"〽️",
+                "title":"Dubbele bodem in de maak (weekly)",
+                "detail":f"Mogelijk W-patroon: {_db_basis} Nog NIET bevestigd — daarvoor moet de "
+                         f"koers boven de nek ${double_bottom['nek']} sluiten "
+                         f"({double_bottom['pctNaarNek']}% hoger). Tot die uitbraak is dit een "
+                         f"waarneming, geen koopsignaal: telt met gewicht 0.{_db_voltxt}"})
 
     # Volume met NaN-guard
     vol_avg20 = vol_d.rolling(20).mean()
@@ -1567,6 +1830,41 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                     "detail":"De On-Balance Volume daalt terwijl de koers stijgt: de stijging wordt "
                              "gedragen door steeds minder volume. Dat kan wijzen op uitholling. "
                              "Waarneming, geen verkoopsignaal."})
+
+    # ── BOLLINGER SQUEEZE ─────────────────────────────────────────────────────
+    # Strakke banden = lage volatiliteit = vaak de stilte voor een uitbraak. Puur
+    # observerend, want de squeeze is RICHTINGLOOS. Wordt pas bruikbaar in
+    # combinatie: een squeeze naast een stijgende OBV of een oversold-stand kan een
+    # naderende momentum-shift bevestigen -- precies het duwtje bij twijfel. We
+    # noemen daarom de OBV-richting mee als die bekend is.
+    squeeze_state = {"known": False, "pct": None, "squeeze": False}
+    if len(close_d) >= 60:
+        _sq = bollinger_squeeze(close_d, 20)
+        if _sq is not None:
+            squeeze_state = {"known": True, "pct": _sq["pct"],
+                             "squeeze": _sq["squeeze"], "ratio": _sq["ratio"]}
+            if _sq["squeeze"]:
+                _obv_richting = obv_state.get("trend")
+                if _obv_richting == "stijgend":
+                    _samen = (" De OBV stijgt ondertussen -- als de uitbraak omhoog is, "
+                              "geeft dat volumesteun. Let op, wacht niet te lang met beslissen.")
+                elif _obv_richting == "dalend":
+                    _samen = (" De OBV daalt ondertussen -- dat trekt eerder naar een uitbraak "
+                              "omlaag. Voorzichtig.")
+                else:
+                    _samen = (" Richting nog onbepaald: wacht op de uitbraak voor je handelt.")
+                alerts.append({"type":"WATCH","cat":"SQUEEZE","tf":"1D","icon":"\U0001F5DC",
+                    "title":f"Bollinger-squeeze: banden strak (onderste {_sq['pct']:.0f}% van ~half jaar)",
+                    "detail":("De Bollinger-banden staan opvallend strak: de volatiliteit is laag "
+                              "vergeleken met de afgelopen maanden. Dat gaat vaak vooraf aan een "
+                              "grote beweging, maar zegt niet welke kant op." + _samen +
+                              " Waarneming, geen koop- of verkoopsignaal.")})
+            elif _sq["expansie"]:
+                alerts.append({"type":"WATCH","cat":"SQUEEZE","tf":"1D","icon":"\U0001F5DC",
+                    "title":f"Bollinger-expansie: banden wijd (bovenste {100-_sq['pct']:.0f}%)",
+                    "detail":("De banden staan juist heel wijd: de beweging is al gaande en de "
+                              "volatiliteit is hoog. Een squeeze zou nu meer zeggen dan deze "
+                              "expansie. Waarneming, geen signaal.")})
 
     # Laatste waarden met guards
     last_rsi_d  = safe_last(rsi_d, 50.0)
@@ -2134,19 +2432,21 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                     "detail":f"Prijs ${last:.2f} ligt voorbij de 1.818-extensie (${e1818:.2f}). "
                              "Ver in de winstzone; overweeg deels winst te nemen."})
                 tp_fired = True
+            elif last >= e1618:
+                # Rubens regel: vanaf 1.618 = VERKOOP (greed onderdrukken). De greed-veto
+                # forceert het oordeel al naar verkoop; deze kaart beschrijft dat consistent.
+                signals.append({"type":"SELL","cat":"FIB","tf":"TP","weight":5,"icon":"🎯",
+                    "title":"Bij/voorbij 1.618 TP-zone ⭐⭐ (winst nemen)",
+                    "detail":f"Prijs ${last:.2f} ligt op/voorbij de 1.618-extensie (${e1618:.2f}) — "
+                             "kern-winstzone. Vanaf hier geldt verkoop (be fearful when greedy)."})
+                tp_fired = True
             elif last >= e1618 * 0.97:
-                # Zone [0.97*1.618, 1.818): CAUTION. Bewust NET VOOR de 1.618 al, niet
-                # pas erop -- tegen de tijd dat je exact op de kern-winstzone zit ben je
-                # al laat. 3% eronder waarschuwt je terwijl je de zone nadert. Kwaliteit
-                # breekt hier vaak dwars doorheen (GOOG verdubbelde na 1.618), dus
-                # waarschuwing, geen verkoop.
-                _bijna = last < e1618
+                # Zone [0.97*1.618, 1.618): NADERT de kern-winstzone -> waarschuwing, net
+                # vóór 1.618 zodat je niet te laat bent. Pas ÓP 1.618 kantelt het naar verkoop.
                 signals.append({"type":"CAUTION","cat":"FIB","tf":"TP","weight":0,"icon":"⚠️",
-                    "title":("Nadert 1.618 TP-zone — overextended" if _bijna
-                             else "Bij/voorbij 1.618 TP-zone — overextended"),
-                    "detail":f"Prijs ${last:.2f} ligt {'vlak onder' if _bijna else 'op/voorbij'} de "
-                             f"1.618-extensie (${e1618:.2f}). Kern-winstzone; kwaliteitsaandelen breken "
-                             "hier vaak doorheen. Voorzichtig (overextended), nog geen automatisch verkoopsignaal."})
+                    "title":"Nadert 1.618 TP-zone — overextended",
+                    "detail":f"Prijs ${last:.2f} ligt vlak onder de 1.618-extensie (${e1618:.2f}). "
+                             "Kern-winstzone in zicht; vanaf 1.618 geldt verkoop. Voorzichtig (overextended)."})
                 tp_fired = True
             else:
                 # Onder 0.97*1.618 (nog geen CAUTION) maar mogelijk in een lagere
@@ -2424,7 +2724,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # en zone (fib) samen dezelfde kant op?". Zo leest een trader een chart.
     m_state, m_det = _monthly_state(monthly)
     w_turn = _weekly_turn(weekly)
-    fib_depth, fib_zone = _fib_buy_depth(last, fib)
+    fib_depth, fib_zone = _fib_buy_depth(last, fib, long_high)
     support_count, support_flags = _support_confluence(last, daily, weekly, m_state)
     confl = {"monthlyState": m_state, "weeklyBullTurn": w_turn.get("bullTurn"),
              "weeklyBearTurn": w_turn.get("bearTurn"), "fibBuyDepth": fib_depth, "fibZone": fib_zone,
@@ -2472,8 +2772,20 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                 reasons_c.append("Monthly licht bearish met keer-tekenen - vroege instap")
         # ── 3. VERKOOP-CONFLUENCE: weekly bearish draai + daily downtrend ──
         elif w_turn.get("bearTurn") and net < 0:
-            overall = "STERK VERKOOP" if (m_state in ("light_bear", "strong_bear") and net <= -4) else "VERKOOP"
-            reasons_c.append("Confluence VERKOOP: weekly bearish draai + daily downtrend")
+            # ── PULLBACK-GUARD (be greedy when fearful) ──────────────────────
+            # Een weekly terugval BINNEN een opgaande maandtrend is een pullback,
+            # geen omslag. Zonder deze guard riep het systeem VERKOOP op een aandeel
+            # met een bullish maandtrend en weekly RSI 18 -- dus verkopen precies op
+            # het moment van maximale angst, het omgekeerde van het principe.
+            # Geen koop (de draai moet nog komen), maar ook geen verkoop: wachten.
+            if m_state == "bull" and w_turn.get("oversold"):
+                overall = "NEUTRAAL"
+                reasons_c.append(
+                    "Weekly terugval binnen een opgaande maandtrend + weekly oversold - "
+                    "pullback, geen omslag: geen verkoop (greedy when fearful), wachten op de draai.")
+            else:
+                overall = "STERK VERKOOP" if (m_state in ("light_bear", "strong_bear") and net <= -4) else "VERKOOP"
+                reasons_c.append("Confluence VERKOOP: weekly bearish draai + daily downtrend")
         # ── 4. Geen confluence -> geen 'sterk', laat netto meespelen maar getemperd ──
         else:
             # ⚠ ASYMMETRIE-FIX. De temper-regel wiste ELK sterk koopsignaal uit: STERK KOOP
@@ -2507,32 +2819,23 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             overall = "LICHT VERKOOP"
         conflict_note = (conflict_note + " " if conflict_note else "") + ("Overextensie: " + ", ".join(overext_flags) + " - rijp voor terugval.")
 
-    # ── 6. GETRAPTE FIB-KANTELING: de TP-zones kantelen de overall ────────────────
-    # De extensie-zones zijn duidelijke take-profit-niveaus:
-    #   1.618 -> CAUTION (overextended). Een waarschuwing, geen verkoop-trigger.
-    #   2.000 -> VERKOOP. Hier loopt het hoog; winst nemen.
-    #   2.618 -> STERK VERKOOP. Uitzonderlijk ver.
+    # ── 6. FEAR/GREED-KANTELING: de winstzone kantelt de overall ──────────────────
+    # Rubens principe: "be fearful when greedy, greedy when fearful". De winstzone IS
+    # de greed-zone, dus daar wordt koop onderdrukt en winst genomen. De koers-POSITIE
+    # t.o.v. de extensie bepaalt het oordeel ALTIJD -- geen bearish bevestiging vereist.
+    # Bewust strenger dan "laat gezonde doorbraken lopen": liever soms vroeg uit dan
+    # koop tonen op een top. Actuele zones (Rubens afspraak):
+    #   nadert 1.272 / 1.414 -> CAUTION (overextended)  (geen koop, wachten)
+    #   1.618 / 1.818        -> VERKOOP                 (kern-winstzone; winst nemen)
+    #   >= 2.000             -> STERK VERKOOP           (diep in greed)
     #
-    # ⚠ ASYMMETRIE-FIX. Deze kanteling omzeilde eerder de confluence-eis volledig:
-    # een STERK KOOP zonder weekly draai werd getemperd naar KOOP (regel 4 hierboven),
-    # maar de fib-zones konden WEL ongehinderd STERK VERKOOP opleggen "ongeacht
-    # trendsignalen". Gevolg: STERK KOOP vuurde praktisch NOOIT terwijl STERK VERKOOP
-    # op ~20% van het universum stond. De strengheid gold maar één kant op.
+    # Historie, zodat niemand dit terugdraait: 1.618 was eerst CAUTION (w0) omdat
+    # kwaliteit er vaak dwars doorheen breekt (GOOG). Dat bleek te slap -- ASMI liep de
+    # zone in en bleef op KOOP staan. Sinds v7.8 is 1.618 verkoop.
     #
-    # Nu geldt dezelfde eis aan beide kanten: de 2.618-zone mag alleen STERK VERKOOP
-    # opleggen als er OOK bearish bevestiging is (weekly bearish draai of een bearish
-    # maandstand). Zonder die bevestiging wordt het VERKOOP -- nog steeds een duidelijk
-    # signaal, maar niet "sterk". Een aandeel dat ver in winst staat en gewoon dóórstijgt
-    # is niet hetzelfde als een aandeel dat ver in winst staat en kantelt.
-    # ⚠ ZONALE KANTELING (Rubens afspraak, optie A). De koers-POSITIE t.o.v. de
-    # extensie bepaalt het oordeel, ALTIJD -- geen bearish bevestiging vereist. Dit is
-    # bewust strenger dan de eerdere "laat gezonde doorbraken lopen"-regel: Ruben kiest
-    # ervoor consequent winst te nemen in de zones, ook als dat soms vroeg uitstappen
-    # betekent bij een aandeel dat doorstijgt. De zones (uit de zonale TP-signalen):
-    #   voorbij 1.618  -> CAUTION (overextended)
-    #   voorbij 1.818  -> LICHT VERKOOP
-    #   voorbij 2.000  -> VERKOOP
-    #   voorbij 2.618  -> STERK VERKOOP
+    # De kanteling gaat via _kantel_naar: alleen naar een STRENGER oordeel, nooit naar
+    # een milder. De zone overrulet dus een koopsignaal maar verzwakt geen bestaand,
+    # zwaarder verkoopsignaal.
     fib_tp_sigs = [s for s in signals if s.get("cat") == "FIB" and s.get("tf") == "TP"]
     has_4236 = any("4.236" in s.get("title", "") for s in fib_tp_sigs)
     has_3618 = any("3.618" in s.get("title", "") for s in fib_tp_sigs)
@@ -2552,25 +2855,64 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             overall = doel
             conflict_note = (conflict_note + " " if conflict_note else "") + note
 
-    # Rubens regel: ALLES vanaf de 2.0-extensie duidt sterk verkoop aan.
-    if has_4236:
+    # Fear/greed op de winstzone. De ZWAARTE komt uit _winstzone_state (puur prijs-vs-
+    # extensie) en NIET uit de has_XXXX-vlaggen: die komen van TP-kaarten die achter
+    # _opwaarts hangen en dus verdwijnen zodra de koers valt. Precies dat gat liet ASMI
+    # in een daling op koop staan -- en zou een aandeel diep in winst tijdens een val
+    # afvlakken naar 'verkoop' i.p.v. 'sterk verkoop'. De vlaggen leveren nu enkel nog
+    # de preciezere tekst; het oordeel hangt er niet meer van af.
+    #   >=2.000 -> STERK VERKOOP | 1.618/1.818 -> VERKOOP | nadert 1.272/1.414 -> CAUTION
+    _wz = _winstzone_state(last, fib, long_high)
+    _wz_lbl, _ = _winstzone_level(last, fib, long_high)
+    if _wz == "strong":
+        _extra = ("extreem, zelden bereikt" if _wz_lbl == "4.236" else
+                  "extreem ver in winst"    if _wz_lbl == "3.618" else
+                  "uitzonderlijk ver in winst" if _wz_lbl == "2.618" else
+                  "diep in winst")
         _kantel_naar("STERK VERKOOP",
-            "Prijs op/voorbij de 4.236-extensie (extreem, zelden bereikt) - sterk verkoop.")
-    elif has_3618:
-        _kantel_naar("STERK VERKOOP",
-            "Prijs op/voorbij de 3.618-extensie (extreem ver in winst) - sterk verkoop.")
-    elif has_2618:
-        _kantel_naar("STERK VERKOOP",
-            "Prijs op/voorbij de 2.618-extensie (uitzonderlijk ver in winst) - sterk verkoop.")
-    elif has_2000:
-        _kantel_naar("STERK VERKOOP",
-            "Prijs voorbij de 2.0-extensie (diep in winst) - sterk verkoop.")
-    elif has_1818:
-        _kantel_naar("LICHT VERKOOP",
-            "Prijs voorbij de 1.818-extensie (ver in winst) - licht verkoop.")
-    elif has_1618:
+            f"Prijs op/voorbij de {_wz_lbl}-extensie ({_extra}) - sterk verkoop.")
+    elif _wz == "sell":
+        _kantel_naar("VERKOOP",
+            f"Prijs op/voorbij de {_wz_lbl}-extensie (kern-winstzone) - be fearful when greedy: verkoop.")
+    elif _wz == "caution":
         _kantel_naar("CAUTION (overextended)",
-            "Prijs op/voorbij de 1.618-extensie (kern-winstzone) - voorzichtig (overextended).")
+            f"Prijs in/nabij de winstzone ({_wz_lbl}-extensie) - overextended: greed "
+            "onderdrukt, geen koop. Wachten tot de zone afrondt.")
+
+    # ── FALLING-KNIFE-GUARD ──────────────────────────────────────────────────
+    # Een weekly bounce in een structureel dalende trend is geen bodem. Zonder deze
+    # guard gaf een aandeel 58% onder zijn top, met dalende 200-MA en de koers
+    # eronder, STERK KOOP op een bounce van 6% ("weekly goudkruis + horizontale
+    # steun") -- precies het vallende mes dat je niet wil vangen. Alle voorwaarden
+    # moeten SAMEN gelden: maandtrend bearish, ver onder de eigen top, koers onder
+    # de 200-MA, en de 200-MA daalt nog. Bij echte bodemvorming vlakt de 200-MA af,
+    # dan grijpt deze guard niet en blijft een gevalideerde omkeer gewoon koop.
+    _ma200_dalend = False
+    try:
+        _m200 = ma200_d.dropna() if ma200_d is not None else None
+        if _m200 is not None and len(_m200) >= 25:
+            _ma200_dalend = float(_m200.iloc[-1]) < float(_m200.iloc[-21])
+    except Exception:
+        _ma200_dalend = False
+    _pct_onder_top = ((long_high - last) / long_high * 100.0) if long_high else 0.0
+    # Alleen een VOLLEDIG bullish maandtrend vrijwaart. Bewust niet "monthly is niet
+    # bearish": bij een dode kat draait de maand-MACD juist omhoog tijdens de bounce --
+    # dat is het symptoom, niet het tegenbewijs. De structuur (ver onder de top, onder
+    # een dalende 200-MA) beslist.
+    if (m_state != "bull" and _pct_onder_top >= 25.0
+            and last_ma200 is not None and last < last_ma200 and _ma200_dalend):
+        _kantel_naar("NEUTRAAL",
+            f"Structurele downtrend nog niet gebroken (200-MA daalt, koers eronder, "
+            f"{_pct_onder_top:.0f}% onder de top) - bounce, geen bodem: geen koop, "
+            "wachten op bevestigde omkeer.")
+
+    # Herstel diep onder de eigen top mag KOOP zijn, maar niet STERK KOOP: de structuur
+    # is nog zwaar beschadigd (>=40% onder de top). "Sterk" hoort hoge overtuiging te
+    # betekenen; een aandeel dat net zijn 200-MA heroverde na een halvering is een
+    # herstelpositie, geen overtuigingskoop.
+    if _pct_onder_top >= 40.0:
+        _kantel_naar("KOOP", f"Herstel maar nog {_pct_onder_top:.0f}% onder de eigen top - "
+                             "geen 'sterke' koop: structuur nog beschadigd.")
 
     # ── AFTOPPING IN DE WINSTZONE (1.272 / 1.414): STERK KOOP -> KOOP ──────────────
     # Rubens keuze: zodra de koers in winstgebied zit (voorbij 1.272 of 1.414), is
@@ -2601,7 +2943,12 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # winstzone: een 'ultiem bodem-koopmoment' terwijl je 20-33% boven de vorige top
     # staat is logisch tegenstrijdig -- je koopt geen bodem in winstgebied. Zo blijft
     # ook de STERK KOOP -> KOOP aftopping overeind.
-    _te_ver_voor_ultimate = has_1818 or has_2000 or has_2618 or has_winstzone
+    # Elk TP-niveau blokkeert de ultimate-buy. De vlaggen dekken ook 'net ONDER een
+    # niveau' (kaarten vuren op 4% nabijheid) waar _wz nog None is; _wz dekt omgekeerd
+    # de daling waarin de kaarten niet vuren. Samen sluitend. 1.618/3.618/4.236 stonden
+    # hier eerder NIET in -- daar kon een ultiem koopsignaal dus nog doorheen glippen.
+    _te_ver_voor_ultimate = ((_wz is not None) or has_winstzone or has_1618
+                             or has_1818 or has_2000 or has_2618 or has_3618 or has_4236)
     if ema_ultimate_buy and not is_bagger and not _te_ver_voor_ultimate:
         overall = "STERK KOOP"
         conflict_note = (conflict_note + " " if conflict_note else "") + \
@@ -2627,7 +2974,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         _omslag = omslag_signalen
     except NameError:
         _omslag = 0   # strong_bear-tak zette omslag_signalen niet
-    if (m_state != "strong_bear" and _omslag >= 3
+    if (m_state != "strong_bear" and _omslag >= 3 and _wz is None
             and ("VERKOOP" in overall) and overall != "STERK VERKOOP"):
         _bewijs = []
         if w_turn.get("bullTurn") or w_turn.get("emaCrossUp"): _bewijs.append("weekly 8/21-EMA draait op")
@@ -2664,7 +3011,8 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "macdSigW": round(last_macd_ws, 4) if last_macd_ws is not None else None,
             "bollUpper": round(last_bb_u, 2), "bollLower": round(last_bb_l, 2),
             "volRatio": round(vol_ratio, 2), "volKnown": vol_known, "highVolume": high_volume, "volNote": vol_note.strip(),
-            "volTrend": vol_trend, "obv": obv_state,
+            "volTrend": vol_trend, "obv": obv_state, "squeeze": squeeze_state,
+            "doubleBottom": double_bottom,
             "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
             "divergence": divergence,
         },
@@ -4399,7 +4747,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "7.6-pegcurve-versnelling",
+            "version": "7.8-fear-greed",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
