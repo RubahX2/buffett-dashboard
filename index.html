@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "7.8";
+const UI_VERSION = "8.0";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -1391,6 +1391,46 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                 ⚠ {data.conflictNote}
               </div>
             )}
+            {/* HOLD — verse instorting: waaróm staat dit op hold, en wat moet er gebeuren */}
+            {(()=>{
+              const inst = (data?.indicators||{}).instorting;
+              if(!inst) return null;
+              const f = inst.fase;
+              const stap = (n,titel,tekst)=>{
+                const klaar = f>n, hier = f===n;
+                return (
+                  <div key={n} style={{display:"flex",gap:7,marginTop:4,
+                    opacity: klaar?0.55:1}}>
+                    <span style={{color: klaar?C.green:(hier?"#7dd3fc":C.textDim),
+                      fontWeight:700,minWidth:14}}>{klaar?"✓":(hier?"▸":"○")}</span>
+                    <span style={{color: hier?"#e0f2fe":C.textDim}}>
+                      <b style={{color: hier?"#7dd3fc":C.textDim}}>{titel}</b> — {tekst}
+                    </span>
+                  </div>
+                );
+              };
+              return (
+                <div style={{marginTop:6,padding:"8px 10px",background:"#0a1a2e",
+                  border:"1px solid #0369a1",borderRadius:5,fontSize:10,lineHeight:1.5}}>
+                  <div style={{color:"#7dd3fc",fontWeight:700,fontSize:11,marginBottom:3}}>
+                    🪂 HOLD — verse instorting · fase {f} van 3
+                  </div>
+                  <div style={{color:C.textDim,marginBottom:5}}>
+                    Val van <b style={{color:"#e0f2fe"}}>{inst.valPct}%</b> vanaf {inst.top} naar {inst.bodem} in {inst.dagenVal} beursdagen,
+                    met een bearish weekly MACD. Bij zo'n scherpe val is kopen gokken — daarom
+                    geen koopsignaal tot het herstel zich bewijst.
+                  </div>
+                  {stap(1,"Fase 1 · HOLD","geen koop, de val is nog vers")}
+                  {stap(2,"Fase 2 · licht koop","twee slotkoersen boven de daily 21-EMA")}
+                  {stap(3,"Fase 3 · koop vrij","bevestigde 8/21-kruising (twee groene candles) + bullish monthly MACD")}
+                  <div style={{color:C.textDim,marginTop:6,fontSize:9,fontStyle:"italic"}}>
+                    HOLD is een plafond op kopen, geen verkoopsignaal — een zwaarder
+                    verkoopoordeel gaat er gewoon doorheen. Vervalt vanzelf zodra fase 3
+                    bereikt is of de koers terug is bij de oude top.
+                  </div>
+                </div>
+              );
+            })()}
             {/* Omslag-signaal (positief: verkoopdruk droogt op) */}
             {data?.reversalNote&&(
               <div style={{marginTop:6,padding:"5px 8px",background:"#0a1e2e",border:`1px solid ${C.accent}`,borderRadius:5,fontSize:10,color:"#7dd3fc"}}>
