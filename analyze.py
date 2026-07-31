@@ -258,6 +258,13 @@ CYCLICAL_TICKERS = {"MU", "SNDK", "ADM"}
 #
 # Alle waarden geverifieerd tegen Rubens TradingView-charts.
 FIB_OVERRIDES = {
+    # ASMI: Ruben las de swing van de chart. Extensie op de VORIGE cyclus: top 751.2
+    # (de piek vóór de bodem) -> bodem 332.4. Log-geprojecteerd geeft dat 1.272 = 937.8
+    # en 1.414 = 1053 -- exact de zone waar de piek van 1094 in viel. Automatisch koos
+    # het model een andere (diepere) bodem, waardoor alle extensies ONDER de koers
+    # landden en de plausibiliteitstoets de hele extensieset verwierp. Gevolg: geen
+    # TP-zones, dus geen "terugval uit TP" en geen winstzone-onderdrukking bij ASMI.
+    "ASMI": {"ath": 751.20, "atl": 332.40, "recent_hi": 1094.00},
     # MU: extensie op de lange swing ($1.59 -> $97, 1.618 = $1231). Retracement op de
     # 2022/23 bear-bodem ($48.49 -> $1254.81) i.p.v. de ATL, zodat de golden pocket een
     # realistische instap is ($127-168) i.p.v. de onbereikbare $11-20 vanaf de ATL.
@@ -2311,6 +2318,12 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                 "title":f"RSI weekly nadert overbought ({last_rsi_w:.0f})"})
 
     # ── 3. MACD DAILY (robuuste crossover) ──
+    # TOESTAND, geen momentopname. Een bullish kruising BLIJFT bullish tot hij terug
+    # onder kruist -- net zoals overbought overbought blijft tot de RSI de zone verlaat.
+    # Stond dit als losse gebeurtenis, dan verdween het koopsignaal na één dag terwijl
+    # de overbought-verkoopsignalen weken bleven staan. Die asymmetrie kantelde de
+    # balans richting verkoop zodra een aandeel hard was gestegen (MSFT +15% na cijfers:
+    # 16 verkoop, 0 koop). De VERSE kruising telt zwaarder dan de doorlopende stand.
     if crossed_up(macd_l, macd_s):
         signals.append({"type":"BUY","cat":"MACD","tf":"1D","weight":2,"icon":"🟢",
             "title":f"MACD bullish crossover (daily){vol_note}",
@@ -2319,20 +2332,46 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         signals.append({"type":"SELL","cat":"MACD","tf":"1D","weight":2,"icon":"🔴",
             "title":f"MACD bearish crossover (daily){vol_note}",
             "detail":f"MACD {last_macd_l:.3f} kruist onder signaal {last_macd_s:.3f}."})
+    elif last_macd_l is not None and last_macd_s is not None:
+        _d_bull = last_macd_l > last_macd_s
+        signals.append({"type":"BUY" if _d_bull else "SELL","cat":"MACD","tf":"1D",
+            "weight":1,"icon":"🟢" if _d_bull else "🔴",
+            "title":f"MACD daily {'bullish' if _d_bull else 'bearish'} (stand)",
+            "detail":f"MACD {last_macd_l:.3f} {'boven' if _d_bull else 'onder'} signaal "
+                     f"{last_macd_s:.3f} — blijft gelden tot de tegenkruising. "
+                     "Lichter dan de kruising zelf (1 i.p.v. 2)."})
 
     # ── 4. MACD WEEKLY — crossover alleen vrijdag (volledige candle); de STAND
     #      telt elke dag als fallback, anders verschuiven de oordelen elke vrijdag ──
     _w_macd_geplaatst = False
-    if has_weekly and IS_FRIDAY:
-        if crossed_up(macd_wl, macd_ws):
-            signals.append({"type":"BUY","cat":"MACD","tf":"1W","weight":4,"icon":"🟢",
-                "title":"MACD bullish crossover (WEEKLY) ⭐",
-                "detail":f"Weekly MACD {last_macd_wl:.3f} kruist boven {last_macd_ws:.3f}. Krachtig."})
-            _w_macd_geplaatst = True
-        elif crossed_down(macd_wl, macd_ws):
-            signals.append({"type":"SELL","cat":"MACD","tf":"1W","weight":4,"icon":"🔴",
-                "title":"MACD bearish crossover (WEEKLY) ⭐",
-                "detail":f"Weekly MACD {last_macd_wl:.3f} kruist onder {last_macd_ws:.3f}. Krachtig."})
+    if has_weekly and last_macd_wl is not None and last_macd_ws is not None:
+        _vers_up = crossed_up(macd_wl, macd_ws)
+        _vers_down = crossed_down(macd_wl, macd_ws)
+        if _vers_up or _vers_down:
+            # ⚠ Dit was een BLINDE VLEK. Een verse kruising is per definitie NIPT:
+            # lijn en signaal liggen op dat moment vlak bij elkaar. De 'stand'-fallback
+            # hieronder eist juist een DUIDELIJK verschil (>20% van de 26-weeks uitslag),
+            # dus precies de verse kruising viel tussen wal en schip: op vrijdag
+            # geblokkeerd door de datumpoort, de rest van de week weggefilterd als
+            # "nog nipt". Gevolg: het belangrijkste weekly-signaal was zes dagen per
+            # week onzichtbaar -- en juist na een koersschok (MSFT +15% na cijfers)
+            # is dat het moment waarop je het wilt zien.
+            # Nu altijd zichtbaar; de dag bepaalt alleen het GEWICHT.
+            _w = 4 if IS_FRIDAY else 3
+            _bev = ("De weekcandle is af — bevestigde kruising."
+                    if IS_FRIDAY else
+                    "De weekcandle loopt nog, dus voorlopig: dit kan tot vrijdag "
+                    "omdraaien. Telt daarom 3 i.p.v. 4.")
+            if _vers_up:
+                signals.append({"type":"BUY","cat":"MACD","tf":"1W","weight":_w,"icon":"🟢",
+                    "title":"MACD bullish crossover (WEEKLY) ⭐" + ("" if IS_FRIDAY else " (voorlopig)"),
+                    "detail":f"Weekly MACD {last_macd_wl:.3f} kruist boven {last_macd_ws:.3f}. "
+                             f"Krachtig signaal op de hogere timeframe. {_bev}"})
+            else:
+                signals.append({"type":"SELL","cat":"MACD","tf":"1W","weight":_w,"icon":"🔴",
+                    "title":"MACD bearish crossover (WEEKLY) ⭐" + ("" if IS_FRIDAY else " (voorlopig)"),
+                    "detail":f"Weekly MACD {last_macd_wl:.3f} kruist onder {last_macd_ws:.3f}. "
+                             f"Krachtig signaal op de hogere timeframe. {_bev}"})
             _w_macd_geplaatst = True
     if has_weekly and not _w_macd_geplaatst and last_macd_wl is not None and last_macd_ws is not None:
         # Buiten vrijdag is de weekcandle nog niet af, dus een VERSE kruising kan nog
@@ -2341,12 +2380,12 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         # de laatste dagen van de week, en zou zes dagen per week onzichtbaar zijn in de
         # balans. Zo'n bevestigde stand telt daarom mee met een lichter gewicht (2 i.p.v.
         # 4); is de stand nog nipt, dan blijft het een informatieve alert.
-        _mw_hist = (macd_wl - macd_ws).dropna()
-        _mw_schaal = float(_mw_hist.abs().tail(26).max()) if len(_mw_hist) >= 26 else None
-        _mw_duidelijk = (_mw_schaal is not None and _mw_schaal > 0
-                         and abs(last_macd_wl - last_macd_ws) > _mw_schaal * 0.20)
+        # De oude "duidelijk"-drempel (>20% van de 26-weeks uitslag) is WEG. Die filterde
+        # juist de verse kruising weg -- gemeten: 55% van de verse kruisingen bij normale
+        # volatiliteit. En hij botst met de regel: bullish blijft bullish tot de
+        # tegenkruising, hoe nipt de stand ook is.
         direction = "bullish" if last_macd_wl > last_macd_ws else "bearish"
-        if _mw_duidelijk:
+        if True:
             signals.append({
                 "type": "BUY" if direction == "bullish" else "SELL",
                 "cat":"MACD","tf":"1W","weight":2,
@@ -2370,17 +2409,37 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
         signals.append({"type":"SELL","cat":"EMA","tf":"1D","weight":3,"icon":"🔀",
             "title":f"8 EMA kruist onder 21 EMA (daily){vol_note}",
             "detail":f"EMA8 ${last_ema8d:.2f} | EMA21 ${last_ema21d:.2f} — bearish momentum."})
+    elif last_ema8d is not None and last_ema21d is not None:
+        _e_bull = last_ema8d > last_ema21d
+        signals.append({"type":"BUY" if _e_bull else "SELL","cat":"EMA","tf":"1D",
+            "weight":2,"icon":"🔀",
+            "title":f"8 EMA {'boven' if _e_bull else 'onder'} 21 EMA (daily, stand)",
+            "detail":f"EMA8 ${last_ema8d:.2f} | EMA21 ${last_ema21d:.2f} — "
+                     f"{'bullish' if _e_bull else 'bearish'} zolang de stand houdt. "
+                     "Lichter dan de kruising zelf (2 i.p.v. 3)."})
 
     # ── 6. EMA 8/21 WEEKLY — alleen vrijdag ──
-    if has_weekly and IS_FRIDAY:
+    # Zelfde blinde vlek als bij de weekly MACD: een kruising die alleen op vrijdag
+    # zichtbaar is, mist precies de week waarin hij ontstaat. Nu altijd zichtbaar,
+    # met een lichter gewicht zolang de weekcandle nog loopt.
+    if has_weekly:
+        _we_w = 4 if IS_FRIDAY else 3
+        _we_bev = ("" if IS_FRIDAY else " (voorlopig — weekcandle loopt nog)")
         if crossed_up(ema8_w, ema21_w):
-            signals.append({"type":"BUY","cat":"EMA","tf":"1W","weight":4,"icon":"🔀",
-                "title":"8 EMA kruist boven 21 EMA (WEEKLY) ⭐",
+            signals.append({"type":"BUY","cat":"EMA","tf":"1W","weight":_we_w,"icon":"🔀",
+                "title":"8 EMA kruist boven 21 EMA (WEEKLY) ⭐" + _we_bev,
                 "detail":f"EMA8 ${last_ema8w:.2f} | EMA21 ${last_ema21w:.2f} — krachtig bullish."})
         elif crossed_down(ema8_w, ema21_w):
-            signals.append({"type":"SELL","cat":"EMA","tf":"1W","weight":4,"icon":"🔀",
-                "title":"8 EMA kruist onder 21 EMA (WEEKLY) ⭐",
+            signals.append({"type":"SELL","cat":"EMA","tf":"1W","weight":_we_w,"icon":"🔀",
+                "title":"8 EMA kruist onder 21 EMA (WEEKLY) ⭐" + _we_bev,
                 "detail":f"EMA8 ${last_ema8w:.2f} | EMA21 ${last_ema21w:.2f} — krachtig bearish."})
+        elif last_ema8w is not None and last_ema21w is not None:
+            _ew_bull = last_ema8w > last_ema21w
+            signals.append({"type":"BUY" if _ew_bull else "SELL","cat":"EMA","tf":"1W",
+                "weight":1,"icon":"🔀",   # licht: overlapt met "Uptrend (WEEKLY)"
+                "title":f"8 EMA {'boven' if _ew_bull else 'onder'} 21 EMA (weekly, stand)",
+                "detail":f"EMA8 ${last_ema8w:.2f} | EMA21 ${last_ema21w:.2f} — houdt aan "
+                         "tot de tegenkruising."})
 
     # ── 7. GOLDEN / DEATH CROSS — alleen als MA200 bestaat ──
     if last_ma50 is not None and last_ma200 is not None:
@@ -2392,6 +2451,14 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             signals.append({"type":"SELL","cat":"MA","tf":"1D","weight":4,"icon":"💀",
                 "title":"Death Cross (MA50 onder MA200)",
                 "detail":"Klassiek bear-marktsignaal."})
+        else:
+            _m_bull = last_ma50 > last_ma200
+            signals.append({"type":"BUY" if _m_bull else "SELL","cat":"MA","tf":"1D",
+                "weight":1,"icon":"✨" if _m_bull else "💀",   # licht: overlapt met de trendscores
+                "title":f"MA50 {'boven' if _m_bull else 'onder'} MA200 (structuur)",
+                "detail":f"MA50 ${last_ma50:.2f} vs MA200 ${last_ma200:.2f} — de "
+                         f"{'bull' if _m_bull else 'bear'}structuur houdt aan tot de "
+                         "tegenkruising. Lichter dan het kruismoment zelf (2 i.p.v. 4)."})
     else:
         alerts.append({"type":"INFO","cat":"MA","tf":"1D","icon":"ℹ️",
             "title":"MA50/MA200 niet beschikbaar (te weinig historie)",
@@ -3310,6 +3377,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "volRatio": round(vol_ratio, 2), "volKnown": vol_known, "highVolume": high_volume, "volNote": vol_note.strip(),
             "volTrend": vol_trend, "obv": obv_state, "squeeze": squeeze_state,
             "doubleBottom": double_bottom, "doubleTop": double_top,
+            "instorting": _inst,
             "cijferStatus": _cijfers,
             "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
             "divergence": divergence,
@@ -4994,6 +5062,47 @@ def laad_earnings_cache():
     return {}
 
 
+def _haal_earnings_datums(sym):
+    """Rapportagedatums via yfinance. Geeft (laatste, volgende) als date-objecten.
+
+    yfinance wisselt tussen versies van API: de property `earnings_dates`, de methode
+    `get_earnings_dates(limit=...)` en de dict `calendar` bestaan naast elkaar en niet
+    allemaal in elke versie. Daarom drie ingangen achter elkaar in plaats van gokken
+    welke deze week werkt. Faalt alles, dan gooit deze functie -- de aanroeper vangt."""
+    t = yf.Ticker(sym)
+    df = None
+    try:
+        df = t.get_earnings_dates(limit=12)          # 1) expliciete methode
+    except Exception:
+        df = None
+    if df is None or len(df) == 0:
+        try:
+            df = t.earnings_dates                    # 2) property
+        except Exception:
+            df = None
+    if df is not None and len(df) > 0:
+        datums = sorted({d.date() for d in pd.to_datetime(df.index)})
+        verleden = [d for d in datums if d <= TODAY]
+        toekomst = [d for d in datums if d > TODAY]
+        return (verleden[-1] if verleden else None), (toekomst[0] if toekomst else None)
+
+    cal = t.calendar                                 # 3) calendar (alleen komende datum)
+    ed = None
+    if isinstance(cal, dict):
+        ed = cal.get("Earnings Date")
+    elif cal is not None and hasattr(cal, "loc"):
+        try:
+            ed = cal.loc["Earnings Date"].tolist()
+        except Exception:
+            ed = None
+    if ed:
+        if not isinstance(ed, (list, tuple)):
+            ed = [ed]
+        d0 = pd.to_datetime(ed[0]).date()
+        return (None, d0) if d0 > TODAY else (d0, None)
+    raise ValueError("geen rapportagedatums in earnings_dates of calendar")
+
+
 def ververs_earnings_cache(paren):
     """Haalt per aandeel de laatste en eerstvolgende rapportagedatum op.
 
@@ -5009,23 +5118,28 @@ def ververs_earnings_cache(paren):
         return cache
     nieuw = {"_datum": str(TODAY)}
     gelukt = 0
+    fouten = {}
     for naam, sym, _fallback in paren:
         vorige = cache.get(naam)
         try:
-            df = yf.Ticker(sym).earnings_dates
-            if df is None or len(df) == 0:
-                raise ValueError("leeg")
-            datums = sorted({d.date() for d in pd.to_datetime(df.index)})
-            verleden = [d for d in datums if d <= TODAY]
-            toekomst = [d for d in datums if d > TODAY]
-            nieuw[naam] = {"laatste": str(verleden[-1]) if verleden else None,
-                           "volgende": str(toekomst[0]) if toekomst else None}
+            laatste, volgende = _haal_earnings_datums(sym)
+            if laatste is None and volgende is None:
+                raise ValueError("beide datums leeg")
+            nieuw[naam] = {"laatste": str(laatste) if laatste else None,
+                           "volgende": str(volgende) if volgende else None}
             gelukt += 1
-        except Exception:
+        except Exception as e:
+            # Fouten worden GETELD, niet verzwegen. Bij 0/84 wil je kunnen zien
+            # waaróm -- een stille nul kost je een week raden.
+            sleutel = f"{type(e).__name__}: {str(e)[:90]}"
+            fouten[sleutel] = fouten.get(sleutel, 0) + 1
             if vorige:                      # oude datum is beter dan geen datum
                 nieuw[naam] = vorige
+        time.sleep(0.15)                    # Yahoo niet bestoken; ~13s over 84 tickers
     print(f"  Rapportagedatums: {gelukt}/{len(paren)} opgehaald "
           f"({len(nieuw) - 1} in cache)")
+    for sleutel, aantal in sorted(fouten.items(), key=lambda x: -x[1])[:3]:
+        print(f"    ⚠ {aantal}x {sleutel}")
     try:
         with open(EARNINGS_FILE, "w", encoding="utf-8") as f:
             json.dump(nieuw, f, indent=1, sort_keys=True)
@@ -5146,7 +5260,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "7.8-fear-greed",
+            "version": "8.0-weekly-cross",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
