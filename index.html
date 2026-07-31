@@ -142,6 +142,7 @@ function OverallBadge({ signal }) {
     "KOOP":         {bg:"#052e16",fg:"#86efac",bo:"#166534"},
     "LICHT KOOP":   {bg:"#052e16",fg:"#6ee7b7",bo:"#065f46"},
     "NEUTRAAL":     {bg:"#1e293b",fg:"#94a3b8",bo:"#334155"},
+    "HOLD":         {bg:"#1e2a3b",fg:"#7dd3fc",bo:"#0369a1"},
     "LICHT VERKOOP":{bg:"#3b0a0a",fg:"#fca5a5",bo:"#7f1d1d"},
     "VERKOOP":      {bg:"#450a0a",fg:"#f87171",bo:"#991b1b"},
     "STERK VERKOOP":{bg:"#450a0a",fg:"#ef4444",bo:"#dc2626"},
@@ -1985,6 +1986,7 @@ function App() {
         const map = {
           "STERK KOOP": 100, "KOOP": 90, "LICHT KOOP": 80,
           "STERK VERKOOP": 70, "VERKOOP": 60, "LICHT VERKOOP": 50,
+          "HOLD": 35,
           "CAUTION (overextended)": 40,
           "NEUTRAAL": 10,
         };
@@ -2220,7 +2222,7 @@ function App() {
 
               {/* Weekly changelog */}
               {verdictChanges&&verdictChanges.changes&&verdictChanges.changes.length>0&&(()=>{
-                const RANG=["STERK KOOP","KOOP","LICHT KOOP","NEUTRAAL","CAUTION (overextended)","LICHT VERKOOP","VERKOOP","STERK VERKOOP"];
+                const RANG=["STERK KOOP","KOOP","LICHT KOOP","NEUTRAAL","HOLD","CAUTION (overextended)","LICHT VERKOOP","VERKOOP","STERK VERKOOP"];
                 const richting=(c)=>RANG.indexOf(c.to)>RANG.indexOf(c.from)?C.red:C.teal;
                 return (
                   <div style={{background:C.panel2,border:`1px solid ${C.border}`,borderRadius:10,
@@ -2409,6 +2411,46 @@ function App() {
       {/* SIGNALEN VIEW */}
       {view==="signalen"&&(
         <div style={{padding:"14px 16px"}}>
+          {(()=>{
+            const cs = (t)=>(stocks[t]?.indicators||{}).cijferStatus;
+            const oud = TICKER_ORDER.filter(t=>cs(t)?.verouderd);
+            const komt = TICKER_ORDER.filter(t=>{
+              const d=cs(t); return d && !d.verouderd && d.dagenTotRapport!=null
+                                   && d.dagenTotRapport>=0 && d.dagenTotRapport<=7;
+            }).sort((a,b)=>cs(a).dagenTotRapport-cs(b).dagenTotRapport);
+            if(!oud.length && !komt.length) return null;
+            return (
+              <div style={{background:C.panel,border:`1px solid ${C.border}`,borderLeft:`3px solid ${C.orange}`,
+                borderRadius:8,padding:"11px 13px",marginBottom:14}}>
+                <div style={{color:C.orange,fontSize:12,fontWeight:700,marginBottom:6}}>
+                  📋 Kwartaalcijfers
+                </div>
+                {oud.length>0 && (
+                  <div style={{fontSize:11,lineHeight:1.6,color:C.textDim,marginBottom:komt.length?6:0}}>
+                    <b style={{color:C.text}}>Verouderd ({oud.length})</b> — er is gerapporteerd ná de
+                    laatste update van de fundamentals:<br/>
+                    {oud.map(t=>(
+                      <span key={t} onClick={()=>setSelected(t)}
+                        style={{color:C.accent,cursor:"pointer",marginRight:8,fontWeight:700}}>
+                        {t} <span style={{color:C.textDim,fontWeight:400}}>({cs(t).laatsteRapport})</span>
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {komt.length>0 && (
+                  <div style={{fontSize:11,lineHeight:1.6,color:C.textDim}}>
+                    <b style={{color:C.text}}>Rapporteert binnen 7 dagen ({komt.length})</b>:<br/>
+                    {komt.map(t=>(
+                      <span key={t} onClick={()=>setSelected(t)}
+                        style={{color:C.accent,cursor:"pointer",marginRight:8,fontWeight:700}}>
+                        {t} <span style={{color:C.textDim,fontWeight:400}}>({cs(t).dagenTotRapport}d)</span>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
             {[
               {l:"🟢 Koop signalen",   v:allBuySignals.length,  c:C.green,  f:"BUY"},
@@ -2812,15 +2854,18 @@ function App() {
 
                 {(()=>{
                   const db = (t)=>(stocks[t]?.indicators||{}).doubleBottom;
-                  const lijst = TICKER_ORDER.filter(t=>db(t));
-                  if(!lijst.length) return null;
-                  const rang = (t)=>db(t).status==="bevestigd"?0:1;
-                  lijst.sort((a,b)=>rang(a)-rang(b) || (db(a).pctNaarNek??99)-(db(b).pctNaarNek??99));
-                  const Kaart=(t)=>{
-                    const d=db(t), bev=d.status==="bevestigd";
-                    const kl = bev?C.green:C.blue;
+                  const dt = (t)=>(stocks[t]?.indicators||{}).doubleTop;
+                  const bodems = TICKER_ORDER.filter(t=>db(t));
+                  const toppen = TICKER_ORDER.filter(t=>dt(t));
+                  if(!bodems.length && !toppen.length) return null;
+                  const srt=(f)=>(a,b)=>((f(a).status==="bevestigd"?0:1)-(f(b).status==="bevestigd"?0:1))
+                                        || ((f(a).pctNaarNek??99)-(f(b).pctNaarNek??99));
+                  bodems.sort(srt(db)); toppen.sort(srt(dt));
+                  const Kaart=(t,d,omhoog)=>{
+                    const bev=d.status==="bevestigd";
+                    const kl = bev ? (omhoog?C.green:C.red) : C.blue;
                     return (
-                      <div key={t} onClick={()=>setSelected(t)}
+                      <div key={(omhoog?"b":"t")+t} onClick={()=>setSelected(t)}
                         style={{background:C.panel,borderRadius:8,padding:"11px",cursor:"pointer",
                           border:`1px solid ${C.border}`,borderLeft:`3px solid ${kl}`}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
@@ -2830,28 +2875,38 @@ function App() {
                         </div>
                         <div style={{color:C.textDim,fontSize:10,marginBottom:5}}>{STOCK_NAMES[t]}</div>
                         <div style={{color:C.textDim,fontSize:10,lineHeight:1.5}}>
-                          Bodems {d.bodem1} / {d.bodem2} · nek {d.nek} · {d.barsApart}w
-                          <br/>Doel bij uitbraak: <b style={{color:C.text}}>{d.doel}</b>
+                          {omhoog ? `Bodems ${d.bodem1} / ${d.bodem2}` : `Toppen ${d.top1} / ${d.top2}`}
+                          {" · nek "}{d.nek}{" · "}{d.barsApart}w
+                          <br/>Doel bij {omhoog?"uitbraak":"breuk"}: <b style={{color:C.text}}>{d.doel}</b>
                           {d.volumeDroogtOp===false && <span style={{color:C.orange}}> · volume nam niet af</span>}
                         </div>
                       </div>
                     );
                   };
+                  const Groep=(titel,kleur,lijst,f,omhoog)=> lijst.length ? (
+                    <div style={{marginTop:12}}>
+                      <div style={{color:kleur,fontSize:12,fontWeight:700,marginBottom:6}}>
+                        {titel} ({lijst.length})
+                      </div>
+                      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
+                        {lijst.map(t=>Kaart(t,f(t),omhoog))}
+                      </div>
+                    </div>
+                  ) : null;
                   return (
                     <div style={{marginTop:24,paddingTop:16,borderTop:`1px solid ${C.border}`}}>
                       <div style={{color:C.blue,fontSize:13,fontWeight:700,marginBottom:6}}>
-                        〽 Dubbele bodem ({lijst.length})
+                        〽 Dubbele bodem &amp; dubbele top
                       </div>
-                      <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:660,marginBottom:14}}>
-                        Klassiek W-patroon: twee bodems op <b style={{color:C.text}}>ongeveer dezelfde
-                        hoogte</b> met een duidelijke tussentop (de nek) ertussen. De regel van het vak:
-                        het patroon telt pas als de koers <b style={{color:C.text}}>boven de nek sluit</b>.
-                        Tot dat moment is het een waarneming met gewicht 0 — daarna een licht
-                        koopsignaal, want dan is de omkeer onafhankelijk bevestigd.
+                      <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:660,marginBottom:4}}>
+                        Klassieke W- en M-patronen: twee bodems (of toppen) op <b style={{color:C.text}}>ongeveer
+                        dezelfde hoogte</b> met een duidelijk tussenpunt — de nek — ertussen. De regel van
+                        het vak: het patroon telt pas als de koers <b style={{color:C.text}}>door de nek
+                        breekt</b>. Tot dat moment is het een waarneming met gewicht 0; daarna een licht
+                        koop- of verkoopsignaal, want dan is de omkeer onafhankelijk bevestigd.
                       </div>
-                      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
-                        {lijst.map(t=>Kaart(t))}
-                      </div>
+                      {Groep("W · dubbele bodem", C.green, bodems, db, true)}
+                      {Groep("M · dubbele top",   C.red,   toppen, dt, false)}
                     </div>
                   );
                 })()}
