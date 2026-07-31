@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "7.6";
+const UI_VERSION = "7.8";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -2760,6 +2760,98 @@ function App() {
                           </div>
                         </div>
                       )}
+                    </div>
+                  );
+                })()}
+
+                {(()=>{
+                  const sq = (t)=>(stocks[t]?.indicators||{}).squeeze;
+                  const ob = (t)=>(stocks[t]?.indicators||{}).obv;
+                  const inSq = TICKER_ORDER.filter(t=>sq(t)?.known && sq(t)?.squeeze)
+                                           .sort((a,b)=>(sq(a).pct??100)-(sq(b).pct??100));
+                  if(!inSq.length) return null;
+                  const obvHint=(t)=>{
+                    const tr=ob(t)?.trend;
+                    if(tr==="stijgend") return {txt:"OBV stijgt — volumesteun als de uitbraak omhoog is",kl:C.teal};
+                    if(tr==="dalend")   return {txt:"OBV daalt — trekt eerder naar een uitbraak omlaag",kl:C.red};
+                    return {txt:"OBV-richting onbepaald — wacht op de uitbraak",kl:C.textDim};
+                  };
+                  const Kaart=(t)=>{
+                    const s=sq(t), h=obvHint(t);
+                    return (
+                      <div key={t} onClick={()=>setSelected(t)}
+                        style={{background:C.panel,borderRadius:8,padding:"11px",cursor:"pointer",
+                          border:`1px solid ${C.border}`,borderLeft:`3px solid ${C.orange}`}}>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                          <span style={{color:C.accent,fontWeight:700,fontSize:14}}>{t}</span>
+                          <span style={{color:C.orange,fontSize:11,fontWeight:700}}>squeeze · onderste {Math.round(s.pct)}%</span>
+                        </div>
+                        <div style={{color:C.textDim,fontSize:10,marginBottom:5}}>{STOCK_NAMES[t]}</div>
+                        <div style={{color:h.kl,fontSize:10,lineHeight:1.4}}>{h.txt}</div>
+                      </div>
+                    );
+                  };
+                  return (
+                    <div style={{marginTop:24,paddingTop:16,borderTop:`1px solid ${C.border}`}}>
+                      <div style={{color:C.orange,fontSize:13,fontWeight:700,marginBottom:6}}>
+                        🗜 Bollinger-squeeze ({inSq.length})
+                      </div>
+                      <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:660,marginBottom:14}}>
+                        De Bollinger-banden staan strak t.o.v. hun <b style={{color:C.text}}>eigen ~half jaar</b>:
+                        lage volatiliteit gaat vaak vooraf aan een grote beweging, maar de squeeze is
+                        <b style={{color:C.text}}> richtingloos</b> — hij zegt niet welke kant op. Daarom als
+                        confluence naast de OBV-richting, en net als OBV telt hij <b style={{color:C.text}}>niet
+                        mee</b> in enige score.
+                      </div>
+                      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
+                        {inSq.map(t=>Kaart(t))}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {(()=>{
+                  const db = (t)=>(stocks[t]?.indicators||{}).doubleBottom;
+                  const lijst = TICKER_ORDER.filter(t=>db(t));
+                  if(!lijst.length) return null;
+                  const rang = (t)=>db(t).status==="bevestigd"?0:1;
+                  lijst.sort((a,b)=>rang(a)-rang(b) || (db(a).pctNaarNek??99)-(db(b).pctNaarNek??99));
+                  const Kaart=(t)=>{
+                    const d=db(t), bev=d.status==="bevestigd";
+                    const kl = bev?C.green:C.blue;
+                    return (
+                      <div key={t} onClick={()=>setSelected(t)}
+                        style={{background:C.panel,borderRadius:8,padding:"11px",cursor:"pointer",
+                          border:`1px solid ${C.border}`,borderLeft:`3px solid ${kl}`}}>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                          <span style={{color:C.accent,fontWeight:700,fontSize:14}}>{t}</span>
+                          <span style={{color:kl,fontSize:11,fontWeight:700}}>
+                            {bev?"bevestigd":`nog ${d.pctNaarNek}% tot de nek`}</span>
+                        </div>
+                        <div style={{color:C.textDim,fontSize:10,marginBottom:5}}>{STOCK_NAMES[t]}</div>
+                        <div style={{color:C.textDim,fontSize:10,lineHeight:1.5}}>
+                          Bodems {d.bodem1} / {d.bodem2} · nek {d.nek} · {d.barsApart}w
+                          <br/>Doel bij uitbraak: <b style={{color:C.text}}>{d.doel}</b>
+                          {d.volumeDroogtOp===false && <span style={{color:C.orange}}> · volume nam niet af</span>}
+                        </div>
+                      </div>
+                    );
+                  };
+                  return (
+                    <div style={{marginTop:24,paddingTop:16,borderTop:`1px solid ${C.border}`}}>
+                      <div style={{color:C.blue,fontSize:13,fontWeight:700,marginBottom:6}}>
+                        〽 Dubbele bodem ({lijst.length})
+                      </div>
+                      <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:660,marginBottom:14}}>
+                        Klassiek W-patroon: twee bodems op <b style={{color:C.text}}>ongeveer dezelfde
+                        hoogte</b> met een duidelijke tussentop (de nek) ertussen. De regel van het vak:
+                        het patroon telt pas als de koers <b style={{color:C.text}}>boven de nek sluit</b>.
+                        Tot dat moment is het een waarneming met gewicht 0 — daarna een licht
+                        koopsignaal, want dan is de omkeer onafhankelijk bevestigd.
+                      </div>
+                      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
+                        {lijst.map(t=>Kaart(t))}
+                      </div>
                     </div>
                   );
                 })()}
