@@ -1074,34 +1074,36 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
     if daily is None or close_d is None or len(daily) < 130:
         return None
     try:
-        hi = daily["High"].iloc[-126:]
-        if len(hi) < 60:
+        hoog, laag = daily["High"], daily["Low"]
+        if len(hoog) < 60:
             return None
-        top = float(hi.max())
-        pos = int(np.argmax(hi.values))          # waar stond die top?
         last = float(close_d.iloc[-1])
-        if not (np.isfinite(top) and np.isfinite(last)) or top <= 0:
+        if not np.isfinite(last) or last <= 0:
             return None
-        # De val is een GEBEURTENIS, geen momentopname: meet van de top tot de
-        # laagste stand daarna. Zou je "huidige koers vs top" meten, dan krimpt het
-        # percentage zodra het herstel begint en schakelt de ladder zichzelf uit
-        # vóór fase 2 ooit bereikt wordt -- precies wat we niet willen.
-        lo_na_top = daily["Low"].iloc[-126:].iloc[pos:]
-        if len(lo_na_top) < 2:
+        # SCHERPE VAL = een val van val_min% binnen een MEELOPEND venster van
+        # `venster` dagen, die RECENT is (in de laatste 20 beursdagen).
+        #
+        # Eerder nam ik de hoogste top van 126 dagen en eiste dat de weg naar de
+        # bodem binnen 40 dagen lag. Dat brak zodra de top verder terug lag: een
+        # aandeel dat maanden zijwaarts hangt en dan in twee weken 25% inzakt, viel
+        # buiten de trigger omdat de afstand top->bodem te groot was. De val was
+        # scherp, de meting niet. Met een meelopend venster maakt het niet meer uit
+        # waar de piek van de laatste zes maanden toevallig ligt.
+        rollmax = hoog.rolling(venster, min_periods=15).max()
+        dd = ((rollmax - laag) / rollmax * 100.0).replace([np.inf, -np.inf], np.nan)
+        recent = dd.iloc[-20:]
+        if recent.isna().all():
             return None
-        bodem_koers = float(lo_na_top.min())
-        if not np.isfinite(bodem_koers) or bodem_koers <= 0:
+        val_pct = float(recent.max())
+        if not np.isfinite(val_pct) or val_pct < val_min:
             return None
-        val_pct = (top - bodem_koers) / top * 100.0
-        if val_pct < val_min:
+        idx = len(dd) - len(recent) + int(np.nanargmax(recent.values))
+        top = float(rollmax.iloc[idx])
+        bodem_koers = float(laag.iloc[idx])
+        if not (np.isfinite(top) and np.isfinite(bodem_koers)) or top <= 0:
             return None
-        # SNELHEID: de val zelf moet snel zijn gegaan (top -> bodem). Een trage
-        # afkalving is een ander mechanisme en wordt door de falling-knife-guard
-        # afgehandeld. Bewust NIET "top tot vandaag", want dan verloopt de trigger
-        # tijdens het herstel.
-        dagen_top_naar_bodem = int(np.argmin(lo_na_top.values))
-        if dagen_top_naar_bodem > venster:
-            return None
+        _venster_hoog = hoog.iloc[max(0, idx - venster + 1): idx + 1]
+        dagen_top_naar_bodem = int(len(_venster_hoog) - 1 - int(np.argmax(_venster_hoog.values)))
         # HERSTELD: terug tot aan de oude top -> de instorting is uitgewerkt.
         if last >= top * 0.97:
             return None
@@ -5260,7 +5262,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "8.0-weekly-cross",
+            "version": "8.3-leerlijst",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -5453,6 +5455,7 @@ def main():
             "marketAdj": sc.get("marketAdj", 0),
             "overall": s.get("overall"),
             "nearTP": s.get("nearTP", False),
+            "instortingFase": ((s.get("indicators") or {}).get("instorting") or {}).get("fase"),
         }
         if sc["qualityGate"]:
             candidates.append(row)
@@ -5471,15 +5474,29 @@ def main():
     #   - peakGrowthFlag: de goedkoopte is cyclische schijn (piekgroei), geen echt koopje
     # Gedegradeerde aandelen blijven kandidaat, maar komen ACHTER alle niet-gedegradeerde.
     # Zo wint een niet-extended kwaliteitsaandeel altijd van een gevaarlijk-extended MU/ASML.
+    # WITTE LIJST, geen zwarte. De oude regel somde de labels op die NIET mochten
+    # ("VERKOOP", "CAUTION", "OVEREXTENDED"). Elk nieuw oordeel glipte daar dus
+    # automatisch doorheen: HOLD bestond nog niet toen die regel werd geschreven, en
+    # zo kon een aandeel tegelijk "HOLD - geen koop" en "maandpick nr. 1" zijn.
+    # NEUTRAAL stond wel in het commentaar maar niet in de code. Nu omgekeerd: alleen
+    # een uitgesproken KOOP-oordeel kwalificeert, al het andere degradeert. Let op de
+    # exacte vergelijking -- "VERKOOP" bevat de letters "KOOP", dus een substring-test
+    # zou alle verkoopoordelen als koop lezen.
+    _KOOP_OORDELEN = {"STERK KOOP", "KOOP", "LICHT KOOP"}
+
     def _gedegradeerd(row):
-        ov = (row.get("overall") or "").upper()
-        # staat niet op koop? (verkoop, caution, of neutraal) -> kan geen maandpick zijn
-        niet_koop = ("VERKOOP" in ov) or ("CAUTION" in ov) or ("OVEREXTENDED" in ov)
+        ov = (row.get("overall") or "").upper().strip()
+        niet_koop = ov not in _KOOP_OORDELEN
         # bij een TP-winstzone?
         bij_tp = bool(row.get("nearTP"))
         # cyclische piekgroei (schijnkoopje)?
         piek = bool(row.get("peakGrowthFlag"))
-        return niet_koop or bij_tp or piek
+        # verse instorting die nog niet hersteld is (fase 1 of 2): de koers is
+        # misschien goedkoop, maar het herstel is niet bevestigd. Een maandpick is
+        # een maandbeslissing -- die mag niet op een vallend mes landen.
+        _f = row.get("instortingFase")
+        instortend = _f is not None and _f < 3
+        return niet_koop or bij_tp or piek or instortend
 
     def _pick_key(row):
         # eerst niet-gedegradeerd (0) vóór gedegradeerd (1), dan op composiet aflopend
@@ -5505,6 +5522,54 @@ def main():
             "sector":    _row.get("sector"),
             "degraded":  bool(_gedegradeerd(_row)),
         })
+
+    # ── LEERLIJST: twee top-5's naast elkaar ───────────────────────────────────
+    # Links de lijst mét de degradatieregel (wat het systeem zou kiezen), rechts
+    # puur op composiet (wat de ruwe waardering zegt). Het VERSCHIL is het leerpunt:
+    # zijn ze vrijwel gelijk, dan is de markt rustig; is de ongefilterde lijst
+    # volledig gedegradeerd, dan wordt kwaliteit breed afgestraft -- dat zegt iets
+    # over het regime, niet over de aandelen. Bij elke naam staat WAAROM hij
+    # gedegradeerd is, zodat de lijst leert i.p.v. verleidt.
+    def _degradatie_redenen(row):
+        r = []
+        ov = (row.get("overall") or "").upper().strip()
+        if ov not in _KOOP_OORDELEN:
+            r.append(f"oordeel {row.get('overall')}")
+        if row.get("nearTP"):
+            r.append("bij TP-winstzone")
+        if row.get("peakGrowthFlag"):
+            r.append("piekgroei (cyclische schijn)")
+        _f = row.get("instortingFase")
+        if _f is not None and _f < 3:
+            r.append(f"verse instorting (fase {_f}/3)")
+        return r
+
+    def _leerrij(row, rang):
+        return {
+            "rang": rang,
+            "ticker": row.get("ticker"),
+            "composite": row.get("composite"),
+            "quality": row.get("quality"),
+            "overall": row.get("overall"),
+            "sector": row.get("sector"),
+            "peg": row.get("peg"),
+            "pctOffHigh": row.get("pctOffHigh"),
+            "degraded": bool(_gedegradeerd(row)),
+            "redenen": _degradatie_redenen(row),
+        }
+
+    _zuiver = [r for r in candidates if not _gedegradeerd(r)]
+    _zuiver.sort(key=lambda r: -(r["composite"] or 0))
+    _ruw = sorted(candidates, key=lambda r: -(r["composite"] or 0))
+    pick_compare = {
+        "gefilterd":   [_leerrij(r, i + 1) for i, r in enumerate(_zuiver[:5])],
+        "ongefilterd": [_leerrij(r, i + 1) for i, r in enumerate(_ruw[:5])],
+    }
+    _ov = {r["ticker"] for r in pick_compare["gefilterd"]} & \
+          {r["ticker"] for r in pick_compare["ongefilterd"]}
+    pick_compare["overlap"] = len(_ov)
+    pick_compare["alleDegraded"] = all(r["degraded"] for r in pick_compare["ongefilterd"]) \
+        if pick_compare["ongefilterd"] else False
 
     # ── DE SCHATKAMER ──────────────────────────────────────────────────────────
     # Goedkoop geprijsde kwaliteitsaandelen die klaarliggen: de kwaliteitspoort
@@ -5546,6 +5611,7 @@ def main():
         "primaryPick": primary,
         "primaryDegraded": primary_degraded,
         "pickTop3": pick_top3,
+        "pickCompare": pick_compare,
         "reasoning": reasoning,
         "candidates": candidates,
         "treasury": schatkamer,
