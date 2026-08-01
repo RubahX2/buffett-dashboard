@@ -1045,7 +1045,7 @@ def detect_double_top(price: pd.Series, volume: pd.Series = None,
 
 def _instorting_fase(daily, close_d, ema8_d, ema21_d,
                      weekly_macd_bearish, monthly_macd_bullish,
-                     val_min=20.0, venster=40):
+                     val_min=20.0, venster=40, na_bodem_max=60):
     """VERSE INSTORTING + herstelladder (Rubens fasen).
 
     Dit vangt iets anders dan de falling-knife-guard. Die kijkt naar een TRAGE
@@ -1091,13 +1091,22 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
         # waar de piek van de laatste zes maanden toevallig ligt.
         rollmax = hoog.rolling(venster, min_periods=15).max()
         dd = ((rollmax - laag) / rollmax * 100.0).replace([np.inf, -np.inf], np.nan)
-        recent = dd.iloc[-20:]
+        # Zoekvenster voor de bodem: ruim genoeg dat een val PLUS een paar weken
+        # herstel er nog in past. Stond dit op 20 dagen, dan verdween de instorting
+        # uit beeld zodra de bodem ~een maand achter je lag -- terwijl het herstel
+        # dan juist loopt en de fase-ladder pas echt nuttig wordt. Gevolg: geen
+        # HOLD-paneel én geen degradatie in de maandpick (ASMI stond zo weer op 1).
+        recent = dd.iloc[-na_bodem_max:]
         if recent.isna().all():
             return None
         val_pct = float(recent.max())
         if not np.isfinite(val_pct) or val_pct < val_min:
             return None
         idx = len(dd) - len(recent) + int(np.nanargmax(recent.values))
+        # Alleen relevant als de bodem niet TE lang geleden is: daarna is het geen
+        # lopende instorting meer maar gewoon geschiedenis.
+        if (len(dd) - 1 - idx) > na_bodem_max:
+            return None
         top = float(rollmax.iloc[idx])
         bodem_koers = float(laag.iloc[idx])
         if not (np.isfinite(top) and np.isfinite(bodem_koers)) or top <= 0:
@@ -5330,7 +5339,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "8.6-verse-hold",
+            "version": "8.7-instorting-venster2",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
