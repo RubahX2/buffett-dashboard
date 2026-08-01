@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-08-01T10:39:27.357070+02:00"
+    "lastUpdate": "2026-08-01T11:05:57.404189+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -2900,7 +2900,7 @@
         "timing": 38
       },
       "outcomes": {},
-      "episodeDays": 8
+      "episodeDays": 9
     },
     "monthly_pick:ASMI:2026-07-29": {
       "ticker": "ASMI",
@@ -2933,7 +2933,7 @@
         "timing": 41
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:COPX:2026-07-29": {
       "ticker": "COPX",
@@ -2981,7 +2981,7 @@
         "timing": 42
       },
       "outcomes": {},
-      "episodeDays": 6
+      "episodeDays": 7
     },
     "strong_signal:ODFL:2026-07-30": {
       "ticker": "ODFL",
@@ -3045,7 +3045,7 @@
         "timing": 40
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "caution:AMZN:2026-07-31": {
       "ticker": "AMZN",
@@ -3061,7 +3061,7 @@
         "timing": 40
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:KO:2026-07-31": {
       "ticker": "KO",
@@ -3077,7 +3077,7 @@
         "timing": 49
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:RGTI:2026-07-31": {
       "ticker": "RGTI",
@@ -3093,7 +3093,7 @@
         "timing": 35
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "monthly_pick:BLK:2026-08-01": {
       "ticker": "BLK",
@@ -3126,7 +3126,7 @@
         "timing": 32
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     },
     "strong_signal:IONQ:2026-08-01": {
       "ticker": "IONQ",
@@ -3142,7 +3142,7 @@
         "timing": 31
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     },
     "strong_signal:QBTS:2026-08-01": {
       "ticker": "QBTS",
@@ -3158,7 +3158,7 @@
         "timing": 36
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     },
     "strong_signal:GILD:2026-08-01": {
       "ticker": "GILD",
@@ -3174,7 +3174,7 @@
         "timing": 44
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     }
   },
   "accuracy": {
@@ -3264,40 +3264,40 @@
     26
   ],
   "diagnostics": {
-    "n": 84,
+    "n": 83,
     "baseRates": [
       {
         "action": "VERKOOP",
         "n": 27,
-        "pct": 32.1,
+        "pct": 32.5,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
       {
         "action": "STERK VERKOOP",
-        "n": 17,
-        "pct": 20.2,
+        "n": 16,
+        "pct": 19.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "KOOP",
         "n": 15,
-        "pct": 17.9,
+        "pct": 18.1,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "HOLD",
         "n": 9,
-        "pct": 10.7,
+        "pct": 10.8,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "NEUTRAAL",
         "n": 7,
-        "pct": 8.3,
+        "pct": 8.4,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -3346,11 +3346,11 @@
         "cells": [
           1.0,
           0.21,
-          0.15,
-          0.34,
+          0.16,
+          0.35,
           -0.25,
           0.78,
-          0.53
+          0.54
         ]
       },
       {
@@ -3359,37 +3359,37 @@
         "cells": [
           0.21,
           1.0,
-          -0.18,
-          -0.27,
-          0.15,
+          -0.15,
+          -0.26,
+          0.16,
           0.69,
-          0.71
+          0.7
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.15,
-          -0.18,
+          0.16,
+          -0.15,
           1.0,
-          0.66,
-          0.15,
-          0.28,
-          -0.29
+          0.65,
+          0.14,
+          0.3,
+          -0.27
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.34,
-          -0.27,
-          0.66,
+          0.35,
+          -0.26,
+          0.65,
           1.0,
-          -0.55,
-          0.24,
-          -0.62
+          -0.57,
+          0.25,
+          -0.61
         ]
       },
       {
@@ -3397,12 +3397,12 @@
         "key": "ent",
         "cells": [
           -0.25,
-          0.15,
-          0.15,
-          -0.55,
+          0.16,
+          0.14,
+          -0.57,
           1.0,
-          -0.01,
-          0.58
+          -0.0,
+          0.59
         ]
       },
       {
@@ -3411,9 +3411,9 @@
         "cells": [
           0.78,
           0.69,
-          0.28,
-          0.24,
-          -0.01,
+          0.3,
+          0.25,
+          -0.0,
           1.0,
           0.66
         ]
@@ -3422,11 +3422,11 @@
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.53,
-          0.71,
-          -0.29,
-          -0.62,
-          0.58,
+          0.54,
+          0.7,
+          -0.27,
+          -0.61,
+          0.59,
           0.66,
           1.0
         ]
@@ -3444,7 +3444,7 @@
     "MU": null,
     "GOOGL": null,
     "AMZN": "sig:caution:SELL",
-    "ORCL": "sig:strong_signal:SELL",
+    "ORCL": null,
     "KO": "sig:strong_signal:BUY",
     "MC": null,
     "LHX": "sig:strong_signal:SELL",
@@ -4424,7 +4424,7 @@
         "MU": "HOLD",
         "GOOGL": "VERKOOP",
         "AMZN": "CAUTION (overextended)",
-        "ORCL": "STERK VERKOOP",
+        "ORCL": null,
         "KO": "STERK KOOP",
         "MC": "VERKOOP",
         "LHX": "STERK VERKOOP",
