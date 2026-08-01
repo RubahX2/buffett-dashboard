@@ -5064,6 +5064,30 @@ def laad_earnings_cache():
     return {}
 
 
+def _earnings_via_fmp(sym, timeout: int = 12):
+    """Rapportagedatums via FMP. Onafhankelijke infrastructuur van Yahoo, dus dit
+    werkt nog als Yahoo afknijpt (de waarschijnlijkste oorzaak van 0/84: 84 losse
+    Ticker-calls achter elkaar). Zonder key of voor Euronext-tickers: None."""
+    if not FMP_API_KEY or "." in sym:
+        return None
+    url = f"{FMP_BASE}/historical/earning_calendar/{sym}?limit=12&apikey={FMP_API_KEY}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "buffett-dashboard"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        if not isinstance(data, list) or not data:
+            return None
+        datums = sorted({date.fromisoformat(r["date"][:10]) for r in data if r.get("date")})
+        if not datums:
+            return None
+        verleden = [d for d in datums if d <= TODAY]
+        toekomst = [d for d in datums if d > TODAY]
+        return (verleden[-1] if verleden else None), (toekomst[0] if toekomst else None)
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError,
+            KeyError, TimeoutError, OSError):
+        return None
+
+
 def _haal_earnings_datums(sym):
     """Rapportagedatums via yfinance. Geeft (laatste, volgende) als date-objecten.
 
@@ -5088,7 +5112,11 @@ def _haal_earnings_datums(sym):
         toekomst = [d for d in datums if d > TODAY]
         return (verleden[-1] if verleden else None), (toekomst[0] if toekomst else None)
 
-    cal = t.calendar                                 # 3) calendar (alleen komende datum)
+    _f = _earnings_via_fmp(sym)                      # 3) FMP (andere infrastructuur)
+    if _f and (_f[0] or _f[1]):
+        return _f
+
+    cal = t.calendar                                 # 4) calendar (alleen komende datum)
     ed = None
     if isinstance(cal, dict):
         ed = cal.get("Earnings Date")
@@ -5123,6 +5151,8 @@ def ververs_earnings_cache(paren):
     fouten = {}
     for naam, sym, _fallback in paren:
         vorige = cache.get(naam)
+        if naam in ETF_TICKERS:   # ETF's rapporteren geen kwartaalcijfers
+            continue
         try:
             laatste, volgende = _haal_earnings_datums(sym)
             if laatste is None and volgende is None:
@@ -5138,8 +5168,9 @@ def ververs_earnings_cache(paren):
             if vorige:                      # oude datum is beter dan geen datum
                 nieuw[naam] = vorige
         time.sleep(0.15)                    # Yahoo niet bestoken; ~13s over 84 tickers
-    print(f"  Rapportagedatums: {gelukt}/{len(paren)} opgehaald "
-          f"({len(nieuw) - 1} in cache)")
+    _relevant = len([1 for n, _s, _f in paren if n not in ETF_TICKERS])
+    print(f"  Rapportagedatums: {gelukt}/{_relevant} opgehaald "
+          f"({len(nieuw) - 1} in cache; {len(paren) - _relevant} ETF's overgeslagen)")
     for sleutel, aantal in sorted(fouten.items(), key=lambda x: -x[1])[:3]:
         print(f"    ⚠ {aantal}x {sleutel}")
     try:
@@ -5262,7 +5293,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "8.3-leerlijst",
+            "version": "8.4-earnings-fmp",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
