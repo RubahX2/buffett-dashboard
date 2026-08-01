@@ -373,7 +373,7 @@ FUNDAMENTALS = {
     "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07", "earningsHistory":[[2021,-520],[2022,-374],[2023,210],[2024,462],[2025,1625]]},   # P/E 145 - extreme waardering; winstgevend sinds 2023, daarna +120/+252% -- jonge winstcurve, mediaan misleidt door lage basis
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.8,  "debtEquity":2.31, "netMargin":13.3, "divYield":0.63, "revenueGrowth":11.9,  "revenueGrowthPrev":4.0,  "eps":20.10, "mktCap":"$444B",  "beta":1.60, "lastUpdated":"2026-07"},
     "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":25.00, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07", "earningsHistory":[[2021,5883],[2022,6456],[2023,8277],[2024,7966],[2025,9600]]},   # winst +10-30%, pauzejaar -4% in 2024, herstel +21% in 2025; licht cyclisch maar structureel groeiend
-    "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":24.0,  "revenueGrowthPrev":16.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07 (Q2'26)", "earningsHistory":[[2021,507],[2022,627],[2023,583],[2024,708],[2025,741]]},   # GENORMALISEERD (excl. ASMPT-belang/impairments; vanaf 2024 "adjusted" genoemd) -- IFRS is grillig door ASMPT: FY2023 IFRS EUR752M maar genormaliseerd -7%, FY2025 IFRS EUR724M; +24/-7/+21/+5% toont de echte operationele trend. Q2'26: omzet EUR1003M (+24% cc), adjusted nettowinst EUR293M vs EUR173M (+69% YoY); FY2026 loopt nog -> GEEN jaarrij tot Q4. eps 19.50 NIET geupdate: rol vereist gerapporteerde diluted adjusted EPS (heb enkel absolute winst, niet aandelenaantal)
+    "ASMI":  {"pe":48.7,  "roe":24.9, "fcfYield":1.5,  "debtEquity":0.05, "netMargin":31.0, "divYield":0.4,  "revenueGrowth":24.0,  "revenueGrowthPrev":16.0, "eps":19.50, "mktCap":"$55B",   "beta":1.55, "lastUpdated":"2026-07 (Q2'26)", "rapportVerwerkt":"2026-07-28", "earningsHistory":[[2021,507],[2022,627],[2023,583],[2024,708],[2025,741]]},   # GENORMALISEERD (excl. ASMPT-belang/impairments; vanaf 2024 "adjusted" genoemd) -- IFRS is grillig door ASMPT: FY2023 IFRS EUR752M maar genormaliseerd -7%, FY2025 IFRS EUR724M; +24/-7/+21/+5% toont de echte operationele trend. Q2'26: omzet EUR1003M (+24% cc), adjusted nettowinst EUR293M vs EUR173M (+69% YoY); FY2026 loopt nog -> GEEN jaarrij tot Q4. eps 19.50 NIET geupdate: rol vereist gerapporteerde diluted adjusted EPS (heb enkel absolute winst, niet aandelenaantal)
     "MU":    {"pe":22.1,  "roe":66.6, "fcfYield":2.2,  "debtEquity":0.06, "netMargin":55.9, "divYield":0.1,  "revenueGrowth":144.0, "revenueGrowthPrev":62.0, "eps":44.6,  "mktCap":"$1.1T",  "beta":2.14, "lastUpdated":"2026-07", "earningsHistory":[[2021,5861],[2022,8687],[2023,-5833],[2024,778],[2025,8539]]},   # AI-geheugencyclus op piek - extreem cyclisch; winst: +48%/VERLIES/+998% = geen jaar representatief
     "GOOGL": {"pe":25.7,  "roe":38.9, "fcfYield":1.6,  "debtEquity":0.20, "netMargin":37.9, "divYield":0.3,  "revenueGrowth":13.4,  "revenueGrowthPrev":14.0, "eps":13.15, "mktCap":"$4.1T",  "beta":1.24, "lastUpdated":"2026-07", "earningsHistory":[[2021,76033],[2022,59972],[2023,73795],[2024,100118],[2025,132170]]},   # 2022-dip (-21%, advertentiemarkt), daarna +23/+36/+32% -- versnelling door cloud/AI
     "ANET":  {"pe":53.9,  "roe":31.5, "fcfYield":2.5,  "debtEquity":0.0,  "netMargin":38.3, "divYield":0,    "revenueGrowth":35.1,  "revenueGrowthPrev":28.9, "eps":2.95,  "mktCap":"$215B",  "beta":1.61, "lastUpdated":"2026-07", "earningsHistory":[[2021,841],[2022,1352],[2023,2087],[2024,2852],[2025,3511]]},   # ononderbroken sterke groei +61/+54/+37/+23%; groeitempo neemt geleidelijk af
@@ -410,7 +410,7 @@ FUNDAMENTALS = {
     "SHOP":  {"pe":92.0,  "roe":14.5, "fcfYield":1.4,  "debtEquity":0.10, "netMargin":11.5, "divYield":0,    "revenueGrowth":31.9,  "revenueGrowthPrev":26.0, "eps":1.32,  "mktCap":"$185B",  "beta":2.35, "lastUpdated":"2026-07"},
     "NET":   {"pe":0,      "roe":-5.9, "fcfYield":0.5,  "debtEquity":2.31, "netMargin":-3.7, "divYield":0,    "revenueGrowth":34.0,  "revenueGrowthPrev":30.0, "eps":-0.25, "mktCap":"$59B",   "beta":1.67, "lastUpdated":"2026-07", "earningsHistory":[[2021,-260],[2022,-193],[2023,-184],[2024,-79],[2025,-102]]},   # nooit GAAP-winstgevend; verlies versmalde richting 2024 maar liep in 2025 weer op -- omzet groeit 30%+/jr, maar winst blijft uit
     "CRWV":  {"pe":0,      "roe":-35.0,"fcfYield":-25.0,"debtEquity":3.85, "netMargin":-36.0,"divYield":0,    "revenueGrowth":112.0, "revenueGrowthPrev":737.0,"eps":-4.55, "mktCap":"$52B",   "beta":2.85, "lastUpdated":"2026-07"},
-    "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":40.3, "divYield":1.0,  "revenueGrowth":18.0,  "revenueGrowthPrev":15.0, "eps":17.95, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07 (Q4 FY26)", "earningsHistory":[[2021,61271],[2022,72738],[2023,72361],[2024,88136],[2025,101832],[2026,133700]]},   # boekjaar eindigt 30 juni; stabiele groeier, vlakke plek in 2023 (-1%). FY2026 afgesloten: omzet $331.8B (+18%), GAAP nettowinst $133.7B (+31%) — LET OP: incl. ~$5B eenmalige OpenAI/Anthropic-winst; schone operationele groei ~+22% (non-GAAP $128.7B). eps=GAAP diluted FY2026 $17.95
+    "MSFT":  {"pe":22.9,  "roe":34.0, "fcfYield":2.5,  "debtEquity":0.30, "netMargin":40.3, "divYield":1.0,  "revenueGrowth":18.0,  "revenueGrowthPrev":15.0, "eps":17.95, "mktCap":"$2.9T",  "beta":1.13, "lastUpdated":"2026-07 (Q4 FY26)", "rapportVerwerkt":"2026-07-29", "earningsHistory":[[2021,61271],[2022,72738],[2023,72361],[2024,88136],[2025,101832],[2026,133700]]},   # boekjaar eindigt 30 juni; stabiele groeier, vlakke plek in 2023 (-1%). FY2026 afgesloten: omzet $331.8B (+18%), GAAP nettowinst $133.7B (+31%) — LET OP: incl. ~$5B eenmalige OpenAI/Anthropic-winst; schone operationele groei ~+22% (non-GAAP $128.7B). eps=GAAP diluted FY2026 $17.95
     "MTLS":  {"pe":78.0,  "roe":3.5,  "fcfYield":1.5,  "debtEquity":0.42, "netMargin":2.7,  "divYield":0,    "revenueGrowth":0.0,   "revenueGrowthPrev":3.0,  "eps":0.10,  "mktCap":"$0.4B",  "beta":1.55, "lastUpdated":"2026-07"},
     "SNAP":  {"pe":0,      "roe":-8.5, "fcfYield":2.0,  "debtEquity":1.85, "netMargin":-5.5, "divYield":0,    "revenueGrowth":8.0,   "revenueGrowthPrev":14.0, "eps":-0.15, "mktCap":"$13B",   "beta":1.95, "lastUpdated":"2026-07"},
     "NVDA":  {"pe":31.1,  "roe":114.3,"fcfYield":2.4,  "debtEquity":0.07, "netMargin":63.0, "divYield":0.5,  "revenueGrowth":70.7,  "revenueGrowthPrev":114.0,"eps":6.56,  "mktCap":"$4.9T",  "beta":2.21, "lastUpdated":"2026-07", "earningsHistory":[[2021,9752],[2022,4368],[2023,29760],[2024,72880],[2025,120067]]},   # fiscale jaren (eindigt eind jan) gemapt op kalenderjaar; -55% crash 2022, dan +581/+145/+65% AI-explosie -- extreem cyclisch, geen enkel jaar representatief
@@ -505,7 +505,7 @@ FUNDAMENTALS = {
     # Dit is precies het soort vraag waar het model GEEN antwoord op heeft: de kwaliteit
     # is er (vandaag), maar de capex bepaalt of ze er over twee jaar nog is. De poort meet
     # het verleden.
-    "META":  {"pe":21.5,  "roe":35.0, "fcfYield":2.8,  "debtEquity":0.15, "netMargin":38.0, "divYield":0.4,  "revenueGrowth":28.0,  "revenueGrowthPrev":22.0, "eps":26.14, "mktCap":"$1.5T",  "beta":1.28, "lastUpdated":"2026-07 (Q2'26)", "earningsHistory":[[2021,39370],[2022,23200],[2023,39098],[2024,62360],[2025,60458]]},   # metaverse-dip 2022 (-41%), explosief herstel +69/+59%, 2025 licht terug (-3%, AI-capex). Q2'26: omzet +28% MAAR nettowinst -14% ($15.85B vs $18.34B), EPS $6.18 miss — kostenexplosie +55% (AI-capex + $2.4B legal + $1.18B severance). revenueGrowth vangt deze winstcompressie NIET (zie twee-assen-idee). netMargin op 38 gelaten: Q2-kwartaal was 26% maar door eenmalige lasten vertekend
+    "META":  {"pe":21.5,  "roe":35.0, "fcfYield":2.8,  "debtEquity":0.15, "netMargin":38.0, "divYield":0.4,  "revenueGrowth":28.0,  "revenueGrowthPrev":22.0, "eps":26.14, "mktCap":"$1.5T",  "beta":1.28, "lastUpdated":"2026-07 (Q2'26)", "rapportVerwerkt":"2026-07-29", "earningsHistory":[[2021,39370],[2022,23200],[2023,39098],[2024,62360],[2025,60458]]},   # metaverse-dip 2022 (-41%), explosief herstel +69/+59%, 2025 licht terug (-3%, AI-capex). Q2'26: omzet +28% MAAR nettowinst -14% ($15.85B vs $18.34B), EPS $6.18 miss — kostenexplosie +55% (AI-capex + $2.4B legal + $1.18B severance). revenueGrowth vangt deze winstcompressie NIET (zie twee-assen-idee). netMargin op 38 gelaten: Q2-kwartaal was 26% maar door eenmalige lasten vertekend
 
     # ── Vistra ──
     # HAALT DE POORT OP PAPIER, MAAR LEES DIT EERST.
@@ -1043,9 +1043,12 @@ def detect_double_top(price: pd.Series, volume: pd.Series = None,
     }
 
 
+_INSTORTING_DIAG = {}
+
+
 def _instorting_fase(daily, close_d, ema8_d, ema21_d,
                      weekly_macd_bearish, monthly_macd_bullish,
-                     val_min=20.0, venster=40, na_bodem_max=60):
+                     val_min=20.0, venster=40, na_bodem_max=60, naam_hint=""):
     """VERSE INSTORTING + herstelladder (Rubens fasen).
 
     Dit vangt iets anders dan de falling-knife-guard. Die kijkt naar een TRAGE
@@ -1071,7 +1074,10 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
                           risico is bewust aanvaard in ruil voor snelheid.
 
     Geeft None als er geen instorting speelt."""
+    _diag = {"reden": None}
     if daily is None or close_d is None or len(daily) < 130:
+        _diag["reden"] = f"te weinig data ({0 if daily is None else len(daily)} candles)"
+        _INSTORTING_DIAG[naam_hint] = _diag
         return None
     try:
         hoog, laag = daily["High"], daily["Low"]
@@ -1098,14 +1104,20 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
         # HOLD-paneel én geen degradatie in de maandpick (ASMI stond zo weer op 1).
         recent = dd.iloc[-na_bodem_max:]
         if recent.isna().all():
+            _diag["reden"] = "geen bruikbare drawdown-reeks"
+            _INSTORTING_DIAG[naam_hint] = _diag
             return None
         val_pct = float(recent.max())
         if not np.isfinite(val_pct) or val_pct < val_min:
+            _diag["reden"] = f"grootste val {val_pct:.1f}% < drempel {val_min}%"
+            _INSTORTING_DIAG[naam_hint] = _diag
             return None
         idx = len(dd) - len(recent) + int(np.nanargmax(recent.values))
         # Alleen relevant als de bodem niet TE lang geleden is: daarna is het geen
         # lopende instorting meer maar gewoon geschiedenis.
         if (len(dd) - 1 - idx) > na_bodem_max:
+            _diag["reden"] = f"bodem {len(dd)-1-idx} dagen geleden (> {na_bodem_max})"
+            _INSTORTING_DIAG[naam_hint] = _diag
             return None
         top = float(rollmax.iloc[idx])
         bodem_koers = float(laag.iloc[idx])
@@ -1115,6 +1127,8 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
         dagen_top_naar_bodem = int(len(_venster_hoog) - 1 - int(np.argmax(_venster_hoog.values)))
         # HERSTELD: terug tot aan de oude top -> de instorting is uitgewerkt.
         if last >= top * 0.97:
+            _diag["reden"] = f"hersteld: {last:.2f} >= 97% van top {top:.2f}"
+            _INSTORTING_DIAG[naam_hint] = _diag
             return None
         # De weekly MACD is GEEN voorwaarde meer. Hij liep achter op de gebeurtenis:
         # RDDT viel ~25% terwijl de weekly MACD nog niet gekruist was, en daardoor
@@ -1141,7 +1155,11 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
                 "dagenSindsBodem": dagen_sinds_bodem,
                 "vers": dagen_sinds_bodem <= 5,      # eerste week na de bodem
                 "weeklyBearish": _bevestigd_zwak}
-    except Exception:
+    except Exception as e:
+        # NIET stil falen: een bare except verbergt echte bugs. ASMI vuurde niet en
+        # het kostte een ronde raden om te ontdekken waarom.
+        _diag["reden"] = f"{type(e).__name__}: {e}"
+        _INSTORTING_DIAG[naam_hint] = _diag
         return None
 
 
@@ -3262,7 +3280,8 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             _mm_bull = (_a_i is not None and _b_i is not None and _a_i > _b_i)
     except Exception:
         _mm_bull = False
-    _inst = _instorting_fase(daily, close_d, ema8_d, ema21_d, _wk_bear, _mm_bull)
+    _inst = _instorting_fase(daily, close_d, ema8_d, ema21_d, _wk_bear, _mm_bull,
+                             naam_hint=name)
     if _inst:
         _uit_tp = " De val kwam uit de winstzone." if _wz is not None else ""
         # ── VERSE FASE (eerste week na de bodem): HOLD wint van VERKOOP ──────────
@@ -3420,6 +3439,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "volTrend": vol_trend, "obv": obv_state, "squeeze": squeeze_state,
             "doubleBottom": double_bottom, "doubleTop": double_top,
             "instorting": _inst,
+            "instortingDiag": (None if _inst else (_INSTORTING_DIAG.get(name) or {}).get("reden")),
             "cijferStatus": _cijfers,
             "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
             "divergence": divergence,
@@ -5239,11 +5259,21 @@ def cijfer_status(naam, fund):
         return None
     verouderd, maanden = False, None
     lu = (fund or {}).get("lastUpdated") or ""
-    if laatste and len(lu) >= 7:
+    # EXACTE vergelijking waar mogelijk: "rapportVerwerkt" bevat de DATUM van het
+    # rapport dat in deze cijfers verwerkt zit. Vergelijken op maandniveau was te
+    # grof -- cijfers ingevoerd op 5 juli golden dan als actueel terwijl het bedrijf
+    # op 28 juli rapporteerde. Alleen als dat veld ontbreekt vallen we terug op de
+    # maandvergelijking, met een expliciete "onzeker"-vlag.
+    verwerkt = (fund or {}).get("rapportVerwerkt")
+    onzeker = False
+    if laatste and verwerkt:
+        verouderd = str(verwerkt) < str(laatste)
+    elif laatste and len(lu) >= 7:
         try:
             lu_jaar, lu_maand = int(lu[:4]), int(lu[5:7])
             r_jaar, r_maand = int(laatste[:4]), int(laatste[5:7])
             verouderd = (r_jaar, r_maand) > (lu_jaar, lu_maand)
+            onzeker = not verouderd and (r_jaar, r_maand) == (lu_jaar, lu_maand)
         except (ValueError, IndexError):
             verouderd = False
     if volgende:
@@ -5253,7 +5283,8 @@ def cijfer_status(naam, fund):
             maanden = None
     return {"laatsteRapport": laatste, "volgendRapport": volgende,
             "verouderd": bool(verouderd), "dagenTotRapport": maanden,
-            "cijfersVan": lu or None}
+            "cijfersVan": lu or None, "rapportVerwerkt": verwerkt,
+            "onzeker": bool(onzeker)}
 
 
 AUTO_FUND_FILE = "fundamentals_auto.json"
@@ -5497,7 +5528,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "8.9-handmatig-flag",
+            "version": "9.1-cijferstatus",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -5845,6 +5876,25 @@ def main():
         )
         if market_adj:
             reasoning += f" Het marktregime telt {market_adj:+d} mee in de timing van alle kandidaten."
+
+    # DIAGNOSE: elk aandeel dat >=20% onder zijn top staat maar GEEN instorting-
+    # trigger heeft. Zonder deze regel is een niet-vurende trigger onzichtbaar --
+    # het aandeel ziet er in de UI gewoon normaal uit. Nu staat in het log waarom.
+    _gemist = []
+    for _n, _s in results["stocks"].items():
+        if _s.get("error"):
+            continue
+        _ind = _s.get("indicators") or {}
+        if _ind.get("instorting"):
+            continue
+        _po = _s.get("pctOffHigh")
+        if isinstance(_po, (int, float)) and _po >= 20:
+            _reden = (_INSTORTING_DIAG.get(_n) or {}).get("reden") or "geen reden vastgelegd"
+            _gemist.append((_n, _po, _reden))
+    if _gemist:
+        print(f"\n  Instorting-diagnose ({len(_gemist)} aandelen >=20% onder top, geen trigger):")
+        for _n, _po, _reden in sorted(_gemist, key=lambda x: -x[1])[:12]:
+            print(f"    {_n:<7} {_po:>5.1f}% onder top -> {_reden}")
 
     results["allocation"] = {
         "generatedForMonth": NOW.strftime("%B %Y"),
