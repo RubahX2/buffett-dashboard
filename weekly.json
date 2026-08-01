@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-01T12:56:33.511281+02:00",
-  "generatedAtHuman": "Saturday 01 August 2026 om 12:56",
+  "generatedAt": "2026-08-01T13:23:16.735019+02:00",
+  "generatedAtHuman": "Saturday 01 August 2026 om 13:23",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -36,7 +36,7 @@
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 61 \u2191 67"
+          "text": "Composiet 61 \u2191 70"
         },
         {
           "type": "valuation",
@@ -46,33 +46,12 @@
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 LICHT KOOP"
+          "text": "Signaal: KOOP \u2192 HOLD"
         },
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -9.7% deze week ($873\u2192$789)"
-        }
-      ]
-    },
-    {
-      "ticker": "ASML",
-      "daysAgo": 8,
-      "changes": [
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
-        },
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: CAUTION (overextended) \u2192 LICHT KOOP"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.6% deze week ($1576\u2192$1440)"
+          "text": "Koers -8.3% deze week ($873\u2192$801)"
         }
       ]
     },
@@ -203,6 +182,22 @@
       ]
     },
     {
+      "ticker": "ASML",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: CAUTION (overextended) \u2192 HOLD"
+        },
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -9.0% deze week ($1576\u2192$1434)"
+        }
+      ]
+    },
+    {
       "ticker": "MU",
       "daysAgo": 8,
       "changes": [
@@ -263,22 +258,6 @@
           "type": "price",
           "dir": "down",
           "text": "Koers -11.5% deze week ($81\u2192$72)"
-        }
-      ]
-    },
-    {
-      "ticker": "AIR",
-      "daysAgo": 8,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 41 \u2191 50"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
         }
       ]
     },
@@ -648,6 +627,17 @@
           "type": "signal",
           "dir": "neutral",
           "text": "Signaal: STERK VERKOOP \u2192 KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "ALFEN",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 HOLD"
         }
       ]
     },
