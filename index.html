@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "8.9";
+const UI_VERSION = "9.1";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -1629,7 +1629,25 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                       // Alleen waarschuwen als er ECHT iets op Ruben wacht: er is
                       // gerapporteerd ná lastUpdated en de automaat heeft het niet
                       // (kunnen) doen. Anders blijft het scherm rustig.
-                      if(!verouderd || (auto && auto.rapport===cs?.laatsteRapport)) return null;
+                      const verwerkt = auto ? auto.rapport : cs?.rapportVerwerkt;
+                      // ALTIJD een status tonen, ook als alles in orde is. Anders zie je
+                      // nooit of de cijfers nieuw of oud zijn -- alleen stilte, en stilte
+                      // is dubbelzinnig.
+                      if(!verouderd){
+                        if(!cs) return null;
+                        const kl = cs.onzeker ? C.orange : C.green;
+                        return (
+                          <div style={{marginTop:5,padding:"5px 8px",background:"#0d1a12",
+                            border:`1px solid ${kl}`,borderRadius:5,color:kl,lineHeight:1.5}}>
+                            {cs.onzeker
+                              ? <>◐ Waarschijnlijk actueel, niet zeker — cijfers van {cs.cijfersVan},
+                                  rapport op {cs.laatsteRapport} (zelfde maand, geen exacte datum vastgelegd).</>
+                              : <>✓ Cijfers actueel — rapport van {verwerkt || cs.laatsteRapport} is verwerkt.</>}
+                            {cs.volgendRapport && <span style={{color:C.textDim}}> Volgend rapport: {cs.volgendRapport}.</span>}
+                          </div>
+                        );
+                      }
+                      if(auto && auto.rapport===cs?.laatsteRapport) return null;
                       return (
                         <div style={{marginTop:5,padding:"5px 8px",background:"#2a1a00",
                           border:`1px solid ${C.orange}`,borderRadius:5,color:C.orange,lineHeight:1.5}}>
