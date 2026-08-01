@@ -5256,6 +5256,164 @@ def cijfer_status(naam, fund):
             "cijfersVan": lu or None}
 
 
+AUTO_FUND_FILE = "fundamentals_auto.json"
+AUTO_FUND = {}   # naam -> {veld: waarde, "_bron": "FMP", "_datum": "..."}
+
+# Velden die AUTOMATISCH bijgewerkt mogen worden: puur mechanische, direct
+# afleesbare cijfers. Bewust NIET earningsHistory -- daar zit oordeel in
+# (ASMI genormaliseerd excl. ASMPT, MSFT's GAAP-nuance met eenmalige posten).
+# Een automaat die dat overschrijft wist stilletjes jaren analyse uit.
+AUTO_VELDEN = ("eps", "revenueGrowth", "netMargin", "roe", "debtEquity",
+               "fcfYield", "divYield", "mktCap", "beta")
+
+
+def _fmp_json(pad, timeout=12):
+    if not FMP_API_KEY:
+        return None
+    sep = "&" if "?" in pad else "?"
+    url = f"{FMP_BASE}/{pad}{sep}apikey={FMP_API_KEY}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "buffett-dashboard"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError,
+            TimeoutError, OSError):
+        return None
+
+
+def _mkt_cap_tekst(v):
+    try:
+        v = float(v)
+    except (TypeError, ValueError):
+        return None
+    for deler, achtervoegsel in ((1e12, "T"), (1e9, "B"), (1e6, "M")):
+        if v >= deler:
+            return f"${v / deler:.1f}{achtervoegsel}"
+    return f"${v:.0f}"
+
+
+def fetch_fundamentals_fmp(sym):
+    """Mechanische fundamentals via FMP. Alleen US-tickers (FMP dekt Euronext
+    onbetrouwbaar -- dat staat al in fetch_historical_pe_fmp). Geeft een dict met
+    alleen de velden die ECHT gevonden zijn; ontbrekende velden blijven weg zodat
+    de handmatige waarde blijft staan."""
+    if not FMP_API_KEY or "." in sym:
+        return None
+    uit = {}
+    r = _fmp_json(f"ratios-ttm/{sym}")
+    if isinstance(r, list) and r:
+        d = r[0]
+        _map = {"netMargin": "netProfitMarginTTM", "roe": "returnOnEquityTTM",
+                "debtEquity": "debtEquityRatioTTM", "divYield": "dividendYielTTM"}
+        for veld, sleutel in _map.items():
+            v = d.get(sleutel)
+            if isinstance(v, (int, float)):
+                # FMP geeft marges/rendementen als fractie (0.403), wij tonen procenten
+                uit[veld] = round(v * 100, 1) if veld != "debtEquity" else round(v, 2)
+    k = _fmp_json(f"key-metrics-ttm/{sym}")
+    if isinstance(k, list) and k:
+        d = k[0]
+        for veld, sleutel in (("eps", "netIncomePerShareTTM"),
+                              ("fcfYield", "freeCashFlowYieldTTM")):
+            v = d.get(sleutel)
+            if isinstance(v, (int, float)):
+                uit[veld] = round(v * 100, 1) if veld == "fcfYield" else round(v, 2)
+    p = _fmp_json(f"profile/{sym}")
+    if isinstance(p, list) and p:
+        d = p[0]
+        if d.get("mktCap"):
+            _m = _mkt_cap_tekst(d["mktCap"])
+            if _m:
+                uit["mktCap"] = _m
+        if isinstance(d.get("beta"), (int, float)):
+            uit["beta"] = round(float(d["beta"]), 2)
+    # Omzetgroei jaar-op-jaar uit de kwartaalcijfers (Q vs Q-4)
+    inc = _fmp_json(f"income-statement/{sym}?period=quarter&limit=6")
+    if isinstance(inc, list) and len(inc) >= 5:
+        nu, vorig = inc[0].get("revenue"), inc[4].get("revenue")
+        if isinstance(nu, (int, float)) and isinstance(vorig, (int, float)) and vorig > 0:
+            uit["revenueGrowth"] = round((nu / vorig - 1) * 100, 1)
+    return uit or None
+
+
+def ververs_fundamentals_auto(paren):
+    """Werkt de mechanische fundamentals bij voor aandelen die NET gerapporteerd
+    hebben. Alleen dan: dat is precies het moment waarop de handmatige cijfers
+    verouderen, en het scheelt honderden onnodige API-calls.
+
+    De handmatige waarde blijft ALTIJD de bron van waarheid voor alles wat oordeel
+    vraagt; dit vult alleen de mechanische velden aan en registreert per veld de
+    oude waarde, zodat het dashboard het verschil kan tonen."""
+    cache = {}
+    if os.path.exists(AUTO_FUND_FILE):
+        try:
+            with open(AUTO_FUND_FILE, "r", encoding="utf-8") as f:
+                cache = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            cache = {}
+    if not FMP_API_KEY:
+        print("  Fundamentals-auto: geen FMP_API_KEY — overgeslagen")
+        return cache
+    bijgewerkt = 0
+    for naam, sym, _fb in paren:
+        if naam in ETF_TICKERS or "." in sym:
+            continue
+        st = cijfer_status(naam, FUNDAMENTALS.get(naam) or {})
+        if not (st and st.get("verouderd")):
+            continue                     # geen nieuw rapport -> niets te doen
+        _al = cache.get(naam) or {}
+        if _al.get("_rapport") == st.get("laatsteRapport"):
+            continue                     # dit rapport al verwerkt
+        nieuw = fetch_fundamentals_fmp(sym)
+        if not nieuw:
+            continue
+        oud = {v: (FUNDAMENTALS.get(naam) or {}).get(v) for v in nieuw}
+        nieuw["_bron"] = "FMP"
+        nieuw["_rapport"] = st.get("laatsteRapport")
+        nieuw["_opgehaald"] = str(TODAY)
+        nieuw["_vorige"] = oud
+        cache[naam] = nieuw
+        bijgewerkt += 1
+        time.sleep(0.2)
+    if bijgewerkt:
+        try:
+            with open(AUTO_FUND_FILE, "w", encoding="utf-8") as f:
+                json.dump(cache, f, indent=1, sort_keys=True)
+        except IOError:
+            pass
+    print(f"  Fundamentals-auto: {bijgewerkt} bijgewerkt na nieuw rapport "
+          f"({len(cache)} in cache)")
+    return cache
+
+
+def pas_auto_fundamentals_toe():
+    """Voegt de opgehaalde waarden samen met FUNDAMENTALS. Alleen AUTO_VELDEN,
+    en alleen als er echt een getal is. earningsHistory en lastUpdated blijven
+    onaangeroerd -- die horen bij het handmatige oordeel."""
+    # Markeer per aandeel of automatisch bijwerken mogelijk IS. Zonder deze vlag
+    # ziet Ruben alleen wat de automaat deed, niet wat er op hem wacht.
+    for _naam, _sym, _fb in WATCHLIST:
+        _f = FUNDAMENTALS.get(_naam)
+        if _f is not None:
+            _f["autoMogelijk"] = bool(FMP_API_KEY) and "." not in _sym and _naam not in ETF_TICKERS
+    for naam, auto in (AUTO_FUND or {}).items():
+        f = FUNDAMENTALS.get(naam)
+        if not f or not isinstance(auto, dict):
+            continue
+        gewijzigd = []
+        for veld in AUTO_VELDEN:
+            v = auto.get(veld)
+            if v is None:
+                continue
+            if f.get(veld) != v:
+                gewijzigd.append(veld)
+            f[veld] = v
+        if gewijzigd:
+            f["autoUpdated"] = {"velden": gewijzigd, "bron": auto.get("_bron"),
+                                "rapport": auto.get("_rapport"),
+                                "vorige": auto.get("_vorige")}
+
+
 def load_track_record():
     if os.path.exists(TRACK_FILE):
         try:
@@ -5339,15 +5497,20 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "8.7-instorting-venster2",
+            "version": "8.9-handmatig-flag",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
     }
 
     # Rapportagedatums (max 1x per dag; faalt stil) -> badge "cijfers verouderd"
-    global EARNINGS
+    global EARNINGS, AUTO_FUND
     EARNINGS = ververs_earnings_cache(WATCHLIST)
+    # Mechanische fundamentals automatisch bijwerken voor US-tickers die NET
+    # gerapporteerd hebben. Euronext (ASMI/ASML) blijft handwerk: FMP dekt dat
+    # onbetrouwbaar. earningsHistory blijft overal handmatig -- daar zit oordeel in.
+    AUTO_FUND = ververs_fundamentals_auto(WATCHLIST)
+    pas_auto_fundamentals_toe()
 
     # Batch ophalen
     fetched = fetch_all(WATCHLIST)
