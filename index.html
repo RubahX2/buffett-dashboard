@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "8.0";
+const UI_VERSION = "8.3";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -2259,6 +2259,74 @@ function App() {
                   )}
                 </div>
               )}
+
+              {/* LEERLIJST — twee top-5's naast elkaar, inklapbaar */}
+              {allocation.pickCompare&&allocation.pickCompare.ongefilterd?.length>0&&(()=>{
+                const pc = allocation.pickCompare;
+                const Rij=(r)=>(
+                  <div key={r.ticker} onClick={()=>setSelected(r.ticker)}
+                    style={{padding:"6px 8px",borderRadius:6,cursor:"pointer",marginBottom:4,
+                      background:C.bg,border:`1px solid ${r.degraded?"#7f1d1d":C.border}`}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                      <span>
+                        <span style={{color:C.textDim,fontSize:10,marginRight:5}}>{r.rang}.</span>
+                        <span style={{color:C.accent,fontWeight:700,fontSize:12}}>{r.ticker}</span>
+                      </span>
+                      <span style={{color:C.text,fontSize:11,fontWeight:700}}>{r.composite}</span>
+                    </div>
+                    <div style={{color:C.textDim,fontSize:9,marginTop:2}}>
+                      {r.overall}
+                      {r.peg!=null && <> · PEG {r.peg}</>}
+                      {r.pctOffHigh!=null && <> · {r.pctOffHigh}% onder top</>}
+                    </div>
+                    {r.redenen?.length>0&&(
+                      <div style={{color:"#fca5a5",fontSize:9,marginTop:2}}>
+                        ⊘ {r.redenen.join(" · ")}
+                      </div>
+                    )}
+                  </div>
+                );
+                return (
+                  <details style={{background:C.panel2,border:`1px solid ${C.border}`,borderRadius:10,
+                    padding:"12px 16px",marginBottom:16}}>
+                    <summary style={{cursor:"pointer",color:C.accent,fontSize:12,fontWeight:800,
+                      letterSpacing:0.5}}>
+                      🎓 LEERLIJST — mét en zonder filter
+                      <span style={{color:C.textDim,fontWeight:400,fontSize:10,marginLeft:6}}>
+                        ({pc.overlap}/5 overlap)
+                      </span>
+                    </summary>
+                    <div style={{color:C.textDim,fontSize:10,lineHeight:1.6,margin:"8px 0 10px",maxWidth:660}}>
+                      Links wat het systeem zou kiezen, rechts de ruwe composiet zonder filter.
+                      Het <b style={{color:C.text}}>verschil</b> is het leerpunt: veel overlap = rustige
+                      markt; een volledig gedegradeerde rechterlijst = kwaliteit wordt breed afgestraft,
+                      wat iets zegt over het regime en niet over die aandelen.
+                      {pc.alleDegraded && <b style={{color:C.orange}}> Nu is de hele ongefilterde
+                      top 5 gedegradeerd.</b>}
+                    </div>
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12}}>
+                      <div>
+                        <div style={{color:C.green,fontSize:11,fontWeight:700,marginBottom:5}}>
+                          ✓ Met filter — kandidaat voor de pick
+                        </div>
+                        {pc.gefilterd?.length ? pc.gefilterd.map(Rij)
+                          : <div style={{color:C.textDim,fontSize:10}}>Geen zuivere kandidaten deze maand.</div>}
+                      </div>
+                      <div>
+                        <div style={{color:C.orange,fontSize:11,fontWeight:700,marginBottom:5}}>
+                          ⚡ Zonder filter — ruwe composiet
+                        </div>
+                        {pc.ongefilterd.map(Rij)}
+                      </div>
+                    </div>
+                    <div style={{color:C.textDim,fontSize:9,marginTop:8,fontStyle:"italic"}}>
+                      ⊘ toont waaróm een naam niet als maandpick kan dienen. De composiet blijft
+                      eerlijk zeggen "dit is de beste waarde"; de filter zegt "maar nog niet nu".
+                      Beide zijn waar.
+                    </div>
+                  </details>
+                );
+              })()}
 
               {/* Weekly changelog */}
               {verdictChanges&&verdictChanges.changes&&verdictChanges.changes.length>0&&(()=>{
