@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "8.4";
+const UI_VERSION = "8.6";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -1413,12 +1413,15 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                 <div style={{marginTop:6,padding:"8px 10px",background:"#0a1a2e",
                   border:"1px solid #0369a1",borderRadius:5,fontSize:10,lineHeight:1.5}}>
                   <div style={{color:"#7dd3fc",fontWeight:700,fontSize:11,marginBottom:3}}>
-                    🪂 HOLD — verse instorting · fase {f} van 3
+                    🪂 {inst.vers && f===1 ? "HOLD — eerste week na de val" : "HOLD — verse instorting"} · fase {f} van 3
                   </div>
                   <div style={{color:C.textDim,marginBottom:5}}>
                     Val van <b style={{color:"#e0f2fe"}}>{inst.valPct}%</b> vanaf {inst.top} naar {inst.bodem} in {inst.dagenVal} beursdagen,
-                    met een bearish weekly MACD. Bij zo'n scherpe val is kopen gokken — daarom
-                    geen koopsignaal tot het herstel zich bewijst.
+                    {inst.dagenSindsBodem!=null && <> — bodem {inst.dagenSindsBodem} beursdagen geleden</>}.
+                    {inst.vers && f===1
+                      ? " Eerste week na zo'n val: HOLD i.p.v. verkoop — er is kans op een bounce of gap-fill, en bij kwaliteit is uitstappen op de bodem het slechtste moment."
+                      : " Bij zo'n scherpe val is kopen gokken — geen koopsignaal tot het herstel zich bewijst."}
+                    {inst.weeklyBearish===false && <span style={{color:C.textDim}}> Weekly MACD is nog niet bearish.</span>}
                   </div>
                   {stap(1,"Fase 1 · HOLD","geen koop, de val is nog vers")}
                   {stap(2,"Fase 2 · licht koop","twee slotkoersen boven de daily 21-EMA")}
