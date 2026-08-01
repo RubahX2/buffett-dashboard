@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "8.7";
+const UI_VERSION = "8.9";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -1622,6 +1622,38 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                 {fund.lastUpdated&&(
                   <div style={{color:C.muted,fontSize:9,marginTop:4}}>
                     Fundamentals bijgewerkt: {fund.lastUpdated} · Controleer bij elk kwartaalrapport
+                    {(()=>{
+                      const cs = (data?.indicators||{}).cijferStatus;
+                      const verouderd = cs?.verouderd;
+                      const auto = fund.autoUpdated;
+                      // Alleen waarschuwen als er ECHT iets op Ruben wacht: er is
+                      // gerapporteerd ná lastUpdated en de automaat heeft het niet
+                      // (kunnen) doen. Anders blijft het scherm rustig.
+                      if(!verouderd || (auto && auto.rapport===cs?.laatsteRapport)) return null;
+                      return (
+                        <div style={{marginTop:5,padding:"5px 8px",background:"#2a1a00",
+                          border:`1px solid ${C.orange}`,borderRadius:5,color:C.orange,lineHeight:1.5}}>
+                          ✋ Handmatig bijwerken nodig — er is gerapporteerd op {cs.laatsteRapport},
+                          de cijfers hieronder zijn van {cs.cijfersVan}.
+                          {fund.autoMogelijk===false
+                            ? " Automatisch bijwerken kan hier niet: Euronext/niet-US wordt door de databron onbetrouwbaar gedekt."
+                            : " De automaat heeft dit rapport nog niet verwerkt."}
+                        </div>
+                      );
+                    })()}
+                    {fund.autoUpdated&&(
+                      <div style={{marginTop:5,padding:"5px 8px",background:"#0a1e2e",
+                        border:`1px solid ${C.accent}`,borderRadius:5,color:"#7dd3fc",lineHeight:1.5}}>
+                        🔄 Automatisch bijgewerkt na het rapport van {fund.autoUpdated.rapport} (bron {fund.autoUpdated.bron}):
+                        {" "}{fund.autoUpdated.velden.join(", ")}.
+                        {fund.autoUpdated.vorige&&(
+                          <span style={{color:C.textDim}}> Was: {Object.entries(fund.autoUpdated.vorige)
+                            .filter(([k,v])=>v!=null).map(([k,v])=>`${k} ${v}`).join(" · ")}.</span>
+                        )}
+                        <span style={{color:C.textDim}}> De winstgroei per jaar blijft handmatig — daar zit
+                        normalisatie in (eenmalige posten, cyclische correcties).</span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -2529,6 +2561,10 @@ function App() {
               const d=cs(t); return d && !d.verouderd && d.dagenTotRapport!=null
                                    && d.dagenTotRapport>=0 && d.dagenTotRapport<=7;
             }).sort((a,b)=>cs(a).dagenTotRapport-cs(b).dagenTotRapport);
+            const handmatig = TICKER_ORDER.filter(t=>{
+              const d=cs(t); const f=stocks[t]?.fund;
+              return d?.verouderd && !(f?.autoUpdated && f.autoUpdated.rapport===d.laatsteRapport);
+            });
             if(!oud.length && !komt.length) return null;
             return (
               <div style={{background:C.panel,border:`1px solid ${C.border}`,borderLeft:`3px solid ${C.orange}`,
@@ -2541,6 +2577,19 @@ function App() {
                     <b style={{color:C.text}}>Verouderd ({oud.length})</b> — er is gerapporteerd ná de
                     laatste update van de fundamentals:<br/>
                     {oud.map(t=>(
+                      <span key={t} onClick={()=>setSelected(t)}
+                        style={{color:C.accent,cursor:"pointer",marginRight:8,fontWeight:700}}>
+                        {t} <span style={{color:C.textDim,fontWeight:400}}>({cs(t).laatsteRapport})</span>
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {handmatig.length>0 && (
+                  <div style={{fontSize:11,lineHeight:1.6,color:C.orange,marginBottom:6}}>
+                    <b>✋ Wacht op handmatige update ({handmatig.length})</b>
+                    <span style={{color:C.textDim}}> — de automaat kon of mocht deze niet doen
+                    (Euronext/niet-US, of nog niet verwerkt):</span><br/>
+                    {handmatig.map(t=>(
                       <span key={t} onClick={()=>setSelected(t)}
                         style={{color:C.accent,cursor:"pointer",marginRight:8,fontWeight:700}}>
                         {t} <span style={{color:C.textDim,fontWeight:400}}>({cs(t).laatsteRapport})</span>
