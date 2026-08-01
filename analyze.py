@@ -1107,8 +1107,14 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
         # HERSTELD: terug tot aan de oude top -> de instorting is uitgewerkt.
         if last >= top * 0.97:
             return None
-        if not weekly_macd_bearish:
-            return None
+        # De weekly MACD is GEEN voorwaarde meer. Hij liep achter op de gebeurtenis:
+        # RDDT viel ~25% terwijl de weekly MACD nog niet gekruist was, en daardoor
+        # bestond de instorting voor het systeem simpelweg niet -- geen paneel, geen
+        # HOLD. Een val van deze omvang IS het feit; de MACD is hooguit bevestiging.
+        # Hij telt nu mee als zwaarte-indicator, niet als poort.
+        _bevestigd_zwak = bool(weekly_macd_bearish)
+        # Dagen sinds de bodem: bepaalt of we in de VERSE fase zitten (eerste week).
+        dagen_sinds_bodem = int(len(dd) - 1 - idx)
 
         fase = 1
         e21 = ema21_d.iloc[-2:]
@@ -1122,7 +1128,10 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
                 fase = 3
         return {"fase": fase, "valPct": round(val_pct, 1),
                 "dagenVal": dagen_top_naar_bodem, "top": round(top, 2),
-                "bodem": round(bodem_koers, 2), "boven21": boven21}
+                "bodem": round(bodem_koers, 2), "boven21": boven21,
+                "dagenSindsBodem": dagen_sinds_bodem,
+                "vers": dagen_sinds_bodem <= 5,      # eerste week na de bodem
+                "weeklyBearish": _bevestigd_zwak}
     except Exception:
         return None
 
@@ -3247,6 +3256,28 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     _inst = _instorting_fase(daily, close_d, ema8_d, ema21_d, _wk_bear, _mm_bull)
     if _inst:
         _uit_tp = " De val kwam uit de winstzone." if _wz is not None else ""
+        # ── VERSE FASE (eerste week na de bodem): HOLD wint van VERKOOP ──────────
+        # Uitzondering op de regel "HOLD is enkel een plafond op kopen". Rubens
+        # redenering: vlak na een scherpe val is verkopen zelden het juiste advies --
+        # er is een reële kans op een bounce of het vullen van de gap, en bij een
+        # KWALITEITSaandeel is wachten beter dan op de bodem uitstappen. Verkopen op
+        # dag 3 van een instorting is verkopen op het slechtst denkbare moment.
+        # Bewust NIET voor baggers/ETF's: daar kan een val gewoon het einde zijn.
+        # Na die eerste week vervalt de uitzondering en geldt de gewone rangorde,
+        # zodat een echte structurele afbraak alsnog VERKOOP kan worden.
+        # Directe lidmaatschapstest: is_bagger wordt eerder in deze functie voor
+        # ETF's op True gezet (voor de fib-logica), dus die variabele is hier niet
+        # betrouwbaar meer.
+        _verse_hold = (_inst.get("vers") and _inst["fase"] == 1
+                       and name not in BAGGER_TICKERS and name not in ETF_TICKERS)
+        if _verse_hold and "VERKOOP" in (overall or "").upper():
+            overall = "HOLD"
+            reasons_c.append(
+                f"Verse instorting ({_inst['valPct']}%, {_inst['dagenSindsBodem']} "
+                "beursdagen na de bodem): eerste week na zo'n val is HOLD het eerlijker "
+                "advies dan verkopen — kans op bounce of gap-fill, en bij kwaliteit is "
+                "uitstappen op de bodem het slechtste moment. Na deze week geldt de "
+                "gewone rangorde weer.")
         if _inst["fase"] == 1:
             _kantel_naar("HOLD",
                 f"Verse instorting: val van {_inst['valPct']}% vanaf de top in "
@@ -5144,7 +5175,13 @@ def ververs_earnings_cache(paren):
     hapering bij Yahoo mag nooit de hele analyse breken -- de koersdata en de
     signalen zijn het product, dit is een hulpje."""
     cache = laad_earnings_cache()
-    if cache.get("_datum") == str(TODAY):
+    # Een LEGE cache van vandaag telt NIET als "al gedaan". Anders blokkeert één
+    # mislukte ochtendrun de rest van de dag: de functie keerde meteen terug en
+    # printte niets, dus je zag ook niet DAT hij was overgeslagen. Alleen een cache
+    # met echte datums is een geldige cache.
+    _gevuld = sum(1 for k, v in cache.items() if k != "_datum" and isinstance(v, dict))
+    if cache.get("_datum") == str(TODAY) and _gevuld > 0:
+        print(f"  Rapportagedatums: cache van vandaag hergebruikt ({_gevuld} aandelen)")
         return cache
     nieuw = {"_datum": str(TODAY)}
     gelukt = 0
@@ -5293,7 +5330,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "8.4-earnings-fmp",
+            "version": "8.6-verse-hold",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
