@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "9.1";
+const UI_VERSION = "9.7";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -1391,6 +1391,18 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                 ⚠ {data.conflictNote}
               </div>
             )}
+            {/* Beslissende reden: wat kantelde het oordeel? */}
+            {data?.beslissend&&(
+              <div style={{marginTop:6,padding:"6px 9px",background:"#1a1206",
+                border:`1px solid ${C.accent}`,borderRadius:5,fontSize:10,lineHeight:1.5,color:C.accent}}>
+                ⚖ <b>Beslissend</b>: {data.beslissend.van} → <b>{data.beslissend.naar}</b>.{" "}
+                <span style={{color:C.textDim}}>{data.beslissend.reden}</span>
+                <div style={{color:C.textDim,marginTop:3}}>
+                  Daarom kan het oordeel afwijken van de gewichten hierboven: een zone- of
+                  guardregel overrulet de optelsom.
+                </div>
+              </div>
+            )}
             {/* HOLD — verse instorting: waaróm staat dit op hold, en wat moet er gebeuren */}
             {(()=>{
               const inst = (data?.indicators||{}).instorting;
@@ -1517,8 +1529,8 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
               <>
                 <div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap"}}>
                   {[
-                    {l:"🟢 Koop",    v:data.buyWeight||0,  c:C.green},
-                    {l:"🔴 Verkoop", v:data.sellWeight||0, c:C.red},
+                    {l:"🟢 Koopgewicht",    v:data.buyWeight||0,  c:C.green},
+                    {l:"🔴 Verkoopgewicht", v:data.sellWeight||0, c:C.red},
                     {l:"⚠ Alerts",  v:data.alerts?.length||0, c:C.orange},
                   ].map(x=>(
                     <div key={x.l} style={{background:C.bg,borderRadius:6,padding:"8px 14px",textAlign:"center"}}>
@@ -1691,6 +1703,31 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
             {data?.earningsGrowth && Array.isArray(data.earningsGrowth.series) && (
               <div style={{marginTop:12,paddingTop:12,borderTop:`1px solid ${C.border}`}}>
                 <div style={{color:C.text,fontSize:12,fontWeight:700,marginBottom:2}}>Winstgroei per jaar</div>
+                {(()=>{
+                  // Deze reeks wordt NOOIT automatisch bijgewerkt: er zit normalisatie in
+                  // (eenmalige posten, cyclische correcties). Daarom altijd zichtbaar
+                  // maken dat het handwerk is — en signaleren als er een jaar mist.
+                  const jaren = (data.earningsGrowth?.series||[]).map(r=>r.year).filter(y=>typeof y==="number");
+                  if(!jaren.length) return null;
+                  const laatste = Math.max(...jaren);
+                  const nu = new Date().getFullYear();
+                  // Een boekjaar is pas compleet te noemen als het vorige kalenderjaar
+                  // voorbij is. Ontbreekt dat jaar, dan wacht er handwerk.
+                  const mist = laatste < nu - 1;
+                  return (
+                    <div style={{marginBottom:8,padding:"5px 8px",borderRadius:5,lineHeight:1.5,fontSize:10,
+                      background: mist?"#2a1a00":"#12161d",
+                      border:`1px solid ${mist?C.orange:C.border}`,
+                      color: mist?C.orange:C.textDim}}>
+                      {mist
+                        ? <>✋ Mogelijk een jaar achter: de reeks loopt tot {laatste}. Deze cijfers
+                            worden <b>handmatig</b> onderhouden — vraag om een update.</>
+                        : <>✍ Handmatig onderhouden tot en met <b style={{color:C.text}}>{laatste}</b>.
+                            Deze reeks wordt bewust <b>niet</b> automatisch bijgewerkt: er zit normalisatie
+                            in (eenmalige posten, cyclische correcties) die oordeel vraagt.</>}
+                    </div>
+                  );
+                })()}
                 <div style={{color:C.textDim,fontSize:10,marginBottom:8,lineHeight:1.4}}>
                   Eén jaar zegt weinig zonder de meerjarige lijn. Zo zie je of een cijfer een
                   trend is of een uitschieter.
@@ -2137,7 +2174,7 @@ function App() {
           <span style={{color:C.textDim,fontSize:11,marginLeft:10}}>Kwaliteit × Timing</span>
         </div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          {[["allocatie","🎯 Maandpick"],["schatkamer","💰 Schatkamer"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["momentum","🔄 Momentum"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
+          {[["allocatie","🎯 Maandpick"],["schatkamer","💰 Schatkamer"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["momentum","🔄 Momentum"],["schokken","⚡ Gaps"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
             <button key={v} onClick={()=>setView(v)} style={{
               background:view===v?C.accent:"none",color:view===v?C.bg:C.textDim,
               border:`1px solid ${view===v?C.accent:C.border}`,borderRadius:5,
@@ -2768,11 +2805,82 @@ function App() {
         </div>
       )}
 
+      {view==="schokken"&&(
+        <div style={{padding:"14px 16px"}}>
+          {(()=>{
+            const sk = (t)=>((stocks[t]?.indicators||{}).schokken)||[];
+            const rijen = [];
+            TICKER_ORDER.forEach(t=>sk(t).forEach(s=>rijen.push({t, ...s})));
+            rijen.sort((a,b)=>a.dagenGeleden-b.dagenGeleden || Math.abs(b.gapPct)-Math.abs(a.gapPct));
+            const op = rijen.filter(r=>r.gapPct>0), neer = rijen.filter(r=>r.gapPct<0);
+            const Kaart=(r)=>{
+              const kl = r.gapPct>0?C.green:C.red;
+              return (
+                <div key={r.t+r.datum} onClick={()=>setSelected(r.t)}
+                  style={{background:C.panel,borderRadius:8,padding:"11px",cursor:"pointer",
+                    border:`1px solid ${C.border}`,borderLeft:`3px solid ${kl}`}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                    <span style={{color:C.accent,fontWeight:700,fontSize:14}}>{r.t}</span>
+                    <span style={{color:kl,fontSize:14,fontWeight:700}}>{r.gapPct>0?"+":""}{r.gapPct}%</span>
+                  </div>
+                  <div style={{color:C.textDim,fontSize:10,marginBottom:5}}>{STOCK_NAMES[r.t]}</div>
+                  <div style={{color:C.textDim,fontSize:10,lineHeight:1.5}}>
+                    {r.datum} · {r.dagenGeleden===0?"vandaag":`${r.dagenGeleden} beursdagen geleden`}
+                    <br/>slot {r.vorigSlot} → open {r.opening} · {r.sigma}× normale dagbeweging
+                    <br/>dag sloot {r.dagPct>0?"+":""}{r.dagPct}%
+                    {r.gapDicht ? <span style={{color:C.textDim}}> · gap weer dicht</span>
+                                : <span style={{color:C.accent}}> · gap staat nog open</span>}
+                    {r.naCijfers && <span style={{color:C.accent}}> · 📋 na kwartaalcijfers</span>}
+                    
+                  </div>
+                </div>
+              );
+            };
+            if(!rijen.length) return (
+              <div style={{color:C.textDim,fontSize:12}}>
+                Geen koersgaps in de laatste 25 handelsdagen.
+              </div>
+            );
+            return (
+              <>
+                <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:6}}>
+                  ⚡ Koersgaps — laatste 25 handelsdagen ({rijen.length})
+                </div>
+                <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:680,marginBottom:14}}>
+Alleen echte <b style={{color:C.text}}>openingsgaps</b>: de koers opent duidelijk anders dan
+                  het vorige slot. Zo'n gap ontstaat terwijl de beurs dicht is — dat is per definitie
+                  nieuws (cijfers, guidance, overname, downgrade). Een aandeel dat intraday hard
+                  beweegt is gewoon een drukke sessie; die ruis staat hier bewust niet tussen.
+                  Drempel: minstens 2% <b style={{color:C.text}}>én</b> twee keer de eigen normale
+                  dagbeweging. Een gap die weer <b style={{color:C.text}}>dichtloopt</b> was een
+                  schrikreactie; een gap die <b style={{color:C.text}}>open blijft</b> is een
+                  herwaardering. Waarneming, geen signaal.
+                </div>
+                {neer.length>0 && (<>
+                  <div style={{color:C.red,fontSize:12,fontWeight:700,margin:"10px 0 6px"}}>
+                    Gap omlaag ({neer.length})
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
+                    {neer.map(Kaart)}
+                  </div></>)}
+                {op.length>0 && (<>
+                  <div style={{color:C.green,fontSize:12,fontWeight:700,margin:"14px 0 6px"}}>
+                    Gap omhoog ({op.length})
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
+                    {op.map(Kaart)}
+                  </div></>)}
+              </>
+            );
+          })()}
+        </div>
+      )}
+
       {view==="momentum"&&(
         <div style={{padding:"14px 16px"}}>
           <div style={{marginBottom:14}}>
             <div style={{color:"#4ade80",fontSize:15,fontWeight:700,marginBottom:4}}>
-              🔄 Momentum — divergentie tussen koers en indicator
+              🔄 Momentum — volume, OBV en divergentie
             </div>
             <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:640}}>
               Aandelen waar de <b style={{color:C.text}}>koers en het momentum uit elkaar lopen</b>.
@@ -2843,24 +2951,6 @@ function App() {
 
             return (
               <>
-                <div style={{color:C.green,fontSize:13,fontWeight:700,marginBottom:8}}>
-                  ▲ Bullish divergence ({bull.length})
-                </div>
-                {bull.length ? (
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:10,marginBottom:20}}>
-                    {bull.map(t=>Card(t,true))}
-                  </div>
-                ) : <div style={{color:C.textDim,fontSize:12,marginBottom:20}}>Geen bullish divergence op dit moment.</div>}
-
-                <div style={{color:C.red,fontSize:13,fontWeight:700,marginBottom:8}}>
-                  ▼ Bearish divergence ({bear.length})
-                </div>
-                {bear.length ? (
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:10}}>
-                    {bear.map(t=>Card(t,false))}
-                  </div>
-                ) : <div style={{color:C.textDim,fontSize:12}}>Geen bearish divergence op dit moment.</div>}
-
                 {(()=>{
                   const vt = (t)=>(stocks[t]?.indicators||{}).volTrend;
                   const alle = TICKER_ORDER.filter(t=>vt(t)?.rising)
@@ -2984,6 +3074,24 @@ function App() {
                   );
                 })()}
 
+                <div style={{color:C.green,fontSize:13,fontWeight:700,marginBottom:8}}>
+                  ▲ Bullish divergence ({bull.length})
+                </div>
+                {bull.length ? (
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:10,marginBottom:20}}>
+                    {bull.map(t=>Card(t,true))}
+                  </div>
+                ) : <div style={{color:C.textDim,fontSize:12,marginBottom:20}}>Geen bullish divergence op dit moment.</div>}
+
+                <div style={{color:C.red,fontSize:13,fontWeight:700,marginBottom:8}}>
+                  ▼ Bearish divergence ({bear.length})
+                </div>
+                {bear.length ? (
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:10}}>
+                    {bear.map(t=>Card(t,false))}
+                  </div>
+                ) : <div style={{color:C.textDim,fontSize:12}}>Geen bearish divergence op dit moment.</div>}
+
                 {(()=>{
                   const sq = (t)=>(stocks[t]?.indicators||{}).squeeze;
                   const ob = (t)=>(stocks[t]?.indicators||{}).obv;
@@ -3054,7 +3162,11 @@ function App() {
                         <div style={{color:C.textDim,fontSize:10,marginBottom:5}}>{STOCK_NAMES[t]}</div>
                         <div style={{color:C.textDim,fontSize:10,lineHeight:1.5}}>
                           {omhoog ? `Bodems ${d.bodem1} / ${d.bodem2}` : `Toppen ${d.top1} / ${d.top2}`}
-                          {" · nek "}{d.nek}{" · "}{d.barsApart}w
+                          {" · "}{omhoog?"pivot":"nek"}{" "}{d.nek}{" · "}{d.barsApart}w
+                          {omhoog && d.diepte!=null && <> · basis {d.basisWeken}w, {d.diepte}% diep</>}
+                          {omhoog && d.undercut===true && <span style={{color:C.teal}}> · 2e bodem ondersnijdt</span>}
+                          {omhoog && d.undercut===false && <span style={{color:C.orange}}> · 2e bodem ondersnijdt niet</span>}
+                          {omhoog && d.volumeUitbraak!=null && <> · volume {d.volumeUitbraak}x gem.</>}
                           <br/>Doel bij {omhoog?"uitbraak":"breuk"}: <b style={{color:C.text}}>{d.doel}</b>
                           {d.volumeDroogtOp===false && <span style={{color:C.orange}}> · volume nam niet af</span>}
                         </div>
@@ -3077,13 +3189,16 @@ function App() {
                         〽 Dubbele bodem &amp; dubbele top
                       </div>
                       <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:660,marginBottom:4}}>
-                        Klassieke W- en M-patronen: twee bodems (of toppen) op <b style={{color:C.text}}>ongeveer
-                        dezelfde hoogte</b> met een duidelijk tussenpunt — de nek — ertussen. De regel van
-                        het vak: het patroon telt pas als de koers <b style={{color:C.text}}>door de nek
-                        breekt</b>. Tot dat moment is het een waarneming met gewicht 0; daarna een licht
-                        koop- of verkoopsignaal, want dan is de omkeer onafhankelijk bevestigd.
+                        De <b style={{color:C.text}}>dubbele bodem</b> volgt William O&rsquo;Neil (How to Make
+                        Money in Stocks): een BASIS na een opgang van minstens 30%, zeven weken of langer,
+                        15&ndash;50% diep. Kenmerkend bij O&rsquo;Neil: de <b style={{color:C.text}}>tweede bodem
+                        duikt ónder de eerste</b> &mdash; die laatste dip schudt de zwakke handen eruit. Het
+                        koopmoment is de <b style={{color:C.text}}>pivot</b>: de middenpiek van de W. Volume
+                        hoort op te drogen bij de tweede bodem en bij de uitbraak aan te zwellen tot ~1,4x
+                        gemiddeld. De dubbele top is het spiegelbeeld (klassiek, niet O&rsquo;Neil). Tot de
+                        doorbraak is dit een waarneming met gewicht 0.
                       </div>
-                      {Groep("W · dubbele bodem", C.green, bodems, db, true)}
+                      {Groep("W · dubbele bodem (O&rsquo;Neil)", C.green, bodems, db, true)}
                       {Groep("M · dubbele top",   C.red,   toppen, dt, false)}
                     </div>
                   );
