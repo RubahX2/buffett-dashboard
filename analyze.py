@@ -258,6 +258,15 @@ CYCLICAL_TICKERS = {"MU", "SNDK", "ADM"}
 #
 # Alle waarden geverifieerd tegen Rubens TradingView-charts.
 FIB_OVERRIDES = {
+    # DIE: Ruben las de swing van de chart. TWEE verschillende ankers, bewust:
+    #  · EXTENSIE (omhoog) vanaf de retest-bodem ~140 -> top 228. De koers viel na de
+    #    top helemaal terug tot die zone en klom er weer uit; dat is het draaipunt van
+    #    de huidige opgang. Log-geprojecteerd: 1.618 = 308.2 — exact wat Ruben leest.
+    #  · RETRACEMENT vanaf 132 -> 228, de volledige swing. Geeft de steunzones en de
+    #    voortzetting eronder (1.618 op ~94). De koers 179.40 ligt net boven de 0.5.
+    # Met één gedeeld anker klopt er telkens één van de twee niet.
+    "DIE": {"ath": 228.00, "atl": 140.00, "recent_hi": 228.00,
+            "retr_atl": 132.00, "retr_hi": 228.00},
     # ASMI: Ruben las de swing van de chart. Extensie op de VORIGE cyclus: top 751.2
     # (de piek vóór de bodem) -> bodem 332.4. Log-geprojecteerd geeft dat 1.272 = 937.8
     # en 1.414 = 1053 -- exact de zone waar de piek van 1094 in viel. Automatisch koos
@@ -746,6 +755,14 @@ _DB_BREUK      = 0.03  # 3% onder de laagste bodem = patroon mislukt
 _DB_DALING_MIN = 0.15  # 15%: er moet een echte daling aan de eerste bodem voorafgaan
 _DB_ONDER_TOP  = 0.15  # bodems moeten >=15% onder de eigen top liggen (geen pauze vlak onder de top)
 
+# ── O'Neil (How to Make Money in Stocks) — dubbele bodem als BASIS ──────────
+_ON_OPGANG_MIN      = 0.30   # >=30% opgang vóór de basis
+_ON_OPGANG_VENSTER  = 52     # waarin die opgang gemeten wordt (weken)
+_ON_BASIS_MIN_WEKEN = 7      # O'Neil: basis duurt 7 weken of langer
+_ON_DIEPTE_MIN      = 15.0   # % onder de linkerpiek
+_ON_DIEPTE_MAX      = 50.0   # dieper = schade, geen basis
+_ON_MIN_WEKEN_TUSSEN = 3     # minimale afstand tussen de twee bodems
+
 
 def detect_divergence(price: pd.Series, indicator: pd.Series,
                       left: int = 5, right: int = 5, max_lookback: int = 60):
@@ -864,32 +881,35 @@ def detect_divergence(price: pd.Series, indicator: pd.Series,
     return bull or bear
 
 def detect_double_bottom(price: pd.Series, volume: pd.Series = None,
-                         left: int = 4, right: int = 4, max_lookback: int = 40):
-    """Klassieke DUBBELE BODEM (W-patroon) volgens de regels van de kunst.
+                         left: int = 2, right: int = 2, max_lookback: int = 65):
+    """DUBBELE BODEM volgens William O'Neil, "How to Make Money in Stocks".
 
-    Vier eisen, alle vier verplicht:
-      1. TWEE bodems op ongeveer HETZELFDE niveau (binnen _DB_TOLERANTIE). Ligt de
-         tweede bodem duidelijk lager, dan is het geen W maar een voortgaande daling
-         (en mogelijk een bullish divergentie -- dat is een ander signaal).
-      2. Voldoende TIJD ertussen. Twee bodems vlak na elkaar zijn ruis binnen dezelfde
-         beweging. Ook niet te ver: dan zijn het losse gebeurtenissen.
-      3. Een duidelijke TUSSENTOP (de 'nek') minstens _DB_NEK_MIN boven de bodems.
-         Zonder die tussentop is het een vlakke bodemzone, geen W-patroon.
-      4. NIET ONGELDIG: de koers mag niet onder de laagste bodem zijn gezakt. Gebeurt
-         dat wel, dan is het patroon per definitie mislukt.
+    O'Neil ziet de dubbele bodem als een BASIS na een opgang, niet als een los
+    W-figuurtje. Zijn specificaties, en waar ze afwijken van de gangbare lezing:
 
-    Status:
-      'vormend'   -> patroon compleet, nek nog NIET gebroken. Waarnemen, niet kopen:
-                     een dubbele bodem is pas een dubbele bodem als hij bevestigd is.
-      'bevestigd' -> slotkoers boven de nek = klassieke bevestiging (uitbraak).
+      1. VOORAFGAANDE OPGANG van minstens 30%. Een basis is een pauze in een
+         stijging; zonder die stijging is er niets om te consolideren.
+      2. BASISLENGTE minstens 7 weken (O'Neil: doorgaans 7 weken tot enkele
+         maanden). Korter is geen basis maar een dipje.
+      3. DIEPTE 15-35% vanaf de linkerpiek, in zware markten tot ~40-50%. Dieper
+         dan dat is geen basis maar schade.
+      4. De TWEEDE BODEM DUIKT ONDER DE EERSTE. Dit is O'Neils kenmerkende eis en
+         het omgekeerde van wat de meeste boeken zeggen (die willen twee bodems op
+         gelijke hoogte). Reden: die laatste dip schudt de zwakke handen eruit --
+         precies wat een gezonde basis doet. Een tweede bodem die NIET ondersnijdt
+         is bij O'Neil een zwakker exemplaar.
+      5. MIDDENPIEK onder de linkerpiek, en die middenpiek IS het koopmoment
+         (pivot). Kopen gebeurt bij een uitbraak daarboven, niet eerder.
+      6. VOLUME droogt op bij de tweede bodem en zwelt bij de uitbraak aan tot
+         ~40-50% boven gemiddeld. Zonder dat volume is de uitbraak verdacht.
 
-    Volume hoort volgens de leer AF te nemen op de tweede bodem (verkopers raken op)
-    en TOE te nemen bij de uitbraak. Dat rapporteren we als kwaliteitskenmerk.
-    Koersdoel: nek + (nek - bodem), de klassieke projectie van de patroonhoogte."""
-    if price is None or len(price) < (left + right + 10):
+    Status: 'vormend' = pivot nog niet gebroken (waarnemen, niet kopen),
+            'bevestigd' = slot boven de pivot (O'Neils koopmoment)."""
+    if price is None or len(price) < 30:
         return None
     lows = _find_swing_lows(price, left, right)
-    if len(lows) < 2:
+    highs = _find_swing_highs(price, left, right)
+    if len(lows) < 2 or not highs:
         return None
     vals = price.values
     n = len(vals)
@@ -897,72 +917,96 @@ def detect_double_bottom(price: pd.Series, volume: pd.Series = None,
     if not np.isfinite(last) or last <= 0:
         return None
 
-    # Bodem 2 = de meest recente BEVESTIGDE bodem binnen het venster.
-    kandidaten = [(i, p) for (i, p) in lows if i >= n - max_lookback]
-    if not kandidaten:
+    # Tweede bodem: de meest recente bevestigde bodem binnen het venster.
+    kand = [(i, p) for (i, p) in lows if i >= n - max_lookback]
+    if not kand:
         return None
-    i2, p2 = max(kandidaten, key=lambda t: t[0])
-    # Bodem 1 = de bodem daarvoor die het dichtst op gelijke hoogte ligt.
-    eerder = [(i, p) for (i, p) in lows
-              if (i2 - max_lookback) <= i <= (i2 - _MIN_GAP(left, right))]
+    i2, p2 = max(kand, key=lambda t: t[0])
+    # Eerste bodem: de bodem daarvoor waar de tweede ONDER dook (O'Neil-eis 4),
+    # of anders de dichtstbijzijnde gelijke bodem (zwakker exemplaar).
+    eerder = [(i, p) for (i, p) in lows if i <= i2 - _ON_MIN_WEKEN_TUSSEN]
     if not eerder:
         return None
-    i1, p1 = min(eerder, key=lambda t: abs(t[1] - p2))
+    ondersnijdend = [(i, p) for (i, p) in eerder if p2 < p]
+    i1, p1 = (max(ondersnijdend, key=lambda t: t[0]) if ondersnijdend
+              else min(eerder, key=lambda t: abs(t[1] - p2)))
+    undercut = bool(p2 < p1)
 
+    # Linkerpiek: de top waar de basis begon (vóór de eerste bodem).
+    links = [(j, q) for (j, q) in highs if j < i1]
+    if not links:
+        return None
+    j0, linkerpiek = max(links, key=lambda t: t[0])
+
+    # Eis 1: voorafgaande opgang van >=30% naar die linkerpiek.
+    voor = vals[max(0, j0 - _ON_OPGANG_VENSTER): j0 + 1]
+    if len(voor) < 4:
+        return None
+    start = float(np.nanmin(voor))
+    if start <= 0 or (linkerpiek / start - 1.0) < _ON_OPGANG_MIN:
+        return None
+
+    # Eis 2: basislengte (linkerpiek -> nu) minstens 7 weken.
+    basis_weken = int(n - 1 - j0)
+    if basis_weken < _ON_BASIS_MIN_WEKEN:
+        return None
+
+    # Eis 3: diepte t.o.v. de linkerpiek.
     bodem = float(min(p1, p2))
-    if bodem <= 0:
-        return None
-    if abs(p2 - p1) / bodem > _DB_TOLERANTIE:          # eis 1
-        return None
-
-    # ── eis 0: er moet een DALING aan voorafgaan ────────────────────────────
-    # Een dubbele bodem is een OMKEERpatroon: zonder voorafgaande daling is er
-    # niets om te keren. Zonder deze eis telden twee gelijke bodempjes in een
-    # consolidatie -- of vlak onder een TP-zone -- ook mee, en dat is geen W.
-    voor = vals[max(0, i1 - max_lookback): i1 + 1]
-    if len(voor) < 5:
-        return None
-    top_voor = float(np.nanmax(voor))
-    if not np.isfinite(top_voor) or top_voor <= 0:
-        return None
-    if (top_voor - p1) / top_voor < _DB_DALING_MIN:
+    diepte = (linkerpiek - bodem) / linkerpiek * 100.0
+    if not (_ON_DIEPTE_MIN <= diepte <= _ON_DIEPTE_MAX):
         return None
 
-    # ── eis 0b: niet vlak onder de eigen top ────────────────────────────────
-    # Daar vormt zich per definitie geen bodem maar een pauze. Dit sluit ook het
-    # geval uit waar de koers net onder een TP-zone hangt.
-    hoogste = float(np.nanmax(vals))
-    if np.isfinite(hoogste) and hoogste > 0 and bodem > hoogste * (1.0 - _DB_ONDER_TOP):
+    # Eis 5: middenpiek = pivot, moet ONDER de linkerpiek liggen.
+    tussen = [(j, q) for (j, q) in highs if i1 < j < i2]
+    if not tussen:
+        return None
+    jm, pivot = max(tussen, key=lambda t: t[1])
+    if pivot >= linkerpiek:
+        return None
+    if pivot <= bodem * 1.03:          # geen echte middenpiek
+        return None
+    # Patroon mislukt als de koers ver onder de laagste bodem zakt.
+    if last < bodem * (1.0 - _DB_BREUK):
         return None
 
-    nek = float(np.nanmax(vals[i1:i2 + 1]))            # eis 3
-    if not np.isfinite(nek) or nek < bodem * (1.0 + _DB_NEK_MIN):
-        return None
-    if last < bodem * (1.0 - _DB_BREUK):               # eis 4
-        return None
-
-    bevestigd = last > nek
-    # Volume-kenmerken (optioneel; ontbreekt volume, dan gewoon None).
+    # Eis 6: volume-kenmerken.
     vol_droogt_op = None
+    vol_uitbraak = None
     if volume is not None and len(volume) == n:
         vv = volume.values
-        def _gem(idx):
-            a = vv[max(0, idx - 2): idx + 3]
+
+        def _gem(idx, r=2):
+            a = vv[max(0, idx - r): idx + r + 1]
             a = a[np.isfinite(a)]
             return float(a.mean()) if len(a) else None
+
         v1, v2 = _gem(i1), _gem(i2)
         if v1 and v2:
             vol_droogt_op = bool(v2 < v1)
+        _basis_gem = vv[max(0, j0): n]
+        _basis_gem = _basis_gem[np.isfinite(_basis_gem)]
+        if len(_basis_gem) and np.isfinite(vv[-1]) and _basis_gem.mean() > 0:
+            vol_uitbraak = round(float(vv[-1] / _basis_gem.mean()), 2)
 
+    bevestigd = last > pivot
     return {
         "status": "bevestigd" if bevestigd else "vormend",
         "bodem1": round(float(p1), 2), "bodem2": round(float(p2), 2),
-        "nek": round(nek, 2), "bodem": round(bodem, 2),
-        "doel": round(nek + (nek - bodem), 2),          # klassieke projectie
-        "pctNaarNek": round((nek - last) / last * 100.0, 1) if last > 0 else None,
+        "undercut": undercut,
+        "linkerpiek": round(float(linkerpiek), 2),
+        "pivot": round(float(pivot), 2),          # O'Neils koopmoment
+        "nek": round(float(pivot), 2),            # zelfde punt, oude veldnaam
+        "bodem": round(bodem, 2),
+        "doel": round(pivot + (pivot - bodem), 2),
+        "pctNaarPivot": round((pivot - last) / last * 100.0, 1) if last > 0 else None,
+        "pctNaarNek": round((pivot - last) / last * 100.0, 1) if last > 0 else None,
+        "basisWeken": basis_weken,
+        "diepte": round(diepte, 1),
+        "opgangVoor": round((linkerpiek / start - 1.0) * 100.0, 1),
         "barsApart": int(i2 - i1),
         "volumeDroogtOp": vol_droogt_op,
-        "diepte": round((nek - bodem) / nek * 100.0, 1),
+        "volumeUitbraak": vol_uitbraak,
     }
 
 
@@ -1161,6 +1205,62 @@ def _instorting_fase(daily, close_d, ema8_d, ema21_d,
         _diag["reden"] = f"{type(e).__name__}: {e}"
         _INSTORTING_DIAG[naam_hint] = _diag
         return None
+
+
+def detect_gap(daily, naam="", venster=25, min_pct=2.0, sigma=2.0):
+    """OPENINGSGAP: de koers opent duidelijk hoger of lager dan het vorige slot.
+
+    Alleen de GAP telt, niet de beweging binnen de dag. Reden: een gap ontstaat
+    terwijl de beurs dicht is -- dat is per definitie nieuws (cijfers, guidance,
+    overname, downgrade). Een aandeel dat intraday 5% zakt is gewoon een drukke
+    sessie; dat is de ruis die we juist niet willen zien.
+
+    Twee drempels tegelijk:
+      · absoluut: minstens `min_pct`% -- kleinere gaps zijn openingsruis
+      · relatief: minstens `sigma`x de eigen dagelijkse standaarddeviatie
+
+    Rapporteert ook of de gap DICHTGELOPEN is (koers terug voorbij het vorige slot):
+    een gap die zich sluit was een schrikreactie, een gap die open blijft staan is
+    een herwaardering. Dat onderscheid is het interessantst."""
+    if daily is None or len(daily) < 130:
+        return []
+    try:
+        c, o = daily["Close"], daily["Open"]
+        if "Open" not in daily.columns:
+            return []
+        sd = float((c.pct_change() * 100.0).tail(126).std())
+        if not np.isfinite(sd) or sd <= 0:
+            return []
+        drempel = max(min_pct, sigma * sd)
+        uit = []
+        laatste_slot = float(c.iloc[-1])
+        for i in range(max(1, len(c) - venster), len(c)):
+            vorig_slot = float(c.iloc[i - 1])
+            opening = float(o.iloc[i])
+            if not (np.isfinite(vorig_slot) and np.isfinite(opening)) or vorig_slot <= 0:
+                continue
+            gap = (opening - vorig_slot) / vorig_slot * 100.0
+            if abs(gap) < drempel:
+                continue
+            slot = float(c.iloc[i])
+            dag = c.index[i]
+            # Gap dicht? Omhoog: koers terug ONDER het vorige slot. Omlaag: terug erboven.
+            dicht = (laatste_slot < vorig_slot) if gap > 0 else (laatste_slot > vorig_slot)
+            uit.append({
+                "datum": str(dag.date()) if hasattr(dag, "date") else str(dag),
+                "gapPct": round(gap, 1),
+                "vorigSlot": round(vorig_slot, 2),
+                "opening": round(opening, 2),
+                "slotDieDag": round(slot, 2),
+                # Hield de markt de beweging vast binnen de dag, of liep hij al terug?
+                "dagPct": round((slot - vorig_slot) / vorig_slot * 100.0, 1),
+                "sigma": round(abs(gap) / sd, 1),
+                "dagenGeleden": int(len(c) - 1 - i),
+                "gapDicht": bool(dicht),
+            })
+        return sorted(uit, key=lambda x: x["dagenGeleden"])
+    except Exception:
+        return []
 
 
 def calc_fibonacci(swing_low: float, swing_high: float,
@@ -1927,13 +2027,13 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                      f"patroonhoogte {double_bottom['diepte']}%.")
         if double_bottom["status"] == "bevestigd":
             signals.append({"type":"BUY","cat":"PATROON","tf":"1W","weight":3,"icon":"〽️",
-                "title":"Dubbele bodem BEVESTIGD (weekly)",
+                "title":"Dubbele bodem (O'Neil): pivot gebroken",
                 "detail":f"Klassiek W-patroon: {_db_basis} De koers sloot boven de nek — "
                          f"dat is de bevestiging. Klassiek koersdoel ${double_bottom['doel']} "
                          f"(nek + patroonhoogte).{_db_voltxt}"})
         else:
             signals.append({"type":"WATCH","cat":"PATROON","tf":"1W","weight":0,"icon":"〽️",
-                "title":"Dubbele bodem in de maak (weekly)",
+                "title":"Dubbele bodem (O'Neil) in de maak",
                 "detail":f"Mogelijk W-patroon: {_db_basis} Nog NIET bevestigd — daarvoor moet de "
                          f"koers boven de nek ${double_bottom['nek']} sluiten "
                          f"({double_bottom['pctNaarNek']}% hoger). Tot die uitbraak is dit een "
@@ -1971,6 +2071,34 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
                          f"koers onder de nek ${double_top['nek']} sluiten "
                          f"({double_top['pctNaarNek']}% lager). Tot die breuk is dit een "
                          f"waarneming, geen verkoopsignaal: telt met gewicht 0.{_dt_voltxt}"})
+
+    # ── KOERSSCHOK: plotse beweging tussen twee handelsdagen ────────────────
+    _schokken = detect_gap(daily, naam=name)
+    if _schokken:
+        _laatste_rap = (EARNINGS.get(name) or {}).get("laatste")
+        for _sk in _schokken:
+            # Viel de schok binnen 2 handelsdagen na een rapport? Dan is de oorzaak
+            # vrijwel zeker de cijfers -- dat scheelt zoeken.
+            _sk["naCijfers"] = False
+            if _laatste_rap:
+                try:
+                    _d = (date.fromisoformat(_sk["datum"]) - date.fromisoformat(_laatste_rap)).days
+                    _sk["naCijfers"] = 0 <= _d <= 4
+                except ValueError:
+                    pass
+        _top = max(_schokken, key=lambda x: abs(x["gapPct"]))
+        _op = "omhoog" if _top["gapPct"] > 0 else "omlaag"
+        _oorzaak = (" Dit viel vlak na het kwartaalrapport." if _top.get("naCijfers")
+                    else " Geen rapport in de buurt — dus ander nieuws.")
+        _status = (" De gap is intussen weer dichtgelopen: eerder een schrikreactie dan "
+                   "een herwaardering." if _top["gapDicht"] else
+                   " De gap staat nog open: de markt heeft het aandeel opnieuw geprijsd.")
+        signals.append({"type":"WATCH","cat":"GAP","tf":"1D","weight":0,"icon":"⚡",
+            "title":f"Koersgap {_top['gapPct']:+.1f}% {_op} op {_top['datum']}",
+            "detail":f"De koers sloot op ${_top['vorigSlot']} en opende op ${_top['opening']} "
+                     f"({_top['sigma']}x de normale dagbeweging). Een gap ontstaat terwijl de "
+                     f"beurs dicht is — dat is per definitie nieuws.{_oorzaak}{_status} "
+                     "Waarneming met gewicht 0."})
 
     # ── CIJFER-STATUS: zijn de handmatige fundamentals achterhaald? ──────────
     # Puur informatief (gewicht 0). Het dashboard tikt je op de schouder in plaats
@@ -3191,9 +3319,18 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     # verzwakt hij geen bestaand sterker verkoopsignaal.
     _rang = {"STERK KOOP": 0, "KOOP": 1, "LICHT KOOP": 2, "NEUTRAAL": 3, "HOLD": 4,
              "CAUTION (overextended)": 5, "LICHT VERKOOP": 6, "VERKOOP": 7, "STERK VERKOOP": 8}
+    _beslissend = {"reden": None, "van": None, "naar": None}
+
     def _kantel_naar(doel, note):
+        """Kantelt het oordeel naar een STRENGER niveau en onthoudt WAAROM.
+        Zonder dat laatste stond de beslissende reden verstopt tussen de rest van
+        de conflicttekst -- terwijl juist die regel het oordeel bepaalt (DIE toonde
+        14 koop tegen 9 verkoop en stond toch op verkoop: de winstzone kantelde)."""
         nonlocal overall, conflict_note
         if _rang.get(doel, 0) > _rang.get(overall, 0):
+            _beslissend["van"] = overall
+            _beslissend["naar"] = doel
+            _beslissend["reden"] = note
             overall = doel
             conflict_note = (conflict_note + " " if conflict_note else "") + note
 
@@ -3418,6 +3555,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
     return {
         "signals": signals, "alerts": alerts, "overall": overall,
         "buyWeight": buy_w, "sellWeight": sell_w, "baseOverall": base_overall,
+        "beslissend": (_beslissend if _beslissend["reden"] else None),
         "confluence": confl,
         "conflict": conflict, "conflictNote": conflict_note,
         "reversalNote": _reversal_note,
@@ -3440,7 +3578,7 @@ def generate_signals(name: str, daily: pd.DataFrame, weekly: pd.DataFrame,
             "doubleBottom": double_bottom, "doubleTop": double_top,
             "instorting": _inst,
             "instortingDiag": (None if _inst else (_INSTORTING_DIAG.get(name) or {}).get("reden")),
-            "cijferStatus": _cijfers,
+            "cijferStatus": _cijfers, "schokken": _schokken,
             "fib": fib, "isFriday": IS_FRIDAY, "hasWeekly": has_weekly,
             "divergence": divergence,
         },
@@ -5528,7 +5666,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "9.1-cijferstatus",
+            "version": "9.7-oneil-bodem",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
