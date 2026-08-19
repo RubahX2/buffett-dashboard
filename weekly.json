@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-18T22:46:26.891963+02:00",
-  "generatedAtHuman": "Tuesday 18 August 2026 om 22:46",
+  "generatedAt": "2026-08-19T10:06:57.855701+02:00",
+  "generatedAtHuman": "Wednesday 19 August 2026 om 10:06",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -10,7 +10,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 41 \u2193 34"
+          "text": "Composiet 40 \u2193 34"
         },
         {
           "type": "valuation",
@@ -25,55 +25,18 @@
       ]
     },
     {
-      "ticker": "MELI",
+      "ticker": "ORCL",
       "daysAgo": 7,
       "changes": [
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 55 \u2191 63"
+          "text": "Composiet 53 \u2191 59"
         },
         {
           "type": "valuation",
           "dir": "neutral",
-          "text": "Waardering: Redelijk (PEG 1\u20131.5) \u2192 Aantrekkelijk (PEG < 1)"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.3% deze week ($1940\u2192$1779)"
-        }
-      ]
-    },
-    {
-      "ticker": "MU",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 LICHT KOOP"
-        },
-        {
-          "type": "price",
-          "dir": "up",
-          "text": "Koers +8.3% deze week ($869\u2192$941)"
-        }
-      ]
-    },
-    {
-      "ticker": "MNST",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 HOLD"
-        },
-        {
-          "type": "rsi",
-          "dir": "up",
-          "text": "RSI weekly oversold (24)"
+          "text": "Waardering: Neutraal (PEG 1.5\u20132.5) \u2192 Redelijk (PEG 1\u20131.5)"
         }
       ]
     },
@@ -116,28 +79,12 @@
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 61 \u2191 69"
+          "text": "Composiet 63 \u2191 69"
         },
         {
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Neutraal (PEG 1.5\u20132.5) \u2192 Redelijk (PEG 1\u20131.5)"
-        }
-      ]
-    },
-    {
-      "ticker": "ALFEN",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 LICHT KOOP"
-        },
-        {
-          "type": "price",
-          "dir": "up",
-          "text": "Koers +8.5% deze week ($13\u2192$14)"
         }
       ]
     },
@@ -158,6 +105,54 @@
       ]
     },
     {
+      "ticker": "NABTESCO",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 38 \u2191 43"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: KOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
+      "ticker": "HARMONIC",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: KOOP \u2192 HOLD"
+        },
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -11.1% deze week ($6380\u2192$5670)"
+        }
+      ]
+    },
+    {
+      "ticker": "NOVT",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 40 \u2191 45"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: KOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
       "ticker": "SNDK",
       "daysAgo": 7,
       "changes": [
@@ -169,7 +164,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +27.9% deze week ($1271\u2192$1626)"
+          "text": "Koers +20.9% deze week ($1344\u2192$1626)"
         }
       ]
     },
@@ -179,8 +174,8 @@
       "changes": [
         {
           "type": "signal",
-          "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 KOOP"
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 KOOP"
         }
       ]
     },
@@ -196,13 +191,24 @@
       ]
     },
     {
-      "ticker": "KTOS",
+      "ticker": "MU",
       "daysAgo": 7,
       "changes": [
         {
           "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: VERKOOP \u2192 LICHT VERKOOP"
+          "dir": "up",
+          "text": "Signaal: HOLD \u2192 LICHT KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "TDG",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 50 \u2191 55"
         }
       ]
     },
@@ -213,7 +219,7 @@
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 41 \u2191 46"
+          "text": "Composiet 39 \u2191 46"
         }
       ]
     },
@@ -229,6 +235,17 @@
       ]
     },
     {
+      "ticker": "MNST",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "rsi",
+          "dir": "up",
+          "text": "RSI weekly oversold (24)"
+        }
+      ]
+    },
+    {
       "ticker": "V",
       "daysAgo": 7,
       "changes": [
@@ -240,13 +257,13 @@
       ]
     },
     {
-      "ticker": "ADM",
+      "ticker": "MELI",
       "daysAgo": 7,
       "changes": [
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 STERK KOOP"
+          "text": "Signaal: LICHT VERKOOP \u2192 VERKOOP"
         }
       ]
     },
@@ -262,6 +279,17 @@
       ]
     },
     {
+      "ticker": "CRWV",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -13.5% deze week ($108\u2192$93)"
+        }
+      ]
+    },
+    {
       "ticker": "DIE",
       "daysAgo": 7,
       "changes": [
@@ -273,35 +301,24 @@
       ]
     },
     {
-      "ticker": "NABTESCO",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 KOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "HARMONIC",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 KOOP"
-        }
-      ]
-    },
-    {
       "ticker": "KEYENCE",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 44 \u2191 49"
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: STERK KOOP \u2192 KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "YASKAWA",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.1% deze week ($5365\u2192$4929)"
         }
       ]
     },
@@ -311,8 +328,8 @@
       "changes": [
         {
           "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 KOOP"
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 HOLD"
         }
       ]
     },
@@ -322,30 +339,8 @@
       "changes": [
         {
           "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 LICHT KOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "CGNX",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 49 \u2193 44"
-        }
-      ]
-    },
-    {
-      "ticker": "NOVT",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 HOLD"
+          "text": "Signaal: KOOP \u2192 LICHT KOOP"
         }
       ]
     },
@@ -372,13 +367,13 @@
       ]
     },
     {
-      "ticker": "HOOD",
+      "ticker": "ANET",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: LICHT VERKOOP \u2192 HOLD"
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.2% deze week ($210\u2192$193)"
         }
       ]
     },
@@ -410,19 +405,8 @@
       "changes": [
         {
           "type": "signal",
-          "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 KOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "RDDT",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: LICHT VERKOOP \u2192 HOLD"
+          "text": "Signaal: VERKOOP \u2192 KOOP"
         }
       ]
     },
@@ -431,9 +415,9 @@
       "daysAgo": 7,
       "changes": [
         {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -9.3% deze week ($599\u2192$544)"
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 73 \u2191 78"
         }
       ]
     },
@@ -460,6 +444,6 @@
       ]
     }
   ],
-  "changedCount": 36,
+  "changedCount": 35,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
