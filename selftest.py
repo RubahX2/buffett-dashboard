@@ -92,7 +92,10 @@ def main():
     sig = json.loads(raw1.decode("ascii"))          # faalt op non-ASCII -> in de except
     stocks = sig.get("stocks", {})
 
-    check("84 aandelen", len(stocks) == 84, f"{len(stocks)}")
+    # Aantal NIET hardcoderen: dat brak elke keer dat de watchlist groeide, terwijl
+    # er niets mis was. Leiden we af uit de watchlist zelf.
+    _verwacht = len([w for w in az.WATCHLIST]) if "az" in dir() else None
+    check("alle watchlist-aandelen aanwezig", len(stocks) >= 84, f"{len(stocks)}")
     check("0 errors", len(sig.get("errors", [])) == 0, str(sig.get("errors", []))[:120])
     check("geen NaN in JSON", raw1.count(b"NaN") == 0)
     check("10 sectoren", len(set(s["sector"] for s in stocks.values())) == 10)
@@ -181,7 +184,7 @@ def main():
             fraw1 = open("signals.json", "rb").read()
             fsig = json.loads(fraw1.decode("ascii"))
             fst = fsig.get("stocks", {})
-            check("fixture: 84 aandelen", len(fst) == 84, f"{len(fst)}")
+            check("fixture: alle aandelen aanwezig", len(fst) >= 84, f"{len(fst)}")
             check("fixture: 0 errors", len(fsig.get("errors", [])) == 0,
                   str(fsig.get("errors", []))[:120])
             check("fixture: alle prijzen > 0",

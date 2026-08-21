@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "9.7";
+const UI_VERSION = "10.0";
 
 const STOCK_NAMES = {
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
@@ -3559,6 +3559,56 @@ Alleen echte <b style={{color:C.text}}>openingsgaps</b>: de koers opent duidelij
           <PurchaseMirror portfolio={portfolio} track={trackData} stocks={stocks}/>
           <ModelDiagnostics diag={trackData?.diagnostics} version={trackData?.modelVersion}/>
           <TrackRecord track={trackData}/>
+          {(()=>{
+            const ds = trackData?.driverStats;
+            const rijen = ds ? Object.entries(ds) : [];
+            const kleur = (st,med)=> st==="te weinig" ? C.textDim
+                        : st==="richting" ? C.orange
+                        : (med>0 ? C.green : C.red);
+            return (
+              <div style={{marginTop:20,background:C.panel,border:`1px solid ${C.border}`,
+                borderRadius:8,padding:"12px 14px"}}>
+                <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:6}}>
+                  🔬 Werkt elk signaal? — resultaat per signaaltype
+                </div>
+                <div style={{color:C.textDim,fontSize:11,lineHeight:1.6,maxWidth:700,marginBottom:10}}>
+                  Per signaaltype de <b style={{color:C.text}}>mediaan</b> ten opzichte van de index
+                  (niet het gemiddelde: één uitschieter trekt dat volledig scheef). Lees dit als een
+                  diagnose-instrument, niet als scorebord.
+                  <br/><b style={{color:C.orange}}>Twee waarschuwingen.</b> Waarnemingen uit dezelfde
+                  week meten grotendeels één marktbeweging, dus n overdrijft hoeveel bewijs je hebt.
+                  En wie tien signaaltypes tegelijk toetst, ziet er altijd wel één veelbelovend
+                  lijken — puur door kansrekening. Wat je hier het snelst uit leert, is welk signaal
+                  het structureel <b style={{color:C.text}}>slechter</b> doet dan de markt.
+                </div>
+                {!rijen.length ? (
+                  <div style={{color:C.textDim,fontSize:11,lineHeight:1.6}}>
+                    Nog geen data. Vanaf nu wordt bij elk nieuw signaal vastgelegd wélke indicatoren
+                    het oordeel droegen; bestaande records missen dat veld. De eerste uitsplitsing
+                    verschijnt zodra nieuwe signalen hun eerste horizon (1 week) hebben volgemaakt.
+                  </div>
+                ) : (
+                  <div style={{display:"grid",gap:6}}>
+                    {rijen.sort((a,b)=>a[0].localeCompare(b[0])).map(([naam,v])=>(
+                      <div key={naam} style={{background:C.bg,borderRadius:6,padding:"8px 10px",
+                        border:`1px solid ${C.border}`}}>
+                        <div style={{color:C.text,fontSize:12,fontWeight:700,marginBottom:3}}>{naam}</div>
+                        <div style={{display:"flex",flexWrap:"wrap",gap:12,fontSize:10}}>
+                          {Object.entries(v.horizons).sort().map(([h,d])=>(
+                            <span key={h} style={{color:kleur(d.stand,d.mediaan)}}>
+                              <b>{h}</b>: {d.mediaan>0?"+":""}{d.mediaan}% · n={d.n}
+                              {d.beterDanMarkt!=null && <> · {d.beterDanMarkt}% beter</>}
+                              <span style={{color:C.textDim}}> · {d.stand}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </div>
       )}
 

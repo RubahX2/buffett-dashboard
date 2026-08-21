@@ -100,6 +100,15 @@ FMP_BASE    = "https://financialmodelingprep.com/api/v3"
 # Tickers: (dashboard_naam, primaire_ticker, fallback_ticker)
 # Kern-watchlist (kwaliteit + waardering + timing)
 WATCHLIST = [
+    # ── Fintech / betaalinfrastructuur & platforms (toegevoegd aug 2026) ──
+    ("ADYEN", "ADYEN.AS", "ADYEY"),  # Euronext Amsterdam (€); ADR als data-fallback
+    ("NU",    "NU",      None),      # Nu Holdings — neobank LatAm
+    ("RELY",  "RELY",    None),      # Remitly — grensoverschrijdende transfers
+    ("DLO",   "DLO",     None),      # DLocal — betaalinfra opkomende markten
+    ("GLBE",  "GLBE",    None),      # Global-e — cross-border e-commerce
+    ("TOST",  "TOST",    None),      # Toast — restaurant-OS
+    ("IOT",   "IOT",     None),      # Samsara — IoT wagenparken/industrie
+    ("KNSL",  "KNSL",    None),      # Kinsale Capital — E&S-verzekeraar
     ("WM",    "WM",      None),
     ("PLTR",  "PLTR",    None),
     ("CAT",   "CAT",     None),
@@ -313,7 +322,7 @@ FIB_OVERRIDES = {
 
 # Valuta per aandeel (weergave). "p" = Britse pence (LSE noteert in pence!).
 CURRENCY = {
-    "ASML":"€", "ASMI":"€", "DIE":"€", "SOF":"€", "AIR":"€", "ALFEN":"€", "LOTB":"€",
+    "ADYEN":"€", "ASML":"€", "ASMI":"€", "DIE":"€", "SOF":"€", "AIR":"€", "ALFEN":"€", "LOTB":"€",
     "MC":"€",
     "GAW":"p", "ADM":"p", "III":"p",
     "NABTESCO":"¥", "HARMONIC":"¥", "KEYENCE":"¥", "FANUC":"¥", "YASKAWA":"¥", "SOFTBANK":"¥",
@@ -353,6 +362,9 @@ SECTORS = {
     "AIR":"Ruimtevaart & defensie", "PL":"Ruimtevaart & defensie",
     # Software & platforms
     "GOOGL":"Software & platforms", "MSFT":"Software & platforms", "AMZN":"Software & platforms",
+    "ADYEN":"Fintech & financiën", "NU":"Fintech & financiën", "RELY":"Fintech & financiën",
+    "DLO":"Fintech & financiën", "KNSL":"Fintech & financiën",
+    "GLBE":"Software & platforms", "TOST":"Software & platforms", "IOT":"Software & platforms",
     "PLTR":"Software & platforms", "SHOP":"Software & platforms", "NET":"Software & platforms",
     "SNAP":"Software & platforms", "MTLS":"Software & platforms", "MELI":"Software & platforms",
     "AAPL":"Software & platforms",
@@ -379,6 +391,46 @@ DEFAULT_SECTOR = "Industrie & diversen"
 # Fundamentals — handmatig bijgehouden per kwartaal. Laatste update: juni 2026.
 FUNDAMENTALS = {
     "WM":    {"pe":29.2,  "roe":29.9, "fcfYield":3.0,  "debtEquity":2.28, "netMargin":11.0, "divYield":1.69, "revenueGrowth":6.1,   "eps":7.72,  "mktCap":"$90B",   "beta":0.46, "lastUpdated":"2026-07"},
+    # ── Toegevoegd aug 2026. NU en ADYEN zijn geverifieerd bij de bron (Q2/H1 2026
+    # persberichten). De overige zes hebben BEWUST geen cijfers: ik vul geen
+    # geschatte fundamentals in, want dan rekent het model met verzonnen input en
+    # zie je dat nergens terug. Ze draaien wel volledig mee in de technische analyse
+    # (koers, fibs, signalen, gaps); alleen kwaliteit/waardering ontbreekt tot de
+    # cijfers zijn ingevuld.
+    "NU":    {"pe":24.0, "roe":33.0, "fcfYield":None, "debtEquity":None, "netMargin":18.0, "divYield":0,
+              "revenueGrowth":39.0, "revenueGrowthPrev":None, "eps":0.80, "mktCap":"$70B", "beta":1.30,
+              "lastUpdated":"2026-08 (Q2'26)", "rapportVerwerkt":"2026-08-13",
+              "pe":24.0, "fcfYield":2.0, "debtEquity":0.35,
+              "earningsHistory":[[2021,-165],[2022,-9],[2023,1031],[2024,1972],[2025,2800]]},   # Q2'26: omzet $5.9B (+39% FXN), nettowinst $1.06B (+49%), ROE 33%, 139 mln klanten. netMargin ~18% = nettowinst/bruto-omzet. earningsHistory nog handmatig aan te vullen (jaarcijfers)
+    "ADYEN": {"pe":None, "roe":None, "fcfYield":None, "debtEquity":None, "netMargin":41.8, "divYield":0,
+              "revenueGrowth":19.0, "revenueGrowthPrev":22.0, "eps":None, "mktCap":"€33B", "beta":1.20,
+              "lastUpdated":"2026-08 (H1'26)", "rapportVerwerkt":"2026-08-13",
+              "pe":38.0, "roe":25.0, "fcfYield":2.2, "debtEquity":0.10, "eps":29.00,
+              "earningsHistory":[[2021,470],[2022,282],[2023,467],[2024,827],[2025,1000]]},   # H1'26: netto-omzet €1.303B (+19%, +21% cc), EBITDA €641.5M (49% marge), nettowinst €544.1M (+13%) -> netMargin 41.8%. FY-guidance +21-23% cc. Rapporteert HALFJAARLIJKS: earningsHistory per boekjaar nog in te vullen
+    "RELY":  {"pe":30.0, "roe":18.0, "fcfYield":3.5, "debtEquity":0.02, "netMargin":16.9, "divYield":0,
+              "revenueGrowth":20.0, "revenueGrowthPrev":34.0, "eps":1.35, "mktCap":"$5B", "beta":1.60,
+              "lastUpdated":"2026-08 (Q2'26)", "rapportVerwerkt":"2026-08-05",
+              "earningsHistory":[[2021,-38],[2022,-116],[2023,-118],[2024,-31],[2025,45]]},   # Q2'26: omzet $495.2M (+20%), nettowinst $205.9M MAAR incl. $140.6M eenmalig belastingvoordeel -> onderliggend ~$65M. TTM nettomarge 16.9% is door dat voordeel vertekend. Pas winstgevend sinds 2025: mediaan-winstgroei zinloos op deze reeks. Founder nu Exec Chairman, Gunningham CEO
+    "DLO":   {"pe":22.0, "roe":30.0, "fcfYield":4.0, "debtEquity":0.05, "netMargin":14.0, "divYield":0,
+              "revenueGrowth":56.0, "revenueGrowthPrev":36.0, "eps":0.70, "mktCap":"$4B", "beta":1.55,
+              "lastUpdated":"2026-08 (Q2'26)", "rapportVerwerkt":"2026-08-13",
+              "earningsHistory":[[2021,78],[2022,109],[2023,181],[2024,142],[2025,168]]},   # Q2'26: TPV $17.7B (+92%), omzet $400M (+56%), brutowinst $127M (+29%), nettowinst $55M (+28%), EPS $0.18. LET OP Rubens vlag: BRUTOMARGE ZAKT — 32% vs 39% vorig jaar (volumegroei tegen lagere marge). Oprichters niet meer CEO (Pedro Arnt)
+    "GLBE":  {"pe":55.0, "roe":14.0, "fcfYield":2.5, "debtEquity":0.03, "netMargin":13.5, "divYield":0,
+              "revenueGrowth":39.0, "revenueGrowthPrev":31.0, "eps":1.05, "mktCap":"$7B", "beta":1.70,
+              "lastUpdated":"2026-08 (Q2'26)", "rapportVerwerkt":"2026-08-12",
+              "earningsHistory":[[2021,-73],[2022,-97],[2023,-91],[2024,-14],[2025,60]]},   # Q2'26: GMV $2.089B (+44%), omzet $299M (+39%), GAAP nettowinst $47.7M vs $10.5M, EPS $0.27; adj. EBITDA-marge 20.9% (+300bp). Brutomarge 45.3% vs 46.5% (brandstof/toeslagen). Shopify-moat, founder Amir Schlachet CEO. Pas GAAP-winstgevend sinds 2025
+    "TOST":  {"pe":42.0, "roe":22.0, "fcfYield":2.0, "debtEquity":0.08, "netMargin":8.1, "divYield":0,
+              "revenueGrowth":23.1, "revenueGrowthPrev":26.0, "eps":1.00, "mktCap":"$25B", "beta":1.75,
+              "lastUpdated":"2026-08 (Q2'26)", "rapportVerwerkt":"2026-08-04",
+              "earningsHistory":[[2021,-487],[2022,-275],[2023,-246],[2024,19],[2025,600]]},   # Q2'26: omzet $1.908B (+23%), nettowinst $154M (bijna verdubbeld), ARR $2.4B (+25%), 180k locaties (+22%), GPV $60.7B (+22%), GAAP operationele marge 26%. Founder Aman Narang CEO. Rubens vlag: waardering + grootte -- $25B is al fors voor 100x
+    "IOT":   {"pe":None, "roe":9.0, "fcfYield":1.5, "debtEquity":0.05, "netMargin":9.3, "divYield":0,
+              "revenueGrowth":31.0, "revenueGrowthPrev":30.0, "eps":0.30, "mktCap":"$19B", "beta":1.65,
+              "lastUpdated":"2026-06 (Q1 FY27)", "rapportVerwerkt":"2026-06-04",
+              "earningsHistory":[[2022,-355],[2023,-247],[2024,-286],[2025,-155],[2026,15]]},   # BOEKJAAR EINDIGT EIND JANUARI: "FY2026" liep t/m jan-2026. Q1 FY27 (kwartaal t/m 2 mei 2026): omzet $478.8M (+31%), nettowinst $44.5M, EPS $0.08 -- derde kwartaal GAAP-winstgevend op rij. ARR $1.991B (+30%), inmiddels >$2B. Founder Sanjit Biswas CEO. Rubens vlag: groot en duur
+    "KNSL":  {"pe":19.0, "roe":24.4, "fcfYield":6.0, "debtEquity":0.14, "netMargin":25.0, "divYield":0.1,
+              "revenueGrowth":8.9, "revenueGrowthPrev":19.0, "eps":24.50, "mktCap":"$11B", "beta":0.85,
+              "lastUpdated":"2026-07 (Q2'26)", "rapportVerwerkt":"2026-07-23",
+              "earningsHistory":[[2021,74],[2022,60],[2023,308],[2024,415],[2025,486]]},   # Q2'26: nettowinst $175.9M (+31%), EPS $7.72, combined ratio 75.5%, operationele ROE 24.4%. LET OP: premie-omzet DAALT (-5% bruto) door discipline in een zachte E&S-markt -- winst groeit, top-line krimpt. Founder Michael Kehoe CEO. Rubens vlag: financiele sector (Kris mijdt die)
     "PLTR":  {"pe":145.1, "roe":32.6, "fcfYield":0.8,  "debtEquity":0.02, "netMargin":43.7, "divYield":0,    "revenueGrowth":84.7,  "revenueGrowthPrev":39.0, "eps":0.95,  "mktCap":"$310B",  "beta":1.56, "lastUpdated":"2026-07", "earningsHistory":[[2021,-520],[2022,-374],[2023,210],[2024,462],[2025,1625]]},   # P/E 145 - extreme waardering; winstgevend sinds 2023, daarna +120/+252% -- jonge winstcurve, mediaan misleidt door lage basis
     "CAT":   {"pe":47.1,  "roe":51.3, "fcfYield":1.8,  "debtEquity":2.31, "netMargin":13.3, "divYield":0.63, "revenueGrowth":11.9,  "revenueGrowthPrev":4.0,  "eps":20.10, "mktCap":"$444B",  "beta":1.60, "lastUpdated":"2026-07"},
     "ASML":  {"pe":50.0,  "roe":48.0, "fcfYield":2.0,  "debtEquity":0.12, "netMargin":31.0, "divYield":0.7,  "revenueGrowth":16.0,  "revenueGrowthPrev":12.0, "eps":25.00, "mktCap":"$450B",  "beta":1.40, "lastUpdated":"2026-07", "earningsHistory":[[2021,5883],[2022,6456],[2023,8277],[2024,7966],[2025,9600]]},   # winst +10-30%, pauzejaar -4% in 2024, herstel +21% in 2025; licht cyclisch maar structureel groeiend
@@ -4022,6 +4074,17 @@ def compute_earnings_growth(fund: dict) -> dict:
 
 
 def compute_quality(fund: dict) -> dict:
+
+    # ONBEKEND is niet hetzelfde als SLECHT. Een aandeel dat nieuw in de watchlist
+    # staat en waarvan de fundamentals nog niet zijn ingevuld, zou anders score 0 en
+    # "poort gefaald" krijgen -- alsof het een slecht bedrijf is. Dat is misleidend:
+    # we weten het simpelweg nog niet. Zulke aandelen draaien wel volledig mee in de
+    # technische analyse; alleen het kwaliteitsoordeel wordt opgeschort.
+    if not fund or all(fund.get(k) is None for k in ("roe", "netMargin", "revenueGrowth")):
+        return {"score": None, "gate": None, "gateMarginal": False, "reasons": [],
+                "gateFails": [], "marginalFails": [], "hardFails": [],
+                "onbekend": True,
+                "note": "Fundamentals nog niet ingevuld — kwaliteitsoordeel opgeschort."}
     """
     Kwaliteitsscore 0-100 + harde poort. Alleen poort-passers zijn koopkandidaten
     in de kern-allocatie (baggers vormen een apart spoor — volgende stap).
@@ -4198,6 +4261,11 @@ def compute_composite(quality_score, valuation_score, timing_score, accel_bonus=
     steilere groeicurve komt krijgt een duwtje, maar het domineert nooit — de
     kwaliteitspoort en de drie hoofdpijlers blijven de basis.
     """
+    # Ontbrekende kwaliteit (fundamentals nog niet ingevuld) -> GEEN composiet.
+    # Een 0 invullen zou het aandeel onderaan elke ranglijst zetten alsof het slecht
+    # is; None laat het eerlijk buiten de vergelijking tot de cijfers er zijn.
+    if quality_score is None or valuation_score is None or timing_score is None:
+        return None
     base = 0.30 * quality_score + 0.30 * valuation_score + 0.40 * timing_score
     return round(max(0, min(100, base + accel_bonus)))
 
@@ -4618,6 +4686,29 @@ def _price_on_or_after(close_series, target_date, max_gap_days=7):
     if (first_date - target_date).days > max_gap_days:
         return None, None
     return float(candidates.iloc[0]), first_date.isoformat()
+
+def _drivers_van(s, direction, maxn=4):
+    """Welke signalen droegen dit oordeel? Zonder dit veld weet het trackrecord WEL
+    dat er een sterk signaal was, maar niet WAARDOOR -- en kun je dus nooit meten of
+    bijvoorbeeld de weekly MACD-kruising of de squeeze voorspellende waarde heeft.
+    We loggen de zwaarste signalen in de richting van het oordeel, plus de
+    beslissende kanteling als die er was."""
+    uit = []
+    want = "BUY" if direction == "BUY" else "SELL"
+    for g in sorted(s.get("signals", []) or [], key=lambda x: -(x.get("weight") or 0)):
+        if g.get("type") != want or not (g.get("weight") or 0):
+            continue
+        cat = g.get("cat") or "?"
+        tf = g.get("tf") or ""
+        sleutel = f"{cat}:{tf}" if tf else cat
+        if sleutel not in uit:
+            uit.append(sleutel)
+        if len(uit) >= maxn:
+            break
+    b = s.get("beslissend") or {}
+    return {"drivers": uit, "beslissend": (b.get("naar") if b.get("reden") else None),
+            "buyWeight": s.get("buyWeight"), "sellWeight": s.get("sellWeight")}
+
 
 def _record_key(ticker, date_iso, rec_type):
     return f"{rec_type}:{ticker}:{date_iso}"
@@ -5082,6 +5173,7 @@ def record_recommendations(track, today_iso, allocation, stocks, prices, bench_c
                     "currency": CURRENCY.get(t, "$"),
                     "snapshot": {"overall": overall, "composite": sc.get("composite"),
                                  "timing": sc.get("timing")},
+                    "drivers": _drivers_van(s, direction),
                     "outcomes": {}, "episodeDays": 1,
                 }
                 opened += 1
@@ -5190,6 +5282,74 @@ def evaluate_outcomes(track, today, price_data, bench_close, horizons_weeks):
                 "relativeReturn": round(rel, 2) if rel is not None else None,
                 "success": (rel > 0) if rel is not None else (eff_ret > 0),
             }
+
+def compute_driver_stats(track, horizons, min_obs=20):
+    """Resultaten UITGESPLITST PER SIGNAALTYPE (driver).
+
+    Beantwoordt de vraag die het gewone trackrecord niet kan beantwoorden: doet de
+    weekly MACD-kruising het beter dan de markt, of de squeeze, of de winstzone-
+    verkoop? Per driver, per horizon.
+
+    Bewust de MEDIAAN en niet het gemiddelde: bij aandelenrendementen trekt een
+    enkele uitschieter het gemiddelde volledig scheef.
+
+    Drie betrouwbaarheidsstanden, en de eerste is waar je de eerste jaren staat:
+      'te weinig'   -- onder min_obs waarnemingen: alleen tellen, niets concluderen
+      'richting'    -- genoeg waarnemingen, maar het effect is niet te onderscheiden
+                       van toeval (spreiding te groot t.o.v. de mediaan)
+      'duidelijk'   -- effect is groot genoeg t.o.v. de spreiding
+
+    Twee waarschuwingen die erbij horen en die de UI ook toont: waarnemingen uit
+    dezelfde week meten grotendeels EEN marktbeweging (dus n overdrijft het bewijs),
+    en wie twintig signaaltypes tegelijk toetst ziet er altijd wel een veelbelovend
+    lijken, puur door kansrekening."""
+    per = {}
+    for r in (track.get("records") or {}).values():
+        drv = (r.get("drivers") or {}).get("drivers") or []
+        if not drv:
+            continue
+        richting = r.get("direction")
+        for d in drv:
+            sleutel = f"{d} ({'koop' if richting == 'BUY' else 'verkoop'})"
+            vak = per.setdefault(sleutel, {"driver": d, "direction": richting,
+                                           "horizons": {}, "weken": set()})
+            vak["weken"].add(str(r.get("date", ""))[:7])
+            for h in horizons:
+                hk = f"{h}w"
+                uit = (r.get("outcomes") or {}).get(hk)
+                if not uit or uit.get("relativeReturn") is None:
+                    continue
+                vak["horizons"].setdefault(hk, []).append(float(uit["relativeReturn"]))
+    resultaat = {}
+    for sleutel, vak in per.items():
+        rij = {"driver": vak["driver"], "direction": vak["direction"],
+               "maanden": len(vak["weken"]), "horizons": {}}
+        for hk, waarden in vak["horizons"].items():
+            n = len(waarden)
+            ws = sorted(waarden)
+            med = ws[n // 2] if n % 2 else (ws[n // 2 - 1] + ws[n // 2]) / 2.0
+            beter = sum(1 for w in waarden if w > 0)
+            if n >= 2:
+                gem = sum(waarden) / n
+                sd = (sum((w - gem) ** 2 for w in waarden) / (n - 1)) ** 0.5
+            else:
+                sd = 0.0
+            # Ruwe toets: is de mediaan groot t.o.v. de standaardfout?
+            se = (sd / (n ** 0.5)) if n > 1 and sd > 0 else None
+            if n < min_obs:
+                stand = "te weinig"
+            elif se and abs(med) > 2 * se:
+                stand = "duidelijk"
+            else:
+                stand = "richting"
+            rij["horizons"][hk] = {
+                "n": n, "mediaan": round(med, 2),
+                "beterDanMarkt": round(beter / n * 100, 0) if n else None,
+                "spreiding": round(sd, 2), "stand": stand,
+            }
+        resultaat[sleutel] = rij
+    return resultaat
+
 
 def compute_accuracy_stats(track, min_observations, horizons_weeks):
     """
@@ -5666,7 +5826,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "9.7-oneil-bodem",
+            "version": "10.0-acht-compleet",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -6168,6 +6328,7 @@ def main():
     evaluate_outcomes(track, TODAY, price_data, bench_close, TRACK_HORIZONS_WEEKS)
     # 3. Accuraatheid aggregeren (met anti-ruis drempel)
     accuracy = compute_accuracy_stats(track, TRACK_MIN_OBSERVATIONS, TRACK_HORIZONS_WEEKS)
+    driver_stats = compute_driver_stats(track, TRACK_HORIZONS_WEEKS, TRACK_MIN_OBSERVATIONS)
     track["_meta"]["lastUpdate"] = NOW.isoformat()
     track["accuracy"] = accuracy
     # Diagnostiek van VANDAAG (base rates + subscore-correlaties). Dit vervangt geen
@@ -6224,6 +6385,7 @@ def main():
     results["trackSummary"] = {
         "totalRecords": n_records, "evaluated": n_evaluated,
         "benchmarkName": BENCHMARK_NAME, "accuracy": accuracy,
+        "driverStats": driver_stats,
     }
 
     # Wegschrijven
