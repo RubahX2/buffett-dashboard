@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-22T00:32:48.169015+02:00",
-  "generatedAtHuman": "Saturday 22 August 2026 om 00:32",
+  "generatedAt": "2026-08-22T10:28:54.389802+02:00",
+  "generatedAtHuman": "Saturday 22 August 2026 om 10:28",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -121,6 +121,22 @@
           "type": "rsi",
           "dir": "down",
           "text": "RSI weekly overbought (72)"
+        }
+      ]
+    },
+    {
+      "ticker": "GAW",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 50 \u2191 61"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
         }
       ]
     },
@@ -479,35 +495,13 @@
       ]
     },
     {
-      "ticker": "GAW",
-      "daysAgo": 8,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: VERKOOP \u2192 NEUTRAAL"
-        }
-      ]
-    },
-    {
-      "ticker": "ADM",
-      "daysAgo": 8,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: STERK KOOP \u2192 KOOP"
-        }
-      ]
-    },
-    {
       "ticker": "III",
       "daysAgo": 8,
       "changes": [
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: LICHT VERKOOP \u2192 KOOP"
+          "text": "Signaal: LICHT VERKOOP \u2192 NEUTRAAL"
         }
       ]
     },
@@ -677,6 +671,6 @@
       ]
     }
   ],
-  "changedCount": 48,
+  "changedCount": 47,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }

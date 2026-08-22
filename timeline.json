@@ -2,7 +2,7 @@
   "_meta": {
     "created": "2026-07-02T21:21:34",
     "note": "Schone start \u2014 demo-data verwijderd 2026-07-02",
-    "lastUpdate": "2026-08-22T00:32:48.169015+02:00"
+    "lastUpdate": "2026-08-22T10:28:54.389802+02:00"
   },
   "stocks": {
     "WM": [
@@ -3748,6 +3748,18 @@
         "overall": "CAUTION (overextended)",
         "composite": 60,
         "timing": 53,
+        "qualityGate": true,
+        "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
+        "valuationColor": "neutral"
+      },
+      {
+        "date": "2026-08-22",
+        "price": 258.63,
+        "rsiDaily": 49.7,
+        "rsiWeekly": 54.7,
+        "overall": "CAUTION (overextended)",
+        "composite": 58,
+        "timing": 48,
         "qualityGate": true,
         "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
         "valuationColor": "neutral"
@@ -8888,15 +8900,15 @@
       },
       {
         "date": "2026-08-22",
-        "price": 18660.0,
-        "rsiDaily": 33.7,
-        "rsiWeekly": 46.7,
-        "overall": "NEUTRAAL",
-        "composite": 50,
-        "timing": 46,
+        "price": 18750.0,
+        "rsiDaily": 35.2,
+        "rsiWeekly": 47.2,
+        "overall": "VERKOOP",
+        "composite": 61,
+        "timing": 51,
         "qualityGate": true,
-        "valuationVerdict": "Duur (PEG > 3.5)",
-        "valuationColor": "red"
+        "valuationVerdict": "Aan de dure kant (PEG 2.5\u20133.5)",
+        "valuationColor": "orange"
       }
     ],
     "MNST": [
@@ -10672,12 +10684,12 @@
       },
       {
         "date": "2026-08-22",
-        "price": 3976.0,
-        "rsiDaily": 65.3,
-        "rsiWeekly": 67.9,
-        "overall": "KOOP",
-        "composite": 60,
-        "timing": 52,
+        "price": 3918.0,
+        "rsiDaily": 62.1,
+        "rsiWeekly": 66.3,
+        "overall": "STERK KOOP",
+        "composite": 62,
+        "timing": 47,
         "qualityGate": true,
         "valuationVerdict": "Neutraal (PEG 1.5\u20132.5)",
         "valuationColor": "neutral"
@@ -12010,12 +12022,12 @@
       },
       {
         "date": "2026-08-22",
-        "price": 2891.0,
-        "rsiDaily": 62.2,
-        "rsiWeekly": 53.5,
-        "overall": "KOOP",
-        "composite": 72,
-        "timing": 38,
+        "price": 2793.0,
+        "rsiDaily": 54.1,
+        "rsiWeekly": 50.8,
+        "overall": "NEUTRAAL",
+        "composite": 73,
+        "timing": 39,
         "qualityGate": true,
         "valuationVerdict": "Aantrekkelijk (PEG < 1)",
         "valuationColor": "green"
