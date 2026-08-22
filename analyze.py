@@ -5412,6 +5412,85 @@ EARNINGS_FILE = "earnings_dates.json"
 EARNINGS = {}   # dashboard_naam -> {"laatste": "YYYY-MM-DD", "volgende": "YYYY-MM-DD"}
 
 
+REGIME_FILE = "regime_history.json"
+DEBUUT_FILE = "debuut.json"
+
+
+def bouw_regime_historie(market_ctx, max_dagen=180):
+    """Bewaart de dagelijkse marktregime-score, zodat je de EVOLUTIE ziet.
+
+    Een losse score van 69 zegt weinig: is dat een verbetering vanaf 55 of een
+    afkoeling vanaf 85? Dat verschil bepaalt of je in een opbouwende of afbrokkelende
+    markt zit, en dat is precies wat een momentopname verbergt.
+
+    Eén punt per dag (laatste run van de dag overschrijft), maximaal een half jaar."""
+    hist = {}
+    if os.path.exists(REGIME_FILE):
+        try:
+            with open(REGIME_FILE, "r", encoding="utf-8") as f:
+                hist = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            hist = {}
+    punten = hist.get("punten") or []
+    vandaag = TODAY.isoformat()
+    nieuw = {"datum": vandaag,
+             "score": market_ctx.get("regimeScore"),
+             "label": market_ctx.get("regimeLabel"),
+             "spx": (market_ctx.get("spx") or {}).get("score"),
+             "ndx": (market_ctx.get("ndx") or {}).get("score")}
+    punten = [p for p in punten if p.get("datum") != vandaag] + [nieuw]
+    punten = sorted(punten, key=lambda p: p["datum"])[-max_dagen:]
+    hist = {"punten": punten, "bijgewerkt": vandaag}
+    try:
+        with open(REGIME_FILE, "w", encoding="utf-8") as f:
+            json.dump(hist, f, indent=1)
+    except IOError:
+        pass
+    return hist
+
+
+def bouw_debuut_kalender(namen):
+    """Houdt bij WANNEER een aandeel aan de watchlist is toegevoegd.
+
+    Zonder dit is een nieuwe naam niet van een oude te onderscheiden: je ziet een
+    lijst van 92 en niet welke er vorige week bij kwamen. Handig om te volgen hoe
+    een nieuwkomer het doet vanaf het moment dat je hem opnam.
+
+    De eerste keer dat dit draait krijgen ALLE bestaande namen de datum van vandaag
+    met een vlag 'bestaand' -- die zijn eerder toegevoegd, we weten alleen niet
+    wanneer. Alles wat daarna verschijnt krijgt zijn echte debuutdatum."""
+    kal = {}
+    if os.path.exists(DEBUUT_FILE):
+        try:
+            with open(DEBUUT_FILE, "r", encoding="utf-8") as f:
+                kal = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            kal = {}
+    eerste_keer = not kal
+    vandaag = TODAY.isoformat()
+    # De acht die op 22 augustus 2026 zijn toegevoegd. Zonder deze regel zouden ze bij
+    # de allereerste run als "bestaand" worden weggeschreven -- samen met de 84 die er
+    # al maanden stonden -- en dus onzichtbaar blijven in de kalender. Dit is geen
+    # aanname: dit is de dag waarop ze in de watchlist kwamen.
+    for _n in ("ADYEN", "NU", "RELY", "DLO", "GLBE", "TOST", "IOT", "KNSL"):
+        if _n not in kal:
+            kal[_n] = {"toegevoegd": "2026-08-22", "bestaand": False}
+    nieuw_vandaag = []
+    for naam in namen:
+        if naam not in kal:
+            kal[naam] = {"toegevoegd": vandaag, "bestaand": eerste_keer}
+            if not eerste_keer:
+                nieuw_vandaag.append(naam)
+    try:
+        with open(DEBUUT_FILE, "w", encoding="utf-8") as f:
+            json.dump(kal, f, indent=1, sort_keys=True)
+    except IOError:
+        pass
+    if nieuw_vandaag:
+        print(f"  Nieuw in de watchlist vandaag: {', '.join(nieuw_vandaag)}")
+    return kal
+
+
 def laad_earnings_cache():
     if os.path.exists(EARNINGS_FILE):
         try:
@@ -5826,7 +5905,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "10.0-acht-compleet",
+            "version": "10.3-debuut-augustus",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -5854,6 +5933,10 @@ def main():
     market_ctx = compute_market_context(bench_close, market_series)
     market_adj = market_ctx.get("timingAdjustment", 0) or 0
     results["market"] = market_ctx
+    # Evolutie van het marktregime + kalender van nieuwe namen. Beide lossen hetzelfde
+    # gemis op: je zag momentopnames, geen verloop.
+    results["regimeHistory"] = bouw_regime_historie(market_ctx).get("punten", [])
+    results["debuut"] = bouw_debuut_kalender([w[0] for w in WATCHLIST])
     print(f"  {market_ctx['regimeLabel']} (regime {market_ctx['regimeScore']}) → timing-aanpassing {market_adj:+d}")
     if market_ctx.get("sectors"):
         top = market_ctx["sectors"][0]; bot = market_ctx["sectors"][-1]

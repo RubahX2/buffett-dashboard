@@ -54,9 +54,11 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "10.0";
+const UI_VERSION = "10.3";
 
 const STOCK_NAMES = {
+  ADYEN:"Adyen", RELY:"Remitly", DLO:"DLocal", GLBE:"Global-e",
+  TOST:"Toast", IOT:"Samsara", KNSL:"Kinsale Capital",
   WM:"Waste Management", PLTR:"Palantir", CAT:"Caterpillar",
   ASML:"ASML Holding", ASMI:"ASM International", MU:"Micron Technology",
   GOOGL:"Alphabet (Google)", AMZN:"Amazon", ORCL:"Oracle", KO:"Coca-Cola", MC:"LVMH",
@@ -926,7 +928,7 @@ function BaggerTrack({ baggers, onSelect }) {
   );
 }
 
-function MarketCard({ market }) {
+function MarketCard({ market, regimeHistory }) {
   if (!market) return null;
   const col = {green:C.green,neutral:C.textDim,orange:C.orange,red:C.red}[market.regimeColor]||C.text;
   return (
@@ -941,6 +943,38 @@ function MarketCard({ market }) {
           <div style={{color:C.muted,fontSize:9}}>timing {market.timingAdjustment>0?"+":""}{market.timingAdjustment} (max ±{market.adjMax})</div>
         </div>
       </div>
+      {(()=>{
+        const pts = (regimeHistory||[]).filter(p=>typeof p.score==="number");
+        if(pts.length < 2) return (
+          <div style={{color:C.muted,fontSize:9,marginTop:6}}>
+            Verloop verschijnt zodra er meerdere dagen zijn vastgelegd (nu {pts.length}).
+          </div>
+        );
+        const laatste = pts.slice(-60);
+        const w=260, h=34, min=Math.min(...laatste.map(p=>p.score)), max=Math.max(...laatste.map(p=>p.score));
+        const sp = Math.max(1, max-min);
+        const d = laatste.map((p,i)=>{
+          const x = (i/(laatste.length-1||1))*w;
+          const y = h - ((p.score-min)/sp)*h;
+          return `${i?"L":"M"}${x.toFixed(1)},${y.toFixed(1)}`;
+        }).join(" ");
+        const eerste = laatste[0], nu = laatste[laatste.length-1];
+        const delta = nu.score - eerste.score;
+        const kl = delta>2?C.green:delta<-2?C.red:C.textDim;
+        return (
+          <div style={{marginTop:8}}>
+            <svg width={w} height={h} style={{display:"block",maxWidth:"100%"}}>
+              <path d={d} fill="none" stroke={kl} strokeWidth="1.6"/>
+            </svg>
+            <div style={{color:C.textDim,fontSize:9,marginTop:2}}>
+              Verloop over {laatste.length} {laatste.length===1?"dag":"dagen"}:
+              <b style={{color:kl}}> {delta>0?"+":""}{delta}</b> sinds {eerste.datum}
+              {" "}(laag {min} · hoog {max}).
+              <span style={{color:C.muted}}> Een losse score zegt weinig — de richting wel.</span>
+            </div>
+          </div>
+        );
+      })()}
       <div style={{display:"flex",gap:14,marginTop:8,fontSize:10,color:C.textDim,flexWrap:"wrap"}}>
         <span>S&P 500 <b style={{color:C.text}}>{market.spx?.score??"—"}</b>
           {market.spx?.vsMA200!=null&&<span style={{color:market.spx.vsMA200>=0?C.green:C.red}}> ({market.spx.vsMA200>0?"+":""}{market.spx.vsMA200}% vs MA200)</span>}
@@ -2018,13 +2052,24 @@ function PositionCard({ p, last, currency, update }) {
 }
 
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
-const TICKER_ORDER = ["WM","PLTR","CAT","ASML","ASMI","MU","GOOGL","AMZN","ORCL","KO","MC",
+const BASIS_ORDER = ["WM","PLTR","CAT","ASML","ASMI","MU","GOOGL","AMZN","ORCL","KO","MC",
   "MSFT","AAPL","NVDA","V","MNST","AON","MELI","SHOP","NET","CRWV","SNAP","NKE","MSTR",
   "NFLX","DIS","BLK","BABA","MTLS","GAW","ADM","III","KPG","DIE","SOF","AIR","ALFEN","LOTB", "VOW", "EL", "META", "VST", "COPX", "ROBO",
   "ANET","HOOD","TSCO","ODFL","HWM","SNDK","NABTESCO","HARMONIC","KEYENCE","FANUC","YASKAWA","SOFTBANK","ROK","TER","ISRG","CGNX","NOVT",
   "LHX","MOGA","TDG","KTOS","RKLB","OPEN","SDGR","BNGO","PL",
   "IONQ","RGTI","QBTS","UBTECH","SYM","SERV","RR",
   "RDDT","NOW","GILD","DDOG","ARCC","ONON","ARCG"];
+
+// De handmatige lijst hierboven bepaalt alleen de VOLGORDE. Welke aandelen er
+// bestaan komt uit de data zelf. Zonder deze aanvulling verdween elk nieuw aandeel
+// stilletjes uit screener, koopkans, momentum en gaps -- het stond wel in
+// signals.json en dus in de maandpick, maar was nergens te vinden of te zoeken.
+// Nu groeit de lijst automatisch mee met de watchlist.
+function bouwTickerOrder(stocks){
+  const bekend = new Set(BASIS_ORDER);
+  const extra = Object.keys(stocks || {}).filter(t => !bekend.has(t)).sort();
+  return BASIS_ORDER.filter(t => stocks && stocks[t]).concat(extra);
+}
 
 function App() {
   const [jsonData,  setJsonData]  = useState(null);
@@ -2059,6 +2104,7 @@ function App() {
   },[]);
 
   const stocks = jsonData?.stocks || {};
+  const TICKER_ORDER = React.useMemo(()=>bouwTickerOrder(stocks), [stocks]);
   const meta   = jsonData?.meta || {};
   const allocation = jsonData?.allocation || null;
   const verdictChanges = jsonData?.verdictChanges || null;
@@ -2280,7 +2326,47 @@ function App() {
             </div>
           ):(
             <>
-              <MarketCard market={market}/>
+              <MarketCard market={market} regimeHistory={jsonData?.regimeHistory}/>
+              {(()=>{
+                const deb = jsonData?.debuut || {};
+                const recent = Object.entries(deb)
+                  .filter(([t,d])=>d && !d.bestaand && stocks[t])
+                  .sort((a,b)=> (b[1].toegevoegd||"").localeCompare(a[1].toegevoegd||""));
+                if(!recent.length) return null;
+                const perDatum = {};
+                recent.forEach(([t,d])=>{ (perDatum[d.toegevoegd] ||= []).push(t); });
+                const dagen = Object.keys(perDatum).sort().reverse().slice(0,6);
+                return (
+                  <div style={{background:C.panel,border:`1px solid ${C.border}`,borderLeft:`3px solid ${C.accent}`,
+                    borderRadius:12,padding:"12px 14px",marginBottom:16}}>
+                    <div style={{color:C.accent,fontSize:12,fontWeight:700,marginBottom:4}}>
+                      🗓 Nieuw in de watchlist
+                    </div>
+                    <div style={{color:C.textDim,fontSize:10,lineHeight:1.6,marginBottom:6}}>
+                      Wanneer je een naam hebt toegevoegd. Handig om te volgen hoe een nieuwkomer
+                      het doet vanaf het moment dat je hem opnam — anders is een nieuwe naam niet
+                      van een oude te onderscheiden.
+                    </div>
+                    {dagen.map(d=>{
+                      const MAAND = ["januari","februari","maart","april","mei","juni",
+                        "juli","augustus","september","oktober","november","december"];
+                      const [jj,mm,dd] = d.split("-");
+                      const leesbaar = `${parseInt(dd,10)} ${MAAND[parseInt(mm,10)-1]} ${jj}`;
+                      return (
+                      <div key={d} style={{fontSize:11,lineHeight:1.7}}>
+                        <span style={{color:C.textDim}}>{leesbaar}</span>{" — "}
+                        {perDatum[d].map(t=>(
+                          <span key={t} onClick={()=>setSelected(t)}
+                            style={{color:C.accent,cursor:"pointer",fontWeight:700,marginRight:8}}>
+                            {t}
+                            <span style={{color:C.textDim,fontWeight:400}}> {STOCK_NAMES[t]||""}</span>
+                          </span>
+                        ))}
+                      </div>
+                    );})}
+                  </div>
+                );
+              })()}
               {/* Primary pick hero */}
               {allocation.primaryPick&&(
                 <div style={{background:`linear-gradient(135deg,${C.panel2},${C.panel})`,
