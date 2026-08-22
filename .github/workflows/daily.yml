@@ -70,8 +70,9 @@ jobs:
           # worden: de runner start elke keer schoon, dus zonder commit bestaat het
           # bestand de volgende run niet meer en vervalt de "hooguit 1x per dag"-regel.
           # Je zou dan bij elke run opnieuw ~84 API-calls doen.
-          for f in signals.json timeline.json weekly.json track_record.json \
-             earnings_dates.json fundamentals_auto.json universe.jsonl fills.jsonl; do
+            for f in signals.json timeline.json weekly.json track_record.json \
+                   earnings_dates.json fundamentals_auto.json \
+                   regime_history.json debuut.json universe.jsonl fills.jsonl; do
             if [ -f "$f" ]; then
               git add "$f" || true
               echo "  toegevoegd: $f"
