@@ -231,6 +231,32 @@ ETF_TICKERS = {"ARCG", "COPX", "ROBO"}
 # cyclische geheugenchips (MU, SNDK) als structurelere namen (NVDA logica, ASML
 # machines). Alleen de commodity-cyclische horen hier. Grondstoffen (ADM) idem.
 # Deze lijst breidt Ruben uit wanneer hij een cyclisch aandeel herkent.
+# ── FOUNDER-CEO / KAPITAALALLOCATIE ────────────────────────────────────────
+# Dit KAN niet uit een API komen: "zit de oprichter nog in de stoel" is een
+# oordeel, geen datapunt. Bewust handmatig, en bewust zichtbaar -- want het is
+# 10 van de 100 punten in de compounder-score en een kernpijler in de these:
+# vertrekt de founder, dan is dat een thesebreuk, geen ruis.
+#
+# Bronnen zijn Rubens eigen notities per bedrijf. Wie hier NIET in staat krijgt
+# geen punten -- niet omdat het antwoord "nee" is, maar omdat we het niet weten.
+FOUNDER_CEO = {
+    "NU":    "David Vélez",
+    "GLBE":  "Amir Schlachet",
+    "TOST":  "Aman Narang",
+    "IOT":   "Sanjit Biswas",
+    "KNSL":  "Michael Kehoe",
+    "PLTR":  "Alex Karp",
+    "RKLB":  "Peter Beck",
+}
+
+# Oprichter is weg uit de CEO-stoel, maar nog betrokken (bv. Executive Chairman)
+# of het bedrijf heeft aantoonbaar sterke kapitaalallocatie. Telt lichter mee.
+EXEMPLARY_ALLOC = {
+    "RELY":  "founder Matt Oppenheimer nu Executive Chairman",
+    "DLO":   "oprichters niet meer CEO (Pedro Arnt aan het roer)",
+    "ADYEN": "oprichters-DNA, conservatieve allocatie, geen overnames",
+}
+
 CYCLICAL_TICKERS = {"MU", "SNDK", "ADM"}
 
 # ── HANDMATIGE FIB-IJKPUNTEN ────────────────────────────────────────────────
@@ -4073,6 +4099,69 @@ def compute_earnings_growth(fund: dict) -> dict:
     return out
 
 
+def _parse_mktcap(tekst):
+    """"$70B" / "€33B" / "$2.9T" -> float in USD. De marktkap staat als TEKST in
+    FUNDAMENTALS; zonder parsen valt het A/B-onderscheid (small vs large) om, en
+    dan belandt Adyen in de verkeerde bak."""
+    if not tekst:
+        return None
+    t = str(tekst).strip().replace(",", ".")
+    valuta = 1.0
+    if t[:1] in "€":
+        valuta = 1.08          # ruwe EUR->USD; alleen voor de grootte-indeling
+    t = t.lstrip("$€£ ")
+    macht = {"T": 1e12, "B": 1e9, "M": 1e6}.get(t[-1:].upper())
+    if not macht:
+        return None
+    try:
+        return float(t[:-1]) * macht * valuta
+    except ValueError:
+        return None
+
+
+def compounder_metrics(naam, fund, eg=None):
+    """Mapt het INPUTS-CONTRACT op wat analyze.py echt heeft.
+
+    Geeft per veld ook terug OF het gemeten is. Dat is essentieel: een score van
+    72 op vier gemeten componenten betekent iets heel anders dan 72 op zeven. Zonder
+    die dekking rankt de tab vooral op wie toevallig de meeste data heeft."""
+    f = fund or {}
+    hist = []
+    for r in ((eg or {}).get("series") or []):
+        g = r.get("growth")
+        if isinstance(g, (int, float)):
+            hist.append(float(g))
+    m = {
+        "g_ttm":          f.get("revenueGrowth"),
+        "g_hist":         hist,
+        "bm_nu":          f.get("grossMargin"),
+        "bm_vorig":       f.get("grossMarginPrev"),
+        "opmarge_delta":  f.get("opMarginDelta"),
+        "fcf_positief":   f.get("fcfPositive"),
+        "fcf_groeit":     f.get("fcfGrowing"),
+        "dilutie_pct":    f.get("dilutionPct"),
+        "netto_cash":     f.get("netCash"),
+        "founder_ceo":    naam in FOUNDER_CEO,
+        "exemplary_alloc": naam in EXEMPLARY_ALLOC,
+        "mktcap_usd":     _parse_mktcap(f.get("mktCap")),
+    }
+    # Welke van de zeven componenten kunnen we echt berekenen?
+    gemeten = {
+        "groei":       m["g_ttm"] is not None,
+        "brutomarge":  m["bm_nu"] is not None,
+        "opmarge":     m["opmarge_delta"] is not None,
+        "fcf":         m["fcf_positief"] is not None or m["fcf_groeit"] is not None,
+        "verwatering": m["dilutie_pct"] is not None,
+        "balans":      m["netto_cash"] is not None,
+        # 'mensen' is altijd bekend: staat een naam niet in de lijst, dan is het
+        # antwoord "geen punten" en niet "onbekend".
+        "mensen":      True,
+    }
+    m["_gemeten"] = gemeten
+    m["_dekking"] = round(sum(gemeten.values()) / len(gemeten) * 100)
+    return m
+
+
 def compute_quality(fund: dict) -> dict:
 
     # ONBEKEND is niet hetzelfde als SLECHT. Een aandeel dat nieuw in de watchlist
@@ -5672,6 +5761,9 @@ AUTO_FUND = {}   # naam -> {veld: waarde, "_bron": "FMP", "_datum": "..."}
 # (ASMI genormaliseerd excl. ASMPT, MSFT's GAAP-nuance met eenmalige posten).
 # Een automaat die dat overschrijft wist stilletjes jaren analyse uit.
 AUTO_VELDEN = ("eps", "revenueGrowth", "netMargin", "roe", "debtEquity",
+               "grossMargin", "grossMarginPrev", "grossMarginTrend",
+               "opMargin", "opMarginDelta", "dilutionPct",
+               "fcfPositive", "fcfGrowing", "netCash", "netCashUsd",
                "fcfYield", "divYield", "mktCap", "beta")
 
 
@@ -5741,6 +5833,50 @@ def fetch_fundamentals_fmp(sym):
         nu, vorig = inc[0].get("revenue"), inc[4].get("revenue")
         if isinstance(nu, (int, float)) and isinstance(vorig, (int, float)) and vorig > 0:
             uit["revenueGrowth"] = round((nu / vorig - 1) * 100, 1)
+        # ── COMPOUNDER-VELDEN ────────────────────────────────────────────────
+        # Brutomarge NU vs een jaar geleden. De trend is belangrijker dan het
+        # niveau: een marge die stijgt terwijl de omzet groeit is de motor achter
+        # een herwaardering; een marge die zakt bij groei (zie DLO) is een waarschuwing.
+        def _marge(rij, teller):
+            o, t = rij.get("revenue"), rij.get(teller)
+            return (t / o * 100.0) if isinstance(o, (int, float)) and o > 0 \
+                and isinstance(t, (int, float)) else None
+        _bm_nu, _bm_oud = _marge(inc[0], "grossProfit"), _marge(inc[4], "grossProfit")
+        if _bm_nu is not None:
+            uit["grossMargin"] = round(_bm_nu, 1)
+            if _bm_oud is not None:
+                uit["grossMarginPrev"] = round(_bm_oud, 1)
+                uit["grossMarginTrend"] = round(_bm_nu - _bm_oud, 1)
+        # Operationele marge YoY in PROCENTPUNTEN -- de "multiple-motor".
+        _om_nu, _om_oud = _marge(inc[0], "operatingIncome"), _marge(inc[4], "operatingIncome")
+        if _om_nu is not None:
+            uit["opMargin"] = round(_om_nu, 1)
+            if _om_oud is not None:
+                uit["opMarginDelta"] = round(_om_nu - _om_oud, 1)
+        # VERWATERING: groei van het aandelenaantal jaar-op-jaar. Negatief = inkoop.
+        # Bij hypergroeiers is dit de stille lekkage: 8% omzetgroei per aandeel minder
+        # dan de headline als er 8% bij wordt uitgegeven.
+        _a_nu, _a_oud = inc[0].get("weightedAverageShsOutDil"), inc[4].get("weightedAverageShsOutDil")
+        if isinstance(_a_nu, (int, float)) and isinstance(_a_oud, (int, float)) and _a_oud > 0:
+            uit["dilutionPct"] = round((_a_nu / _a_oud - 1) * 100, 1)
+
+    # FCF: positief én de richting (inflectie telt, ook als hij nog negatief is).
+    cf = _fmp_json(f"cash-flow-statement/{sym}?period=quarter&limit=6")
+    if isinstance(cf, list) and len(cf) >= 5:
+        _f_nu, _f_oud = cf[0].get("freeCashFlow"), cf[4].get("freeCashFlow")
+        if isinstance(_f_nu, (int, float)):
+            uit["fcfPositive"] = bool(_f_nu > 0)
+            if isinstance(_f_oud, (int, float)):
+                uit["fcfGrowing"] = bool(_f_nu > _f_oud)
+
+    # NETTO CASH: meer liquide middelen dan totale schuld.
+    bs = _fmp_json(f"balance-sheet-statement/{sym}?period=quarter&limit=1")
+    if isinstance(bs, list) and bs:
+        _c = bs[0].get("cashAndShortTermInvestments")
+        _d = bs[0].get("totalDebt")
+        if isinstance(_c, (int, float)) and isinstance(_d, (int, float)):
+            uit["netCash"] = bool(_c > _d)
+            uit["netCashUsd"] = round((_c - _d) / 1e9, 2)   # in miljard
     return uit or None
 
 
@@ -5766,11 +5902,18 @@ def ververs_fundamentals_auto(paren):
     for naam, sym, _fb in paren:
         if naam in ETF_TICKERS or "." in sym:
             continue
-        st = cijfer_status(naam, FUNDAMENTALS.get(naam) or {})
-        if not (st and st.get("verouderd")):
-            continue                     # geen nieuw rapport -> niets te doen
+        _f = FUNDAMENTALS.get(naam) or {}
+        st = cijfer_status(naam, _f)
+        # Normaal alleen ophalen bij een NIEUW rapport. Uitzondering: mist een aandeel
+        # de compounder-velden nog volledig, dan halen we ze eenmalig op -- anders
+        # duurt het een heel kwartaal voordat de compounder-ranking bruikbare data
+        # heeft, en rankt hij intussen op wie toevallig het eerst rapporteerde.
+        _mist_compounder = _f.get("grossMargin") is None or _f.get("dilutionPct") is None
+        if not (st and st.get("verouderd")) and not _mist_compounder:
+            continue
         _al = cache.get(naam) or {}
-        if _al.get("_rapport") == st.get("laatsteRapport"):
+        _zelfde_rapport = st and _al.get("_rapport") == st.get("laatsteRapport")
+        if _zelfde_rapport and not _mist_compounder:
             continue                     # dit rapport al verwerkt
         nieuw = fetch_fundamentals_fmp(sym)
         if not nieuw:
@@ -5905,7 +6048,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "10.3-debuut-augustus",
+            "version": "10.4-compounder-data",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
