@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-24T10:24:21.930932+02:00",
-  "generatedAtHuman": "Monday 24 August 2026 om 10:24",
+  "generatedAt": "2026-08-24T14:21:18.574453+02:00",
+  "generatedAtHuman": "Monday 24 August 2026 om 14:21",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -84,22 +84,6 @@
           "type": "price",
           "dir": "up",
           "text": "Koers +20.9% deze week ($84\u2192$102)"
-        }
-      ]
-    },
-    {
-      "ticker": "ASMI",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: LICHT KOOP \u2192 HOLD"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.2% deze week ($903\u2192$829)"
         }
       ]
     },
@@ -189,13 +173,13 @@
       "changes": [
         {
           "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 HOLD"
+          "dir": "down",
+          "text": "Signaal: KOOP \u2192 LICHT VERKOOP"
         },
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -15.0% deze week ($14\u2192$12)"
+          "text": "Koers -16.8% deze week ($14\u2192$12)"
         }
       ]
     },
@@ -425,6 +409,17 @@
       ]
     },
     {
+      "ticker": "ASMI",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
       "ticker": "TDG",
       "daysAgo": 7,
       "changes": [
@@ -643,8 +638,19 @@
           "text": "Signaal: VERKOOP \u2192 STERK VERKOOP"
         }
       ]
+    },
+    {
+      "ticker": "COPX",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "price",
+          "dir": "up",
+          "text": "Koers +8.2% deze week ($59\u2192$64)"
+        }
+      ]
     }
   ],
-  "changedCount": 46,
+  "changedCount": 47,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-08-24T10:24:21.930932+02:00"
+    "lastUpdate": "2026-08-24T14:21:18.574453+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -4561,7 +4561,7 @@
         "timing": 35
       },
       "outcomes": {},
-      "episodeDays": 19
+      "episodeDays": 20
     },
     "monthly_pick:SOFTBANK:2026-08-18": {
       "ticker": "SOFTBANK",
@@ -4610,7 +4610,7 @@
         "timing": 53
       },
       "outcomes": {},
-      "episodeDays": 12
+      "episodeDays": 13
     },
     "strong_signal:KO:2026-08-19": {
       "ticker": "KO",
@@ -4674,7 +4674,7 @@
         "timing": 37
       },
       "outcomes": {},
-      "episodeDays": 8
+      "episodeDays": 9
     },
     "monthly_pick:III:2026-08-21": {
       "ticker": "III",
@@ -4718,7 +4718,7 @@
         "sellWeight": 24
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:META:2026-08-22": {
       "ticker": "META",
@@ -4745,7 +4745,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:ADM:2026-08-22": {
       "ticker": "ADM",
@@ -4892,8 +4892,8 @@
       },
       {
         "action": "HOLD",
-        "n": 14,
-        "pct": 15.2,
+        "n": 13,
+        "pct": 14.1,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -4906,8 +4906,8 @@
       },
       {
         "action": "LICHT VERKOOP",
-        "n": 7,
-        "pct": 7.6,
+        "n": 8,
+        "pct": 8.7,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -4943,8 +4943,8 @@
           1.0,
           0.29,
           0.22,
-          0.37,
-          -0.19,
+          0.38,
+          -0.18,
           0.78,
           0.57
         ]
@@ -4956,8 +4956,8 @@
           0.29,
           1.0,
           0.05,
-          -0.08,
-          0.04,
+          -0.07,
+          0.03,
           0.77,
           0.78
         ]
@@ -4969,21 +4969,21 @@
           0.22,
           0.05,
           1.0,
-          0.6,
-          0.23,
+          0.59,
+          0.24,
           0.4,
-          -0.03
+          -0.02
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.37,
-          -0.08,
-          0.6,
+          0.38,
+          -0.07,
+          0.59,
           1.0,
-          -0.48,
+          -0.47,
           0.32,
           -0.26
         ]
@@ -4992,12 +4992,12 @@
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.19,
-          0.04,
-          0.23,
-          -0.48,
+          -0.18,
+          0.03,
+          0.24,
+          -0.47,
           1.0,
-          0.0,
+          0.01,
           0.27
         ]
       },
@@ -5009,7 +5009,7 @@
           0.77,
           0.4,
           0.32,
-          0.0,
+          0.01,
           1.0,
           0.75
         ]
@@ -5020,7 +5020,7 @@
         "cells": [
           0.57,
           0.78,
-          -0.03,
+          -0.02,
           -0.26,
           0.27,
           0.75,
@@ -6171,7 +6171,7 @@
         "DIE": "KOOP",
         "SOF": "KOOP",
         "AIR": "STERK VERKOOP",
-        "ALFEN": "HOLD",
+        "ALFEN": "LICHT VERKOOP",
         "LOTB": "KOOP",
         "VOW": "VERKOOP",
         "EL": "KOOP",
