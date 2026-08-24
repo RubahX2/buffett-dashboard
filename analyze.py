@@ -5880,6 +5880,94 @@ def fetch_fundamentals_fmp(sym):
     return uit or None
 
 
+def fetch_fundamentals_yf(sym):
+    """Compounder-velden via yfinance. GEEN API-sleutel nodig.
+
+    Waarom naast FMP: er was nooit een FMP-sleutel ingesteld, waardoor alles wat
+    daarop leunde maandenlang stil terugviel zonder dat het opviel. yfinance
+    gebruiken we al voor koersen en rapportagedatums, dus dit voegt geen nieuw
+    faalpunt toe -- het haalt er juist een weg.
+
+    Leest de kwartaal-jaarrekeningen (income statement, kasstroom, balans) en
+    vergelijkt het laatste kwartaal met hetzelfde kwartaal een jaar eerder. Dat is
+    de juiste vergelijking bij seizoensgevoelige bedrijven; kwartaal-op-kwartaal
+    zou ruis meten."""
+    try:
+        t = yf.Ticker(sym)
+        uit = {}
+
+        def _rij(df, sleutels):
+            """Eerste bestaande rij uit een yfinance-frame (namen wisselen per versie)."""
+            if df is None or getattr(df, "empty", True):
+                return None
+            for k in sleutels:
+                if k in df.index:
+                    return df.loc[k]
+            return None
+
+        def _paar(reeks):
+            """(nu, jaar geleden) uit een kwartaalreeks: kolom 0 en kolom 4."""
+            if reeks is None or len(reeks) < 5:
+                return None, None
+            try:
+                a, b = float(reeks.iloc[0]), float(reeks.iloc[4])
+                return (a if np.isfinite(a) else None), (b if np.isfinite(b) else None)
+            except (ValueError, TypeError, IndexError):
+                return None, None
+
+        inc = t.quarterly_income_stmt
+        omzet_nu, omzet_oud = _paar(_rij(inc, ["Total Revenue", "TotalRevenue"]))
+        bruto_nu, bruto_oud = _paar(_rij(inc, ["Gross Profit", "GrossProfit"]))
+        op_nu, op_oud = _paar(_rij(inc, ["Operating Income", "OperatingIncome",
+                                         "EBIT", "Operating Revenue"]))
+        aand_nu, aand_oud = _paar(_rij(inc, ["Diluted Average Shares",
+                                             "Basic Average Shares"]))
+        if omzet_nu and bruto_nu is not None and omzet_nu > 0:
+            uit["grossMargin"] = round(bruto_nu / omzet_nu * 100, 1)
+            if omzet_oud and bruto_oud is not None and omzet_oud > 0:
+                _oud = bruto_oud / omzet_oud * 100
+                uit["grossMarginPrev"] = round(_oud, 1)
+                uit["grossMarginTrend"] = round(uit["grossMargin"] - _oud, 1)
+        if omzet_nu and op_nu is not None and omzet_nu > 0:
+            uit["opMargin"] = round(op_nu / omzet_nu * 100, 1)
+            if omzet_oud and op_oud is not None and omzet_oud > 0:
+                uit["opMarginDelta"] = round(
+                    uit["opMargin"] - (op_oud / omzet_oud * 100), 1)
+        if aand_nu and aand_oud and aand_oud > 0:
+            uit["dilutionPct"] = round((aand_nu / aand_oud - 1) * 100, 1)
+
+        cf = t.quarterly_cashflow
+        fcf = _rij(cf, ["Free Cash Flow", "FreeCashFlow"])
+        f_nu, f_oud = _paar(fcf)
+        if f_nu is None:   # zelf uitrekenen als het veld ontbreekt
+            ocf_nu, ocf_oud = _paar(_rij(cf, ["Operating Cash Flow", "OperatingCashFlow"]))
+            cap_nu, cap_oud = _paar(_rij(cf, ["Capital Expenditure", "CapitalExpenditure"]))
+            if ocf_nu is not None and cap_nu is not None:
+                f_nu = ocf_nu + cap_nu           # capex is negatief bij yfinance
+            if ocf_oud is not None and cap_oud is not None:
+                f_oud = ocf_oud + cap_oud
+        if f_nu is not None:
+            uit["fcfPositive"] = bool(f_nu > 0)
+            if f_oud is not None:
+                uit["fcfGrowing"] = bool(f_nu > f_oud)
+
+        bs = t.quarterly_balance_sheet
+        cash = _rij(bs, ["Cash Cash Equivalents And Short Term Investments",
+                         "Cash And Cash Equivalents", "CashAndCashEquivalents"])
+        schuld = _rij(bs, ["Total Debt", "TotalDebt"])
+        try:
+            c0 = float(cash.iloc[0]) if cash is not None and len(cash) else None
+            d0 = float(schuld.iloc[0]) if schuld is not None and len(schuld) else 0.0
+            if c0 is not None and np.isfinite(c0):
+                uit["netCash"] = bool(c0 > d0)
+                uit["netCashUsd"] = round((c0 - d0) / 1e9, 2)
+        except (ValueError, TypeError, IndexError):
+            pass
+        return uit or None
+    except Exception:
+        return None
+
+
 def ververs_fundamentals_auto(paren):
     """Werkt de mechanische fundamentals bij voor aandelen die NET gerapporteerd
     hebben. Alleen dan: dat is precies het moment waarop de handmatige cijfers
@@ -5896,9 +5984,9 @@ def ververs_fundamentals_auto(paren):
         except (json.JSONDecodeError, IOError):
             cache = {}
     if not FMP_API_KEY:
-        print("  Fundamentals-auto: geen FMP_API_KEY — overgeslagen")
-        return cache
+        print("  Fundamentals-auto: geen FMP_API_KEY — yfinance wordt gebruikt")
     bijgewerkt = 0
+    _mislukt = 0
     for naam, sym, _fb in paren:
         if naam in ETF_TICKERS or "." in sym:
             continue
@@ -5915,11 +6003,16 @@ def ververs_fundamentals_auto(paren):
         _zelfde_rapport = st and _al.get("_rapport") == st.get("laatsteRapport")
         if _zelfde_rapport and not _mist_compounder:
             continue                     # dit rapport al verwerkt
-        nieuw = fetch_fundamentals_fmp(sym)
+        nieuw = fetch_fundamentals_fmp(sym)      # eerste keus als er een sleutel is
+        _bron = "FMP"
         if not nieuw:
+            nieuw = fetch_fundamentals_yf(sym)   # geen sleutel nodig
+            _bron = "yfinance"
+        if not nieuw:
+            _mislukt += 1
             continue
         oud = {v: (FUNDAMENTALS.get(naam) or {}).get(v) for v in nieuw}
-        nieuw["_bron"] = "FMP"
+        nieuw["_bron"] = _bron
         nieuw["_rapport"] = st.get("laatsteRapport")
         nieuw["_opgehaald"] = str(TODAY)
         nieuw["_vorige"] = oud
@@ -5932,8 +6025,12 @@ def ververs_fundamentals_auto(paren):
                 json.dump(cache, f, indent=1, sort_keys=True)
         except IOError:
             pass
-    print(f"  Fundamentals-auto: {bijgewerkt} bijgewerkt na nieuw rapport "
-          f"({len(cache)} in cache)")
+    _bronnen = {}
+    for _v in cache.values():
+        if isinstance(_v, dict) and _v.get("_bron"):
+            _bronnen[_v["_bron"]] = _bronnen.get(_v["_bron"], 0) + 1
+    print(f"  Fundamentals-auto: {bijgewerkt} bijgewerkt, {_mislukt} mislukt "
+          f"({len(cache)} in cache; bronnen: {_bronnen or 'geen'})")
     return cache
 
 
@@ -6048,7 +6145,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "10.4-compounder-data",
+            "version": "10.5-yfinance-fundamentals",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
