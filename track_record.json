@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-08-27T23:04:05.302488+02:00"
+    "lastUpdate": "2026-08-27T23:59:53.928666+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -4808,7 +4808,7 @@
         "timing": 37
       },
       "outcomes": {},
-      "episodeDays": 17
+      "episodeDays": 18
     },
     "monthly_pick:III:2026-08-21": {
       "ticker": "III",
@@ -4852,7 +4852,7 @@
         "sellWeight": 24
       },
       "outcomes": {},
-      "episodeDays": 14
+      "episodeDays": 15
     },
     "strong_signal:META:2026-08-22": {
       "ticker": "META",
@@ -4879,7 +4879,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 14
+      "episodeDays": 15
     },
     "strong_signal:ADM:2026-08-22": {
       "ticker": "ADM",
@@ -4960,7 +4960,7 @@
         "sellWeight": 26
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "monthly_pick:RELY:2026-08-26": {
       "ticker": "RELY",
@@ -5076,8 +5076,8 @@
     "baseRates": [
       {
         "action": "KOOP",
-        "n": 24,
-        "pct": 26.1,
+        "n": 25,
+        "pct": 27.2,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -5097,15 +5097,8 @@
       },
       {
         "action": "HOLD",
-        "n": 10,
-        "pct": 10.9,
-        "verdict": "discriminerend",
-        "color": "green"
-      },
-      {
-        "action": "LICHT KOOP",
-        "n": 7,
-        "pct": 7.6,
+        "n": 9,
+        "pct": 9.8,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -5118,6 +5111,13 @@
       },
       {
         "action": "NEUTRAAL",
+        "n": 7,
+        "pct": 7.6,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "LICHT KOOP",
         "n": 6,
         "pct": 6.5,
         "verdict": "discriminerend",
@@ -5139,11 +5139,11 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.29,
-          0.23,
+          0.28,
+          0.24,
           0.39,
-          -0.17,
-          0.78,
+          -0.16,
+          0.79,
           0.54
         ]
       },
@@ -5151,26 +5151,26 @@
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.29,
+          0.28,
           1.0,
-          0.03,
-          -0.05,
           0.02,
-          0.75,
-          0.75
+          -0.05,
+          0.01,
+          0.74,
+          0.73
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.23,
-          0.03,
+          0.24,
+          0.02,
           1.0,
-          0.63,
-          0.31,
+          0.66,
+          0.3,
           0.42,
-          0.04
+          0.01
         ]
       },
       {
@@ -5179,9 +5179,9 @@
         "cells": [
           0.39,
           -0.05,
-          0.63,
+          0.66,
           1.0,
-          -0.45,
+          -0.43,
           0.37,
           -0.22
         ]
@@ -5190,12 +5190,12 @@
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.17,
-          0.02,
-          0.31,
-          -0.45,
+          -0.16,
+          0.01,
+          0.3,
+          -0.43,
           1.0,
-          0.02,
+          0.01,
           0.33
         ]
       },
@@ -5203,13 +5203,13 @@
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.78,
-          0.75,
+          0.79,
+          0.74,
           0.42,
           0.37,
-          0.02,
+          0.01,
           1.0,
-          0.75
+          0.73
         ]
       },
       {
@@ -5217,11 +5217,11 @@
         "key": "opp",
         "cells": [
           0.54,
-          0.75,
-          0.04,
+          0.73,
+          0.01,
           -0.22,
           0.33,
-          0.75,
+          0.73,
           1.0
         ]
       }
@@ -6358,8 +6358,8 @@
         "WM": "VERKOOP",
         "PLTR": "NEUTRAAL",
         "CAT": "VERKOOP",
-        "ASML": "HOLD",
-        "ASMI": "HOLD",
+        "ASML": "LICHT KOOP",
+        "ASMI": "KOOP",
         "MU": "LICHT KOOP",
         "GOOGL": "VERKOOP",
         "AMZN": "KOOP",
@@ -6393,7 +6393,7 @@
         "DIE": "KOOP",
         "SOF": "KOOP",
         "AIR": "STERK VERKOOP",
-        "ALFEN": "HOLD",
+        "ALFEN": "NEUTRAAL",
         "LOTB": "KOOP",
         "VOW": "VERKOOP",
         "EL": "KOOP",
@@ -6407,8 +6407,8 @@
         "DIS": "LICHT VERKOOP",
         "BLK": "KOOP",
         "BABA": "VERKOOP",
-        "NABTESCO": "LICHT KOOP",
-        "HARMONIC": "LICHT KOOP",
+        "NABTESCO": "HOLD",
+        "HARMONIC": "HOLD",
         "KEYENCE": "KOOP",
         "FANUC": "VERKOOP",
         "YASKAWA": "VERKOOP",

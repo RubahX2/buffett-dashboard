@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T23:04:05.302488+02:00",
-  "generatedAtHuman": "Thursday 27 August 2026 om 23:04",
+  "generatedAt": "2026-08-27T23:59:53.928666+02:00",
+  "generatedAtHuman": "Thursday 27 August 2026 om 23:59",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -21,6 +21,38 @@
           "type": "price",
           "dir": "up",
           "text": "Koers +15.4% deze week ($95\u2192$110)"
+        }
+      ]
+    },
+    {
+      "ticker": "ASML",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
+        },
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: HOLD \u2192 LICHT KOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "ASMI",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 74 \u2193 66"
+        },
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: HOLD \u2192 KOOP"
         }
       ]
     },
@@ -89,6 +121,38 @@
       ]
     },
     {
+      "ticker": "AIR",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 44 \u2191 52"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
+        }
+      ]
+    },
+    {
+      "ticker": "ALFEN",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: HOLD \u2192 NEUTRAAL"
+        },
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.5% deze week ($13\u2192$12)"
+        }
+      ]
+    },
+    {
       "ticker": "MSTR",
       "daysAgo": 7,
       "changes": [
@@ -117,22 +181,6 @@
           "type": "price",
           "dir": "down",
           "text": "Koers -10.9% deze week ($131\u2192$116)"
-        }
-      ]
-    },
-    {
-      "ticker": "NABTESCO",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 42 \u2193 37"
-        },
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 LICHT KOOP"
         }
       ]
     },
@@ -312,17 +360,6 @@
       ]
     },
     {
-      "ticker": "ALFEN",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -9.9% deze week ($13\u2192$12)"
-        }
-      ]
-    },
-    {
       "ticker": "LOTB",
       "daysAgo": 7,
       "changes": [
@@ -356,13 +393,35 @@
       ]
     },
     {
+      "ticker": "NABTESCO",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: KOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
       "ticker": "HARMONIC",
       "daysAgo": 7,
       "changes": [
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 LICHT KOOP"
+          "text": "Signaal: KOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
+      "ticker": "YASKAWA",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 31 \u2193 26"
         }
       ]
     },
@@ -466,17 +525,6 @@
       ]
     },
     {
-      "ticker": "MC",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 31 \u2193 26"
-        }
-      ]
-    },
-    {
       "ticker": "TOST",
       "daysAgo": 5,
       "changes": [
@@ -499,6 +547,6 @@
       ]
     }
   ],
-  "changedCount": 40,
+  "changedCount": 43,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
