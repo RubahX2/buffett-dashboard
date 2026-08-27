@@ -4162,6 +4162,150 @@ def compounder_metrics(naam, fund, eg=None):
     return m
 
 
+# ── COMPOUNDER-SCORE (0-100) ────────────────────────────────────────────────
+# Waardering zit hier BEWUST niet in. Meng je kwaliteit en prijs in één cijfer,
+# dan verstopt een middelmatig-maar-goedkoop aandeel een uitstekend-maar-eerlijk-
+# geprijsd aandeel in de sortering. Prijs komt als aparte kolom (zie
+# waardering_vlag): sorteren op kwaliteit, prijs als filter.
+
+def _cs_groei(g_ttm, g_hist):
+    if g_ttm is None:
+        return None
+    niveau = min(20.0, max(0.0, g_ttm) / 30.0 * 20.0)          # 30%+ = vol
+    boven = sum(1 for g in (g_hist or [])[-3:] if g >= 15.0)
+    return round(niveau + {3: 10.0, 2: 6.0, 1: 3.0}.get(boven, 0.0), 1)
+
+
+def _cs_brutomarge(bm_nu, bm_vorig):
+    if bm_nu is None:
+        return None
+    niveau = 12.0 if bm_nu >= 50 else max(0.0, bm_nu / 50 * 12)
+    if bm_vorig is None:
+        richting = 4.0                       # onbekende richting: middenwaarde
+    elif bm_nu >= bm_vorig:
+        richting = 8.0
+    elif bm_nu >= bm_vorig - 1:
+        richting = 4.0
+    else:
+        richting = 0.0
+    return round(min(20.0, niveau + richting), 1)
+
+
+def _cs_opmarge(delta_pp):
+    if delta_pp is None:
+        return None
+    if delta_pp >= 2:   return 15.0
+    if delta_pp >= 0.5: return 10.0
+    if delta_pp >= 0:   return 6.0
+    if delta_pp >= -1:  return 2.0
+    return 0.0
+
+
+def _cs_fcf(positief, groeit):
+    if positief is None and groeit is None:
+        return None
+    if positief and groeit: return 10.0
+    if positief:            return 7.0
+    if groeit:              return 4.0       # negatief maar inflecterend
+    return 0.0
+
+
+def _cs_verwatering(pct):
+    if pct is None:
+        return None
+    if pct <= 0: return 10.0                 # netto inkoop
+    if pct <= 2: return 8.0
+    if pct <= 5: return 5.0
+    if pct <= 8: return 1.0
+    return 0.0                               # >8% zwaar bestraft
+
+
+def _cs_balans(netto_cash):
+    return None if netto_cash is None else (5.0 if netto_cash else 0.0)
+
+
+def _cs_mensen(founder, exemplary):
+    if founder:   return 10.0
+    if exemplary: return 7.0
+    return 0.0
+
+
+def compounder_score(m):
+    """Score 0-100 met per component ook de DEKKING. Een ontbrekende component
+    telt als 0 punten maar verlaagt de dekking -- zo blijft zichtbaar dat 40 op
+    vier gemeten componenten iets anders is dan 40 op zeven."""
+    comp = {
+        "groei":       _cs_groei(m.get("g_ttm"), m.get("g_hist")),
+        "brutomarge":  _cs_brutomarge(m.get("bm_nu"), m.get("bm_vorig")),
+        "opmarge":     _cs_opmarge(m.get("opmarge_delta")),
+        "fcf":         _cs_fcf(m.get("fcf_positief"), m.get("fcf_groeit")),
+        "verwatering": _cs_verwatering(m.get("dilutie_pct")),
+        "balans":      _cs_balans(m.get("netto_cash")),
+        "mensen":      _cs_mensen(m.get("founder_ceo"), m.get("exemplary_alloc")),
+    }
+    maxima = {"groei": 30, "brutomarge": 20, "opmarge": 15, "fcf": 10,
+              "verwatering": 10, "balans": 5, "mensen": 10}
+    gemeten = {k: v is not None for k, v in comp.items()}
+    behaald = sum(v for v in comp.values() if v is not None)
+    max_gemeten = sum(maxima[k] for k, ok in gemeten.items() if ok)
+    return {
+        "totaal": round(behaald, 1),
+        "componenten": {k: (None if v is None else round(v, 1)) for k, v in comp.items()},
+        "maxima": maxima,
+        "gemeten": gemeten,
+        "dekkingPct": round(max_gemeten / 100 * 100),
+        # Op wat WEL gemeten is: eerlijker vergelijking tussen aandelen met
+        # verschillende dekking. Alleen tonen, nooit sorteren -- anders wint wie
+        # weinig data heeft maar daarop toevallig goed scoort.
+        "scoreOpGemeten": round(behaald / max_gemeten * 100, 1) if max_gemeten else None,
+    }
+
+
+def waardering_vlag(ev_sales, groei_pct):
+    """EV/Sales gedeeld door omzetgroei. Aparte kolom, GEEN deel van de score."""
+    if not ev_sales or not groei_pct or groei_pct <= 0:
+        return {"vlag": None, "ratio": None}
+    ratio = ev_sales / groei_pct
+    vlag = "GROEN" if ratio < 0.4 else ("AMBER" if ratio <= 0.6 else "ROOD")
+    return {"vlag": vlag, "ratio": round(ratio, 2)}
+
+
+# ── GEKALIBREERDE DREMPELS ──────────────────────────────────────────────────
+# Gekalibreerd tegen het eigen universum (aug 2026), niet uit een boek overgenomen.
+# De oorspronkelijke waarden (55/65, $3 mrd, marge 12) bleken te ruim: zes van de
+# acht nieuwe namen kwamen boven 80, dus 55 selecteerde niets. En bij $3 mrd viel
+# ALLES in type B -- die grens ligt onder het hele universum.
+CS_TYPE_GRENS_USD = 10e9   # onder = A (runway), boven = B (quality-at-fair-price)
+CS_DREMPEL_A      = 80     # 100x-kandidaat: strenger, want de claim is groter
+CS_DREMPEL_B      = 75
+CS_GROEI_MIN_A    = 20     # van de 30 groeipunten
+CS_GROEI_MIN_B    = 16
+CS_MARGE_MIN      = 10     # van de 20 margepunten; verlaagd van 12 omdat
+                           # doorstroombedrijven (DLO, TOST) structureel lage
+                           # marges hebben zonder dat dat een zwakte is
+
+
+def bepaal_type(marktkap_usd):
+    """A = 100x-kandidaat (klein, lange runway). B = quality-at-fair-price."""
+    if marktkap_usd is None:
+        return None
+    return "A" if marktkap_usd < CS_TYPE_GRENS_USD else "B"
+
+
+def haalt_poort(score, type_):
+    """Wie is PROMOVEERBAAR. Groei en marge zijn verplicht: een hoge totaalscore
+    die leunt op balans en founder-punten is geen compounder."""
+    if type_ is None or score.get("totaal") is None:
+        return False
+    c = score["componenten"]
+    if c.get("groei") is None or c.get("brutomarge") is None:
+        return False                                  # kern niet meetbaar
+    groei_ok = c["groei"] >= (CS_GROEI_MIN_A if type_ == "A" else CS_GROEI_MIN_B)
+    marge_ok = c["brutomarge"] >= CS_MARGE_MIN
+    drempel = CS_DREMPEL_A if type_ == "A" else CS_DREMPEL_B
+    return bool(groei_ok and marge_ok and score["totaal"] >= drempel)
+
+
 def compute_quality(fund: dict) -> dict:
 
     # ONBEKEND is niet hetzelfde als SLECHT. Een aandeel dat nieuw in de watchlist
@@ -6145,7 +6289,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "10.5-yfinance-fundamentals",
+            "version": "10.6-compounder-score",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -6517,6 +6661,34 @@ def main():
         for _n, _po, _reden in sorted(_gemist, key=lambda x: -x[1])[:12]:
             print(f"    {_n:<7} {_po:>5.1f}% onder top -> {_reden}")
 
+    # ── COMPOUNDER-RANKING ───────────────────────────────────────────────────
+    _comp = []
+    for _n, _s in results["stocks"].items():
+        if _s.get("error"):
+            continue
+        _f = FUNDAMENTALS.get(_n) or {}
+        _m = compounder_metrics(_n, _f, _s.get("earningsGrowth"))
+        _sc = compounder_score(_m)
+        _t = bepaal_type(_m.get("mktcap_usd"))
+        _val = _s.get("valuation") or {}
+        _comp.append({
+            "ticker": _n, "score": _sc["totaal"], "componenten": _sc["componenten"],
+            "maxima": _sc["maxima"], "gemeten": _sc["gemeten"],
+            "dekkingPct": _sc["dekkingPct"], "scoreOpGemeten": _sc["scoreOpGemeten"],
+            "type": _t, "promoveerbaar": haalt_poort(_sc, _t),
+            "marktkapUsd": _m.get("mktcap_usd"),
+            "founder": FOUNDER_CEO.get(_n) or EXEMPLARY_ALLOC.get(_n),
+            "founderCeo": _n in FOUNDER_CEO,
+            "peg": _val.get("peg"),
+            "waarderingOordeel": _val.get("verdict"),
+        })
+    _comp.sort(key=lambda r: (-(r["score"] or 0), r["ticker"]))
+    results["compounders"] = {
+        "rijen": _comp,
+        "drempels": {"typeGrensUsd": CS_TYPE_GRENS_USD, "drempelA": CS_DREMPEL_A,
+                     "drempelB": CS_DREMPEL_B, "groeiMinA": CS_GROEI_MIN_A,
+                     "groeiMinB": CS_GROEI_MIN_B, "margeMin": CS_MARGE_MIN},
+    }
     results["allocation"] = {
         "generatedForMonth": NOW.strftime("%B %Y"),
         "primaryPick": primary,
