@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "10.6";
+const UI_VERSION = "10.7";
 
 const STOCK_NAMES = {
   ADYEN:"Adyen", RELY:"Remitly", DLO:"DLocal", GLBE:"Global-e",
@@ -926,6 +926,126 @@ function BaggerTrack({ baggers, onSelect }) {
       </div>
     </div>
   );
+}
+
+// Eigen component, GEEN inline-functie. React-hooks (useState) mogen alleen in een
+// component staan; in een IIFE binnen de render crasht de hele pagina naar zwart.
+function CompoundersTab({ data, setSelected }) {
+
+            
+            const rijen = data?.rijen || [];
+            const d = data?.drempels || {};
+            const [alleen, setAlleen] = React.useState("alles");
+            if(!rijen.length) return (
+              <div style={{color:C.textDim,fontSize:12}}>Nog geen compounder-data — draai de analyse.</div>
+            );
+            const zicht = rijen.filter(r=> alleen==="alles" ? true
+                          : alleen==="promoveerbaar" ? r.promoveerbaar : r.type===alleen);
+            const balk = (naam,waarde,max)=>{
+              const gemeten = waarde!=null;
+              const pct = gemeten ? Math.max(0,Math.min(100, waarde/max*100)) : 0;
+              return (
+                <div key={naam} style={{flex:"1 1 90px",minWidth:80}}>
+                  <div style={{color:C.textDim,fontSize:9,display:"flex",justifyContent:"space-between"}}>
+                    <span>{naam}</span><span>{gemeten?`${waarde}/${max}`:"—"}</span>
+                  </div>
+                  <div style={{height:4,background:C.border,borderRadius:2,marginTop:2}}>
+                    <div style={{height:4,width:`${pct}%`,borderRadius:2,
+                      background: gemeten ? (pct>=70?C.green:pct>=40?C.accent:C.orange) : C.border}}/>
+                  </div>
+                </div>
+              );
+            };
+            return (
+              <>
+                <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:6}}>
+                  🌱 Compounders — kwaliteitsranking van het universum
+                </div>
+                <details style={{marginBottom:12,background:C.panel,border:`1px solid ${C.border}`,
+                  borderRadius:8,padding:"9px 12px"}}>
+                  <summary style={{color:C.text,fontSize:11,fontWeight:700,cursor:"pointer"}}>
+                    Hoe deze score werkt (klik om te lezen)
+                  </summary>
+                  <div style={{color:C.textDim,fontSize:11,lineHeight:1.7,marginTop:8}}>
+                    <b style={{color:C.text}}>Wat de score meet.</b> Alleen bedrijfskwaliteit, 0–100
+                    punten: omzetgroei én consistentie (30), brutomarge-niveau en -richting (20),
+                    operationele marge-trend (15), vrije kasstroom (10), verwatering van het
+                    aandelenaantal (10), balans (5) en founder-CEO of bewezen kapitaalallocatie (10).
+                    <br/><br/>
+                    <b style={{color:C.text}}>Waarom waardering er NIET in zit.</b> Meng je kwaliteit
+                    en prijs in één cijfer, dan verstopt een middelmatig-maar-goedkoop aandeel een
+                    uitstekend-maar-eerlijk-geprijsd aandeel in de sortering. Prijs staat daarom apart
+                    als PEG-kolom: je sorteert op kwaliteit en filtert op prijs.
+                    <br/><br/>
+                    <b style={{color:C.text}}>Type A tegen type B.</b> Onder ${(d.typeGrensUsd/1e9)||10} mrd
+                    marktkap = <b style={{color:C.text}}>A</b>: een 100x-kandidaat met runway, en dus een
+                    strengere lat ({d.drempelA}). Daarboven = <b style={{color:C.text}}>B</b>:
+                    quality-at-fair-price, geen 100x-doel, lat op {d.drempelB}. Zonder die splitsing
+                    winnen kleine hypergroeiers altijd, puur op groeiruimte.
+                    <br/><br/>
+                    <b style={{color:C.text}}>De poort.</b> Promoveerbaar vraagt méér dan een hoog
+                    totaal: groei minstens {d.groeiMinA}/30 (A) of {d.groeiMinB}/30 (B), én brutomarge
+                    minstens {d.margeMin}/20. Een hoge score die leunt op balans- en founder-punten is
+                    geen compounder.
+                    <br/><br/>
+                    <b style={{color:C.orange}}>Dekking is het belangrijkste cijfer op deze pagina.</b>{" "}
+                    Niet elk bedrijf levert alle data. Een score van 40 op vier gemeten componenten
+                    betekent iets heel anders dan 40 op zeven. Staat de dekking laag, lees de score dan
+                    als "nog niet te beoordelen" en niet als "zwak bedrijf". Europese en Aziatische
+                    namen halen structureel minder dekking, omdat hun kwartaalrekeningen minder
+                    volledig worden aangeleverd.
+                    <br/><br/>
+                    <b style={{color:C.text}}>Deze drempels zijn gekalibreerd</b>, niet uit een boek
+                    overgenomen: getest tegen dit universum tot de indeling klopte met het eigen
+                    oordeel. Ze mogen verschuiven als de praktijk daarom vraagt.
+                  </div>
+                </details>
+                <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
+                  {[["alles","Alles"],["promoveerbaar","Promoveerbaar"],["A","Type A"],["B","Type B"]].map(([k,l])=>(
+                    <button key={k} onClick={()=>setAlleen(k)}
+                      style={{background: alleen===k?C.accent:C.panel, color: alleen===k?"#000":C.textDim,
+                        border:`1px solid ${C.border}`,borderRadius:6,padding:"4px 10px",
+                        fontSize:11,fontWeight:700,cursor:"pointer"}}>{l}</button>
+                  ))}
+                  <span style={{color:C.textDim,fontSize:10,alignSelf:"center"}}>{zicht.length} van {rijen.length}</span>
+                </div>
+                <div style={{display:"grid",gap:8}}>
+                  {zicht.map(r=>(
+                    <div key={r.ticker} onClick={()=>setSelected(r.ticker)}
+                      style={{background:C.panel,border:`1px solid ${C.border}`,
+                        borderLeft:`3px solid ${r.promoveerbaar?C.green:C.border}`,
+                        borderRadius:8,padding:"10px 12px",cursor:"pointer"}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:8,flexWrap:"wrap"}}>
+                        <div>
+                          <span style={{color:C.accent,fontWeight:700,fontSize:14}}>{r.ticker}</span>
+                          <span style={{color:C.textDim,fontSize:10,marginLeft:6}}>{STOCK_NAMES[r.ticker]}</span>
+                          {r.type && <span style={{color:C.textDim,fontSize:9,marginLeft:6}}>type {r.type}</span>}
+                          {r.founderCeo && <span style={{color:C.teal,fontSize:9,marginLeft:6}}>founder: {r.founder}</span>}
+                          {!r.founderCeo && r.founder && <span style={{color:C.textDim,fontSize:9,marginLeft:6}}>{r.founder}</span>}
+                        </div>
+                        <div style={{textAlign:"right"}}>
+                          <span style={{color: r.promoveerbaar?C.green:C.text,fontSize:16,fontWeight:800}}>{r.score}</span>
+                          <span style={{color:C.textDim,fontSize:10}}>/100</span>
+                          <div style={{color: r.dekkingPct>=80?C.textDim:C.orange,fontSize:9}}>
+                            dekking {r.dekkingPct}%{r.dekkingPct<80 && " — score onvolledig"}
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:8}}>
+                        {Object.entries(r.componenten||{}).map(([k,v])=>balk(k,v,(r.maxima||{})[k]||10))}
+                      </div>
+                      {(r.peg!=null || r.promoveerbaar) && (
+                        <div style={{marginTop:6,fontSize:10,color:C.textDim}}>
+                          {r.peg!=null && <>PEG {r.peg} · {r.waarderingOordeel}</>}
+                          {r.promoveerbaar && <span style={{color:C.green,fontWeight:700}}>  ✓ haalt de poort</span>}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            );
+          
 }
 
 function MarketCard({ market, regimeHistory }) {
@@ -2893,121 +3013,7 @@ function App() {
 
       {view==="compounders"&&(
         <div style={{padding:"14px 16px"}}>
-          {(()=>{
-            const data = jsonData?.compounders;
-            const rijen = data?.rijen || [];
-            const d = data?.drempels || {};
-            const [alleen, setAlleen] = React.useState("alles");
-            if(!rijen.length) return (
-              <div style={{color:C.textDim,fontSize:12}}>Nog geen compounder-data — draai de analyse.</div>
-            );
-            const zicht = rijen.filter(r=> alleen==="alles" ? true
-                          : alleen==="promoveerbaar" ? r.promoveerbaar : r.type===alleen);
-            const balk = (naam,waarde,max)=>{
-              const gemeten = waarde!=null;
-              const pct = gemeten ? Math.max(0,Math.min(100, waarde/max*100)) : 0;
-              return (
-                <div key={naam} style={{flex:"1 1 90px",minWidth:80}}>
-                  <div style={{color:C.textDim,fontSize:9,display:"flex",justifyContent:"space-between"}}>
-                    <span>{naam}</span><span>{gemeten?`${waarde}/${max}`:"—"}</span>
-                  </div>
-                  <div style={{height:4,background:C.border,borderRadius:2,marginTop:2}}>
-                    <div style={{height:4,width:`${pct}%`,borderRadius:2,
-                      background: gemeten ? (pct>=70?C.green:pct>=40?C.accent:C.orange) : C.border}}/>
-                  </div>
-                </div>
-              );
-            };
-            return (
-              <>
-                <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:6}}>
-                  🌱 Compounders — kwaliteitsranking van het universum
-                </div>
-                <details style={{marginBottom:12,background:C.panel,border:`1px solid ${C.border}`,
-                  borderRadius:8,padding:"9px 12px"}}>
-                  <summary style={{color:C.text,fontSize:11,fontWeight:700,cursor:"pointer"}}>
-                    Hoe deze score werkt (klik om te lezen)
-                  </summary>
-                  <div style={{color:C.textDim,fontSize:11,lineHeight:1.7,marginTop:8}}>
-                    <b style={{color:C.text}}>Wat de score meet.</b> Alleen bedrijfskwaliteit, 0–100
-                    punten: omzetgroei én consistentie (30), brutomarge-niveau en -richting (20),
-                    operationele marge-trend (15), vrije kasstroom (10), verwatering van het
-                    aandelenaantal (10), balans (5) en founder-CEO of bewezen kapitaalallocatie (10).
-                    <br/><br/>
-                    <b style={{color:C.text}}>Waarom waardering er NIET in zit.</b> Meng je kwaliteit
-                    en prijs in één cijfer, dan verstopt een middelmatig-maar-goedkoop aandeel een
-                    uitstekend-maar-eerlijk-geprijsd aandeel in de sortering. Prijs staat daarom apart
-                    als PEG-kolom: je sorteert op kwaliteit en filtert op prijs.
-                    <br/><br/>
-                    <b style={{color:C.text}}>Type A tegen type B.</b> Onder ${(d.typeGrensUsd/1e9)||10} mrd
-                    marktkap = <b style={{color:C.text}}>A</b>: een 100x-kandidaat met runway, en dus een
-                    strengere lat ({d.drempelA}). Daarboven = <b style={{color:C.text}}>B</b>:
-                    quality-at-fair-price, geen 100x-doel, lat op {d.drempelB}. Zonder die splitsing
-                    winnen kleine hypergroeiers altijd, puur op groeiruimte.
-                    <br/><br/>
-                    <b style={{color:C.text}}>De poort.</b> Promoveerbaar vraagt méér dan een hoog
-                    totaal: groei minstens {d.groeiMinA}/30 (A) of {d.groeiMinB}/30 (B), én brutomarge
-                    minstens {d.margeMin}/20. Een hoge score die leunt op balans- en founder-punten is
-                    geen compounder.
-                    <br/><br/>
-                    <b style={{color:C.orange}}>Dekking is het belangrijkste cijfer op deze pagina.</b>{" "}
-                    Niet elk bedrijf levert alle data. Een score van 40 op vier gemeten componenten
-                    betekent iets heel anders dan 40 op zeven. Staat de dekking laag, lees de score dan
-                    als "nog niet te beoordelen" en niet als "zwak bedrijf". Europese en Aziatische
-                    namen halen structureel minder dekking, omdat hun kwartaalrekeningen minder
-                    volledig worden aangeleverd.
-                    <br/><br/>
-                    <b style={{color:C.text}}>Deze drempels zijn gekalibreerd</b>, niet uit een boek
-                    overgenomen: getest tegen dit universum tot de indeling klopte met het eigen
-                    oordeel. Ze mogen verschuiven als de praktijk daarom vraagt.
-                  </div>
-                </details>
-                <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
-                  {[["alles","Alles"],["promoveerbaar","Promoveerbaar"],["A","Type A"],["B","Type B"]].map(([k,l])=>(
-                    <button key={k} onClick={()=>setAlleen(k)}
-                      style={{background: alleen===k?C.accent:C.panel, color: alleen===k?"#000":C.textDim,
-                        border:`1px solid ${C.border}`,borderRadius:6,padding:"4px 10px",
-                        fontSize:11,fontWeight:700,cursor:"pointer"}}>{l}</button>
-                  ))}
-                  <span style={{color:C.textDim,fontSize:10,alignSelf:"center"}}>{zicht.length} van {rijen.length}</span>
-                </div>
-                <div style={{display:"grid",gap:8}}>
-                  {zicht.map(r=>(
-                    <div key={r.ticker} onClick={()=>setSelected(r.ticker)}
-                      style={{background:C.panel,border:`1px solid ${C.border}`,
-                        borderLeft:`3px solid ${r.promoveerbaar?C.green:C.border}`,
-                        borderRadius:8,padding:"10px 12px",cursor:"pointer"}}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:8,flexWrap:"wrap"}}>
-                        <div>
-                          <span style={{color:C.accent,fontWeight:700,fontSize:14}}>{r.ticker}</span>
-                          <span style={{color:C.textDim,fontSize:10,marginLeft:6}}>{STOCK_NAMES[r.ticker]}</span>
-                          {r.type && <span style={{color:C.textDim,fontSize:9,marginLeft:6}}>type {r.type}</span>}
-                          {r.founderCeo && <span style={{color:C.teal,fontSize:9,marginLeft:6}}>founder: {r.founder}</span>}
-                          {!r.founderCeo && r.founder && <span style={{color:C.textDim,fontSize:9,marginLeft:6}}>{r.founder}</span>}
-                        </div>
-                        <div style={{textAlign:"right"}}>
-                          <span style={{color: r.promoveerbaar?C.green:C.text,fontSize:16,fontWeight:800}}>{r.score}</span>
-                          <span style={{color:C.textDim,fontSize:10}}>/100</span>
-                          <div style={{color: r.dekkingPct>=80?C.textDim:C.orange,fontSize:9}}>
-                            dekking {r.dekkingPct}%{r.dekkingPct<80 && " — score onvolledig"}
-                          </div>
-                        </div>
-                      </div>
-                      <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:8}}>
-                        {Object.entries(r.componenten||{}).map(([k,v])=>balk(k,v,(r.maxima||{})[k]||10))}
-                      </div>
-                      {(r.peg!=null || r.promoveerbaar) && (
-                        <div style={{marginTop:6,fontSize:10,color:C.textDim}}>
-                          {r.peg!=null && <>PEG {r.peg} · {r.waarderingOordeel}</>}
-                          {r.promoveerbaar && <span style={{color:C.green,fontWeight:700}}>  ✓ haalt de poort</span>}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </>
-            );
-          })()}
+          <CompoundersTab data={jsonData?.compounders} setSelected={setSelected}/>
         </div>
       )}
 

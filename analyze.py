@@ -6289,7 +6289,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "10.6-compounder-score",
+            "version": "10.7-compounder-fix",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
