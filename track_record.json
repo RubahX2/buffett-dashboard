@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-08-28T08:34:26.487813+02:00"
+    "lastUpdate": "2026-08-28T22:21:47.141845+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -4026,6 +4026,13 @@
           "return": -22.78,
           "relativeReturn": -18.65,
           "success": false
+        },
+        "4w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 64.39,
+          "return": 0.45,
+          "relativeReturn": 4.13,
+          "success": true
         }
       },
       "episodeDays": 4
@@ -4049,6 +4056,13 @@
           "exitPrice": 238.94,
           "return": 11.03,
           "relativeReturn": 15.16,
+          "success": true
+        },
+        "4w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 236.98,
+          "return": 11.76,
+          "relativeReturn": 15.44,
           "success": true
         }
       },
@@ -4074,6 +4088,13 @@
           "return": -2.08,
           "relativeReturn": 1.72,
           "success": true
+        },
+        "4w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 266.43,
+          "return": 1.65,
+          "relativeReturn": 5.0,
+          "success": true
         }
       },
       "episodeDays": 11
@@ -4098,6 +4119,13 @@
           "return": -0.86,
           "relativeReturn": -4.66,
           "success": false
+        },
+        "4w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 89.66,
+          "return": 2.5,
+          "relativeReturn": -0.85,
+          "success": false
         }
       },
       "episodeDays": 11
@@ -4121,6 +4149,13 @@
           "exitPrice": 17.05,
           "return": -14.05,
           "relativeReturn": -10.64,
+          "success": false
+        },
+        "4w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 15.59,
+          "return": -4.28,
+          "relativeReturn": -1.32,
           "success": false
         }
       },
@@ -4791,7 +4826,15 @@
         "composite": 56,
         "timing": 45
       },
-      "outcomes": {},
+      "outcomes": {
+        "1w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 1494.4,
+          "return": 1.98,
+          "relativeReturn": 2.9,
+          "success": true
+        }
+      },
       "episodeDays": 1
     },
     "strong_signal:MNST:2026-08-21": {
@@ -4807,8 +4850,16 @@
         "composite": 70,
         "timing": 37
       },
-      "outcomes": {},
-      "episodeDays": 19
+      "outcomes": {
+        "1w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 46.86,
+          "return": 1.33,
+          "relativeReturn": 2.25,
+          "success": true
+        }
+      },
+      "episodeDays": 20
     },
     "monthly_pick:III:2026-08-21": {
       "ticker": "III",
@@ -4824,7 +4875,15 @@
         "valuation": 90,
         "timing": 34
       },
-      "outcomes": {},
+      "outcomes": {
+        "1w": {
+          "exitDate": "2026-08-28",
+          "exitPrice": 2828.0,
+          "return": -2.18,
+          "relativeReturn": -2.67,
+          "success": false
+        }
+      },
       "episodeDays": 1
     },
     "strong_signal:TDG:2026-08-22": {
@@ -4852,7 +4911,7 @@
         "sellWeight": 24
       },
       "outcomes": {},
-      "episodeDays": 16
+      "episodeDays": 17
     },
     "strong_signal:META:2026-08-22": {
       "ticker": "META",
@@ -4879,7 +4938,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 16
+      "episodeDays": 17
     },
     "strong_signal:ADM:2026-08-22": {
       "ticker": "ADM",
@@ -4906,7 +4965,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:WM:2026-08-25": {
       "ticker": "WM",
@@ -4960,7 +5019,7 @@
         "sellWeight": 26
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "monthly_pick:RELY:2026-08-26": {
       "ticker": "RELY",
@@ -5000,10 +5059,10 @@
   "accuracy": {
     "monthly_pick": {
       "1w": {
-        "n": 10,
-        "avgReturn": 1.1,
-        "avgRelativeReturn": 2.28,
-        "status": "te weinig data (10/20)",
+        "n": 11,
+        "avgReturn": 0.8,
+        "avgRelativeReturn": 1.78,
+        "status": "te weinig data (11/20)",
         "accuracyShown": false
       },
       "4w": {
@@ -5026,18 +5085,18 @@
     },
     "strong_signal": {
       "1w": {
-        "n": 117,
-        "avgReturn": -2.29,
-        "avgRelativeReturn": -2.33,
-        "accuracy": 41.9,
+        "n": 118,
+        "avgReturn": -2.26,
+        "avgRelativeReturn": -2.28,
+        "accuracy": 42.4,
         "status": "ok",
         "accuracyShown": true
       },
       "4w": {
-        "n": 95,
-        "avgReturn": -3.49,
-        "avgRelativeReturn": -1.93,
-        "accuracy": 41.1,
+        "n": 97,
+        "avgReturn": -3.43,
+        "avgRelativeReturn": -1.91,
+        "accuracy": 40.2,
         "status": "ok",
         "accuracyShown": true
       },
@@ -5054,19 +5113,20 @@
     },
     "caution": {
       "1w": {
-        "n": 29,
+        "n": 30,
         "avgReturn": 2.01,
-        "avgRelativeReturn": 0.95,
-        "accuracy": 69.0,
+        "avgRelativeReturn": 1.04,
+        "accuracy": 70.0,
         "status": "ok",
         "accuracyShown": true
       },
       "4w": {
-        "n": 19,
-        "avgReturn": 0.51,
-        "avgRelativeReturn": 3.56,
-        "status": "te weinig data (19/20)",
-        "accuracyShown": false
+        "n": 22,
+        "avgReturn": 1.07,
+        "avgRelativeReturn": 4.19,
+        "accuracy": 68.2,
+        "status": "ok",
+        "accuracyShown": true
       },
       "13w": {
         "n": 0,
@@ -5089,56 +5149,70 @@
     26
   ],
   "diagnostics": {
-    "n": 91,
+    "n": 92,
     "baseRates": [
       {
-        "action": "KOOP",
-        "n": 24,
-        "pct": 26.4,
+        "action": "VERKOOP",
+        "n": 23,
+        "pct": 25.0,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "VERKOOP",
-        "n": 23,
-        "pct": 25.3,
+        "action": "KOOP",
+        "n": 22,
+        "pct": 23.9,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "STERK VERKOOP",
         "n": 14,
-        "pct": 15.4,
+        "pct": 15.2,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "HOLD",
-        "n": 9,
-        "pct": 9.9,
-        "verdict": "discriminerend",
-        "color": "green"
-      },
-      {
-        "action": "NEUTRAAL",
-        "n": 8,
-        "pct": 8.8,
-        "verdict": "discriminerend",
-        "color": "green"
-      },
-      {
-        "action": "LICHT KOOP",
-        "n": 7,
-        "pct": 7.7,
+        "n": 12,
+        "pct": 13.0,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "LICHT VERKOOP",
-        "n": 6,
-        "pct": 6.6,
+        "n": 8,
+        "pct": 8.7,
         "verdict": "discriminerend",
         "color": "green"
+      },
+      {
+        "action": "LICHT KOOP",
+        "n": 6,
+        "pct": 6.5,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "NEUTRAAL",
+        "n": 5,
+        "pct": 5.4,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "CAUTION (overextended)",
+        "n": 1,
+        "pct": 1.1,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
+      },
+      {
+        "action": "STERK KOOP",
+        "n": 1,
+        "pct": 1.1,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
       }
     ],
     "corrLabels": [
@@ -5157,11 +5231,11 @@
         "cells": [
           1.0,
           0.29,
-          0.23,
-          0.38,
-          -0.17,
+          0.22,
+          0.39,
+          -0.23,
           0.79,
-          0.55
+          0.58
         ]
       },
       {
@@ -5170,50 +5244,50 @@
         "cells": [
           0.29,
           1.0,
-          0.02,
+          -0.03,
           -0.07,
-          0.03,
-          0.74,
-          0.73
+          -0.03,
+          0.75,
+          0.77
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.23,
-          0.02,
+          0.22,
+          -0.03,
           1.0,
           0.65,
-          0.3,
-          0.41,
-          -0.0
+          0.32,
+          0.38,
+          -0.1
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.38,
+          0.39,
           -0.07,
           0.65,
           1.0,
-          -0.43,
-          0.35,
-          -0.27
+          -0.4,
+          0.37,
+          -0.24
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.17,
-          0.03,
-          0.3,
-          -0.43,
+          -0.23,
+          -0.03,
+          0.32,
+          -0.4,
           1.0,
-          0.02,
-          0.35
+          -0.03,
+          0.23
         ]
       },
       {
@@ -5221,24 +5295,24 @@
         "key": "comp",
         "cells": [
           0.79,
-          0.74,
-          0.41,
-          0.35,
-          0.02,
+          0.75,
+          0.38,
+          0.37,
+          -0.03,
           1.0,
-          0.73
+          0.74
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.55,
-          0.73,
-          -0.0,
-          -0.27,
-          0.35,
-          0.73,
+          0.58,
+          0.77,
+          -0.1,
+          -0.24,
+          0.23,
+          0.74,
           1.0
         ]
       }
@@ -5262,7 +5336,7 @@
     "ASMI": null,
     "MU": null,
     "GOOGL": null,
-    "AMZN": null,
+    "AMZN": "sig:caution:SELL",
     "ORCL": "sig:strong_signal:SELL",
     "KO": null,
     "MC": null,
@@ -5278,7 +5352,7 @@
     "MNST": "sig:strong_signal:SELL",
     "V": "sig:strong_signal:SELL",
     "KPG": null,
-    "ADM": null,
+    "ADM": "sig:strong_signal:BUY",
     "AON": null,
     "MELI": null,
     "III": null,
@@ -5339,7 +5413,7 @@
     "ARCC": "sig:strong_signal:SELL",
     "ONON": null,
     "ARCG": null,
-    "pick::ASMI": "pick:ASMI"
+    "pick::RELY": "pick:RELY"
   },
   "_outcomeFormulaVersion": 2,
   "_verdictHistory": {
@@ -6373,21 +6447,21 @@
     "2026-08-28": {
       "verdicts": {
         "ADYEN": "KOOP",
-        "NU": "LICHT KOOP",
-        "RELY": null,
+        "NU": "HOLD",
+        "RELY": "KOOP",
         "DLO": "KOOP",
         "GLBE": "KOOP",
         "TOST": "LICHT VERKOOP",
         "IOT": "LICHT VERKOOP",
         "KNSL": "LICHT VERKOOP",
         "WM": "VERKOOP",
-        "PLTR": "NEUTRAAL",
+        "PLTR": "LICHT VERKOOP",
         "CAT": "VERKOOP",
-        "ASML": "LICHT KOOP",
-        "ASMI": "KOOP",
+        "ASML": "HOLD",
+        "ASMI": "HOLD",
         "MU": "LICHT KOOP",
         "GOOGL": "VERKOOP",
-        "AMZN": "KOOP",
+        "AMZN": "CAUTION (overextended)",
         "ORCL": "STERK VERKOOP",
         "KO": "KOOP",
         "MC": "VERKOOP",
@@ -6398,12 +6472,12 @@
         "RKLB": "VERKOOP",
         "OPEN": "HOLD",
         "SDGR": "KOOP",
-        "BNGO": "NEUTRAAL",
-        "GAW": "LICHT KOOP",
+        "BNGO": "HOLD",
+        "GAW": "VERKOOP",
         "MNST": "STERK VERKOOP",
         "V": "STERK VERKOOP",
         "KPG": "NEUTRAAL",
-        "ADM": "KOOP",
+        "ADM": "STERK KOOP",
         "AON": "NEUTRAAL",
         "MELI": "NEUTRAAL",
         "III": "NEUTRAAL",
@@ -6418,7 +6492,7 @@
         "DIE": "KOOP",
         "SOF": "KOOP",
         "AIR": "STERK VERKOOP",
-        "ALFEN": "NEUTRAAL",
+        "ALFEN": "HOLD",
         "LOTB": "KOOP",
         "VOW": "VERKOOP",
         "EL": "KOOP",
@@ -6426,14 +6500,14 @@
         "VST": "STERK VERKOOP",
         "COPX": "STERK VERKOOP",
         "ROBO": "VERKOOP",
-        "MSTR": "VERKOOP",
+        "MSTR": "LICHT VERKOOP",
         "AAPL": "KOOP",
         "NFLX": "LICHT VERKOOP",
         "DIS": "LICHT VERKOOP",
         "BLK": "KOOP",
         "BABA": "VERKOOP",
-        "NABTESCO": "HOLD",
-        "HARMONIC": "HOLD",
+        "NABTESCO": "LICHT KOOP",
+        "HARMONIC": "LICHT KOOP",
         "KEYENCE": "KOOP",
         "FANUC": "VERKOOP",
         "YASKAWA": "VERKOOP",
@@ -6465,7 +6539,7 @@
         "ONON": "HOLD",
         "ARCG": "KOOP"
       },
-      "pick": "ASMI"
+      "pick": "RELY"
     }
   }
 }
