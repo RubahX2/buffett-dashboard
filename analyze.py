@@ -4119,6 +4119,201 @@ def _parse_mktcap(tekst):
         return None
 
 
+KWALITEIT_FILE = "quality_screen.json"
+KWALITEIT = {}
+
+# ── SCREENER-CRITERIA (Compounding Quality) ────────────────────────────────
+# Overgenomen uit de methode van Compounding Quality. Bewust als PASS/FAIL-filter
+# en niet als score: het idee is elimineren, niet rangschikken. Een bedrijf dat op
+# zeven van de acht slaagt is geen "bijna goed" -- het valt af op dat ene punt, en
+# je ziet precies waarop.
+#
+# LET OP de meetperiode. De bron eist 5-jaars gemiddelden; yfinance levert er
+# doorgaans 4. We rekenen met wat er is en tonen het aantal jaren erbij, zodat
+# een oordeel op 2 jaar niet doorgaat voor een oordeel op 5.
+KW_CRITERIA = [
+    ("omzetgroei",  "Omzetgroei",        5.0,  "min", "gem. %/jaar"),
+    ("epsGroei",    "Verwaterde WPA-groei", 7.0, "min", "gem. %/jaar"),
+    ("brutomarge",  "Brutomarge",       40.0,  "min", "gem. %"),
+    ("nettomarge",  "Nettomarge",       10.0,  "min", "gem. %"),
+    ("fcfMarge",    "Vrije-kasstroommarge", 10.0, "min", "gem. %"),
+    ("capexRatio",  "Kapitaalintensiteit", 5.0, "max", "capex/omzet %"),
+    ("roic",        "ROIC",             15.0,  "min", "gem. %"),
+    ("roce",        "ROCE",             20.0,  "min", "gem. %"),
+]
+
+
+def _gem(reeks):
+    r = [x for x in reeks if x is not None and np.isfinite(x)]
+    return (sum(r) / len(r)) if r else None
+
+
+def _groei_reeks(waarden):
+    """Jaarlijkse groei% uit een reeks jaarwaarden (nieuw->oud zoals yfinance geeft).
+    Slaat jaren met een negatieve of nul-basis over: van verlies naar winst is geen
+    percentage, dat zou de reeks onbruikbaar vertekenen."""
+    uit = []
+    for nieuw, oud in zip(waarden[:-1], waarden[1:]):
+        if nieuw is None or oud is None or oud <= 0:
+            continue
+        uit.append((nieuw / oud - 1) * 100.0)
+    return uit
+
+
+def fetch_jaarcijfers_yf(sym):
+    """Meerjarige kengetallen uit de JAARrekeningen. Nodig voor de screener-criteria,
+    die gemiddelden over 3-5 jaar vragen -- die kun je niet uit één kwartaal halen."""
+    try:
+        t = yf.Ticker(sym)
+
+        def rij(df, namen):
+            if df is None or getattr(df, "empty", True):
+                return None
+            for n in namen:
+                if n in df.index:
+                    return [None if not np.isfinite(float(v)) else float(v)
+                            for v in df.loc[n].values]
+            return None
+
+        inc, cf, bs = t.income_stmt, t.cashflow, t.balance_sheet
+        omzet = rij(inc, ["Total Revenue", "TotalRevenue"])
+        if not omzet or len(omzet) < 2:
+            return None
+        bruto = rij(inc, ["Gross Profit", "GrossProfit"])
+        netto = rij(inc, ["Net Income", "NetIncome",
+                          "Net Income Common Stockholders"])
+        ebit = rij(inc, ["EBIT", "Operating Income", "OperatingIncome"])
+        eps = rij(inc, ["Diluted EPS", "DilutedEPS"])
+        belasting = rij(inc, ["Tax Provision", "TaxProvision"])
+        voorbelasting = rij(inc, ["Pretax Income", "PretaxIncome"])
+        fcf = rij(cf, ["Free Cash Flow", "FreeCashFlow"])
+        capex = rij(cf, ["Capital Expenditure", "CapitalExpenditure"])
+        ocf = rij(cf, ["Operating Cash Flow", "OperatingCashFlow"])
+        eigen = rij(bs, ["Stockholders Equity", "Total Stockholder Equity",
+                         "StockholdersEquity"])
+        schuld = rij(bs, ["Total Debt", "TotalDebt"])
+        activa = rij(bs, ["Total Assets", "TotalAssets"])
+        kort_pass = rij(bs, ["Current Liabilities", "Total Current Liabilities"])
+
+        n = len(omzet)
+        def per_jaar(teller, noemer=omzet, f=100.0):
+            if not teller:
+                return []
+            return [(teller[i] / noemer[i] * f)
+                    for i in range(min(len(teller), len(noemer)))
+                    if teller[i] is not None and noemer[i] not in (None, 0)]
+
+        if not fcf and ocf and capex:
+            fcf = [(ocf[i] + capex[i]) if ocf[i] is not None and capex[i] is not None
+                   else None for i in range(min(len(ocf), len(capex)))]
+
+        # ROIC = NOPAT / geinvesteerd kapitaal (eigen vermogen + schuld)
+        roic_jaren = []
+        if ebit and eigen:
+            for i in range(min(len(ebit), len(eigen))):
+                if ebit[i] is None or eigen[i] is None:
+                    continue
+                belastingvoet = 0.21
+                if belasting and voorbelasting and i < len(belasting) \
+                        and i < len(voorbelasting) and voorbelasting[i] not in (None, 0) \
+                        and belasting[i] is not None:
+                    bv = belasting[i] / voorbelasting[i]
+                    if 0 <= bv <= 0.6:
+                        belastingvoet = bv
+                kapitaal = eigen[i] + ((schuld[i] or 0) if schuld and i < len(schuld) else 0)
+                if kapitaal and kapitaal > 0:
+                    roic_jaren.append(ebit[i] * (1 - belastingvoet) / kapitaal * 100.0)
+        # ROCE = EBIT / (totale activa - kortlopende verplichtingen)
+        roce_jaren = []
+        if ebit and activa:
+            for i in range(min(len(ebit), len(activa))):
+                if ebit[i] is None or activa[i] is None:
+                    continue
+                ingezet = activa[i] - ((kort_pass[i] or 0) if kort_pass and i < len(kort_pass) else 0)
+                if ingezet and ingezet > 0:
+                    roce_jaren.append(ebit[i] / ingezet * 100.0)
+
+        uit = {
+            "jaren": n,
+            "omzetgroei":  _gem(_groei_reeks(omzet)),
+            "epsGroei":    _gem(_groei_reeks(eps)) if eps else None,
+            "brutomarge":  _gem(per_jaar(bruto)),
+            "nettomarge":  _gem(per_jaar(netto)),
+            "fcfMarge":    _gem(per_jaar(fcf[:3] if fcf else [], omzet[:3])),
+            "capexRatio":  _gem([abs(x) for x in per_jaar(capex)]) if capex else None,
+            "roic":        _gem(roic_jaren[:3]),
+            "roce":        _gem(roce_jaren[:3]),
+        }
+        return {k: (round(v, 1) if isinstance(v, float) else v) for k, v in uit.items()}
+    except Exception:
+        return None
+
+
+def screen_kwaliteit(kg):
+    """Toetst de acht criteria. Geeft per criterium geslaagd/gezakt/onbekend."""
+    if not kg:
+        return None
+    regels, geslaagd, gemeten = [], 0, 0
+    for sleutel, label, drempel, richting, eenheid in KW_CRITERIA:
+        w = kg.get(sleutel)
+        if w is None:
+            regels.append({"sleutel": sleutel, "label": label, "waarde": None,
+                           "drempel": drempel, "richting": richting,
+                           "eenheid": eenheid, "status": "onbekend"})
+            continue
+        gemeten += 1
+        ok = (w >= drempel) if richting == "min" else (w <= drempel)
+        geslaagd += 1 if ok else 0
+        regels.append({"sleutel": sleutel, "label": label, "waarde": w,
+                       "drempel": drempel, "richting": richting,
+                       "eenheid": eenheid, "status": "geslaagd" if ok else "gezakt"})
+    return {"regels": regels, "geslaagd": geslaagd, "gemeten": gemeten,
+            "totaal": len(KW_CRITERIA), "jaren": kg.get("jaren"),
+            "allesGeslaagd": bool(gemeten == len(KW_CRITERIA) and geslaagd == gemeten)}
+
+
+def ververs_kwaliteit_screen(paren):
+    """Jaarcijfers ophalen en de screener draaien. Hooguit EEN keer per 30 dagen per
+    aandeel: jaarrekeningen veranderen per kwartaal, niet per run, en dit zijn drie
+    extra netwerkaanroepen per ticker."""
+    cache = {}
+    if os.path.exists(KWALITEIT_FILE):
+        try:
+            with open(KWALITEIT_FILE, "r", encoding="utf-8") as f:
+                cache = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            cache = {}
+    nieuw_aantal, mislukt = 0, 0
+    for naam, sym, _fb in paren:
+        if naam in ETF_TICKERS:
+            continue
+        oud = cache.get(naam) or {}
+        _op = oud.get("_opgehaald")
+        if _op:
+            try:
+                if (TODAY - date.fromisoformat(_op)).days < 30:
+                    continue                       # nog vers genoeg
+            except ValueError:
+                pass
+        kg = fetch_jaarcijfers_yf(sym)
+        if not kg:
+            mislukt += 1
+            continue
+        kg["_opgehaald"] = str(TODAY)
+        cache[naam] = kg
+        nieuw_aantal += 1
+        time.sleep(0.2)
+    if nieuw_aantal:
+        try:
+            with open(KWALITEIT_FILE, "w", encoding="utf-8") as f:
+                json.dump(cache, f, indent=1, sort_keys=True)
+        except IOError:
+            pass
+    print(f"  Kwaliteitsscreen: {nieuw_aantal} opgehaald, {mislukt} mislukt "
+          f"({len(cache)} in cache)")
+    return cache
+
+
 def compounder_metrics(naam, fund, eg=None):
     """Mapt het INPUTS-CONTRACT op wat analyze.py echt heeft.
 
@@ -6263,23 +6458,36 @@ def main():
             print("Weekend — beurs gesloten. Bestaande data blijft geldig. Analyse overgeslagen.")
             sys.exit(0)
 
-    # ── TIJDVENSTER: drie geplande runs per dag (Brusselse tijd) ─────────────
-    # GitHub-cron rekent altijd in UTC en kent geen zomer-/wintertijd. Daarom staan
-    # in de workflow ZES cron-regels (zomer- én winteroffset) en beslist deze guard
-    # welke daarvan echt telt. Zo klopt het jaarrond zonder twee keer per jaar te
-    # sleutelen. De vensters zijn ruim omdat GitHub-cron routineus 5-20 minuten te
-    # laat vuurt. Handmatige runs slaan deze guard over.
-    VENSTERS = ((930, 1030, "ochtend — na de Europese opening"),
-                (1550, 1650, "middag — na de Amerikaanse opening"),
-                (2220, 2320, "avond — na de Amerikaanse slotkoers"))
+    # ── AFSTAND TUSSEN RUNS (vervangt het tijdvenster) ───────────────────────
+    # Eerder stond hier een guard op de KLOK: alleen doorgaan binnen drie vensters
+    # van een uur. Dat ging structureel mis, want GitHub voert geplande runs uren
+    # te laat uit -- gemeten: crons ingesteld op 09:40/16:00/22:30 draaiden op
+    # 01:14, 14:52 en 19:53. Vijf van de zes runs vielen daardoor buiten elk venster
+    # en werden weggegooid, terwijl ze groen afsloten. De data stond dagen stil
+    # zonder dat er iets rood werd.
+    #
+    # Nu sturen we niet op WANNEER de run start, maar op HOE LANG GELEDEN er voor
+    # het laatst een analyse is gedraaid. Dat is immuun voor vertraging: welke van
+    # de zes crons ook als eerste langskomt, hij doet het werk; de rest ziet dat er
+    # net iets gedraaid heeft en stopt. Zo houd je ~3 analyses per dag over.
+    MIN_UREN_TUSSEN_RUNS = 3.0
     if os.environ.get("GITHUB_EVENT_NAME") == "schedule":
-        _nu = NOW.hour * 100 + NOW.minute
-        _slot = next((naam for a, b, naam in VENSTERS if a <= _nu <= b), None)
-        if _slot is None:
-            print(f"Buiten het tijdvenster ({NOW:%H:%M} Brussel) — dit is de cron van "
-                  "de andere seizoenstijd. Run overgeslagen.")
-            sys.exit(0)
-        print(f"Run-venster: {_slot}")
+        _vorige = None
+        try:
+            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+                _vorige = ((json.load(f).get("meta") or {}).get("generatedAt"))
+        except (IOError, json.JSONDecodeError, AttributeError):
+            _vorige = None
+        if _vorige:
+            try:
+                _uren = (NOW - datetime.fromisoformat(_vorige)).total_seconds() / 3600.0
+                if _uren < MIN_UREN_TUSSEN_RUNS:
+                    print(f"Vorige analyse was {_uren:.1f} uur geleden "
+                          f"(minimaal {MIN_UREN_TUSSEN_RUNS} uur) — run overgeslagen.")
+                    sys.exit(0)
+                print(f"Vorige analyse {_uren:.1f} uur geleden — draaien.")
+            except (ValueError, TypeError):
+                pass          # onleesbare tijdstempel: liever draaien dan overslaan
 
     os.makedirs(HISTORY_DIR, exist_ok=True)
     timeline = load_timeline()
@@ -6289,7 +6497,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "10.7-compounder-fix",
+            "version": "10.9-run-interval",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -6302,6 +6510,8 @@ def main():
     # gerapporteerd hebben. Euronext (ASMI/ASML) blijft handwerk: FMP dekt dat
     # onbetrouwbaar. earningsHistory blijft overal handmatig -- daar zit oordeel in.
     AUTO_FUND = ververs_fundamentals_auto(WATCHLIST)
+    global KWALITEIT
+    KWALITEIT = ververs_kwaliteit_screen(WATCHLIST)
     pas_auto_fundamentals_toe()
 
     # Batch ophalen
@@ -6683,6 +6893,20 @@ def main():
             "waarderingOordeel": _val.get("verdict"),
         })
     _comp.sort(key=lambda r: (-(r["score"] or 0), r["ticker"]))
+    _kw = []
+    for _n in results["stocks"]:
+        if results["stocks"][_n].get("error"):
+            continue
+        _r = screen_kwaliteit(KWALITEIT.get(_n))
+        if _r:
+            _r["ticker"] = _n
+            _kw.append(_r)
+    _kw.sort(key=lambda r: (-r["geslaagd"], -r["gemeten"], r["ticker"]))
+    results["kwaliteitScreen"] = {
+        "rijen": _kw,
+        "criteria": [{"sleutel": k, "label": l, "drempel": d, "richting": r,
+                      "eenheid": e} for k, l, d, r, e in KW_CRITERIA],
+    }
     results["compounders"] = {
         "rijen": _comp,
         "drempels": {"typeGrensUsd": CS_TYPE_GRENS_USD, "drempelA": CS_DREMPEL_A,

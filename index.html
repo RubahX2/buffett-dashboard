@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "10.7";
+const UI_VERSION = "10.9";
 
 const STOCK_NAMES = {
   ADYEN:"Adyen", RELY:"Remitly", DLO:"DLocal", GLBE:"Global-e",
@@ -930,6 +930,111 @@ function BaggerTrack({ baggers, onSelect }) {
 
 // Eigen component, GEEN inline-functie. React-hooks (useState) mogen alleen in een
 // component staan; in een IIFE binnen de render crasht de hele pagina naar zwart.
+// Eigen component (niet inline): deze heeft toestand nodig voor het filter, en
+// hooks mogen alleen bovenaan een component staan.
+function KwaliteitsScreen({ data, setSelected }) {
+  const rijen = data?.rijen || [];
+  const criteria = data?.criteria || [];
+  const [modus, setModus] = React.useState("alles");
+  if (!rijen.length) return (
+    <div style={{color:C.textDim,fontSize:12}}>
+      Nog geen jaarcijfers opgehaald — draai de analyse. De jaarrekeningen worden
+      hooguit eens per 30 dagen per aandeel ververst.
+    </div>
+  );
+  const zicht = modus==="geslaagd" ? rijen.filter(r=>r.allesGeslaagd)
+              : modus==="bijna"   ? rijen.filter(r=>!r.allesGeslaagd && r.geslaagd>=6)
+              : rijen;
+  return (
+    <>
+      <div style={{color:C.accent,fontSize:13,fontWeight:700,marginBottom:6}}>
+        🔍 Kwaliteitsscreen — acht filters, {rijen.filter(r=>r.allesGeslaagd).length} van {rijen.length} komen erdoor
+      </div>
+      <details style={{marginBottom:12,background:C.panel,border:`1px solid ${C.border}`,
+        borderRadius:8,padding:"9px 12px"}}>
+        <summary style={{color:C.text,fontSize:11,fontWeight:700,cursor:"pointer"}}>
+          Wat deze acht filters meten (klik om te lezen)
+        </summary>
+        <div style={{color:C.textDim,fontSize:11,lineHeight:1.7,marginTop:8}}>
+          Dit is een <b style={{color:C.text}}>eliminatie</b>-filter, geen score. Elk
+          criterium haalt een deel van de bedrijven weg; wat overblijft is de moeite van
+          nader onderzoek waard. Zeven van de acht halen is geen &ldquo;bijna goed&rdquo; —
+          het bedrijf valt af, en je ziet precies waarop.
+          <br/><br/>
+          <b style={{color:C.text}}>Omzetgroei &gt;5%</b> — zonder omzetgroei kan winst op
+          termijn niet groeien. <b style={{color:C.text}}>Verwaterde WPA-groei &gt;7%</b> —
+          bewust verwáterd: een bedrijf kan zijn winst laten groeien zonder jou rijker te
+          maken, door aandelen bij te drukken. <b style={{color:C.text}}>Brutomarge &gt;40%</b> —
+          teken van prijszettingsmacht. <b style={{color:C.text}}>Nettomarge &gt;10%</b> —
+          buffer voor magere jaren. <b style={{color:C.text}}>Vrije-kasstroommarge &gt;10%</b> —
+          winst is een mening, kasstroom een feit. <b style={{color:C.text}}>Capex/omzet &lt;5%</b> —
+          kapitaalarme bedrijven presteren op lange termijn beter; fabrieken en machines
+          eten het rendement op. <b style={{color:C.text}}>ROIC &gt;15%</b> en{" "}
+          <b style={{color:C.text}}>ROCE &gt;20%</b> — kapitaalallocatie. Ligt het rendement
+          op geïnvesteerd kapitaal onder de kostvoet, dan vernietigt herinvesteren waarde.
+          <br/><br/>
+          <b style={{color:C.orange}}>Over de meetperiode.</b> De oorspronkelijke methode
+          vraagt vijfjaars gemiddelden. De jaarrekeningen leveren er doorgaans vier, soms
+          minder. Achter elk bedrijf staat op hoeveel jaren het oordeel rust — een
+          gemiddelde over twee jaar is iets anders dan over vijf. Kasstroommarge, ROIC en
+          ROCE worden over drie jaar gemiddeld, conform de bron.
+          <br/><br/>
+          <b style={{color:C.text}}>Verschil met de Compounders-tab.</b> Die rangschikt op
+          een kwaliteitsscore en kijkt vooral vooruit (groeiversnelling, marge-richting,
+          founder). Deze screen kijkt terug en filtert hard op bewezen cijfers. Een naam
+          die in beide bovenaan staat, is dus op twee manieren getoetst.
+        </div>
+      </details>
+      <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
+        {[["alles","Alles"],["geslaagd","Komt erdoor"],["bijna","6 of 7 van 8"]].map(([k,l])=>(
+          <button key={k} onClick={()=>setModus(k)}
+            style={{background: modus===k?C.accent:C.panel, color: modus===k?"#000":C.textDim,
+              border:`1px solid ${C.border}`,borderRadius:6,padding:"4px 10px",
+              fontSize:11,fontWeight:700,cursor:"pointer"}}>{l}</button>
+        ))}
+        <span style={{color:C.textDim,fontSize:10,alignSelf:"center"}}>{zicht.length} getoond</span>
+      </div>
+      <div style={{display:"grid",gap:8}}>
+        {zicht.map(r=>(
+          <div key={r.ticker} onClick={()=>setSelected(r.ticker)}
+            style={{background:C.panel,border:`1px solid ${C.border}`,
+              borderLeft:`3px solid ${r.allesGeslaagd?C.green:C.border}`,
+              borderRadius:8,padding:"10px 12px",cursor:"pointer"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",flexWrap:"wrap",gap:6}}>
+              <div>
+                <span style={{color:C.accent,fontWeight:700,fontSize:14}}>{r.ticker}</span>
+                <span style={{color:C.textDim,fontSize:10,marginLeft:6}}>{STOCK_NAMES[r.ticker]}</span>
+              </div>
+              <div style={{textAlign:"right"}}>
+                <span style={{color: r.allesGeslaagd?C.green:C.text,fontSize:15,fontWeight:800}}>
+                  {r.geslaagd}/{r.totaal}
+                </span>
+                <div style={{color:C.textDim,fontSize:9}}>
+                  {r.gemeten<r.totaal && <span style={{color:C.orange}}>{r.totaal-r.gemeten} onbekend · </span>}
+                  {r.jaren} jaar data
+                </div>
+              </div>
+            </div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:7}}>
+              {r.regels.map(x=>{
+                const kl = x.status==="geslaagd"?C.green:x.status==="gezakt"?C.red:C.textDim;
+                const teken = x.status==="geslaagd"?"✓":x.status==="gezakt"?"✗":"?";
+                return (
+                  <span key={x.sleutel} style={{color:kl,fontSize:10,
+                    border:`1px solid ${C.border}`,borderRadius:4,padding:"2px 6px"}}>
+                    {teken} {x.label}: {x.waarde==null?"—":x.waarde}
+                    <span style={{color:C.textDim}}> ({x.richting==="min"?"≥":"≤"}{x.drempel})</span>
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 function CompoundersTab({ data, setSelected }) {
 
             
@@ -2340,7 +2445,7 @@ function App() {
           <span style={{color:C.textDim,fontSize:11,marginLeft:10}}>Kwaliteit × Timing</span>
         </div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          {[["allocatie","🎯 Maandpick"],["schatkamer","💰 Schatkamer"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["momentum","🔄 Momentum"],["schokken","⚡ Gaps"],["compounders","🌱 Compounders"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
+          {[["allocatie","🎯 Maandpick"],["schatkamer","💰 Schatkamer"],["koopkans","💎 Koopkans"],["baggers","🚀 Baggers"],["momentum","🔄 Momentum"],["schokken","⚡ Gaps"],["compounders","🌱 Compounders"],["kwaliteit","🔍 Kwaliteitsscreen"],["signalen","🚦 Signalen"],["screener","📊 Screener"],["sectoren","🗂 Sectoren"],["trackrecord","📈 Trackrecord"],["portfolio","💼 Portfolio"]].map(([v,l])=>(
             <button key={v} onClick={()=>setView(v)} style={{
               background:view===v?C.accent:"none",color:view===v?C.bg:C.textDim,
               border:`1px solid ${view===v?C.accent:C.border}`,borderRadius:5,
@@ -3008,6 +3113,12 @@ function App() {
               </div>
             );
           })()}
+        </div>
+      )}
+
+      {view==="kwaliteit"&&(
+        <div style={{padding:"14px 16px"}}>
+          <KwaliteitsScreen data={jsonData?.kwaliteitScreen} setSelected={setSelected}/>
         </div>
       )}
 
