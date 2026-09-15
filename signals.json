@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-09-15T22:35:22.614918+02:00",
-    "generatedAtHuman": "Tuesday 15 September 2026 om 22:35",
+    "generatedAt": "2026-09-15T22:43:18.111280+02:00",
+    "generatedAtHuman": "Tuesday 15 September 2026 om 22:43",
     "isFriday": false,
     "isWeekend": false,
     "version": "10.9-run-interval",
@@ -3563,13 +3563,13 @@
             "0.000": 156.35,
             "1.000": 545.89,
             "1.272": 767.01,
-            "1.414": 916.02,
+            "1.414": 916.03,
             "1.618": 1182.17,
             "1.818": 1518.04,
-            "2.000": 1905.94,
-            "2.618": 4127.52,
-            "3.618": 14411.14,
-            "4.236": 31208.83
+            "2.000": 1905.95,
+            "2.618": 4127.53,
+            "3.618": 14411.15,
+            "4.236": 31208.86
           },
           "goldenPocket": {
             "low": 226.09,
@@ -4468,6 +4468,7 @@
         "grossMarginTrend": 3.3,
         "opMargin": 20.9,
         "opMarginDelta": 3.6,
+        "dilutionPct": -1.9,
         "fcfPositive": true,
         "fcfGrowing": true,
         "netCash": false,
@@ -4479,6 +4480,7 @@
             "grossMarginTrend",
             "opMargin",
             "opMarginDelta",
+            "dilutionPct",
             "fcfPositive",
             "fcfGrowing",
             "netCash",
@@ -4492,6 +4494,7 @@
             "grossMarginTrend": null,
             "opMargin": null,
             "opMarginDelta": null,
+            "dilutionPct": null,
             "fcfPositive": null,
             "fcfGrowing": null,
             "netCash": null,
@@ -6715,7 +6718,7 @@
             "2.000": 272.98,
             "2.618": 395.02,
             "3.618": 718.3,
-            "4.236": 1039.44
+            "4.236": 1039.43
           },
           "goldenPocket": {
             "low": 132.28,
@@ -8718,16 +8721,16 @@
         "beta": 1.1,
         "lastUpdated": "2026-07",
         "autoMogelijk": false,
-        "grossMargin": 27.3,
+        "grossMargin": 31.1,
         "grossMarginPrev": 27.5,
-        "grossMarginTrend": -0.2,
-        "opMargin": 11.8,
-        "opMarginDelta": 1.3,
-        "dilutionPct": 0.5,
+        "grossMarginTrend": 3.6,
+        "opMargin": 14.6,
+        "opMarginDelta": 3.8,
+        "dilutionPct": 0.6,
         "fcfPositive": true,
         "fcfGrowing": true,
         "netCash": false,
-        "netCashUsd": -0.93,
+        "netCashUsd": -0.84,
         "autoUpdated": {
           "velden": [
             "grossMargin",
@@ -8827,14 +8830,14 @@
         "accelGrowthPrev": 10.0
       },
       "bagger": {
-        "score": 10,
+        "score": 30,
         "label": "Geen bagger-profiel nu",
         "color": "red",
         "reasons": [
-          "Groei vertraagt (-2pp)"
+          "Groei vertraagt (-2pp)",
+          "Brutomarge stijgt sterk (+3.6pp)"
         ],
         "flags": [
-          "Brutomarge daalt (-0.2pp)",
           "Marktkap ~$14B \u2014 100x vergt biljoenen-waardering; realistisch plafond eerder 5\u201310x"
         ],
         "risk": "gemiddeld",
@@ -13269,8 +13272,8 @@
             "1.818": 6514.86,
             "2.000": 7458.34,
             "2.618": 11805.6,
-            "3.618": 24820.84,
-            "4.236": 39288.24
+            "3.618": 24820.83,
+            "4.236": 39288.23
           },
           "goldenPocket": {
             "low": 2196.78,
@@ -20850,8 +20853,8 @@
             "1.818": 1207.27,
             "2.000": 1570.35,
             "2.618": 3834.87,
-            "3.618": 16262.4,
-            "4.236": 39713.55
+            "3.618": 16262.41,
+            "4.236": 39713.58
           },
           "goldenPocket": {
             "low": 167.45,
@@ -21262,8 +21265,8 @@
             "1.818": 1942.69,
             "2.000": 3157.61,
             "2.618": 16431.63,
-            "3.618": 237015.76,
-            "4.236": 1233385.71
+            "3.618": 237015.72,
+            "4.236": 1233385.47
           },
           "goldenPocket": {
             "low": 33.35,
@@ -24264,7 +24267,7 @@
             "2.000": 537.88,
             "2.618": 1090.67,
             "3.618": 3423.56,
-            "4.236": 6942.09
+            "4.236": 6942.1
           },
           "goldenPocket": {
             "low": 78.98,
@@ -45652,6 +45655,46 @@
         "waarderingOordeel": "Neutraal (PEG 1.5\u20132.5)"
       },
       {
+        "ticker": "CAT",
+        "score": 59.5,
+        "componenten": {
+          "groei": 7.9,
+          "brutomarge": 16.6,
+          "opmarge": 15.0,
+          "fcf": 10.0,
+          "verwatering": 10.0,
+          "balans": 0.0,
+          "mensen": 0.0
+        },
+        "maxima": {
+          "groei": 30,
+          "brutomarge": 20,
+          "opmarge": 15,
+          "fcf": 10,
+          "verwatering": 10,
+          "balans": 5,
+          "mensen": 10
+        },
+        "gemeten": {
+          "groei": true,
+          "brutomarge": true,
+          "opmarge": true,
+          "fcf": true,
+          "verwatering": true,
+          "balans": true,
+          "mensen": true
+        },
+        "dekkingPct": 100,
+        "scoreOpGemeten": 59.5,
+        "type": "B",
+        "promoveerbaar": false,
+        "marktkapUsd": 444000000000.0,
+        "founder": null,
+        "founderCeo": false,
+        "peg": 3.28,
+        "waarderingOordeel": "Aan de dure kant (PEG 2.5\u20133.5)"
+      },
+      {
         "ticker": "ODFL",
         "score": 59.5,
         "componenten": {
@@ -46012,6 +46055,46 @@
         "waarderingOordeel": "Lage P/E (absoluut)"
       },
       {
+        "ticker": "MOGA",
+        "score": 54.2,
+        "componenten": {
+          "groei": 5.7,
+          "brutomarge": 15.5,
+          "opmarge": 15.0,
+          "fcf": 10.0,
+          "verwatering": 8.0,
+          "balans": 0.0,
+          "mensen": 0.0
+        },
+        "maxima": {
+          "groei": 30,
+          "brutomarge": 20,
+          "opmarge": 15,
+          "fcf": 10,
+          "verwatering": 10,
+          "balans": 5,
+          "mensen": 10
+        },
+        "gemeten": {
+          "groei": true,
+          "brutomarge": true,
+          "opmarge": true,
+          "fcf": true,
+          "verwatering": true,
+          "balans": true,
+          "mensen": true
+        },
+        "dekkingPct": 100,
+        "scoreOpGemeten": 54.2,
+        "type": "B",
+        "promoveerbaar": false,
+        "marktkapUsd": 14000000000.0,
+        "founder": null,
+        "founderCeo": false,
+        "peg": 2.87,
+        "waarderingOordeel": "Aan de dure kant (PEG 2.5\u20133.5)"
+      },
+      {
         "ticker": "ORCL",
         "score": 53.6,
         "componenten": {
@@ -46249,46 +46332,6 @@
         "founder": null,
         "founderCeo": false,
         "peg": 2.54,
-        "waarderingOordeel": "Aan de dure kant (PEG 2.5\u20133.5)"
-      },
-      {
-        "ticker": "CAT",
-        "score": 49.5,
-        "componenten": {
-          "groei": 7.9,
-          "brutomarge": 16.6,
-          "opmarge": 15.0,
-          "fcf": 10.0,
-          "verwatering": null,
-          "balans": 0.0,
-          "mensen": 0.0
-        },
-        "maxima": {
-          "groei": 30,
-          "brutomarge": 20,
-          "opmarge": 15,
-          "fcf": 10,
-          "verwatering": 10,
-          "balans": 5,
-          "mensen": 10
-        },
-        "gemeten": {
-          "groei": true,
-          "brutomarge": true,
-          "opmarge": true,
-          "fcf": true,
-          "verwatering": false,
-          "balans": true,
-          "mensen": true
-        },
-        "dekkingPct": 90,
-        "scoreOpGemeten": 55.0,
-        "type": "B",
-        "promoveerbaar": false,
-        "marktkapUsd": 444000000000.0,
-        "founder": null,
-        "founderCeo": false,
-        "peg": 3.28,
         "waarderingOordeel": "Aan de dure kant (PEG 2.5\u20133.5)"
       },
       {
@@ -46650,46 +46693,6 @@
         "founderCeo": false,
         "peg": 2.2,
         "waarderingOordeel": "Neutraal (PEG 1.5\u20132.5)"
-      },
-      {
-        "ticker": "MOGA",
-        "score": 44.3,
-        "componenten": {
-          "groei": 5.7,
-          "brutomarge": 10.6,
-          "opmarge": 10.0,
-          "fcf": 10.0,
-          "verwatering": 8.0,
-          "balans": 0.0,
-          "mensen": 0.0
-        },
-        "maxima": {
-          "groei": 30,
-          "brutomarge": 20,
-          "opmarge": 15,
-          "fcf": 10,
-          "verwatering": 10,
-          "balans": 5,
-          "mensen": 10
-        },
-        "gemeten": {
-          "groei": true,
-          "brutomarge": true,
-          "opmarge": true,
-          "fcf": true,
-          "verwatering": true,
-          "balans": true,
-          "mensen": true
-        },
-        "dekkingPct": 100,
-        "scoreOpGemeten": 44.3,
-        "type": "B",
-        "promoveerbaar": false,
-        "marktkapUsd": 14000000000.0,
-        "founder": null,
-        "founderCeo": false,
-        "peg": 2.87,
-        "waarderingOordeel": "Aan de dure kant (PEG 2.5\u20133.5)"
       },
       {
         "ticker": "NOW",
@@ -53036,6 +53039,28 @@
         "passesQualityGate": false
       },
       {
+        "ticker": "MOGA",
+        "name": "MOGA",
+        "score": 30,
+        "label": "Geen bagger-profiel nu",
+        "color": "red",
+        "risk": "gemiddeld",
+        "positionSizing": "vermijden / afwachten",
+        "relStrength": 3.4,
+        "reasons": [
+          "Groei vertraagt (-2pp)",
+          "Brutomarge stijgt sterk (+3.6pp)"
+        ],
+        "flags": [
+          "Marktkap ~$14B \u2014 100x vergt biljoenen-waardering; realistisch plafond eerder 5\u201310x"
+        ],
+        "price": 356.7,
+        "currency": "$",
+        "revenueGrowth": 8.5,
+        "grossMarginTrend": 3.6,
+        "passesQualityGate": false
+      },
+      {
         "ticker": "IONQ",
         "name": "IONQ",
         "score": 30,
@@ -53211,36 +53236,14 @@
         "revenueGrowth": -37.6,
         "grossMarginTrend": 1.5,
         "passesQualityGate": false
-      },
-      {
-        "ticker": "MOGA",
-        "name": "MOGA",
-        "score": 10,
-        "label": "Geen bagger-profiel nu",
-        "color": "red",
-        "risk": "gemiddeld",
-        "positionSizing": "vermijden / afwachten",
-        "relStrength": 3.4,
-        "reasons": [
-          "Groei vertraagt (-2pp)"
-        ],
-        "flags": [
-          "Brutomarge daalt (-0.2pp)",
-          "Marktkap ~$14B \u2014 100x vergt biljoenen-waardering; realistisch plafond eerder 5\u201310x"
-        ],
-        "price": 356.7,
-        "currency": "$",
-        "revenueGrowth": 8.5,
-        "grossMarginTrend": -0.2,
-        "passesQualityGate": false
       }
     ],
     "note": "Apart spoor voor asymmetrisch potentieel \u2014 waardering telt hier NIET. Kleine positiegroottes: het faillissementsrisico is re\u00ebel. Geen financieel advies.",
     "methodNote": "Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."
   },
   "weekly": {
-    "generatedAt": "2026-09-15T22:35:22.614918+02:00",
-    "generatedAtHuman": "Tuesday 15 September 2026 om 22:35",
+    "generatedAt": "2026-09-15T22:43:18.111280+02:00",
+    "generatedAtHuman": "Tuesday 15 September 2026 om 22:43",
     "periodLabel": "sinds ~1 week geleden",
     "changes": [
       {
