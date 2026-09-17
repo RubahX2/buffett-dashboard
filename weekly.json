@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-17T21:29:25.036520+02:00",
-  "generatedAtHuman": "Thursday 17 September 2026 om 21:29",
+  "generatedAt": "2026-09-17T22:33:53.509948+02:00",
+  "generatedAtHuman": "Thursday 17 September 2026 om 22:33",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -20,7 +20,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +50.8% deze week ($1\u2192$2)"
+          "text": "Koers +47.5% deze week ($1\u2192$2)"
         }
       ]
     },
@@ -84,7 +84,7 @@
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 56 \u2191 63"
+          "text": "Composiet 56 \u2191 64"
         },
         {
           "type": "valuation",
@@ -121,7 +121,23 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -15.4% deze week ($95\u2192$80)"
+          "text": "Koers -15.9% deze week ($95\u2192$80)"
+        }
+      ]
+    },
+    {
+      "ticker": "SOFTBANK",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: KOOP \u2192 LICHT KOOP"
+        },
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.3% deze week ($6810\u2192$6247)"
         }
       ]
     },
@@ -142,22 +158,6 @@
       ]
     },
     {
-      "ticker": "TER",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: LICHT KOOP \u2192 HOLD"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.4% deze week ($384\u2192$351)"
-        }
-      ]
-    },
-    {
       "ticker": "SNDK",
       "daysAgo": 7,
       "changes": [
@@ -169,7 +169,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -8.8% deze week ($1764\u2192$1609)"
+          "text": "Koers -8.5% deze week ($1764\u2192$1614)"
         }
       ]
     },
@@ -235,7 +235,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +53.6% deze week ($19\u2192$29)"
+          "text": "Koers +57.5% deze week ($19\u2192$30)"
         }
       ]
     },
@@ -378,18 +378,18 @@
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: VERKOOP \u2192 NEUTRAAL"
+          "text": "Signaal: VERKOOP \u2192 HOLD"
         }
       ]
     },
     {
-      "ticker": "SOFTBANK",
+      "ticker": "TER",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -9.2% deze week ($6810\u2192$6183)"
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 HOLD"
         }
       ]
     },
@@ -400,7 +400,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +9.0% deze week ($353\u2192$385)"
+          "text": "Koers +8.6% deze week ($353\u2192$384)"
         }
       ]
     },
@@ -411,18 +411,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -8.0% deze week ($146\u2192$134)"
-        }
-      ]
-    },
-    {
-      "ticker": "UBTECH",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -9.5% deze week ($86\u2192$77)"
+          "text": "Koers -8.4% deze week ($146\u2192$134)"
         }
       ]
     },
@@ -488,7 +477,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +11.5% deze week ($46\u2192$52)"
+          "text": "Koers +11.4% deze week ($46\u2192$52)"
         }
       ]
     },
@@ -521,7 +510,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -8.9% deze week ($24\u2192$22)"
+          "text": "Koers -9.7% deze week ($24\u2192$22)"
         }
       ]
     },
@@ -537,6 +526,6 @@
       ]
     }
   ],
-  "changedCount": 43,
+  "changedCount": 42,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
