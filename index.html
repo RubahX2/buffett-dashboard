@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "11.2";
+const UI_VERSION = "11.3";
 
 const STOCK_NAMES = {
   ADYEN:"Adyen", RELY:"Remitly", DLO:"DLocal", GLBE:"Global-e",
@@ -851,7 +851,13 @@ function BaggerTrack({ baggers, onSelect }) {
       Nog geen bagger-data. Verschijnt na de eerste run met de bagger-tickers.
     </div>;
   }
-  const list = baggers.candidates || [];
+  const alle = baggers.candidates || [];
+  // Splitsen op wat wiskundig KAN. Een 10x vanaf $200B vergt $2 biljoen -- dat
+  // lukt eens per decennium, wereldwijd. Zulke namen horen niet bovenaan een
+  // 10-100x-lijst, maar ze worden wel getoond: zichtbaar bekeken en afgewezen
+  // is beter dan stil weggelaten.
+  const list = alle.filter(b => b.baggerKandidaat !== false);
+  const teGroot = alle.filter(b => b.baggerKandidaat === false);
   const riskColor = {"gemiddeld":C.textDim,"hoog":C.orange,"zeer hoog":C.red};
   return (
     <div>
@@ -861,6 +867,16 @@ function BaggerTrack({ baggers, onSelect }) {
         zien er per definitie "duur" uit. In ruil daarvoor kleine positiegroottes, want het
         faillissementsrisico is reëel. 100x-baggers vooraf spotten lukt zelfs topfondsen zelden;
         dit verhoogt de kans, het is geen garantie. Geen financieel advies.
+        <div style={{color:C.textDim,marginTop:7,paddingTop:7,borderTop:`1px solid #854d0e`}}>
+          <b style={{color:C.text}}>Marktkap begrenst de score.</b> 10-100x is geen kwestie van
+          kwaliteit maar van wiskunde: 100x vanaf $1 mrd is $100 mrd — denkbaar; 100x vanaf
+          $40 mrd is $4 biljoen — bestaat niet. De fundamentals bepalen de score <b style={{color:C.text}}>binnen</b>
+          een plafond dat de marktkap oplegt (onder $1 mrd geen plafond · $1-5 mrd max 90 ·
+          $5-15 mrd max 75 · $15-50 mrd max 55 · $50-200 mrd max 35 · daarboven max 20).
+          Zonder dat plafond haalde een biljoenenbedrijf 100/100 op een 100x-score.
+          <br/><b style={{color:C.text}}>Cyclische piekgroei telt half.</b> Een geheugenfabrikant
+          met +144% omzetgroei staat op zijn cyclustop, niet op een structurele trend.
+        </div>
       </div>
 
       <div style={{display:"grid",gap:8}}>
@@ -879,6 +895,10 @@ function BaggerTrack({ baggers, onSelect }) {
                     {b.vastgepind && <span style={{color:C.accent,fontSize:9,marginLeft:5}}>★ vastgepind</span>}
                     {b.herstelX>=2 && <span style={{color:C.teal,fontSize:9,marginLeft:5}}>
                       {b.herstelX}x tot de oude top</span>}
+                    {b.realistischVeelvoud && <span style={{color:C.muted,fontSize:9,marginLeft:5}}>
+                      {b.realistischVeelvoud}</span>}
+                    {b.cyclischePiek && <span style={{color:C.orange,fontSize:9,marginLeft:5}}>
+                      cyclische piek</span>}
                     {b.passesQualityGate&&(
                       <span style={{background:"#052e16",color:C.green,border:"1px solid #166534",borderRadius:3,padding:"1px 6px",fontSize:9,fontWeight:700}}>
                         ✓ ook kwaliteitspoort
@@ -923,6 +943,39 @@ function BaggerTrack({ baggers, onSelect }) {
           );
         })}
       </div>
+
+      {teGroot.length>0 && (
+        <details style={{marginTop:16,background:C.panel,border:`1px solid ${C.border}`,
+          borderRadius:8,padding:"10px 12px"}}>
+          <summary style={{color:C.textDim,fontSize:11,fontWeight:700,cursor:"pointer"}}>
+            Te groot voor dit spoor ({teGroot.length}) — wel bekeken, niet meegerekend
+          </summary>
+          <div style={{color:C.textDim,fontSize:10,lineHeight:1.6,marginTop:7,marginBottom:8}}>
+            Deze namen hebben soms uitstekende cijfers, maar boven ~$50 mrd is zelfs een 10x
+            een zeldzaamheid: dat vraagt $500 mrd of meer. Ze staan hier zodat zichtbaar is
+            dat ze getoetst zijn — een momentum-positie kan prima zijn, alleen niet in dit spoor.
+          </div>
+          <div style={{display:"grid",gap:5}}>
+            {teGroot.map(b=>(
+              <div key={b.ticker} onClick={()=>onSelect(b.ticker)}
+                style={{background:C.bg,border:`1px solid ${C.border}`,borderRadius:6,
+                  padding:"6px 9px",cursor:"pointer",display:"flex",
+                  justifyContent:"space-between",alignItems:"baseline",gap:8,flexWrap:"wrap"}}>
+                <span>
+                  <span style={{color:C.accent,fontWeight:700,fontSize:12}}>{b.ticker}</span>
+                  <span style={{color:C.textDim,fontSize:10,marginLeft:5}}>{STOCK_NAMES[b.ticker]}</span>
+                  {b.cyclischePiek && <span style={{color:C.orange,fontSize:9,marginLeft:5}}>cyclische piek</span>}
+                </span>
+                <span style={{color:C.muted,fontSize:9}}>
+                  {b.marktkapUsd ? `$${(b.marktkapUsd/1e9).toFixed(0)} mrd` : ""}
+                  {b.realistischVeelvoud ? ` · ${b.realistischVeelvoud}` : ""}
+                  {` · score ${b.score}`}
+                </span>
+              </div>
+            ))}
+          </div>
+        </details>
+      )}
 
       <div style={{marginTop:14,padding:"10px 12px",background:C.panel,borderRadius:8,fontSize:10,color:C.muted,lineHeight:1.6}}>
         <b style={{color:C.textDim}}>Methode:</b> {baggers.methodNote} {baggers.note}

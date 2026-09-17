@@ -4099,26 +4099,6 @@ def compute_earnings_growth(fund: dict) -> dict:
     return out
 
 
-def _parse_mktcap(tekst):
-    """"$70B" / "€33B" / "$2.9T" -> float in USD. De marktkap staat als TEKST in
-    FUNDAMENTALS; zonder parsen valt het A/B-onderscheid (small vs large) om, en
-    dan belandt Adyen in de verkeerde bak."""
-    if not tekst:
-        return None
-    t = str(tekst).strip().replace(",", ".")
-    valuta = 1.0
-    if t[:1] in "€":
-        valuta = 1.08          # ruwe EUR->USD; alleen voor de grootte-indeling
-    t = t.lstrip("$€£ ")
-    macht = {"T": 1e12, "B": 1e9, "M": 1e6}.get(t[-1:].upper())
-    if not macht:
-        return None
-    try:
-        return float(t[:-1]) * macht * valuta
-    except ValueError:
-        return None
-
-
 KWALITEIT_FILE = "quality_screen.json"
 KWALITEIT = {}
 
@@ -4142,6 +4122,40 @@ KW_CRITERIA = [
     ("roce",        "ROCE",             20.0,  "min", "gem. %"),
 ]
 
+
+def _parse_mktcap(tekst):
+    """Marktkap-tekst -> float in USD.
+
+    De marktkap staat als TEKST in FUNDAMENTALS, in zeven verschillende valuta-
+    notaties: "$70B", "E33B", "GBP10B", "A$0.2B", "HK$40B", "Y17.8T", "€277B".
+    Zonder omrekening ging dat spectaculair mis: "Y17.8T" werd gelezen als 17.800
+    miljard dollar in plaats van ~$119 miljard -- een factor 150. Dat zette Japanse
+    namen in de verkeerde grootteklasse en daarmee onder het verkeerde score-plafond.
+
+    De koersen zijn benaderend en alleen bedoeld voor de GROOTTE-indeling; ze
+    bepalen nooit een koers of een rendement."""
+    if not tekst:
+        return None
+    t = str(tekst).strip().replace(",", ".")
+    if t.upper() in ("ETF", "N/A", "-"):
+        return None
+    # Langste prefix eerst, anders matcht "$" binnen "A$" of "HK$".
+    koersen = (("HK$", 0.128), ("A$", 0.65), ("GBP", 1.27), ("£", 1.27),
+               ("EUR", 1.08), ("€", 1.08), ("E", 1.08), ("Y", 0.0067),
+               ("¥", 0.0067), ("$", 1.0))
+    valuta = 1.0
+    for prefix, koers in koersen:
+        if t.upper().startswith(prefix.upper()):
+            valuta = koers
+            t = t[len(prefix):]
+            break
+    macht = {"T": 1e12, "B": 1e9, "M": 1e6}.get(t[-1:].upper())
+    if not macht:
+        return None
+    try:
+        return float(t[:-1]) * macht * valuta
+    except ValueError:
+        return None
 
 def _gem(reeks):
     r = [x for x in reeks if x is not None and np.isfinite(x)]
@@ -4912,7 +4926,7 @@ def compute_relative_strength(stock_close, bench_close, lookback_days=126):
     b_ret = (float(bench_close.iloc[-1]) / float(bench_close.iloc[-lookback_days]) - 1) * 100
     return round(s_ret - b_ret, 1)
 
-def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None) -> dict:
+def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="") -> dict:
     """Bagger-potentieelscore 0-100 + risico-flags + positiegrootte-advies. Geen waardering.
 
     Draait voor ELK aandeel, niet voor een handmatige lijst. Reden (Rubens argument):
@@ -4929,18 +4943,30 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None) -> dict:
 
     s, reasons, flags = 0, [], []
 
+    # ── CYCLISCHE PIEKGROEI AFWAARDEREN ─────────────────────────────────────
+    # MU's +144% is de AI-geheugencyclus op zijn top, geen structurele groei.
+    # Het systeem WEET dat al (CYCLICAL_TICKERS + de piekgroei-drempel van 30%),
+    # maar de baggerscore raadpleegde geen van beide -- dus leverde die piek
+    # 30/30 groeipunten plus 20/20 versnelling. Dezelfde fout die bij de
+    # maandpick met de degradatieregel is opgelost, stond hier nog open.
+    # De punten worden GEHALVEERD in plaats van weggegooid: de groei is echt,
+    # alleen niet duurzaam.
+    cyclische_piek = bool(naam in CYCLICAL_TICKERS
+                          and growth is not None and growth >= 40)
+    _cyc = 0.5 if cyclische_piek else 1.0
+
     # 1. Omzetgroei (max 30) — kern van elke bagger
-    if   growth is not None and growth >= 60: s += 30; reasons.append(f"Omzetgroei +{growth:.0f}% (explosief)")
-    elif growth is not None and growth >= 40: s += 24; reasons.append(f"Omzetgroei +{growth:.0f}% (hoog)")
-    elif growth is not None and growth >= 25: s += 16; reasons.append(f"Omzetgroei +{growth:.0f}%")
-    elif growth is not None and growth >= 15: s += 8
+    if   growth is not None and growth >= 60: s += 30 * _cyc; reasons.append(f"Omzetgroei +{growth:.0f}% (explosief)")
+    elif growth is not None and growth >= 40: s += 24 * _cyc; reasons.append(f"Omzetgroei +{growth:.0f}% (hoog)")
+    elif growth is not None and growth >= 25: s += 16 * _cyc; reasons.append(f"Omzetgroei +{growth:.0f}%")
+    elif growth is not None and growth >= 15: s += 8 * _cyc
 
     # 2. Groei-versnelling (max 20)
     if growth is not None and growth_prev is not None:
         accel = growth - growth_prev
-        if   accel >= 15: s += 20; reasons.append(f"Groei versnelt sterk (+{accel:.0f}pp)")
-        elif accel >= 5:  s += 13; reasons.append(f"Groei versnelt (+{accel:.0f}pp)")
-        elif accel >= 0:  s += 7
+        if   accel >= 15: s += 20 * _cyc; reasons.append(f"Groei versnelt sterk (+{accel:.0f}pp)")
+        elif accel >= 5:  s += 13 * _cyc; reasons.append(f"Groei versnelt (+{accel:.0f}pp)")
+        elif accel >= 0:  s += 7 * _cyc
         else: reasons.append(f"Groei vertraagt ({accel:.0f}pp)")
 
     # 3. Brutomarge-trend (max 20) — operating leverage
@@ -4997,20 +5023,34 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None) -> dict:
     if "$0.0" in mktcap_str or "$0." in mktcap_str:
         flags.append("Microcap — hoog faillissements-/volatiliteitsrisico"); risk = "zeer hoog"
 
-    # 100x-realisme: de wiskunde van marktkap. Een 100x vanaf $10B = $1 biljoen.
-    # Echte 100-baggers starten vrijwel altijd klein (<$1B) en onopgemerkt.
-    cap_usd = None
-    s = (mktcap_str or "").strip()
-    if s.startswith("$") and (s.endswith("B") or s.endswith("T")):
-        try:
-            v = float(s[1:-1]); cap_usd = v * 1000 if s.endswith("T") else v
-        except ValueError:
-            pass
-    if cap_usd is not None:
-        if cap_usd >= 40:
-            flags.append(f"Marktkap ~${cap_usd:.0f}B — 100x wiskundig uitgesloten; dit is een momentum-positie, geen bagger-lot")
-        elif cap_usd >= 10:
-            flags.append(f"Marktkap ~${cap_usd:.0f}B — 100x vergt biljoenen-waardering; realistisch plafond eerder 5–10x")
+    # ── REALISTISCH VEELVOUD: het plafond dat de marktkap oplegt ────────────
+    # Dit spoor zoekt 10-100x. Dat is geen kwestie van kwaliteit maar van
+    # WISKUNDE: 100x vanaf $1B = $100B (denkbaar, zeldzaam); 100x vanaf $40B
+    # = $4 biljoen (bestaat niet). Eerder telde de marktkap NUL mee -- getest:
+    # dezelfde cijfers bij $1,1 biljoen en bij $0,4 miljard gaven exact dezelfde
+    # score. MU haalde daardoor 100/100 op een 100x-score, met de flag
+    # "100x wiskundig uitgesloten" eronder. Intern tegenstrijdig.
+    #
+    # Nu bepalen de fundamentals de score BINNEN het plafond, en bepaalt de
+    # marktkap hoe hoog dat plafond ligt. Een biljoenenbedrijf kan nooit meer
+    # bovenaan een baggerlijst staan, hoe sterk zijn cijfers ook zijn.
+    _cap = _parse_mktcap(mktcap_str)
+    plafond, realistisch = 100, None
+    if _cap is not None:
+        cap_b = _cap / 1e9
+        if   cap_b <  1:   plafond, realistisch = 100, "100x denkbaar"
+        elif cap_b <  5:   plafond, realistisch = 90,  "20-50x realistisch"
+        elif cap_b < 15:   plafond, realistisch = 75,  "10-20x realistisch"
+        elif cap_b < 50:   plafond, realistisch = 55,  "5-10x realistisch"
+        elif cap_b < 200:  plafond, realistisch = 35,  "2-5x realistisch"
+        else:              plafond, realistisch = 20,  "geen bagger — momentum-positie"
+        if plafond < 100 and score > plafond:
+            flags.append(f"Marktkap ~${cap_b:.0f}B begrenst de score tot {plafond} "
+                         f"(fundamentals gaven {score}) — {realistisch}")
+        score = min(score, plafond)
+    if cyclische_piek:
+        flags.append(f"Cyclische piek: +{growth:.0f}% omzetgroei is cyclustop, geen "
+                     "structurele groei — groeipunten halveerd")
 
     if   score >= 70 and risk in ("gemiddeld", "hoog"): pos = "klein-tot-gemiddeld"
     elif score >= 55: pos = "klein"
@@ -5028,6 +5068,15 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None) -> dict:
         "positionSizing": pos, "relStrength": rel_strength,
         "herstelX": (round(herstel_x, 1) if herstel_x else None),
         "pctOffHigh": pct_off_high,
+        "realistischVeelvoud": realistisch, "scorePlafond": plafond,
+        "cyclischePiek": cyclische_piek,
+        # Is 10x hier uberhaupt denkbaar? 10x vanaf $50B = $500B: denkbaar.
+        # 10x vanaf $200B = $2 biljoen: dat lukt eens per decennium, wereldwijd.
+        # Boven die grens hoort een naam niet in een 10-100x-lijst, hoe sterk de
+        # cijfers ook zijn -- die wordt apart getoond, niet weggelaten, zodat
+        # zichtbaar blijft dat hij is bekeken.
+        "baggerKandidaat": bool(_cap is None or _cap < 50e9),
+        "marktkapUsd": _cap,
     }
 
 # ── MARKTREGIME (SPX/NDX) + CONTEXT (DXY, grondstoffen) + SECTOR-ROTATIE ──────
@@ -6635,7 +6684,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "11.2-bagger-universeel",
+            "version": "11.3-bagger-realisme",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -6776,7 +6825,8 @@ def main():
             if name not in ETF_TICKERS:
                 rel_str = compute_relative_strength(entry["daily"]["Close"], bench_close)
                 bagger = compute_bagger_score(fund, rel_str,
-                                              pct_off_high=analysis.get("pctOffHigh"))
+                                              pct_off_high=analysis.get("pctOffHigh"),
+                                              naam=name)
                 bagger["vastgepind"] = name in BAGGER_TICKERS
 
             results["stocks"][name] = {
@@ -7099,6 +7149,11 @@ def main():
             "passesQualityGate": s.get("scores", {}).get("qualityGate", False),
             "herstelX": b.get("herstelX"), "pctOffHigh": b.get("pctOffHigh"),
             "vastgepind": b.get("vastgepind", False),
+            "realistischVeelvoud": b.get("realistischVeelvoud"),
+            "scorePlafond": b.get("scorePlafond"),
+            "cyclischePiek": b.get("cyclischePiek", False),
+            "baggerKandidaat": b.get("baggerKandidaat", True),
+            "marktkapUsd": b.get("marktkapUsd"),
         })
     bagger_list.sort(key=lambda x: x["score"], reverse=True)
 
