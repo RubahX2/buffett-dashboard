@@ -139,21 +139,38 @@ def main():
                if abs(_F(j, _sp) - v) > 1e-9]
     check("splitsingsfactor", not _f_fout and _F(2020, []) == 1.0, ", ".join(_f_fout))
 
+    # BNGO-profiel: piek 2021 met 300 mln aandelen, nu koers 1.78 en 28 mln
+    # aandelen. Waarde toen = 1500 * 0.005 * 300e6 = $2,25 mrd; nu 1.78 * 28e6
+    # = $50 mln -> 45x. Koers alleen zou 1500/1.78 = 843x zeggen; het verschil
+    # is de 19x verwatering.
     _w = _W({2021: 1500.0, 2024: 20.0}, {2021: 300e6, 2024: 15e6},
-            _sp, 50e6, 28e6)
-    # Koers zegt 1500/1.78 = 843x; waarde zegt 45x; verschil = 19x verwatering.
+            _sp, 1.78, 28e6)
     check("marktwaarde-top (BNGO-profiel)",
           _w is not None and _w["topJaar"] == 2021
           and abs(_w["herstelXWaarde"] - 45.0) < 1.0
-          and abs(_w["verwateringX"] - 19.0) < 1.0,
+          and abs(_w["verwateringX"] - 19.0) < 1.0
+          and _w["vanafJaar"] == 2021,
           str(_w))
-    # Geen aandelenhistorie, jaren die niet aansluiten, waarde nul: alle None.
+
+    # WISSELKOERS MAG NIET MEETELLEN. Een verhouding heeft geen munt nodig;
+    # eerder werd de teller in yen en de noemer in dollar berekend, waardoor
+    # Harmonic Drive op 279x uitkwam in plaats van 1,9x. Zelfde bedrijf, munt
+    # 149x zo klein: de uitkomst moet identiek zijn.
+    _usd = _W({2024: 100.0}, {2024: 1e6}, [], 50.0, 1e6)
+    _yen = _W({2024: 14900.0}, {2024: 1e6}, [], 7450.0, 1e6)
+    check("marktwaarde-top is muntonafhankelijk",
+          _usd and _yen and abs(_usd["herstelXWaarde"] - _yen["herstelXWaarde"]) < 1e-6,
+          f"usd={_usd and round(_usd['herstelXWaarde'],4)} "
+          f"yen={_yen and round(_yen['herstelXWaarde'],4)}")
+
+    # Geen aandelenhistorie, jaren die niet aansluiten, koers nul: alle None.
     # Belangrijk dat dit None is en niet 0 of een schatting -- dan valt de score
     # netjes terug op de koersmaat in plaats van een verzonnen getal te gebruiken.
-    _w_leeg = [_W({}, {2024: 1e6}, [], 50e6, 1e6),
-               _W({2024: 10.0}, {}, [], 50e6, 1e6),
+    _w_leeg = [_W({}, {2024: 1e6}, [], 10.0, 1e6),
+               _W({2024: 10.0}, {}, [], 10.0, 1e6),
                _W({2024: 10.0}, {2024: 1e6}, [], 0, 1e6),
-               _W({2019: 10.0}, {2024: 1e6}, [], 50e6, 1e6)]
+               _W({2024: 10.0}, {2024: 1e6}, [], 10.0, 0),
+               _W({2019: 10.0}, {2024: 1e6}, [], 10.0, 1e6)]
     check("marktwaarde-top valt terug bij gaten",
           all(x is None for x in _w_leeg), str(_w_leeg))
     alloc = sig.get("allocation") or {}

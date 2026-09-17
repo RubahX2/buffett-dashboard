@@ -4199,7 +4199,7 @@ def _splitfactor_na(jaar, splitsingen):
 
 
 def _waarde_herstel(jaarpieken, aandelen_per_jaar, splitsingen,
-                    huidige_waarde, huidig_aantal):
+                    huidige_koers, huidig_aantal):
     """Hoeveel keer moet de MARKTWAARDE doen om terug te keren naar haar top?
 
     Waarom niet de koers: bij BNGO staat de koers op $1,78 tegen een
@@ -4209,10 +4209,28 @@ def _waarde_herstel(jaarpieken, aandelen_per_jaar, splitsingen,
     verwatering, en het is het mechanisme dat ook een toekomstig veelvoud opeet.
     In koers meten verbergt dat; in waarde meten legt het bloot.
 
+    ALLES IN LOKALE MUNT, teller en noemer. Twee redenen, beide uit een echte
+    fout geleerd:
+
+      1. WISSELKOERS. Eerst werd de historische waarde in lokale munt berekend
+         (koers in yen x aandelen) en gedeeld door de huidige waarde in dollar.
+         Harmonic Drive kwam daardoor op 279x uit -- dat is $837 miljard voor een
+         bedrijf van $3 mrd. De yen/dollar-verhouding van ~149 zat er nog in:
+         279/149 = 1,9x, het echte getal. UBTECH had hetzelfde met
+         Hongkongdollars. Een verhouding heeft geen munt nodig: reken beide
+         kanten in dezelfde en de koers valt weg.
+
+      2. DEZELFDE BRON. De noemer kwam uit de mktCap-tekst, die handmatig
+         onderhouden en dus soms verouderd is, terwijl de teller uit live
+         koersdata kwam. Een verouderde noemer blaast elke verhouding op. Nu
+         komen beide uit koers x aandelenaantal.
+
     Geeft None terug zodra de gegevens het niet dekken -- geen schatting. De
     aandelenhistorie uit de balans reikt vier a vijf jaar; ligt de top daarvoor,
     dan is er geen antwoord en valt de score terug op de koersmaat."""
-    if not jaarpieken or not aandelen_per_jaar or not huidige_waarde or huidige_waarde <= 0:
+    if (not jaarpieken or not aandelen_per_jaar
+            or not huidige_koers or huidige_koers <= 0
+            or not huidig_aantal or huidig_aantal <= 0):
         return None
     per_jaar = {}
     for jaar, aantal in aandelen_per_jaar.items():
@@ -4225,15 +4243,24 @@ def _waarde_herstel(jaarpieken, aandelen_per_jaar, splitsingen,
         return None
     topjaar = max(per_jaar, key=lambda j: per_jaar[j]["waarde"])
     top = per_jaar[topjaar]
+    nu = huidige_koers * huidig_aantal
+    if nu <= 0:
+        return None
     verwatering = None
-    if huidig_aantal and top["aandelenNu"] > 0:
+    if top["aandelenNu"] > 0:
         verwatering = huidig_aantal / top["aandelenNu"]
+    _jaren = sorted(per_jaar)
     return {
-        "topWaardeUsd": top["waarde"],
+        "topWaardeLokaal": top["waarde"],
         "topJaar": topjaar,
-        "herstelXWaarde": top["waarde"] / huidige_waarde,
+        "herstelXWaarde": top["waarde"] / nu,
         "verwateringX": verwatering,
-        "jarenGedekt": sorted(per_jaar),
+        "jarenGedekt": _jaren,
+        # Vanaf welk jaar de historie reikt. BNGO's echte top ligt in 2021, maar
+        # de balans dekt 2022-2025 -- dan is "de oude waarde" de hoogste binnen
+        # dat venster en niet de werkelijke top. Dat moet in het label staan,
+        # anders suggereert 4,1x een lat die veel lager ligt dan de echte.
+        "vanafJaar": _jaren[0] if _jaren else None,
     }
 
 
@@ -5209,7 +5236,15 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="",
         if herstel_x >= 3:
             _txt = f"{herstel_x:.0f}x tot de {_wat}"
             if herstel_bron == "marktwaarde" and waarde.get("topJaar"):
-                _txt += f" (top {waarde['topJaar']})"
+                # "hoogste sinds" en niet "de top": de balans reikt vier a vijf
+                # jaar terug. BNGO's echte top ligt in 2021 en valt buiten dat
+                # venster; "de oude waarde" zou dan een veel te lage lat
+                # suggereren. Het venster hoort in de tekst.
+                _vanaf = waarde.get("vanafJaar")
+                _txt = (f"{herstel_x:.0f}x tot de hoogste waarde sinds {_vanaf}"
+                        f" (top {waarde['topJaar']})" if _vanaf
+                        else f"{herstel_x:.0f}x tot de oude marktwaarde "
+                             f"(top {waarde['topJaar']})")
             elif herstel_bron == "koers-afgekapt":
                 _txt = (f"20x+ tot de oude koers (daling {pct_off_high:.0f}% — "
                         f"afgekapt, geen aandelenhistorie om de waarde te meten)")
@@ -5346,7 +5381,8 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="",
         "runwayMaanden": runway,
         "herstelBron": herstel_bron,
         "verwateringX": (round(verwatering, 1) if verwatering else None),
-        "topWaardeUsd": (waarde or {}).get("topWaardeUsd"),
+        "topWaardeLokaal": (waarde or {}).get("topWaardeLokaal"),
+        "waardeVanafJaar": (waarde or {}).get("vanafJaar"),
         "topWaardeJaar": (waarde or {}).get("topJaar"),
         # Is 10x hier uberhaupt denkbaar? 10x vanaf $50B = $500B: denkbaar.
         # 10x vanaf $200B = $2 biljoen: dat lukt eens per decennium, wereldwijd.
@@ -6962,7 +6998,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "11.5-marktwaarde",
+            "version": "11.6-munt-en-venster",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -7123,7 +7159,7 @@ def main():
                         _waarde = _waarde_herstel(
                             _pieken, {int(j): a for j, a in _ap},
                             _kg.get("splitsingen") or [],
-                            _parse_mktcap(fund.get("mktCap", "")),
+                            float(_cl.iloc[-1]),      # huidige koers, lokale munt
                             _huidig_aantal)
                     except (KeyError, TypeError, ValueError, AttributeError):
                         _waarde = None
@@ -7462,7 +7498,8 @@ def main():
             "netMargin": s.get("fund", {}).get("netMargin"),
             "herstelBron": b.get("herstelBron"),
             "verwateringX": b.get("verwateringX"),
-            "topWaardeUsd": b.get("topWaardeUsd"),
+            "topWaardeLokaal": b.get("topWaardeLokaal"),
+            "waardeVanafJaar": b.get("waardeVanafJaar"),
             "topWaardeJaar": b.get("topWaardeJaar"),
         })
     # Dekkingsregel in het log: hoeveel namen krijgen een ECHTE waarde-top en

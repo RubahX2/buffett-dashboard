@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "11.5";
+const UI_VERSION = "11.6";
 
 const STOCK_NAMES = {
   ADYEN:"Adyen", RELY:"Remitly", DLO:"DLocal", GLBE:"Global-e",
@@ -904,9 +904,11 @@ function BaggerTrack({ baggers, onSelect }) {
                     <span style={{color:C.textDim,fontSize:11}}>{STOCK_NAMES[b.ticker]}</span>
                     {b.vastgepind && <span style={{color:C.accent,fontSize:9,marginLeft:5}}>★ vastgepind</span>}
                     {b.herstelX>=2 && <span style={{color:C.teal,fontSize:9,marginLeft:5}}>
-                      {b.herstelX}x tot de oude {b.herstelBron==="marktwaarde"?"waarde":"koers"}
-                      {b.herstelBron==="marktwaarde"&&b.topWaardeJaar?` (${b.topWaardeJaar})`:""}
-                      {b.herstelBron==="koers-afgekapt"?" (afgekapt)":""}</span>}
+                      {b.herstelBron==="marktwaarde"
+                        ? `${b.herstelX}x tot de hoogste waarde sinds ${b.waardeVanafJaar||"?"}`
+                          + (b.topWaardeJaar?` (top ${b.topWaardeJaar})`:"")
+                        : `${b.herstelX}x tot de oude koers`
+                          + (b.herstelBron==="koers-afgekapt"?" (afgekapt)":"")}</span>}
                     {b.verwateringX>=2 && <span style={{color:C.orange,fontSize:9,marginLeft:5}}>
                       {b.verwateringX}x verwaterd</span>}
                     {b.realistischVeelvoud && <span style={{color:C.muted,fontSize:9,marginLeft:5}}>
