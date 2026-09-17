@@ -4174,6 +4174,88 @@ def _groei_reeks(waarden):
     return uit
 
 
+def _splitfactor_na(jaar, splitsingen):
+    """Cumulatieve splitsingsfactor van alle splitsingen NA een jaar.
+
+    Nodig om koers en aandelenaantal op dezelfde basis te krijgen. Yahoo levert
+    de koershistorie GECORRIGEERD voor splitsingen, maar het aandelenaantal uit
+    de balans zoals gerapporteerd. Die twee vermenigvuldigen geeft onzin voor elk
+    jaar vóór een splitsing.
+
+    Yahoo noteert de ratio als nieuw-per-oud: 2,0 bij een gewone splitsing 2:1,
+    0,1 bij een omgekeerde splitsing 1:10. Dan geldt:
+        gerapporteerde_koers(t) = gecorrigeerde_koers(t) * factor(t)
+        aandelen_van_toen_in_hedendaagse_eenheden = gerapporteerd(t) * factor(t)
+    Marktwaarde is het product van die twee en dus splitsings-ONgevoelig -- dat is
+    precies waarom dit de juiste maatstaf is voor een naam als BNGO."""
+    f = 1.0
+    for j, ratio in (splitsingen or []):
+        try:
+            if int(j) > int(jaar) and float(ratio) > 0:
+                f *= float(ratio)
+        except (TypeError, ValueError):
+            continue
+    return f
+
+
+def _waarde_herstel(jaarpieken, aandelen_per_jaar, splitsingen,
+                    huidige_waarde, huidig_aantal):
+    """Hoeveel keer moet de MARKTWAARDE doen om terug te keren naar haar top?
+
+    Waarom niet de koers: bij BNGO staat de koers op $1,78 tegen een
+    splitsings-gecorrigeerde top boven $3.500 -- rekenkundig 100% eronder, en de
+    herstelberekening sloeg dat over. Maar de koers viel dieper dan de waarde,
+    want er zijn onderweg enorm veel aandelen uitgegeven. Dat verschil IS de
+    verwatering, en het is het mechanisme dat ook een toekomstig veelvoud opeet.
+    In koers meten verbergt dat; in waarde meten legt het bloot.
+
+    Geeft None terug zodra de gegevens het niet dekken -- geen schatting. De
+    aandelenhistorie uit de balans reikt vier a vijf jaar; ligt de top daarvoor,
+    dan is er geen antwoord en valt de score terug op de koersmaat."""
+    if not jaarpieken or not aandelen_per_jaar or not huidige_waarde or huidige_waarde <= 0:
+        return None
+    per_jaar = {}
+    for jaar, aantal in aandelen_per_jaar.items():
+        piek = jaarpieken.get(jaar)
+        if piek is None or aantal is None or piek <= 0 or aantal <= 0:
+            continue
+        f = _splitfactor_na(jaar, splitsingen)
+        per_jaar[jaar] = {"waarde": piek * f * aantal, "aandelenNu": aantal * f}
+    if not per_jaar:
+        return None
+    topjaar = max(per_jaar, key=lambda j: per_jaar[j]["waarde"])
+    top = per_jaar[topjaar]
+    verwatering = None
+    if huidig_aantal and top["aandelenNu"] > 0:
+        verwatering = huidig_aantal / top["aandelenNu"]
+    return {
+        "topWaardeUsd": top["waarde"],
+        "topJaar": topjaar,
+        "herstelXWaarde": top["waarde"] / huidige_waarde,
+        "verwateringX": verwatering,
+        "jarenGedekt": sorted(per_jaar),
+    }
+
+
+def _runway_maanden(kas, fcf):
+    """Hoe lang kan dit bedrijf het uithouden op eigen kas? (maanden, verbranding/jr)
+
+    Losse functie, niet inline in de ophaalfunctie, om één reden: de
+    jaarrekening-endpoints van Yahoo zijn niet altijd bereikbaar, en dan kan de
+    rekenkundige kern nooit getest worden. Nu wel -- zie selftest.py.
+
+    Geeft (None, None) bij een winstgevend bedrijf: de vraag is dan niet van
+    toepassing en een getal zou suggereren dat er een klok tikt.
+    Afgekapt op 60 maanden: daarboven is het onderscheid niet interessant en zou
+    een jaar oud cijfer valse precisie geven."""
+    if fcf is None or fcf >= 0:
+        return None, None
+    verbranding_jr = abs(float(fcf))
+    if kas is None or kas <= 0 or verbranding_jr <= 0:
+        return None, verbranding_jr
+    return int(min(60, round(float(kas) / (verbranding_jr / 12.0)))), verbranding_jr
+
+
 def fetch_jaarcijfers_yf(sym):
     """Meerjarige kengetallen uit de JAARrekeningen. Nodig voor de screener-criteria,
     die gemiddelden over 3-5 jaar vragen -- die kun je niet uit één kwartaal halen."""
@@ -4208,6 +4290,21 @@ def fetch_jaarcijfers_yf(sym):
         schuld = rij(bs, ["Total Debt", "TotalDebt"])
         activa = rij(bs, ["Total Assets", "TotalAssets"])
         kort_pass = rij(bs, ["Current Liabilities", "Total Current Liabilities"])
+        # KAS -- voor de runway-berekening. Meerdere namen omdat yfinance per
+        # bedrijf een andere regel teruggeeft; de ruimste variant eerst, want
+        # kortlopende beleggingen zijn net zo goed beschikbaar om mee te
+        # overleven als kasgeld op de rekening.
+        # AANDELENAANTAL per boekjaar -- de tweede helft van de marktwaarde.
+        # Zoals gerapporteerd, dus NIET gecorrigeerd voor splitsingen; dat wordt
+        # rechtgezet met de splitsingsreeks hieronder.
+        aandelen = rij(bs, ["Ordinary Shares Number", "OrdinarySharesNumber",
+                            "Share Issued", "ShareIssued",
+                            "Common Stock Shares Outstanding"])
+        kas = rij(bs, ["Cash Cash Equivalents And Short Term Investments",
+                       "CashCashEquivalentsAndShortTermInvestments",
+                       "Cash And Cash Equivalents",
+                       "CashAndCashEquivalents",
+                       "Cash"])
 
         n = len(omzet)
         def per_jaar(teller, noemer=omzet, f=100.0):
@@ -4262,9 +4359,63 @@ def fetch_jaarcijfers_yf(sym):
                     # in miljoenen, zoals de handmatige reeksen
                     _winst_reeks.append([_jaartallen[i], round(netto[i] / 1e6)])
             _winst_reeks.sort(key=lambda r: r[0])        # oud -> nieuw
+        # ── CASH RUNWAY ─────────────────────────────────────────────────────
+        # Geen enkele bron publiceert dit; het is een deling die je zelf moet
+        # maken: kas gedeeld door de maandelijkse verbranding. Het veld
+        # cashRunwayMonths werd wel UITGELEZEN in compute_bagger_score, maar bij
+        # 0 van de 92 aandelen gevuld -- de regel "runway <= 12 maanden" stond
+        # er dus wel en vuurde nooit.
+        #
+        # Waarom dit juist in het baggerspoor telt: bij een verlieslatende
+        # microcap wordt het gat gedicht met nieuwe aandelen. Haalt een bedrijf
+        # van $50 mln $30 mln op, dan geeft het ~60% van zichzelf weg en wordt
+        # een 100x een 40x voordat de business iets heeft gepresteerd.
+        # Verwatering is daar de manier waarop het veelvoud verdampt.
+        #
+        # BEPERKING, bewust zo gelaten: yfinance geeft voor microcaps alleen
+        # jaarcijfers. Het getal kan dus tot twaalf maanden oud zijn -- de
+        # balans zegt "18 maanden" terwijl de uitgifte al geweest is. Een grove
+        # waarschuwingslamp, geen precisie-instrument. Daarom wordt hij
+        # afgekapt op 60 maanden en alleen berekend bij een NEGATIEVE vrije
+        # kasstroom: bij een winstgevend bedrijf is de vraag niet van toepassing.
+        _kas_nu  = kas[0] if kas and kas[0] is not None else None
+        _fcf_nu  = fcf[0] if fcf and fcf[0] is not None else None
+        runway_mnd, verbranding_jr = _runway_maanden(_kas_nu, _fcf_nu)
+
+        # Aandelenaantal per boekjaar. De balans kan andere kolommen hebben dan de
+        # winst-en-verliesrekening, dus de jaartallen komen uit de balans zelf.
+        _bs_jaren = []
+        try:
+            _bs_jaren = [int(str(k)[:4]) for k in bs.columns]
+        except (ValueError, TypeError, AttributeError):
+            _bs_jaren = []
+        _aandelen_reeks = []
+        if aandelen and _bs_jaren:
+            for i in range(min(len(aandelen), len(_bs_jaren))):
+                if aandelen[i] and aandelen[i] > 0:
+                    _aandelen_reeks.append([_bs_jaren[i], float(aandelen[i])])
+            _aandelen_reeks.sort(key=lambda r: r[0])
+
+        # Splitsingen. Eén extra aanroep per ticker, maar hij zit in het pad dat
+        # hooguit één keer per 30 dagen draait -- en zonder hem is het
+        # aandelenaantal van vóór een splitsing onbruikbaar.
+        _splits = []
+        try:
+            _sp = t.splits
+            if _sp is not None and len(_sp):
+                for _dt, _ratio in _sp.items():
+                    _splits.append([int(str(_dt)[:4]), float(_ratio)])
+        except Exception:
+            _splits = []
+
         uit = {
             "jaren": n,
             "winstPerJaar": _winst_reeks,
+            "aandelenPerJaar": _aandelen_reeks,
+            "splitsingen": _splits,
+            "kasUsd": _kas_nu,
+            "verbrandingPerJaarUsd": verbranding_jr,
+            "runwayMaanden": runway_mnd,
             "omzetgroei":  _gem(_groei_reeks(omzet)),
             "epsGroei":    _gem(_groei_reeks(eps)) if eps else None,
             "brutomarge":  _gem(per_jaar(bruto)),
@@ -4319,7 +4470,14 @@ def ververs_kwaliteit_screen(paren):
             continue
         oud = cache.get(naam) or {}
         _op = oud.get("_opgehaald")
-        if _op:
+        # SCHEMA-CONTROLE vóór de verstest. Zonder dit blijft een nieuw veld
+        # dertig dagen onzichtbaar: de cache geldt als "vers", de ophaalfunctie
+        # draait niet, en het veld dat we net zijn gaan berekenen blijft leeg.
+        # Zo landde de runway bij 0 van de 89 aandelen terwijl de code klopte.
+        # Elk nieuw veld hier toevoegen, dan verlopen oude entries vanzelf.
+        _mist_veld = any(k not in oud for k in ("runwayMaanden", "kasUsd",
+                                                "aandelenPerJaar", "splitsingen"))
+        if _op and not _mist_veld:
             try:
                 if (TODAY - date.fromisoformat(_op)).days < 30:
                     continue                       # nog vers genoeg
@@ -4378,6 +4536,30 @@ def vul_winsthistorie_aan():
         print(f"  Winsthistorie: {aangevuld} aangevuld uit de jaarrekeningen "
               f"(handmatige reeksen ongemoeid)")
     return aangevuld
+
+
+def vul_runway_aan():
+    """Zet de berekende cash runway in FUNDAMENTALS, zodat compute_bagger_score hem
+    kan gebruiken. Zelfde patroon als de winsthistorie: een handmatig ingevulde
+    waarde blijft staan, want die is actueler dan een jaarrekening."""
+    gevuld, verbrandt = 0, 0
+    for naam, kg in (KWALITEIT or {}).items():
+        f = FUNDAMENTALS.get(naam)
+        if not f or not isinstance(kg, dict):
+            continue
+        if f.get("cashRunwayMonths") is not None:
+            continue                       # handmatig -> met rust laten
+        r = kg.get("runwayMaanden")
+        if r is not None:
+            f["cashRunwayMonths"] = r
+            f["cashRunwayBron"] = "jaarrekening"
+            gevuld += 1
+        if kg.get("verbrandingPerJaarUsd"):
+            verbrandt += 1
+    if gevuld or verbrandt:
+        print(f"  Cash runway: {gevuld} berekend uit de jaarrekeningen "
+              f"({verbrandt} bedrijven met negatieve vrije kasstroom)")
+    return gevuld
 
 
 # ── AUTOMATISCHE BAGGER-KANDIDATEN ──────────────────────────────────────────
@@ -4926,7 +5108,8 @@ def compute_relative_strength(stock_close, bench_close, lookback_days=126):
     b_ret = (float(bench_close.iloc[-1]) / float(bench_close.iloc[-lookback_days]) - 1) * 100
     return round(s_ret - b_ret, 1)
 
-def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="") -> dict:
+def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="",
+                         waarde=None) -> dict:
     """Bagger-potentieelscore 0-100 + risico-flags + positiegrootte-advies. Geen waardering.
 
     Draait voor ELK aandeel, niet voor een handmatige lijst. Reden (Rubens argument):
@@ -4967,7 +5150,9 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="") -
         if   accel >= 15: s += 20 * _cyc; reasons.append(f"Groei versnelt sterk (+{accel:.0f}pp)")
         elif accel >= 5:  s += 13 * _cyc; reasons.append(f"Groei versnelt (+{accel:.0f}pp)")
         elif accel >= 0:  s += 7 * _cyc
-        else: reasons.append(f"Groei vertraagt ({accel:.0f}pp)")
+        # Een vertraging stond in `reasons` en kreeg daardoor een groen vinkje in de
+        # UI: "✓ Groei vertraagd (-14pp)". Een negatief feit als pluspunt getoond.
+        else: flags.append(f"Groei vertraagt ({accel:.0f}pp)")
 
     # 3. Brutomarge-trend (max 20) — operating leverage
     if gm_trend is not None:
@@ -4994,24 +5179,111 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="") -
     # Dit is geen voorspelling dat het gebeurt; het is de hefboom die ontstaat als
     # het WEL gebeurt. Daarom telt hij alleen echt zwaar als de fundamentals nog
     # staan -- een gevallen bedrijf met wegzakkende groei is geen bagger maar een val.
-    herstel_x = None
-    if isinstance(pct_off_high, (int, float)) and 0 < pct_off_high < 99.5:
-        herstel_x = 100.0 / (100.0 - pct_off_high)
+    #
+    # TWEE MAATSTAVEN, in deze volgorde:
+    #   1. MARKTWAARDE (voorkeur). Splitsings-ongevoelig, want een splitsing deelt
+    #      de koers en vermenigvuldigt het aantal aandelen met dezelfde factor.
+    #      Alleen beschikbaar waar de aandelenhistorie de top dekt (~4-5 jaar).
+    #   2. KOERS (terugval), afgekapt op 95% = 20x. Boven die daling is de oude
+    #      koers geen niveau meer waar het bedrijf naartoe kan: het aantal
+    #      aandelen is veranderd. De afkapping is verdedigbaar maar willekeurig,
+    #      en bestaat alleen omdat de waarde-maat soms niet terugreikt.
+    herstel_x, herstel_bron, verwatering = None, None, None
+    if waarde and waarde.get("herstelXWaarde"):
+        herstel_x   = float(waarde["herstelXWaarde"])
+        herstel_bron = "marktwaarde"
+        verwatering = waarde.get("verwateringX")
+    elif isinstance(pct_off_high, (int, float)) and pct_off_high > 0:
+        _pct = min(95.0, float(pct_off_high))
+        herstel_x   = 100.0 / (100.0 - _pct)
+        herstel_bron = "koers-afgekapt" if pct_off_high > 95 else "koers"
+
+    if herstel_x is not None and herstel_x >= 2:
         _fund_ok = (growth is not None and growth >= 10) or (gm_trend is not None and gm_trend >= 0)
-        if herstel_x >= 10:
-            s += 25 if _fund_ok else 8
-            reasons.append(f"{pct_off_high:.0f}% onder de top — {herstel_x:.0f}x alleen al "
-                           f"om terug te keren" + ("" if _fund_ok else "; fundamentals wél verzwakt"))
-        elif herstel_x >= 5:
-            s += 18 if _fund_ok else 6
-            reasons.append(f"{pct_off_high:.0f}% onder de top — {herstel_x:.1f}x tot de oude top")
-        elif herstel_x >= 3:
-            s += 12 if _fund_ok else 4
-            reasons.append(f"{pct_off_high:.0f}% onder de top — {herstel_x:.1f}x tot de oude top")
-        elif herstel_x >= 2:
-            s += 6 if _fund_ok else 2
+        _wat = ("oude marktwaarde" if herstel_bron == "marktwaarde"
+                else "oude koers")
+        if   herstel_x >= 10: s += 25 if _fund_ok else 8
+        elif herstel_x >= 5:  s += 18 if _fund_ok else 6
+        elif herstel_x >= 3:  s += 12 if _fund_ok else 4
+        else:                 s += 6  if _fund_ok else 2
+        if herstel_x >= 3:
+            _txt = f"{herstel_x:.0f}x tot de {_wat}"
+            if herstel_bron == "marktwaarde" and waarde.get("topJaar"):
+                _txt += f" (top {waarde['topJaar']})"
+            elif herstel_bron == "koers-afgekapt":
+                _txt = (f"20x+ tot de oude koers (daling {pct_off_high:.0f}% — "
+                        f"afgekapt, geen aandelenhistorie om de waarde te meten)")
+            if not _fund_ok:
+                _txt += "; fundamentals wél verzwakt"
+            reasons.append(_txt)
+    # Verwatering apart melden. Dit is het verschil tussen de koersdaling en de
+    # waardedaling, en het is geen bijzaak: het is de manier waarop een veelvoud
+    # verdampt bij een bedrijf dat zijn verliezen met nieuwe aandelen dekt.
+    if verwatering and verwatering >= 2:
+        flags.append(f"Verwaterd {verwatering:.0f}x sinds de top — nieuwe aandelen "
+                     f"drukken elk toekomstig veelvoud")
 
     score = min(100, max(0, s))
+
+    # ── KEERPUNT ────────────────────────────────────────────────────────────
+    # Rubens argument, en hij heeft gelijk: juist een bedrijf dat jaren viel kan
+    # het grootste veelvoud geven. Een plafond op trailing groei zou precies dat
+    # profiel afschieten, want wie 95% viel heeft per definitie lage trailing
+    # groei -- die kijkt achteruit.
+    #
+    # Maar krimp zelf is geen pluspunt. Anders kun je SDGR niet onderscheiden van
+    # een smeltend ijsblokje: Nokia viel 95% en bleef smelten, Intel en Peloton
+    # ook. Die kochten allemaal op het argument "het is al gevallen".
+    #
+    # Wat SDGR (+8% -> +12%, marge +7,3pp, +121% vs markt) van Nokia scheidt is
+    # niet dat het viel, maar dat de daling OMKEERT terwijl de marge stijgt en de
+    # markt meegaat. Dat is meetbaar, en dat is wat hier geteld wordt: drie
+    # bewijsstukken, waarvan twee volstaan. Versnelling telt ook BINNEN krimp --
+    # van -20% naar -12% is een keerpunt, geen groei.
+    _acc = None
+    if growth is not None and growth_prev is not None:
+        _acc = growth - growth_prev
+    # Drie voorwaarden die ALLE DRIE moeten gelden, geen twee-uit-drie. Getest met
+    # twee-uit-drie: dat gaf 28 keerpunten, waaronder Microsoft, Apple, Visa en
+    # Amazon. Die zijn nooit gevallen, dus er is niets om te keren -- het label
+    # betekende dan "grote naam die het aardig doet". Waardeloos.
+    #
+    #   1. Het MOET gevallen zijn (>= 40% onder de eigen top). Zonder val geen keer.
+    #   2. De markt MOET het al bevestigen (positieve relatieve sterkte). Dit is
+    #      hetzelfde bewijsstuk als in de bevestigingsregel hieronder: bij lage
+    #      groei is dit het enige teken dat de omslag begonnen is en niet alleen
+    #      gehoopt. Daarom valt Nike (-46% relatief) er af en SDGR (+121%) niet.
+    #   3. Er MOET intern iets verbeteren: versnelling of een aantrekkende marge.
+    _gevallen = isinstance(pct_off_high, (int, float)) and pct_off_high >= 40
+    _intern   = (_acc is not None and _acc > 0) or (gm_trend is not None and gm_trend >= 1)
+    keerpunt  = bool(_gevallen and _intern
+                     and rel_strength is not None and rel_strength > 0
+                     and growth is not None and growth < 25)
+    if keerpunt:
+        _w = []
+        if _acc is not None and _acc > 0:
+            _w.append(f"daling loopt leeg ({growth:+.0f}% na {growth - _acc:+.0f}%)")
+        if gm_trend is not None and gm_trend >= 1:
+            _w.append(f"marge trekt aan (+{gm_trend:.1f}pp)")
+        _w.append(f"markt bevestigt (+{rel_strength:.0f}% relatief)")
+        reasons.append("Keerpunt: " + ", ".join(_w))
+
+    # ── BEVESTIGINGSREGEL ───────────────────────────────────────────────────
+    # Bij lage groei rust de hele these op een omslag die nog moet gebeuren.
+    # Relatieve sterkte is het enige bewijs dat er IS dat die omslag begonnen is.
+    # Zonder dat koop je een hypothese, niet een keerpunt.
+    #
+    # Dit haalt Estée Lauder uit de kop van de lijst (+4,6% groei, -5,2% relatief:
+    # nul punten voor groei, maar 30 van zijn 55 punten uit een margeknik en een
+    # brutomarge die elk cosmeticabedrijf heeft) en laat SDGR (+121%), BNGO (+43%)
+    # en SNAP (+8,7%) ongemoeid -- daar bevestigt de markt de omslag al.
+    if (growth is not None and growth < 15
+            and rel_strength is not None and rel_strength < 0):
+        if score > 40:
+            flags.append(f"Lage groei (+{growth:.0f}%) zonder marktbevestiging "
+                         f"({rel_strength:.0f}% relatief) — plafond 40 "
+                         f"(fundamentals gaven {score})")
+        score = min(score, 40)
 
     # Risico-flags → bepalen positiegrootte-advies, niet de score
     risk = "gemiddeld"
@@ -5070,6 +5342,12 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="") -
         "pctOffHigh": pct_off_high,
         "realistischVeelvoud": realistisch, "scorePlafond": plafond,
         "cyclischePiek": cyclische_piek,
+        "keerpunt": keerpunt,
+        "runwayMaanden": runway,
+        "herstelBron": herstel_bron,
+        "verwateringX": (round(verwatering, 1) if verwatering else None),
+        "topWaardeUsd": (waarde or {}).get("topWaardeUsd"),
+        "topWaardeJaar": (waarde or {}).get("topJaar"),
         # Is 10x hier uberhaupt denkbaar? 10x vanaf $50B = $500B: denkbaar.
         # 10x vanaf $200B = $2 biljoen: dat lukt eens per decennium, wereldwijd.
         # Boven die grens hoort een naam niet in een 10-100x-lijst, hoe sterk de
@@ -6684,7 +6962,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "11.3-bagger-realisme",
+            "version": "11.5-marktwaarde",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -6700,6 +6978,7 @@ def main():
     global KWALITEIT
     KWALITEIT = ververs_kwaliteit_screen(WATCHLIST)
     vul_winsthistorie_aan()
+    vul_runway_aan()
     pas_auto_fundamentals_toe()
 
     # Batch ophalen
@@ -6824,9 +7103,33 @@ def main():
             bagger = None
             if name not in ETF_TICKERS:
                 rel_str = compute_relative_strength(entry["daily"]["Close"], bench_close)
+                # MARKTWAARDE-TOP. De koersmaat faalt bij namen met omgekeerde
+                # splitsingen (BNGO: 100% onder de top, dus nul herstelpunten bij
+                # precies de naam waar het spoor voor bestaat). Marktwaarde is
+                # splitsings-ongevoelig en legt bovendien de verwatering bloot.
+                _waarde = None
+                _kg = (KWALITEIT or {}).get(name) or {}
+                _ap = _kg.get("aandelenPerJaar") or []
+                if _ap:
+                    try:
+                        _cl = entry["daily"]["Close"]
+                        _pieken = {int(j): float(v) for j, v in
+                                   _cl.groupby(_cl.index.year).max().items()}
+                        # Ook het MEEST RECENTE aantal moet naar hedendaagse
+                        # eenheden: gebeurde er na dat boekjaar nog een splitsing,
+                        # dan staat er een getal van vóór die splitsing.
+                        _huidig_aantal = _ap[-1][1] * _splitfactor_na(
+                            _ap[-1][0], _kg.get("splitsingen") or [])
+                        _waarde = _waarde_herstel(
+                            _pieken, {int(j): a for j, a in _ap},
+                            _kg.get("splitsingen") or [],
+                            _parse_mktcap(fund.get("mktCap", "")),
+                            _huidig_aantal)
+                    except (KeyError, TypeError, ValueError, AttributeError):
+                        _waarde = None
                 bagger = compute_bagger_score(fund, rel_str,
                                               pct_off_high=analysis.get("pctOffHigh"),
-                                              naam=name)
+                                              naam=name, waarde=_waarde)
                 bagger["vastgepind"] = name in BAGGER_TICKERS
 
             results["stocks"][name] = {
@@ -7154,7 +7457,22 @@ def main():
             "cyclischePiek": b.get("cyclischePiek", False),
             "baggerKandidaat": b.get("baggerKandidaat", True),
             "marktkapUsd": b.get("marktkapUsd"),
+            "keerpunt": b.get("keerpunt", False),
+            "runwayMaanden": b.get("runwayMaanden"),
+            "netMargin": s.get("fund", {}).get("netMargin"),
+            "herstelBron": b.get("herstelBron"),
+            "verwateringX": b.get("verwateringX"),
+            "topWaardeUsd": b.get("topWaardeUsd"),
+            "topWaardeJaar": b.get("topWaardeJaar"),
         })
+    # Dekkingsregel in het log: hoeveel namen krijgen een ECHTE waarde-top en
+    # hoeveel vallen terug op de koersmaat. Zonder deze regel weet je niet of de
+    # reconstructie werkt of stil faalt -- de les van de lege earnings-cache.
+    from collections import Counter as _Cnt
+    _bron = _Cnt(x.get("herstelBron") or "geen" for x in bagger_list)
+    print(f"  Marktwaarde-top: {_bron.get('marktwaarde', 0)}/{len(bagger_list)} "
+          f"gereconstrueerd, {_bron.get('koers', 0)} op koers, "
+          f"{_bron.get('koers-afgekapt', 0)} afgekapt, {_bron.get('geen', 0)} geen")
     bagger_list.sort(key=lambda x: x["score"], reverse=True)
 
     results["baggers"] = {
@@ -7163,12 +7481,18 @@ def main():
         "note": ("Apart spoor voor asymmetrisch potentieel — waardering telt hier NIET. "
                  "Kleine positiegroottes: het faillissementsrisico is reëel. Geen financieel advies."),
         "methodNote": ("Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage), "
-                       "relatieve sterkte vs markt EN herstelpotentieel: hoeveel keer de koers moet "
-                       "doen om terug te keren naar de eigen top. Dat laatste telt alleen zwaar mee "
-                       "als de fundamentals nog staan -- een gevallen bedrijf met wegzakkende groei "
-                       "is een val, geen bagger. Elk aandeel in het universum wordt gescoord, niet "
-                       "een handmatige lijst: baggerpotentieel ontstaat juist bij een crash, en dan "
-                       "moet de rangorde zichzelf herschikken. Risico-flags bepalen positiegrootte."),
+                       "relatieve sterkte vs markt EN herstelpotentieel. Dat laatste wordt gemeten in "
+                       "MARKTWAARDE, niet in koers: een omgekeerde splitsing deelt de koers en "
+                       "vermenigvuldigt het aantal aandelen, dus waarde is splitsings-ongevoelig -- "
+                       "en het verschil tussen de koersdaling en de waardedaling is precies de "
+                       "verwatering, die elk toekomstig veelvoud drukt. Reikt de aandelenhistorie niet "
+                       "tot de top, dan valt het terug op de koers, afgekapt op 20x. Herstel telt "
+                       "alleen zwaar mee als de fundamentals nog staan. Bij lage groei zonder "
+                       "marktbevestiging geldt een plafond van 40: dan rust de these op een omslag "
+                       "die nog moet beginnen. De marktkap legt een tweede plafond op -- 100x vanaf "
+                       "$40 mrd bestaat niet. Elk aandeel in het universum wordt gescoord, niet een "
+                       "handmatige lijst: baggerpotentieel ontstaat juist bij een crash, en dan moet "
+                       "de rangorde zichzelf herschikken. Risico-flags bepalen positiegrootte."),
     }
     if bagger_list:
         top = bagger_list[0]

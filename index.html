@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "11.3";
+const UI_VERSION = "11.5";
 
 const STOCK_NAMES = {
   ADYEN:"Adyen", RELY:"Remitly", DLO:"DLocal", GLBE:"Global-e",
@@ -845,6 +845,16 @@ function TrackRecord({ track }) {
   );
 }
 
+// Marktkap leesbaar maken. Onder de miljard in miljoenen, want "$1 mrd" voor
+// SERV ($0,7 mrd) leest als tien keer te groot -- en juist bij de kleinste namen
+// is de exacte omvang het hele punt van dit spoor.
+function fmtCap(usd) {
+  if (usd == null) return "";
+  if (usd >= 1e12) return `$${(usd/1e12).toFixed(1)} bln`;
+  if (usd >= 1e9)  return `$${(usd/1e9).toFixed(usd < 1e10 ? 1 : 0)} mrd`;
+  return `$${(usd/1e6).toFixed(0)} mln`;
+}
+
 function BaggerTrack({ baggers, onSelect }) {
   if (!baggers) {
     return <div style={{textAlign:"center",color:C.textDim,padding:30}}>
@@ -894,11 +904,20 @@ function BaggerTrack({ baggers, onSelect }) {
                     <span style={{color:C.textDim,fontSize:11}}>{STOCK_NAMES[b.ticker]}</span>
                     {b.vastgepind && <span style={{color:C.accent,fontSize:9,marginLeft:5}}>★ vastgepind</span>}
                     {b.herstelX>=2 && <span style={{color:C.teal,fontSize:9,marginLeft:5}}>
-                      {b.herstelX}x tot de oude top</span>}
+                      {b.herstelX}x tot de oude {b.herstelBron==="marktwaarde"?"waarde":"koers"}
+                      {b.herstelBron==="marktwaarde"&&b.topWaardeJaar?` (${b.topWaardeJaar})`:""}
+                      {b.herstelBron==="koers-afgekapt"?" (afgekapt)":""}</span>}
+                    {b.verwateringX>=2 && <span style={{color:C.orange,fontSize:9,marginLeft:5}}>
+                      {b.verwateringX}x verwaterd</span>}
                     {b.realistischVeelvoud && <span style={{color:C.muted,fontSize:9,marginLeft:5}}>
                       {b.realistischVeelvoud}</span>}
                     {b.cyclischePiek && <span style={{color:C.orange,fontSize:9,marginLeft:5}}>
                       cyclische piek</span>}
+                    {b.keerpunt && (
+                      <span style={{background:"#1e293b",color:C.teal,border:`1px solid ${C.teal}`,borderRadius:3,padding:"1px 6px",fontSize:9,fontWeight:700}}>
+                        ↗ keerpunt
+                      </span>
+                    )}
                     {b.passesQualityGate&&(
                       <span style={{background:"#052e16",color:C.green,border:"1px solid #166534",borderRadius:3,padding:"1px 6px",fontSize:9,fontWeight:700}}>
                         ✓ ook kwaliteitspoort
@@ -916,10 +935,19 @@ function BaggerTrack({ baggers, onSelect }) {
               {/* Key metrics */}
               <div style={{display:"flex",gap:12,marginTop:8,flexWrap:"wrap",fontSize:10}}>
                 {b.price!=null&&<span style={{color:C.text,fontWeight:700}}>{b.currency||"$"}{b.price.toFixed(2)}</span>}
+                {b.marktkapUsd!=null&&<span style={{color:C.textDim}}>Marktkap <b style={{color:C.text}}>{fmtCap(b.marktkapUsd)}</b></span>}
                 {b.revenueGrowth!=null&&<span style={{color:C.textDim}}>Groei <b style={{color:b.revenueGrowth>=40?C.green:C.text}}>+{b.revenueGrowth}%</b></span>}
                 {b.grossMarginTrend!=null&&<span style={{color:C.textDim}}>Marge-trend <b style={{color:b.grossMarginTrend>0?C.green:C.red}}>{b.grossMarginTrend>0?"+":""}{b.grossMarginTrend}pp</b></span>}
                 {b.relStrength!=null&&<span style={{color:C.textDim}}>vs markt <b style={{color:b.relStrength>0?C.green:C.red}}>{b.relStrength>0?"+":""}{b.relStrength}%</b></span>}
                 <span style={{color:C.textDim}}>Risico <b style={{color:riskColor[b.risk]||C.text}}>{b.risk}</b></span>
+                {/* Runway alleen tonen waar hij bestaat: bij een winstgevend bedrijf
+                    is de vraag niet van toepassing, en een leeg veld zou dan
+                    verwarrend zijn. Onder 24 maanden rood -- daar begint de
+                    verwatering het veelvoud op te eten. */}
+                {b.runwayMaanden!=null&&(
+                  <span style={{color:C.textDim}}>Kas nog <b style={{color:b.runwayMaanden<=12?C.red:b.runwayMaanden<=24?C.orange:C.text}}>
+                    {b.runwayMaanden>=60?"60+":b.runwayMaanden} mnd</b></span>
+                )}
               </div>
 
               {/* Position sizing */}
@@ -967,7 +995,7 @@ function BaggerTrack({ baggers, onSelect }) {
                   {b.cyclischePiek && <span style={{color:C.orange,fontSize:9,marginLeft:5}}>cyclische piek</span>}
                 </span>
                 <span style={{color:C.muted,fontSize:9}}>
-                  {b.marktkapUsd ? `$${(b.marktkapUsd/1e9).toFixed(0)} mrd` : ""}
+                  {fmtCap(b.marktkapUsd)}
                   {b.realistischVeelvoud ? ` · ${b.realistischVeelvoud}` : ""}
                   {` · score ${b.score}`}
                 </span>

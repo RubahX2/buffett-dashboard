@@ -1,0 +1,26 @@
+# macOS Finder-rommel. Verandert elke keer als je een map opent in Finder en
+# heeft niets met het project te maken.
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# LET OP: de datavelden van de bot (signals.json, timeline.json, weekly.json,
+# track_record.json, earnings_dates.json, fundamentals_auto.json,
+# regime_history.json, debuut.json, quality_screen.json, universe.jsonl,
+# fills.jsonl) horen WEL in de repo -- de workflow commit die, en het dashboard
+# leest ze rechtstreeks van GitHub Pages. Zet die hier dus nooit in.

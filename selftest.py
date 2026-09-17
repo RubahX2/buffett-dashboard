@@ -103,6 +103,59 @@ def main():
     # dus niet meer op een vast aantal toetsen maar op "ruim de meeste aandelen".
     _bag = [t for t, v in stocks.items() if v.get("bagger")]
     check("baggerscore voor het universum", len(_bag) >= 50, f"{len(_bag)}")
+
+    # ── CASH RUNWAY: rekenkundige kern ───────────────────────────────────────
+    # Apart getoetst omdat de jaarrekening-endpoints van Yahoo niet overal
+    # bereikbaar zijn. Zonder deze test kan de berekening maanden stilstaan
+    # zonder dat iemand het merkt -- precies wat er met het veld
+    # cashRunwayMonths gebeurde: uitgelezen, nooit gevuld, 0 van 92.
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("_az_rw", os.path.join(REPO, "analyze.py"))
+    _az = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_az)          # __name__ != "__main__" -> draait niet
+    _rw = _az._runway_maanden
+    _gevallen = [
+        (50e9,  20e9,  (None, None)),      # winstgevend -> niet van toepassing
+        (20e6, -48e6,  (5, 48e6)),         # microcap die verbrandt
+        (500e6, -50e6, (60, 50e6)),        # 120 maanden -> afgekapt op 60
+        (24e6, -12e6,  (24, 12e6)),        # precies twee jaar
+        (None, -10e6,  (None, 10e6)),      # geen kasdata, wel verbranding
+        (-5e6, -10e6,  (None, 10e6)),      # negatieve kas
+        (10e6,  None,  (None, None)),      # geen kasstroomdata
+        (10e6,  0.0,   (None, None)),      # fcf exact nul
+    ]
+    _rw_fout = [f"{k}/{f}" for k, f, v in _gevallen if _rw(k, f) != v]
+    check("runway-berekening (8 gevallen)", not _rw_fout, ", ".join(_rw_fout))
+
+    # ── MARKTWAARDE-TOP: splitsingscorrectie ─────────────────────────────────
+    # Marktwaarde is splitsings-ongevoelig (koers /f, aandelen *f), maar Yahoo
+    # levert de koers GECORRIGEERD en het aandelenaantal zoals gerapporteerd.
+    # Die twee zonder correctie vermenigvuldigen geeft onzin voor elk jaar voor
+    # een splitsing. Hier getoetst op een BNGO-achtig geval met twee opeenvolgende
+    # omgekeerde splitsingen.
+    _F, _W = _az._splitfactor_na, _az._waarde_herstel
+    _sp = [(2023, 0.1), (2025, 0.05)]
+    _f_fout = [str(j) for j, v in ((2021, 0.005), (2024, 0.05), (2026, 1.0))
+               if abs(_F(j, _sp) - v) > 1e-9]
+    check("splitsingsfactor", not _f_fout and _F(2020, []) == 1.0, ", ".join(_f_fout))
+
+    _w = _W({2021: 1500.0, 2024: 20.0}, {2021: 300e6, 2024: 15e6},
+            _sp, 50e6, 28e6)
+    # Koers zegt 1500/1.78 = 843x; waarde zegt 45x; verschil = 19x verwatering.
+    check("marktwaarde-top (BNGO-profiel)",
+          _w is not None and _w["topJaar"] == 2021
+          and abs(_w["herstelXWaarde"] - 45.0) < 1.0
+          and abs(_w["verwateringX"] - 19.0) < 1.0,
+          str(_w))
+    # Geen aandelenhistorie, jaren die niet aansluiten, waarde nul: alle None.
+    # Belangrijk dat dit None is en niet 0 of een schatting -- dan valt de score
+    # netjes terug op de koersmaat in plaats van een verzonnen getal te gebruiken.
+    _w_leeg = [_W({}, {2024: 1e6}, [], 50e6, 1e6),
+               _W({2024: 10.0}, {}, [], 50e6, 1e6),
+               _W({2024: 10.0}, {2024: 1e6}, [], 0, 1e6),
+               _W({2019: 10.0}, {2024: 1e6}, [], 50e6, 1e6)]
+    check("marktwaarde-top valt terug bij gaten",
+          all(x is None for x in _w_leeg), str(_w_leeg))
     alloc = sig.get("allocation") or {}
     check("maandpick aanwezig", alloc.get("primaryPick") is not None)
     check("pickTop3 = 3", len(alloc.get("pickTop3") or []) == 3)
