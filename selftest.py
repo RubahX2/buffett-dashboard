@@ -99,7 +99,10 @@ def main():
     check("0 errors", len(sig.get("errors", [])) == 0, str(sig.get("errors", []))[:120])
     check("geen NaN in JSON", raw1.count(b"NaN") == 0)
     check("10 sectoren", len(set(s["sector"] for s in stocks.values())) == 10)
-    check("17 bagger-kandidaten", len(sig.get("baggers", {}).get("candidates", [])) == 17)
+    # Elk aandeel krijgt nu een baggerscore (was: alleen een handmatige lijst van 17),
+    # dus niet meer op een vast aantal toetsen maar op "ruim de meeste aandelen".
+    _bag = [t for t, v in stocks.items() if v.get("bagger")]
+    check("baggerscore voor het universum", len(_bag) >= 50, f"{len(_bag)}")
     alloc = sig.get("allocation") or {}
     check("maandpick aanwezig", alloc.get("primaryPick") is not None)
     check("pickTop3 = 3", len(alloc.get("pickTop3") or []) == 3)

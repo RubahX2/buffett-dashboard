@@ -4233,8 +4233,24 @@ def fetch_jaarcijfers_yf(sym):
                 if ingezet and ingezet > 0:
                     roce_jaren.append(ebit[i] / ingezet * 100.0)
 
+        # Nettowinst per jaar bewaren: de basis voor de winstgroei-historie.
+        # Die stond bij 66 van de 92 aandelen leeg omdat hij handmatig werd
+        # onderhouden; de jaarrekening heeft hem al, we gooiden hem alleen weg.
+        _jaartallen = []
+        try:
+            _jaartallen = [int(str(k)[:4]) for k in inc.columns]
+        except (ValueError, TypeError, AttributeError):
+            _jaartallen = []
+        _winst_reeks = []
+        if netto and _jaartallen:
+            for i in range(min(len(netto), len(_jaartallen))):
+                if netto[i] is not None and np.isfinite(netto[i]):
+                    # in miljoenen, zoals de handmatige reeksen
+                    _winst_reeks.append([_jaartallen[i], round(netto[i] / 1e6)])
+            _winst_reeks.sort(key=lambda r: r[0])        # oud -> nieuw
         uit = {
             "jaren": n,
+            "winstPerJaar": _winst_reeks,
             "omzetgroei":  _gem(_groei_reeks(omzet)),
             "epsGroei":    _gem(_groei_reeks(eps)) if eps else None,
             "brutomarge":  _gem(per_jaar(bruto)),
@@ -4312,6 +4328,98 @@ def ververs_kwaliteit_screen(paren):
     print(f"  Kwaliteitsscreen: {nieuw_aantal} opgehaald, {mislukt} mislukt "
           f"({len(cache)} in cache)")
     return cache
+
+
+def vul_winsthistorie_aan():
+    """Vult een ONTBREKENDE earningsHistory aan uit de opgehaalde jaarrekeningen.
+
+    Handmatig ingevulde reeksen blijven ALTIJD staan: daar zit oordeel in
+    (ASMI genormaliseerd exclusief ASMPT, MSFT's GAAP-nuance met eenmalige posten).
+    Alleen waar niets staat, vullen we de gerapporteerde nettowinst in -- beter een
+    ruwe reeks dan geen reeks, want zonder historie kan de winstgroei-analyse en de
+    consistentie-component helemaal niets berekenen.
+
+    Aangevulde reeksen worden gemarkeerd, zodat in het dashboard zichtbaar blijft
+    welke door jou zijn genormaliseerd en welke rechtstreeks uit de jaarrekening
+    komen."""
+    aangevuld = 0
+    for naam, kg in (KWALITEIT or {}).items():
+        f = FUNDAMENTALS.get(naam)
+        if not f or not isinstance(kg, dict):
+            continue
+        if f.get("earningsHistory"):
+            continue                       # handmatig ingevuld -> met rust laten
+        reeks = kg.get("winstPerJaar") or []
+        if len(reeks) < 2:
+            continue
+        # Alles nul betekent dat de bedragen onder de miljoen liggen en na afronding
+        # verdwenen zijn -- dan is de reeks onbruikbaar en zou hij een groei van 0%
+        # voorwenden die er niet is. Liever geen reeks dan een misleidende.
+        if all(r[1] == 0 for r in reeks):
+            continue
+        f["earningsHistory"] = reeks
+        f["earningsHistoryBron"] = "jaarrekening"
+        aangevuld += 1
+    if aangevuld:
+        print(f"  Winsthistorie: {aangevuld} aangevuld uit de jaarrekeningen "
+              f"(handmatige reeksen ongemoeid)")
+    return aangevuld
+
+
+# ── AUTOMATISCHE BAGGER-KANDIDATEN ──────────────────────────────────────────
+# BAGGER_TICKERS hierboven is een HANDGESCHREVEN lijst. Dat betekende dat geen
+# enkel nieuw aandeel ooit als baggerkandidaat werd bekeken, en dat een aandeel dat
+# 60% inzakt nooit vanzelf in beeld kwam. De lijst stond stil sinds hij ooit is
+# opgesteld.
+#
+# Deze functie loopt het HELE universum door en meldt namen die het profiel hebben
+# maar niet op de lijst staan. Twee ingangen, want een bagger ontstaat op twee
+# manieren:
+#   1. GROEIPROFIEL -- klein bedrijf met explosieve groei (de klassieke route)
+#   2. DIEPE VAL    -- een kwaliteitsbedrijf dat zo ver is gezakt dat een
+#                      veelvoud terug naar de oude top alsnog een bagger oplevert
+#
+# Het resultaat is een SUGGESTIE, geen automatische toevoeging: de lijst blijft van
+# Ruben. Zo kan een ruisende metric geen namen stilletjes het bagger-spoor in duwen.
+BAGGER_KANDIDAAT_MKTCAP = 15e9    # boven deze grootte is 100x niet realistisch
+BAGGER_KANDIDAAT_GROEI = 25.0     # omzetgroei %
+BAGGER_KANDIDAAT_VAL = 60.0       # % onder de eigen top
+BAGGER_KANDIDAAT_MKTCAP_VAL = 50e9  # groottegrens voor de val-route
+
+
+def zoek_bagger_kandidaten(stocks):
+    """Namen die het baggerprofiel hebben maar niet in BAGGER_TICKERS staan."""
+    uit = []
+    for naam, s in (stocks or {}).items():
+        if s.get("error") or naam in BAGGER_TICKERS or naam in ETF_TICKERS:
+            continue
+        f = FUNDAMENTALS.get(naam) or {}
+        mk = _parse_mktcap(f.get("mktCap"))
+        groei = f.get("revenueGrowth")
+        val = s.get("pctOffHigh")
+        redenen = []
+        if (mk is not None and mk < BAGGER_KANDIDAAT_MKTCAP
+                and groei is not None and groei >= BAGGER_KANDIDAAT_GROEI):
+            redenen.append(f"klein ({_mkt_cap_tekst(mk)}) met omzetgroei +{groei:.0f}%")
+        # De val-route heeft OOK een groottegrens nodig. Zonder die grens kwam NVDA
+        # op $4,9 biljoen als baggerkandidaat naar boven, puur omdat de koers ver
+        # onder de top stond -- maar een tienvoud vanaf die marktkap bestaat niet.
+        # Ruimer dan de groeiroute, want een gevallen kwaliteitsbedrijf mag groter
+        # zijn dan een startende hypergroeier.
+        if (isinstance(val, (int, float)) and val >= BAGGER_KANDIDAAT_VAL
+                and mk is not None and mk < BAGGER_KANDIDAAT_MKTCAP_VAL):
+            redenen.append(f"{val:.0f}% onder de eigen top — herstel alleen al "
+                           "is een veelvoud")
+        if not redenen:
+            continue
+        uit.append({
+            "ticker": naam, "redenen": redenen,
+            "marktkap": _mkt_cap_tekst(mk) if mk else None,
+            "omzetgroei": groei, "pctOffHigh": val,
+            "kwaliteitspoort": bool(((s.get("scores") or {}).get("qualityGate"))),
+        })
+    uit.sort(key=lambda r: -(r.get("omzetgroei") or 0))
+    return uit
 
 
 def compounder_metrics(naam, fund, eg=None):
@@ -4804,8 +4912,14 @@ def compute_relative_strength(stock_close, bench_close, lookback_days=126):
     b_ret = (float(bench_close.iloc[-1]) / float(bench_close.iloc[-lookback_days]) - 1) * 100
     return round(s_ret - b_ret, 1)
 
-def compute_bagger_score(fund: dict, rel_strength) -> dict:
-    """Bagger-potentieelscore 0-100 + risico-flags + positiegrootte-advies. Geen waardering."""
+def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None) -> dict:
+    """Bagger-potentieelscore 0-100 + risico-flags + positiegrootte-advies. Geen waardering.
+
+    Draait voor ELK aandeel, niet voor een handmatige lijst. Reden (Rubens argument):
+    baggerpotentieel ontstaat juist bij een crash. Zakt een bedrijf 90% terwijl de
+    fundamentals gelijk blijven, dan is het herstel naar de oude top op zichzelf al
+    een 10x -- en dat geldt dan voor tientallen namen tegelijk. Een vaste lijst kijkt
+    op precies dat moment de verkeerde kant op. De rangorde moet zichzelf herschikken."""
     growth      = fund.get("revenueGrowth")
     growth_prev = fund.get("revenueGrowthPrev")
     gm          = fund.get("grossMargin")
@@ -4849,6 +4963,28 @@ def compute_bagger_score(fund: dict, rel_strength) -> dict:
         elif rel_strength >= 0:  s += 6
         else: flags.append(f"Onder markt ({rel_strength:.0f}%)")
 
+    # 6. HERSTELPOTENTIEEL (max 25) — het veelvoud dat al in de koers zit.
+    # Puur rekenkundig: 90% onder de top betekent 10x terug naar diezelfde top.
+    # Dit is geen voorspelling dat het gebeurt; het is de hefboom die ontstaat als
+    # het WEL gebeurt. Daarom telt hij alleen echt zwaar als de fundamentals nog
+    # staan -- een gevallen bedrijf met wegzakkende groei is geen bagger maar een val.
+    herstel_x = None
+    if isinstance(pct_off_high, (int, float)) and 0 < pct_off_high < 99.5:
+        herstel_x = 100.0 / (100.0 - pct_off_high)
+        _fund_ok = (growth is not None and growth >= 10) or (gm_trend is not None and gm_trend >= 0)
+        if herstel_x >= 10:
+            s += 25 if _fund_ok else 8
+            reasons.append(f"{pct_off_high:.0f}% onder de top — {herstel_x:.0f}x alleen al "
+                           f"om terug te keren" + ("" if _fund_ok else "; fundamentals wél verzwakt"))
+        elif herstel_x >= 5:
+            s += 18 if _fund_ok else 6
+            reasons.append(f"{pct_off_high:.0f}% onder de top — {herstel_x:.1f}x tot de oude top")
+        elif herstel_x >= 3:
+            s += 12 if _fund_ok else 4
+            reasons.append(f"{pct_off_high:.0f}% onder de top — {herstel_x:.1f}x tot de oude top")
+        elif herstel_x >= 2:
+            s += 6 if _fund_ok else 2
+
     score = min(100, max(0, s))
 
     # Risico-flags → bepalen positiegrootte-advies, niet de score
@@ -4890,6 +5026,8 @@ def compute_bagger_score(fund: dict, rel_strength) -> dict:
         "score": score, "label": label, "color": color,
         "reasons": reasons, "flags": flags, "risk": risk,
         "positionSizing": pos, "relStrength": rel_strength,
+        "herstelX": (round(herstel_x, 1) if herstel_x else None),
+        "pctOffHigh": pct_off_high,
     }
 
 # ── MARKTREGIME (SPX/NDX) + CONTEXT (DXY, grondstoffen) + SECTOR-ROTATIE ──────
@@ -6497,7 +6635,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "10.9-run-interval",
+            "version": "11.2-bagger-universeel",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -6512,6 +6650,7 @@ def main():
     AUTO_FUND = ververs_fundamentals_auto(WATCHLIST)
     global KWALITEIT
     KWALITEIT = ververs_kwaliteit_screen(WATCHLIST)
+    vul_winsthistorie_aan()
     pas_auto_fundamentals_toe()
 
     # Batch ophalen
@@ -6630,10 +6769,15 @@ def main():
             }
 
             # Bagger-spoor (apart): alleen voor aangewezen tickers
+            # Voor ELK aandeel, niet alleen voor een handmatige lijst. BAGGER_TICKERS
+            # is nu hooguit een markering ("vastgepind"), geen poort meer: anders
+            # mist het spoor precies de namen die er na een crash bij komen.
             bagger = None
-            if name in BAGGER_TICKERS:
+            if name not in ETF_TICKERS:
                 rel_str = compute_relative_strength(entry["daily"]["Close"], bench_close)
-                bagger = compute_bagger_score(fund, rel_str)
+                bagger = compute_bagger_score(fund, rel_str,
+                                              pct_off_high=analysis.get("pctOffHigh"))
+                bagger["vastgepind"] = name in BAGGER_TICKERS
 
             results["stocks"][name] = {
                 "name": name, "ticker": entry["ticker"],
@@ -6907,6 +7051,10 @@ def main():
         "criteria": [{"sleutel": k, "label": l, "drempel": d, "richting": r,
                       "eenheid": e} for k, l, d, r, e in KW_CRITERIA],
     }
+    results["baggerKandidaten"] = zoek_bagger_kandidaten(results["stocks"])
+    if results["baggerKandidaten"]:
+        print(f"  Bagger-kandidaten (niet op de lijst): "
+              + ", ".join(r["ticker"] for r in results["baggerKandidaten"][:8]))
     results["compounders"] = {
         "rijen": _comp,
         "drempels": {"typeGrensUsd": CS_TYPE_GRENS_USD, "drempelA": CS_DREMPEL_A,
@@ -6949,6 +7097,8 @@ def main():
             "revenueGrowth": s.get("fund", {}).get("revenueGrowth"),
             "grossMarginTrend": s.get("fund", {}).get("grossMarginTrend"),
             "passesQualityGate": s.get("scores", {}).get("qualityGate", False),
+            "herstelX": b.get("herstelX"), "pctOffHigh": b.get("pctOffHigh"),
+            "vastgepind": b.get("vastgepind", False),
         })
     bagger_list.sort(key=lambda x: x["score"], reverse=True)
 
@@ -6957,8 +7107,13 @@ def main():
         "candidates": bagger_list,
         "note": ("Apart spoor voor asymmetrisch potentieel — waardering telt hier NIET. "
                  "Kleine positiegroottes: het faillissementsrisico is reëel. Geen financieel advies."),
-        "methodNote": ("Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage) "
-                       "en relatieve sterkte vs markt. Risico-flags bepalen positiegrootte-advies."),
+        "methodNote": ("Score op omzetgroei, groei-versnelling, brutomarge-trend (operating leverage), "
+                       "relatieve sterkte vs markt EN herstelpotentieel: hoeveel keer de koers moet "
+                       "doen om terug te keren naar de eigen top. Dat laatste telt alleen zwaar mee "
+                       "als de fundamentals nog staan -- een gevallen bedrijf met wegzakkende groei "
+                       "is een val, geen bagger. Elk aandeel in het universum wordt gescoord, niet "
+                       "een handmatige lijst: baggerpotentieel ontstaat juist bij een crash, en dan "
+                       "moet de rangorde zichzelf herschikken. Risico-flags bepalen positiegrootte."),
     }
     if bagger_list:
         top = bagger_list[0]

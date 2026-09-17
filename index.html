@@ -54,7 +54,7 @@ const FALLBACK_FUND = {
 // signals.json, dus van de backend). Zonder eigen stempel kun je een verouderde
 // frontend bekijken terwijl de backend-versie nieuw lijkt -- dan ontbreken
 // UI-secties zonder zichtbare oorzaak.
-const UI_VERSION = "10.9";
+const UI_VERSION = "11.2";
 
 const STOCK_NAMES = {
   ADYEN:"Adyen", RELY:"Remitly", DLO:"DLocal", GLBE:"Global-e",
@@ -876,6 +876,9 @@ function BaggerTrack({ baggers, onSelect }) {
                     <span style={{color:C.muted,fontSize:14,fontWeight:800}}>{i+1}</span>
                     <span style={{color:C.accent,fontWeight:700,fontSize:15}}>{b.ticker}</span>
                     <span style={{color:C.textDim,fontSize:11}}>{STOCK_NAMES[b.ticker]}</span>
+                    {b.vastgepind && <span style={{color:C.accent,fontSize:9,marginLeft:5}}>★ vastgepind</span>}
+                    {b.herstelX>=2 && <span style={{color:C.teal,fontSize:9,marginLeft:5}}>
+                      {b.herstelX}x tot de oude top</span>}
                     {b.passesQualityGate&&(
                       <span style={{background:"#052e16",color:C.green,border:"1px solid #166534",borderRadius:3,padding:"1px 6px",fontSize:9,fontWeight:700}}>
                         ✓ ook kwaliteitspoort
@@ -1981,6 +1984,11 @@ function Detail({ ticker, data, onClose, portfolio, add, update, notes, saveNote
                       {mist
                         ? <>✋ Mogelijk een jaar achter: de reeks loopt tot {laatste}. Deze cijfers
                             worden <b>handmatig</b> onderhouden — vraag om een update.</>
+                        : (fund.earningsHistoryBron==="jaarrekening")
+                        ? <>📄 Automatisch uit de jaarrekening, tot en met <b style={{color:C.text}}>{laatste}</b>.
+                            Dit is de <b style={{color:C.text}}>gerapporteerde</b> nettowinst, zonder normalisatie:
+                            eenmalige posten en cyclische vertekening zitten er dus in. Vraag om een handmatige
+                            reeks als dit bedrijf zulke posten heeft — die overschrijft deze dan.</>
                         : <>✍ Handmatig onderhouden tot en met <b style={{color:C.text}}>{laatste}</b>.
                             Deze reeks wordt bewust <b>niet</b> automatisch bijgewerkt: er zit normalisatie
                             in (eenmalige posten, cyclische correcties) die oordeel vraagt.</>}
@@ -3873,6 +3881,50 @@ Alleen echte <b style={{color:C.text}}>openingsgaps</b>: de koers opent duidelij
       {view==="baggers"&&(
         <div style={{padding:"14px 16px"}}>
           <BaggerTrack baggers={baggers} onSelect={setSelected}/>
+          {(()=>{
+            const k = jsonData?.baggerKandidaten || [];
+            if(!k.length) return null;
+            return (
+              <div style={{marginTop:18,background:C.panel,border:`1px solid ${C.border}`,
+                borderLeft:`3px solid ${C.accent}`,borderRadius:8,padding:"12px 14px"}}>
+                <div style={{color:C.accent,fontSize:12,fontWeight:700,marginBottom:4}}>
+                  🔎 Mogelijke kandidaten ({k.length}) — nog niet op de baggerlijst
+                </div>
+                <div style={{color:C.textDim,fontSize:10,lineHeight:1.6,marginBottom:8}}>
+                  De baggerlijst is <b style={{color:C.text}}>handmatig</b>: alleen aangewezen
+                  tickers krijgen een baggerscore. Nieuwe namen kwamen daardoor nooit in beeld,
+                  en een aandeel dat diep wegzakt evenmin. Dit blok scant het hele universum op
+                  twee routes: <b style={{color:C.text}}>klein met hoge groei</b> (de klassieke
+                  route) en <b style={{color:C.text}}>diep gevallen</b> — waar het herstel naar
+                  de oude top op zichzelf al een veelvoud is. Beide met een groottegrens, want
+                  boven een bepaalde marktkap bestaat een tienvoud niet meer.
+                  <br/>Dit is een <b style={{color:C.text}}>suggestie, geen automatische
+                  toevoeging</b>: de lijst blijft van jou. Zo kan een ruisende metric geen naam
+                  stilletjes het baggerspoor in duwen.
+                </div>
+                <div style={{display:"grid",gap:6}}>
+                  {k.map(r=>(
+                    <div key={r.ticker} onClick={()=>setSelected(r.ticker)}
+                      style={{background:C.bg,border:`1px solid ${C.border}`,borderRadius:6,
+                        padding:"7px 9px",cursor:"pointer"}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:6}}>
+                        <div>
+                          <span style={{color:C.accent,fontWeight:700,fontSize:13}}>{r.ticker}</span>
+                          <span style={{color:C.textDim,fontSize:10,marginLeft:6}}>{STOCK_NAMES[r.ticker]}</span>
+                        </div>
+                        <span style={{color: r.kwaliteitspoort?C.green:C.textDim,fontSize:9}}>
+                          {r.marktkap} · {r.kwaliteitspoort?"haalt kwaliteitspoort":"poort niet gehaald"}
+                        </span>
+                      </div>
+                      <div style={{color:C.textDim,fontSize:10,lineHeight:1.5,marginTop:2}}>
+                        {r.redenen.map((x,i)=><div key={i}>· {x}</div>)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       )}
 
