@@ -4251,6 +4251,12 @@ def _waarde_herstel(jaarpieken, aandelen_per_jaar, splitsingen,
         verwatering = huidig_aantal / top["aandelenNu"]
     _jaren = sorted(per_jaar)
     return {
+        # De hele reeks meegeven, niet alleen de top. Reden: BNGO kwam uit op
+        # "top 2025" terwijl het al jaren daalt -- dan hoort 2022 het hoogste
+        # jaar te zijn. Het bedrag leek wél te kloppen. Zonder de reeks is dat
+        # niet na te trekken en blijft het gissen of het jaartal of de data
+        # scheef zit. Wordt voor de topnamen in het Actions-log gezet.
+        "waardePerJaar": [[j, round(per_jaar[j]["waarde"])] for j in _jaren],
         "topWaardeLokaal": top["waarde"],
         "topJaar": topjaar,
         "herstelXWaarde": top["waarde"] / nu,
@@ -5234,23 +5240,35 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="",
         elif herstel_x >= 3:  s += 12 if _fund_ok else 4
         else:                 s += 6  if _fund_ok else 2
         if herstel_x >= 3:
-            _txt = f"{herstel_x:.0f}x tot de {_wat}"
+            # EEN decimaal, gelijk aan wat de kopregel van de kaart toont. Stond
+            # hier eerst op heel getal, waardoor dezelfde kaart twee cijfers gaf
+            # voor hetzelfde ding: kopregel "3.5x", reden "4x". Dat ondermijnt
+            # het vertrouwen in elk ander getal op die kaart.
+            _x = f"{herstel_x:.1f}"
             if herstel_bron == "marktwaarde" and waarde.get("topJaar"):
                 # "hoogste sinds" en niet "de top": de balans reikt vier a vijf
                 # jaar terug. BNGO's echte top ligt in 2021 en valt buiten dat
                 # venster; "de oude waarde" zou dan een veel te lage lat
                 # suggereren. Het venster hoort in de tekst.
                 _vanaf = waarde.get("vanafJaar")
-                _txt = (f"{herstel_x:.0f}x tot de hoogste waarde sinds {_vanaf}"
+                _txt = (f"{_x}x tot de hoogste waarde sinds {_vanaf}"
                         f" (top {waarde['topJaar']})" if _vanaf
-                        else f"{herstel_x:.0f}x tot de oude marktwaarde "
+                        else f"{_x}x tot de oude marktwaarde "
                              f"(top {waarde['topJaar']})")
             elif herstel_bron == "koers-afgekapt":
                 _txt = (f"20x+ tot de oude koers (daling {pct_off_high:.0f}% — "
                         f"afgekapt, geen aandelenhistorie om de waarde te meten)")
-            if not _fund_ok:
-                _txt += "; fundamentals wél verzwakt"
+            else:
+                _txt = f"{_x}x tot de {_wat}"
             reasons.append(_txt)
+            # Verzwakte fundamentals zijn een WAARSCHUWING, geen pluspunt. Stond
+            # aangeplakt aan de redentekst en kreeg daardoor een groen vinkje:
+            # "✓ 10x tot de hoogste waarde sinds 2022; fundamentals wél verzwakt".
+            # Zelfde fout als "✓ Groei vertraagd" -- een negatief feit in het
+            # groen. Nu een eigen rode regel.
+            if not _fund_ok:
+                flags.append("Herstelpotentieel telt maar deels: fundamentals "
+                             "zijn mee verzwakt")
     # Verwatering apart melden. Dit is het verschil tussen de koersdaling en de
     # waardedaling, en het is geen bijzaak: het is de manier waarop een veelvoud
     # verdampt bij een bedrijf dat zijn verliezen met nieuwe aandelen dekt.
@@ -5382,6 +5400,7 @@ def compute_bagger_score(fund: dict, rel_strength, pct_off_high=None, naam="",
         "herstelBron": herstel_bron,
         "verwateringX": (round(verwatering, 1) if verwatering else None),
         "topWaardeLokaal": (waarde or {}).get("topWaardeLokaal"),
+        "waardePerJaar": (waarde or {}).get("waardePerJaar"),
         "waardeVanafJaar": (waarde or {}).get("vanafJaar"),
         "topWaardeJaar": (waarde or {}).get("topJaar"),
         # Is 10x hier uberhaupt denkbaar? 10x vanaf $50B = $500B: denkbaar.
@@ -6998,7 +7017,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "11.6-munt-en-venster",
+            "version": "11.7-diagnose",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -7499,6 +7518,7 @@ def main():
             "herstelBron": b.get("herstelBron"),
             "verwateringX": b.get("verwateringX"),
             "topWaardeLokaal": b.get("topWaardeLokaal"),
+            "waardePerJaar": b.get("waardePerJaar"),
             "waardeVanafJaar": b.get("waardeVanafJaar"),
             "topWaardeJaar": b.get("topWaardeJaar"),
         })
@@ -7510,6 +7530,17 @@ def main():
     print(f"  Marktwaarde-top: {_bron.get('marktwaarde', 0)}/{len(bagger_list)} "
           f"gereconstrueerd, {_bron.get('koers', 0)} op koers, "
           f"{_bron.get('koers-afgekapt', 0)} afgekapt, {_bron.get('geen', 0)} geen")
+    # De waardereeks per jaar voor de bovenste namen. Hiermee is na te trekken of
+    # het topjaar klopt: bij een bedrijf dat jaren daalt hoort het vroegste jaar
+    # het hoogste te zijn. Klopt dat niet, dan zit er iets scheef in de
+    # splitsingscorrectie of in de aandelenaantallen -- en dan zie je het hier
+    # in plaats van dat een verkeerd jaartal ongemerkt de rangorde bepaalt.
+    for _b in bagger_list[:6]:
+        _r = _b.get("waardePerJaar")
+        if _r:
+            print(f"    {_b['ticker']:8s} waarde/jaar: " + ", ".join(
+                f"{j}={w/1e6:.0f}M" for j, w in _r)
+                + f"  -> top {_b.get('topWaardeJaar')}")
     bagger_list.sort(key=lambda x: x["score"], reverse=True)
 
     results["baggers"] = {
