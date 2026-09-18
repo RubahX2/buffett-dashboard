@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-18T08:07:11.196261+02:00",
-  "generatedAtHuman": "Friday 18 September 2026 om 08:07",
+  "generatedAt": "2026-09-18T14:21:45.543581+02:00",
+  "generatedAtHuman": "Friday 18 September 2026 om 14:21",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -25,6 +25,38 @@
       ]
     },
     {
+      "ticker": "ASML",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
+      "ticker": "ASMI",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 65 \u2191 72"
+        },
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
       "ticker": "ORCL",
       "daysAgo": 8,
       "changes": [
@@ -37,6 +69,22 @@
           "type": "valuation",
           "dir": "neutral",
           "text": "Waardering: Neutraal (PEG 1.5\u20132.5) \u2192 Redelijk (PEG 1\u20131.5)"
+        }
+      ]
+    },
+    {
+      "ticker": "GAW",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 58 \u2193 47"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
         }
       ]
     },
@@ -63,12 +111,28 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 57 \u2193 51"
+          "text": "Composiet 57 \u2193 52"
         },
         {
           "type": "signal",
           "dir": "down",
-          "text": "Signaal: KOOP \u2192 LICHT VERKOOP"
+          "text": "Signaal: KOOP \u2192 VERKOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "AIR",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 52 \u2193 42"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
         }
       ]
     },
@@ -105,18 +169,18 @@
       ]
     },
     {
-      "ticker": "COPX",
+      "ticker": "ADYEN",
       "daysAgo": 8,
       "changes": [
         {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: STERK VERKOOP \u2192 KOOP"
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 60 \u2191 65"
         },
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -9.4% deze week ($64\u2192$58)"
+          "text": "Koers -10.7% deze week ($990\u2192$884)"
         }
       ]
     },
@@ -128,28 +192,6 @@
           "type": "signal",
           "dir": "neutral",
           "text": "Signaal: LICHT VERKOOP \u2192 LICHT KOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "ASML",
-      "daysAgo": 8,
-      "changes": [
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.0% deze week ($1518\u2192$1396)"
-        }
-      ]
-    },
-    {
-      "ticker": "ASMI",
-      "daysAgo": 8,
-      "changes": [
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.3% deze week ($841\u2192$772)"
         }
       ]
     },
@@ -220,6 +262,28 @@
       ]
     },
     {
+      "ticker": "KPG",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: VERKOOP \u2192 LICHT VERKOOP"
+        }
+      ]
+    },
+    {
+      "ticker": "ADM",
+      "daysAgo": 8,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 65 \u2193 59"
+        }
+      ]
+    },
+    {
       "ticker": "AON",
       "daysAgo": 8,
       "changes": [
@@ -268,9 +332,9 @@
       "daysAgo": 8,
       "changes": [
         {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.1% deze week ($12\u2192$11)"
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: STERK VERKOOP \u2192 VERKOOP"
         }
       ]
     },
@@ -473,6 +537,6 @@
       ]
     }
   ],
-  "changedCount": 39,
+  "changedCount": 43,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
