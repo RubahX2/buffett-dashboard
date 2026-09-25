@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-09-25T01:16:41.469858+02:00"
+    "lastUpdate": "2026-09-25T14:57:30.597583+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -5359,6 +5359,13 @@
           "return": 0.32,
           "relativeReturn": 0.48,
           "success": true
+        },
+        "4w": {
+          "exitDate": "2026-09-25",
+          "exitPrice": 843.4,
+          "return": 2.53,
+          "relativeReturn": null,
+          "success": true
         }
       },
       "episodeDays": 1
@@ -5830,7 +5837,15 @@
         "buyWeight": 8,
         "sellWeight": 13
       },
-      "outcomes": {},
+      "outcomes": {
+        "1w": {
+          "exitDate": "2026-09-25",
+          "exitPrice": 12.34,
+          "return": -11.27,
+          "relativeReturn": null,
+          "success": false
+        }
+      },
       "episodeDays": 8
     },
     "strong_signal:LHX:2026-09-18": {
@@ -5858,7 +5873,7 @@
         "sellWeight": 21
       },
       "outcomes": {},
-      "episodeDays": 14
+      "episodeDays": 15
     },
     "strong_signal:ARCG:2026-09-18": {
       "ticker": "ARCG",
@@ -5955,7 +5970,7 @@
         "sellWeight": 9
       },
       "outcomes": {},
-      "episodeDays": 11
+      "episodeDays": 12
     },
     "caution:META:2026-09-21": {
       "ticker": "META",
@@ -5982,7 +5997,7 @@
         "sellWeight": 10
       },
       "outcomes": {},
-      "episodeDays": 11
+      "episodeDays": 12
     },
     "strong_signal:BLK:2026-09-22": {
       "ticker": "BLK",
@@ -6080,7 +6095,7 @@
         "sellWeight": 14
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:PLTR:2026-09-23": {
       "ticker": "PLTR",
@@ -6105,7 +6120,32 @@
         "sellWeight": 12
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
+    },
+    "caution:ASML:2026-09-25": {
+      "ticker": "ASML",
+      "type": "caution",
+      "direction": "SELL",
+      "date": "2026-09-25",
+      "entryPrice": 1534.4,
+      "benchEntry": 7704.1298828125,
+      "currency": "\u20ac",
+      "snapshot": {
+        "overall": "CAUTION (overextended)",
+        "composite": 55,
+        "timing": 42
+      },
+      "drivers": {
+        "drivers": [
+          "FIB:TP",
+          "MACD:1W"
+        ],
+        "beslissend": null,
+        "buyWeight": 16,
+        "sellWeight": 7
+      },
+      "outcomes": {},
+      "episodeDays": 1
     }
   },
   "accuracy": {
@@ -6118,10 +6158,10 @@
         "accuracyShown": false
       },
       "4w": {
-        "n": 12,
-        "avgReturn": -0.44,
+        "n": 13,
+        "avgReturn": -0.21,
         "avgRelativeReturn": -4.14,
-        "status": "te weinig data (12/20)",
+        "status": "te weinig data (13/20)",
         "accuracyShown": false
       },
       "13w": {
@@ -6137,10 +6177,10 @@
     },
     "strong_signal": {
       "1w": {
-        "n": 134,
-        "avgReturn": -2.05,
+        "n": 135,
+        "avgReturn": -2.11,
         "avgRelativeReturn": -2.05,
-        "accuracy": 41.0,
+        "accuracy": 40.7,
         "status": "ok",
         "accuracyShown": true
       },
@@ -6205,15 +6245,22 @@
     "baseRates": [
       {
         "action": "VERKOOP",
-        "n": 28,
-        "pct": 30.4,
-        "verdict": "weinig discriminerend",
-        "color": "orange"
+        "n": 27,
+        "pct": 29.3,
+        "verdict": "discriminerend",
+        "color": "green"
       },
       {
         "action": "KOOP",
-        "n": 19,
-        "pct": 20.7,
+        "n": 17,
+        "pct": 18.5,
+        "verdict": "discriminerend",
+        "color": "green"
+      },
+      {
+        "action": "HOLD",
+        "n": 13,
+        "pct": 14.1,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -6225,16 +6272,9 @@
         "color": "green"
       },
       {
-        "action": "HOLD",
+        "action": "LICHT KOOP",
         "n": 11,
         "pct": 12.0,
-        "verdict": "discriminerend",
-        "color": "green"
-      },
-      {
-        "action": "LICHT KOOP",
-        "n": 10,
-        "pct": 10.9,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -6246,14 +6286,14 @@
         "color": "green"
       },
       {
-        "action": "LICHT VERKOOP",
+        "action": "CAUTION (overextended)",
         "n": 3,
         "pct": 3.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "CAUTION (overextended)",
+        "action": "LICHT VERKOOP",
         "n": 2,
         "pct": 2.2,
         "verdict": "zeldzaam (weinig observaties)",
@@ -6282,89 +6322,89 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.31,
-          0.4,
-          0.31,
-          0.11,
-          0.83,
-          0.42
+          0.3,
+          0.42,
+          0.3,
+          0.08,
+          0.82,
+          0.4
         ]
       },
       {
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.31,
+          0.3,
           1.0,
-          0.01,
-          -0.06,
-          0.08,
+          0.02,
+          -0.1,
+          0.14,
           0.73,
-          0.71
+          0.75
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.4,
-          0.01,
+          0.42,
+          0.02,
           1.0,
-          0.52,
+          0.5,
           0.27,
-          0.48,
-          -0.02
+          0.49,
+          0.02
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.31,
-          -0.06,
-          0.52,
+          0.3,
+          -0.1,
+          0.5,
           1.0,
-          -0.56,
-          0.29,
-          -0.33
+          -0.59,
+          0.25,
+          -0.36
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          0.11,
           0.08,
+          0.14,
           0.27,
-          -0.56,
+          -0.59,
           1.0,
-          0.15,
-          0.39
+          0.17,
+          0.44
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.83,
+          0.82,
           0.73,
-          0.48,
-          0.29,
-          0.15,
+          0.49,
+          0.25,
+          0.17,
           1.0,
-          0.65
+          0.68
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.42,
-          0.71,
-          -0.02,
-          -0.33,
-          0.39,
-          0.65,
+          0.4,
+          0.75,
+          0.02,
+          -0.36,
+          0.44,
+          0.68,
           1.0
         ]
       }
@@ -6384,7 +6424,7 @@
     "WM": "sig:strong_signal:SELL",
     "PLTR": "sig:strong_signal:SELL",
     "CAT": null,
-    "ASML": null,
+    "ASML": "sig:caution:SELL",
     "ASMI": null,
     "MU": null,
     "GOOGL": null,
@@ -7538,7 +7578,7 @@
     },
     "2026-09-25": {
       "verdicts": {
-        "ADYEN": "LICHT VERKOOP",
+        "ADYEN": "HOLD",
         "NU": "NEUTRAAL",
         "RELY": "HOLD",
         "DLO": "KOOP",
@@ -7549,14 +7589,14 @@
         "WM": "STERK VERKOOP",
         "PLTR": "STERK VERKOOP",
         "CAT": "VERKOOP",
-        "ASML": "KOOP",
-        "ASMI": "KOOP",
+        "ASML": "CAUTION (overextended)",
+        "ASMI": "LICHT KOOP",
         "MU": "LICHT KOOP",
         "GOOGL": "HOLD",
         "AMZN": "LICHT KOOP",
         "ORCL": "VERKOOP",
         "KO": "KOOP",
-        "MC": "VERKOOP",
+        "MC": "HOLD",
         "LHX": "STERK VERKOOP",
         "MOGA": "VERKOOP",
         "TDG": "STERK VERKOOP",
