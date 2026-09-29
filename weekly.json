@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-29T16:19:58.641616+02:00",
-  "generatedAtHuman": "Tuesday 29 September 2026 om 16:19",
+  "generatedAt": "2026-09-29T21:05:48.329509+02:00",
+  "generatedAtHuman": "Tuesday 29 September 2026 om 21:05",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -20,7 +20,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -9.2% deze week ($354\u2192$321)"
+          "text": "Koers -9.1% deze week ($354\u2192$322)"
         }
       ]
     },
@@ -36,7 +36,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +11.3% deze week ($8\u2192$9)"
+          "text": "Koers +13.1% deze week ($8\u2192$9)"
         }
       ]
     },
@@ -52,23 +52,23 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -8.1% deze week ($170\u2192$156)"
+          "text": "Koers -8.9% deze week ($170\u2192$154)"
         }
       ]
     },
     {
-      "ticker": "META",
+      "ticker": "SNDK",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "composite",
+          "type": "signal",
           "dir": "up",
-          "text": "Composiet 69 \u2191 74"
+          "text": "Signaal: NEUTRAAL \u2192 LICHT KOOP"
         },
         {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Redelijk (PEG 1\u20131.5) \u2192 Aantrekkelijk (PEG < 1)"
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -9.0% deze week ($1895\u2192$1724)"
         }
       ]
     },
@@ -84,7 +84,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -11.2% deze week ($14\u2192$12)"
+          "text": "Koers -11.6% deze week ($14\u2192$12)"
         }
       ]
     },
@@ -110,8 +110,8 @@
       "changes": [
         {
           "type": "signal",
-          "dir": "down",
-          "text": "Signaal: LICHT KOOP \u2192 STERK VERKOOP"
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 KOOP"
         }
       ]
     },
@@ -166,7 +166,18 @@
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: VERKOOP \u2192 LICHT KOOP"
+          "text": "Signaal: VERKOOP \u2192 NEUTRAAL"
+        }
+      ]
+    },
+    {
+      "ticker": "KTOS",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.2% deze week ($47\u2192$43)"
         }
       ]
     },
@@ -177,7 +188,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -12.7% deze week ($3\u2192$2)"
+          "text": "Koers -13.8% deze week ($3\u2192$2)"
         }
       ]
     },
@@ -364,7 +375,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +9.7% deze week ($40\u2192$44)"
+          "text": "Koers +10.1% deze week ($40\u2192$44)"
         }
       ]
     },
@@ -380,13 +391,24 @@
       ]
     },
     {
+      "ticker": "RR",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.7% deze week ($2\u2192$2)"
+        }
+      ]
+    },
+    {
       "ticker": "NOW",
       "daysAgo": 7,
       "changes": [
         {
           "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: NEUTRAAL \u2192 HOLD"
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL \u2192 VERKOOP"
         }
       ]
     },
@@ -397,7 +419,7 @@
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 LICHT KOOP"
+          "text": "Signaal: KOOP \u2192 CAUTION (overextended)"
         }
       ]
     },
@@ -409,17 +431,6 @@
           "type": "signal",
           "dir": "up",
           "text": "Signaal: HOLD \u2192 VERKOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "SNDK",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 LICHT KOOP"
         }
       ]
     },
@@ -446,17 +457,28 @@
       ]
     },
     {
+      "ticker": "COPX",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: STERK VERKOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
       "ticker": "IOT",
       "daysAgo": 7,
       "changes": [
         {
           "type": "signal",
           "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 LICHT KOOP"
+          "text": "Signaal: NEUTRAAL \u2192 LICHT VERKOOP"
         }
       ]
     }
   ],
-  "changedCount": 38,
+  "changedCount": 40,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
