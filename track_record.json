@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-09-29T21:05:48.329509+02:00"
+    "lastUpdate": "2026-09-30T01:49:37.957658+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -6165,7 +6165,7 @@
         "sellWeight": 14
       },
       "outcomes": {},
-      "episodeDays": 10
+      "episodeDays": 11
     },
     "strong_signal:PLTR:2026-09-23": {
       "ticker": "PLTR",
@@ -6190,7 +6190,7 @@
         "sellWeight": 12
       },
       "outcomes": {},
-      "episodeDays": 10
+      "episodeDays": 11
     },
     "caution:ASML:2026-09-25": {
       "ticker": "ASML",
@@ -6215,7 +6215,7 @@
         "sellWeight": 7
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "monthly_pick:SOFTBANK:2026-09-25": {
       "ticker": "SOFTBANK",
@@ -6259,7 +6259,7 @@
         "sellWeight": 11
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:NKE:2026-09-28": {
       "ticker": "NKE",
@@ -6286,7 +6286,7 @@
         "sellWeight": 27
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:DIE:2026-09-28": {
       "ticker": "DIE",
@@ -6313,7 +6313,7 @@
         "sellWeight": 21
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "monthly_pick:ASMI:2026-09-29": {
       "ticker": "ASMI",
@@ -6357,7 +6357,7 @@
         "sellWeight": 26
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     },
     "strong_signal:COPX:2026-09-29": {
       "ticker": "COPX",
@@ -6411,7 +6411,7 @@
         "sellWeight": 18
       },
       "outcomes": {},
-      "episodeDays": 3
+      "episodeDays": 4
     }
   },
   "accuracy": {
@@ -6511,36 +6511,36 @@
     "baseRates": [
       {
         "action": "VERKOOP",
-        "n": 25,
-        "pct": 27.2,
+        "n": 26,
+        "pct": 28.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "KOOP",
-        "n": 22,
-        "pct": 23.9,
+        "n": 19,
+        "pct": 20.7,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "HOLD",
+        "action": "STERK VERKOOP",
         "n": 14,
         "pct": 15.2,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "STERK VERKOOP",
-        "n": 13,
-        "pct": 14.1,
+        "action": "HOLD",
+        "n": 11,
+        "pct": 12.0,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "LICHT KOOP",
-        "n": 6,
-        "pct": 6.5,
+        "n": 9,
+        "pct": 9.8,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -6552,18 +6552,25 @@
         "color": "green"
       },
       {
-        "action": "NEUTRAAL",
+        "action": "CAUTION (overextended)",
         "n": 4,
         "pct": 4.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "CAUTION (overextended)",
+        "action": "NEUTRAAL",
         "n": 3,
         "pct": 3.3,
         "verdict": "discriminerend",
         "color": "green"
+      },
+      {
+        "action": "STERK KOOP",
+        "n": 1,
+        "pct": 1.1,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
       }
     ],
     "corrLabels": [
@@ -6584,9 +6591,9 @@
           0.29,
           0.33,
           0.27,
-          0.02,
-          0.8,
-          0.42
+          0.06,
+          0.81,
+          0.44
         ]
       },
       {
@@ -6595,11 +6602,11 @@
         "cells": [
           0.29,
           1.0,
-          0.0,
-          -0.1,
-          0.12,
-          0.75,
-          0.75
+          -0.05,
+          -0.09,
+          0.08,
+          0.73,
+          0.73
         ]
       },
       {
@@ -6607,12 +6614,12 @@
         "key": "tim",
         "cells": [
           0.33,
-          0.0,
+          -0.05,
           1.0,
-          0.41,
-          0.25,
-          0.44,
-          -0.02
+          0.48,
+          0.24,
+          0.42,
+          -0.1
         ]
       },
       {
@@ -6620,50 +6627,50 @@
         "key": "trd",
         "cells": [
           0.27,
-          -0.1,
-          0.41,
+          -0.09,
+          0.48,
           1.0,
-          -0.67,
-          0.23,
-          -0.36
+          -0.63,
+          0.24,
+          -0.34
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          0.02,
-          0.12,
-          0.25,
-          -0.67,
+          0.06,
+          0.08,
+          0.24,
+          -0.63,
           1.0,
-          0.11,
-          0.44
+          0.12,
+          0.38
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.8,
-          0.75,
-          0.44,
-          0.23,
-          0.11,
+          0.81,
+          0.73,
+          0.42,
+          0.24,
+          0.12,
           1.0,
-          0.68
+          0.67
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.42,
-          0.75,
-          -0.02,
-          -0.36,
           0.44,
-          0.68,
+          0.73,
+          -0.1,
+          -0.34,
+          0.38,
+          0.67,
           1.0
         ]
       }
@@ -6681,9 +6688,9 @@
     "IOT": null,
     "KNSL": null,
     "WM": "sig:strong_signal:SELL",
-    "PLTR": null,
+    "PLTR": "sig:strong_signal:SELL",
     "CAT": null,
-    "ASML": null,
+    "ASML": "sig:caution:SELL",
     "ASMI": null,
     "MU": null,
     "GOOGL": null,
@@ -6730,7 +6737,7 @@
     "AAPL": null,
     "NFLX": null,
     "DIS": null,
-    "BLK": null,
+    "BLK": "sig:strong_signal:BUY",
     "BABA": null,
     "NABTESCO": null,
     "HARMONIC": null,
@@ -6768,103 +6775,6 @@
   },
   "_outcomeFormulaVersion": 2,
   "_verdictHistory": {
-    "2026-09-14": {
-      "verdicts": {
-        "ADYEN": "LICHT VERKOOP",
-        "NU": "KOOP",
-        "RELY": "HOLD",
-        "DLO": "KOOP",
-        "GLBE": "KOOP",
-        "TOST": "KOOP",
-        "IOT": "LICHT VERKOOP",
-        "KNSL": "KOOP",
-        "WM": "STERK VERKOOP",
-        "PLTR": "VERKOOP",
-        "CAT": "VERKOOP",
-        "ASML": "HOLD",
-        "ASMI": "HOLD",
-        "MU": "HOLD",
-        "GOOGL": null,
-        "AMZN": "NEUTRAAL",
-        "ORCL": "VERKOOP",
-        "KO": "KOOP",
-        "MC": "VERKOOP",
-        "LHX": "STERK VERKOOP",
-        "MOGA": "VERKOOP",
-        "TDG": "STERK VERKOOP",
-        "KTOS": "VERKOOP",
-        "RKLB": "VERKOOP",
-        "OPEN": "STERK VERKOOP",
-        "SDGR": "KOOP",
-        "BNGO": "NEUTRAAL",
-        "GAW": "VERKOOP",
-        "MNST": "KOOP",
-        "V": "STERK VERKOOP",
-        "KPG": "VERKOOP",
-        "ADM": "KOOP",
-        "AON": "HOLD",
-        "MELI": "KOOP",
-        "III": "HOLD",
-        "SHOP": "HOLD",
-        "NET": "KOOP",
-        "CRWV": "VERKOOP",
-        "MSFT": "KOOP",
-        "MTLS": "KOOP",
-        "SNAP": "NEUTRAAL",
-        "NVDA": "VERKOOP",
-        "NKE": "VERKOOP",
-        "DIE": "LICHT VERKOOP",
-        "SOF": "KOOP",
-        "AIR": "KOOP",
-        "ALFEN": "STERK VERKOOP",
-        "LOTB": "KOOP",
-        "VOW": "VERKOOP",
-        "EL": "KOOP",
-        "META": "LICHT VERKOOP",
-        "VST": "STERK VERKOOP",
-        "COPX": "HOLD",
-        "ROBO": "VERKOOP",
-        "MSTR": "VERKOOP",
-        "AAPL": "STERK KOOP",
-        "NFLX": "VERKOOP",
-        "DIS": "LICHT VERKOOP",
-        "BLK": "STERK KOOP",
-        "BABA": "VERKOOP",
-        "NABTESCO": "VERKOOP",
-        "HARMONIC": "HOLD",
-        "KEYENCE": "LICHT KOOP",
-        "FANUC": "VERKOOP",
-        "YASKAWA": "HOLD",
-        "SOFTBANK": "LICHT KOOP",
-        "ROK": "KOOP",
-        "TER": "HOLD",
-        "ISRG": "VERKOOP",
-        "CGNX": "HOLD",
-        "NOVT": "HOLD",
-        "ANET": "KOOP",
-        "HOOD": "LICHT KOOP",
-        "TSCO": "VERKOOP",
-        "ODFL": "HOLD",
-        "HWM": "HOLD",
-        "SNDK": "HOLD",
-        "IONQ": "STERK VERKOOP",
-        "RGTI": "STERK VERKOOP",
-        "QBTS": "STERK VERKOOP",
-        "UBTECH": "VERKOOP",
-        "SYM": "VERKOOP",
-        "SERV": "VERKOOP",
-        "RR": "VERKOOP",
-        "PL": "HOLD",
-        "RDDT": "VERKOOP",
-        "NOW": "NEUTRAAL",
-        "GILD": "KOOP",
-        "DDOG": "HOLD",
-        "ARCC": "STERK VERKOOP",
-        "ONON": "HOLD",
-        "ARCG": "KOOP"
-      },
-      "pick": "MNST"
-    },
     "2026-09-15": {
       "verdicts": {
         "ADYEN": "LICHT VERKOOP",
@@ -7910,6 +7820,103 @@
         "NOVT": "HOLD",
         "ANET": "KOOP",
         "HOOD": "KOOP",
+        "TSCO": "VERKOOP",
+        "ODFL": "HOLD",
+        "HWM": "HOLD",
+        "SNDK": "LICHT KOOP",
+        "IONQ": "STERK VERKOOP",
+        "RGTI": "STERK VERKOOP",
+        "QBTS": "STERK VERKOOP",
+        "UBTECH": "VERKOOP",
+        "SYM": "VERKOOP",
+        "SERV": "VERKOOP",
+        "RR": "VERKOOP",
+        "PL": "HOLD",
+        "RDDT": "VERKOOP",
+        "NOW": "VERKOOP",
+        "GILD": "KOOP",
+        "DDOG": "CAUTION (overextended)",
+        "ARCC": "STERK VERKOOP",
+        "ONON": "VERKOOP",
+        "ARCG": "KOOP"
+      },
+      "pick": "MNST"
+    },
+    "2026-09-30": {
+      "verdicts": {
+        "ADYEN": "VERKOOP",
+        "NU": "HOLD",
+        "RELY": "HOLD",
+        "DLO": "KOOP",
+        "GLBE": "KOOP",
+        "TOST": "HOLD",
+        "IOT": "LICHT VERKOOP",
+        "KNSL": "LICHT VERKOOP",
+        "WM": "STERK VERKOOP",
+        "PLTR": "STERK VERKOOP",
+        "CAT": "VERKOOP",
+        "ASML": "CAUTION (overextended)",
+        "ASMI": "KOOP",
+        "MU": "LICHT KOOP",
+        "GOOGL": "VERKOOP",
+        "AMZN": "LICHT VERKOOP",
+        "ORCL": "VERKOOP",
+        "KO": "KOOP",
+        "MC": "VERKOOP",
+        "LHX": "STERK VERKOOP",
+        "MOGA": "LICHT KOOP",
+        "TDG": "STERK VERKOOP",
+        "KTOS": "VERKOOP",
+        "RKLB": "VERKOOP",
+        "OPEN": "STERK VERKOOP",
+        "SDGR": "KOOP",
+        "BNGO": "KOOP",
+        "GAW": "VERKOOP",
+        "MNST": "KOOP",
+        "V": "STERK VERKOOP",
+        "KPG": "HOLD",
+        "ADM": "NEUTRAAL",
+        "AON": "HOLD",
+        "MELI": "NEUTRAAL",
+        "III": "VERKOOP",
+        "SHOP": "LICHT KOOP",
+        "NET": "CAUTION (overextended)",
+        "CRWV": "VERKOOP",
+        "MSFT": "KOOP",
+        "MTLS": "KOOP",
+        "SNAP": "HOLD",
+        "NVDA": "STERK VERKOOP",
+        "NKE": "STERK VERKOOP",
+        "DIE": "STERK VERKOOP",
+        "SOF": "KOOP",
+        "AIR": "VERKOOP",
+        "ALFEN": "VERKOOP",
+        "LOTB": "KOOP",
+        "VOW": "VERKOOP",
+        "EL": "KOOP",
+        "META": "CAUTION (overextended)",
+        "VST": "STERK VERKOOP",
+        "COPX": "LICHT KOOP",
+        "ROBO": "VERKOOP",
+        "MSTR": "LICHT VERKOOP",
+        "AAPL": "KOOP",
+        "NFLX": "NEUTRAAL",
+        "DIS": "LICHT VERKOOP",
+        "BLK": "STERK KOOP",
+        "BABA": "VERKOOP",
+        "NABTESCO": "LICHT KOOP",
+        "HARMONIC": "KOOP",
+        "KEYENCE": "KOOP",
+        "FANUC": "VERKOOP",
+        "YASKAWA": "VERKOOP",
+        "SOFTBANK": "LICHT KOOP",
+        "ROK": "KOOP",
+        "TER": "LICHT KOOP",
+        "ISRG": "VERKOOP",
+        "CGNX": "HOLD",
+        "NOVT": "HOLD",
+        "ANET": "KOOP",
+        "HOOD": "LICHT KOOP",
         "TSCO": "VERKOOP",
         "ODFL": "HOLD",
         "HWM": "HOLD",
