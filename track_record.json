@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-09-30T16:13:23.772615+02:00"
+    "lastUpdate": "2026-09-30T20:48:29.978644+02:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -6291,7 +6291,7 @@
         "sellWeight": 11
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     },
     "strong_signal:NKE:2026-09-28": {
       "ticker": "NKE",
@@ -6318,7 +6318,7 @@
         "sellWeight": 27
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     },
     "strong_signal:DIE:2026-09-28": {
       "ticker": "DIE",
@@ -6345,7 +6345,7 @@
         "sellWeight": 21
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     },
     "monthly_pick:ASMI:2026-09-29": {
       "ticker": "ASMI",
@@ -6389,7 +6389,7 @@
         "sellWeight": 26
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:COPX:2026-09-29": {
       "ticker": "COPX",
@@ -6443,7 +6443,7 @@
         "sellWeight": 18
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     }
   },
   "accuracy": {
@@ -6543,15 +6543,15 @@
     "baseRates": [
       {
         "action": "VERKOOP",
-        "n": 26,
-        "pct": 28.3,
+        "n": 27,
+        "pct": 29.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "KOOP",
-        "n": 17,
-        "pct": 18.5,
+        "n": 16,
+        "pct": 17.4,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -6620,10 +6620,10 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.3,
+          0.29,
           0.35,
-          0.27,
-          0.05,
+          0.28,
+          0.02,
           0.8,
           0.42
         ]
@@ -6632,12 +6632,12 @@
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.3,
+          0.29,
           1.0,
-          0.03,
-          -0.1,
-          0.11,
-          0.75,
+          0.01,
+          -0.12,
+          0.13,
+          0.74,
           0.74
         ]
       },
@@ -6646,24 +6646,24 @@
         "key": "tim",
         "cells": [
           0.35,
-          0.03,
+          0.01,
           1.0,
-          0.39,
-          0.27,
-          0.46,
-          0.01
+          0.44,
+          0.2,
+          0.45,
+          -0.01
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.27,
-          -0.1,
-          0.39,
+          0.28,
+          -0.12,
+          0.44,
           1.0,
-          -0.67,
-          0.21,
+          -0.69,
+          0.23,
           -0.38
         ]
       },
@@ -6671,13 +6671,13 @@
         "label": "Instap",
         "key": "ent",
         "cells": [
-          0.05,
-          0.11,
-          0.27,
-          -0.67,
-          1.0,
+          0.02,
           0.13,
-          0.42
+          0.2,
+          -0.69,
+          1.0,
+          0.11,
+          0.43
         ]
       },
       {
@@ -6685,10 +6685,10 @@
         "key": "comp",
         "cells": [
           0.8,
-          0.75,
-          0.46,
-          0.21,
-          0.13,
+          0.74,
+          0.45,
+          0.23,
+          0.11,
           1.0,
           0.68
         ]
@@ -6699,9 +6699,9 @@
         "cells": [
           0.42,
           0.74,
-          0.01,
+          -0.01,
           -0.38,
-          0.42,
+          0.43,
           0.68,
           1.0
         ]
@@ -7882,13 +7882,13 @@
         "DLO": "KOOP",
         "GLBE": "KOOP",
         "TOST": "HOLD",
-        "IOT": "HOLD",
+        "IOT": "LICHT KOOP",
         "KNSL": "VERKOOP",
         "WM": "STERK VERKOOP",
         "PLTR": "STERK VERKOOP",
         "CAT": "VERKOOP",
         "ASML": "VERKOOP",
-        "ASMI": "KOOP",
+        "ASMI": "LICHT KOOP",
         "MU": "LICHT KOOP",
         "GOOGL": "VERKOOP",
         "AMZN": "LICHT VERKOOP",
@@ -7922,7 +7922,7 @@
         "DIE": "STERK VERKOOP",
         "SOF": "KOOP",
         "AIR": "VERKOOP",
-        "ALFEN": "LICHT KOOP",
+        "ALFEN": "VERKOOP",
         "LOTB": "KOOP",
         "VOW": "VERKOOP",
         "EL": "KOOP",
@@ -7948,7 +7948,7 @@
         "CGNX": "HOLD",
         "NOVT": "HOLD",
         "ANET": "KOOP",
-        "HOOD": "LICHT KOOP",
+        "HOOD": "HOLD",
         "TSCO": "VERKOOP",
         "ODFL": "HOLD",
         "HWM": "HOLD",

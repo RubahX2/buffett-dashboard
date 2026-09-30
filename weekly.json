@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-30T16:13:23.772615+02:00",
-  "generatedAtHuman": "Wednesday 30 September 2026 om 16:13",
+  "generatedAt": "2026-09-30T20:48:29.978644+02:00",
+  "generatedAtHuman": "Wednesday 30 September 2026 om 20:48",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -25,6 +25,38 @@
       ]
     },
     {
+      "ticker": "SDGR",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 KOOP"
+        },
+        {
+          "type": "price",
+          "dir": "up",
+          "text": "Koers +11.4% deze week ($29\u2192$32)"
+        }
+      ]
+    },
+    {
+      "ticker": "BNGO",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 28 \u2191 34"
+        },
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -10.3% deze week ($2\u2192$2)"
+        }
+      ]
+    },
+    {
       "ticker": "MTLS",
       "daysAgo": 7,
       "changes": [
@@ -36,23 +68,39 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +10.0% deze week ($8\u2192$9)"
+          "text": "Koers +9.2% deze week ($8\u2192$9)"
         }
       ]
     },
     {
-      "ticker": "META",
+      "ticker": "HOOD",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 69 \u2191 74"
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: KOOP \u2192 HOLD"
         },
         {
-          "type": "valuation",
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -9.9% deze week ($125\u2192$113)"
+        }
+      ]
+    },
+    {
+      "ticker": "DDOG",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
           "dir": "neutral",
-          "text": "Waardering: Redelijk (PEG 1\u20131.5) \u2192 Aantrekkelijk (PEG < 1)"
+          "text": "Signaal: KOOP \u2192 CAUTION (overextended)"
+        },
+        {
+          "type": "price",
+          "dir": "up",
+          "text": "Koers +8.9% deze week ($253\u2192$275)"
         }
       ]
     },
@@ -68,7 +116,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -9.8% deze week ($14\u2192$12)"
+          "text": "Koers -8.0% deze week ($14\u2192$13)"
         }
       ]
     },
@@ -96,17 +144,6 @@
           "type": "signal",
           "dir": "down",
           "text": "Signaal: LICHT KOOP \u2192 VERKOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "ASMI",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: LICHT KOOP \u2192 KOOP"
         }
       ]
     },
@@ -144,13 +181,13 @@
       ]
     },
     {
-      "ticker": "SDGR",
+      "ticker": "OPEN",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: LICHT KOOP \u2192 KOOP"
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.1% deze week ($3\u2192$2)"
         }
       ]
     },
@@ -238,7 +275,7 @@
         {
           "type": "signal",
           "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 LICHT KOOP"
+          "text": "Signaal: NEUTRAAL \u2192 VERKOOP"
         }
       ]
     },
@@ -298,24 +335,13 @@
       ]
     },
     {
-      "ticker": "SERV",
+      "ticker": "NOVT",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "price",
+          "type": "composite",
           "dir": "up",
-          "text": "Koers +9.0% deze week ($4\u2192$5)"
-        }
-      ]
-    },
-    {
-      "ticker": "HOOD",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 LICHT KOOP"
+          "text": "Composiet 36 \u2191 41"
         }
       ]
     },
@@ -327,17 +353,6 @@
           "type": "signal",
           "dir": "neutral",
           "text": "Signaal: LICHT VERKOOP \u2192 VERKOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "DDOG",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: KOOP \u2192 CAUTION (overextended)"
         }
       ]
     },
@@ -380,8 +395,8 @@
       "changes": [
         {
           "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: NEUTRAAL \u2192 HOLD"
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL \u2192 LICHT KOOP"
         }
       ]
     }
