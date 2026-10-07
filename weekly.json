@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-07T16:44:19.291500+02:00",
-  "generatedAtHuman": "Wednesday 07 October 2026 om 16:44",
+  "generatedAt": "2026-10-07T21:41:57.516284+02:00",
+  "generatedAtHuman": "Wednesday 07 October 2026 om 21:41",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -20,7 +20,28 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -14.3% deze week ($32\u2192$27)"
+          "text": "Koers -14.9% deze week ($32\u2192$27)"
+        }
+      ]
+    },
+    {
+      "ticker": "MELI",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 67 \u2193 57"
+        },
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: NEUTRAAL \u2192 VERKOOP"
+        },
+        {
+          "type": "price",
+          "dir": "up",
+          "text": "Koers +8.3% deze week ($1731\u2192$1875)"
         }
       ]
     },
@@ -41,7 +62,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +23.2% deze week ($13\u2192$16)"
+          "text": "Koers +23.6% deze week ($13\u2192$16)"
         }
       ]
     },
@@ -52,7 +73,7 @@
         {
           "type": "composite",
           "dir": "up",
-          "text": "Composiet 40 \u2191 46"
+          "text": "Composiet 40 \u2191 48"
         },
         {
           "type": "signal",
@@ -89,23 +110,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -8.5% deze week ($17990\u2192$16468)"
-        }
-      ]
-    },
-    {
-      "ticker": "MELI",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 67 \u2193 57"
-        },
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: NEUTRAAL \u2192 VERKOOP"
+          "text": "Koers -8.1% deze week ($17990\u2192$16540)"
         }
       ]
     },
@@ -121,7 +126,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -8.5% deze week ($2624\u2192$2400)"
+          "text": "Koers -8.9% deze week ($2624\u2192$2391)"
         }
       ]
     },
@@ -137,7 +142,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +9.6% deze week ($148\u2192$163)"
+          "text": "Koers +12.2% deze week ($148\u2192$166)"
         }
       ]
     },
@@ -148,7 +153,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 69 \u2193 64"
+          "text": "Composiet 69 \u2193 63"
         },
         {
           "type": "signal",
@@ -164,7 +169,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 48 \u2193 41"
+          "text": "Composiet 48 \u2193 40"
         },
         {
           "type": "signal",
@@ -201,7 +206,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +8.1% deze week ($21\u2192$23)"
+          "text": "Koers +8.0% deze week ($21\u2192$23)"
         }
       ]
     },
@@ -222,24 +227,13 @@
       ]
     },
     {
-      "ticker": "ASMI",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: LICHT KOOP \u2192 CAUTION (overextended)"
-        }
-      ]
-    },
-    {
       "ticker": "AMZN",
       "daysAgo": 7,
       "changes": [
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: LICHT VERKOOP \u2192 NEUTRAAL"
+          "text": "Signaal: LICHT VERKOOP \u2192 CAUTION (overextended)"
         }
       ]
     },
@@ -332,6 +326,17 @@
       ]
     },
     {
+      "ticker": "NET",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: CAUTION (overextended) \u2192 KOOP"
+        }
+      ]
+    },
+    {
       "ticker": "MSFT",
       "daysAgo": 7,
       "changes": [
@@ -349,7 +354,7 @@
         {
           "type": "signal",
           "dir": "up",
-          "text": "Signaal: HOLD \u2192 LICHT KOOP"
+          "text": "Signaal: HOLD \u2192 KOOP"
         }
       ]
     },
@@ -371,7 +376,7 @@
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: STERK VERKOOP \u2192 NEUTRAAL"
+          "text": "Signaal: STERK VERKOOP \u2192 VERKOOP"
         }
       ]
     },
@@ -393,7 +398,7 @@
         {
           "type": "signal",
           "dir": "neutral",
-          "text": "Signaal: LICHT VERKOOP \u2192 NEUTRAAL"
+          "text": "Signaal: LICHT VERKOOP \u2192 KOOP"
         }
       ]
     },
@@ -459,7 +464,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -9.1% deze week ($17\u2192$15)"
+          "text": "Koers -8.7% deze week ($17\u2192$15)"
         }
       ]
     },
@@ -470,18 +475,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 71 \u2193 66"
-        }
-      ]
-    },
-    {
-      "ticker": "ODFL",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 46 \u2193 41"
+          "text": "Composiet 71 \u2193 65"
         }
       ]
     },
@@ -525,7 +519,18 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +10.0% deze week ($30\u2192$33)"
+          "text": "Koers +12.1% deze week ($30\u2192$33)"
+        }
+      ]
+    },
+    {
+      "ticker": "ARCG",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -8.5% deze week ($55\u2192$50)"
         }
       ]
     },
@@ -547,7 +552,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +17.5% deze week ($138\u2192$162)"
+          "text": "Koers +21.0% deze week ($138\u2192$167)"
         }
       ]
     },
