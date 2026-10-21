@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-21T01:15:26.121128+02:00",
-  "generatedAtHuman": "Wednesday 21 October 2026 om 01:15",
+  "generatedAt": "2026-10-21T15:12:15.434615+02:00",
+  "generatedAtHuman": "Wednesday 21 October 2026 om 15:12",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -10,7 +10,7 @@
         {
           "type": "composite",
           "dir": "down",
-          "text": "Composiet 37 \u2193 30"
+          "text": "Composiet 37 \u2193 32"
         },
         {
           "type": "signal",
@@ -20,7 +20,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -11.3% deze week ($5930\u2192$5260)"
+          "text": "Koers -9.1% deze week ($5930\u2192$5390)"
         }
       ]
     },
@@ -125,86 +125,6 @@
       ]
     },
     {
-      "ticker": "ASML",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
-        },
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: CAUTION (overextended) \u2192 NEUTRAAL"
-        }
-      ]
-    },
-    {
-      "ticker": "ASMI",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 72 \u2193 62"
-        },
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 VERKOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "GAW",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 44 \u2191 55"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
-        }
-      ]
-    },
-    {
-      "ticker": "ADM",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 58 \u2191 64"
-        },
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: LICHT KOOP \u2192 KOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "III",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 71 \u2193 66"
-        },
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 VERKOOP"
-        }
-      ]
-    },
-    {
       "ticker": "NET",
       "daysAgo": 7,
       "changes": [
@@ -221,22 +141,6 @@
       ]
     },
     {
-      "ticker": "AIR",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 40 \u2191 50"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
-        }
-      ]
-    },
-    {
       "ticker": "NABTESCO",
       "daysAgo": 7,
       "changes": [
@@ -248,7 +152,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -11.7% deze week ($4862\u2192$4293)"
+          "text": "Koers -10.4% deze week ($4862\u2192$4357)"
         }
       ]
     },
@@ -264,7 +168,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -14.2% deze week ($5310\u2192$4554)"
+          "text": "Koers -13.0% deze week ($5310\u2192$4622)"
         }
       ]
     },
@@ -301,22 +205,6 @@
       ]
     },
     {
-      "ticker": "VOW",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 31 \u2193 26"
-        },
-        {
-          "type": "signal",
-          "dir": "up",
-          "text": "Signaal: HOLD \u2192 VERKOOP"
-        }
-      ]
-    },
-    {
       "ticker": "CAT",
       "daysAgo": 7,
       "changes": [
@@ -324,6 +212,28 @@
           "type": "signal",
           "dir": "neutral",
           "text": "Signaal: VERKOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
+      "ticker": "ASML",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: CAUTION (overextended) \u2192 HOLD"
+        }
+      ]
+    },
+    {
+      "ticker": "ASMI",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "up",
+          "text": "Signaal: HOLD \u2192 VERKOOP"
         }
       ]
     },
@@ -438,6 +348,17 @@
       ]
     },
     {
+      "ticker": "ADM",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: LICHT KOOP \u2192 KOOP"
+        }
+      ]
+    },
+    {
       "ticker": "MSFT",
       "daysAgo": 7,
       "changes": [
@@ -482,6 +403,17 @@
       ]
     },
     {
+      "ticker": "AIR",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: VERKOOP \u2192 STERK VERKOOP"
+        }
+      ]
+    },
+    {
       "ticker": "AAPL",
       "daysAgo": 7,
       "changes": [
@@ -521,7 +453,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -11.6% deze week ($4840\u2192$4277)"
+          "text": "Koers -13.1% deze week ($4840\u2192$4204)"
         }
       ]
     },
@@ -544,6 +476,17 @@
           "type": "signal",
           "dir": "neutral",
           "text": "Signaal: VERKOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
+      "ticker": "UBTECH",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 40 \u2191 45"
         }
       ]
     },
@@ -680,6 +623,6 @@
       ]
     }
   ],
-  "changedCount": 51,
+  "changedCount": 49,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
