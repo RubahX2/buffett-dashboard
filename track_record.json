@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-10-26T15:32:42.243306+01:00"
+    "lastUpdate": "2026-10-26T20:42:30.748867+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -8554,7 +8554,7 @@
         "sellWeight": 2
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "caution:META:2026-10-22": {
       "ticker": "META",
@@ -8581,7 +8581,7 @@
         "sellWeight": 12
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:LOTB:2026-10-26": {
       "ticker": "LOTB",
@@ -8608,7 +8608,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     },
     "strong_signal:BABA:2026-10-26": {
       "ticker": "BABA",
@@ -8635,7 +8635,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     },
     "caution:DDOG:2026-10-26": {
       "ticker": "DDOG",
@@ -8661,7 +8661,7 @@
         "sellWeight": 7
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     }
   },
   "accuracy": {
@@ -8770,8 +8770,8 @@
     "baseRates": [
       {
         "action": "VERKOOP",
-        "n": 30,
-        "pct": 32.6,
+        "n": 29,
+        "pct": 31.5,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
@@ -8798,8 +8798,8 @@
       },
       {
         "action": "LICHT KOOP",
-        "n": 6,
-        "pct": 6.5,
+        "n": 7,
+        "pct": 7.6,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -8848,11 +8848,11 @@
         "cells": [
           1.0,
           0.3,
-          0.21,
+          0.23,
           0.34,
           -0.16,
           0.77,
-          0.58
+          0.57
         ]
       },
       {
@@ -8861,24 +8861,24 @@
         "cells": [
           0.3,
           1.0,
-          0.12,
-          -0.15,
+          0.14,
+          -0.14,
           0.26,
           0.77,
-          0.79
+          0.78
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.21,
-          0.12,
-          1.0,
-          0.57,
           0.23,
-          0.45,
-          0.08
+          0.14,
+          1.0,
+          0.58,
+          0.19,
+          0.47,
+          0.13
         ]
       },
       {
@@ -8886,12 +8886,12 @@
         "key": "trd",
         "cells": [
           0.34,
-          -0.15,
-          0.57,
+          -0.14,
+          0.58,
           1.0,
-          -0.59,
-          0.25,
-          -0.36
+          -0.6,
+          0.27,
+          -0.34
         ]
       },
       {
@@ -8900,11 +8900,11 @@
         "cells": [
           -0.16,
           0.26,
-          0.23,
-          -0.59,
+          0.19,
+          -0.6,
           1.0,
-          0.14,
-          0.57
+          0.12,
+          0.58
         ]
       },
       {
@@ -8913,9 +8913,9 @@
         "cells": [
           0.77,
           0.77,
-          0.45,
-          0.25,
-          0.14,
+          0.47,
+          0.27,
+          0.12,
           1.0,
           0.76
         ]
@@ -8924,11 +8924,11 @@
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.58,
-          0.79,
-          0.08,
-          -0.36,
           0.57,
+          0.78,
+          0.13,
+          -0.34,
+          0.58,
           0.76,
           1.0
         ]
@@ -10146,7 +10146,7 @@
         "SNAP": "KOOP",
         "NVDA": "VERKOOP",
         "NKE": "VERKOOP",
-        "DIE": "VERKOOP",
+        "DIE": "LICHT KOOP",
         "SOF": "KOOP",
         "AIR": "VERKOOP",
         "ALFEN": "STERK VERKOOP",
