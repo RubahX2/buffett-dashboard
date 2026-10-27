@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-10-27T14:32:52.798040+01:00"
+    "lastUpdate": "2026-10-27T20:11:15.337521+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -8589,7 +8589,7 @@
         "sellWeight": 2
       },
       "outcomes": {},
-      "episodeDays": 8
+      "episodeDays": 9
     },
     "caution:META:2026-10-22": {
       "ticker": "META",
@@ -8616,7 +8616,7 @@
         "sellWeight": 12
       },
       "outcomes": {},
-      "episodeDays": 8
+      "episodeDays": 9
     },
     "strong_signal:LOTB:2026-10-26": {
       "ticker": "LOTB",
@@ -8643,7 +8643,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 4
+      "episodeDays": 5
     },
     "strong_signal:BABA:2026-10-26": {
       "ticker": "BABA",
@@ -8670,7 +8670,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 4
+      "episodeDays": 5
     },
     "caution:DDOG:2026-10-26": {
       "ticker": "DDOG",
@@ -8696,7 +8696,61 @@
         "sellWeight": 7
       },
       "outcomes": {},
-      "episodeDays": 4
+      "episodeDays": 5
+    },
+    "strong_signal:AAPL:2026-10-27": {
+      "ticker": "AAPL",
+      "type": "strong_signal",
+      "direction": "BUY",
+      "date": "2026-10-27",
+      "entryPrice": 347.27,
+      "benchEntry": 7727.1298828125,
+      "currency": "$",
+      "snapshot": {
+        "overall": "STERK KOOP",
+        "composite": 48,
+        "timing": 54
+      },
+      "drivers": {
+        "drivers": [
+          "MACD:1M",
+          "TREND:1M",
+          "TREND:1W",
+          "MACD:1W"
+        ],
+        "beslissend": null,
+        "buyWeight": 18,
+        "sellWeight": 0
+      },
+      "outcomes": {},
+      "episodeDays": 1
+    },
+    "caution:ANET:2026-10-27": {
+      "ticker": "ANET",
+      "type": "caution",
+      "direction": "SELL",
+      "date": "2026-10-27",
+      "entryPrice": 188.4,
+      "benchEntry": 7727.1298828125,
+      "currency": "$",
+      "snapshot": {
+        "overall": "CAUTION (overextended)",
+        "composite": 64,
+        "timing": 35
+      },
+      "drivers": {
+        "drivers": [
+          "FIB:TP",
+          "MACD:1W",
+          "EMA:1D",
+          "MACD:1D"
+        ],
+        "beslissend": null,
+        "buyWeight": 10,
+        "sellWeight": 23
+      },
+      "outcomes": {},
+      "episodeDays": 1
     }
   },
   "accuracy": {
@@ -8812,8 +8866,8 @@
       },
       {
         "action": "HOLD",
-        "n": 17,
-        "pct": 18.5,
+        "n": 16,
+        "pct": 17.4,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -8839,9 +8893,9 @@
         "color": "green"
       },
       {
-        "action": "NEUTRAAL",
-        "n": 3,
-        "pct": 3.3,
+        "action": "CAUTION (overextended)",
+        "n": 4,
+        "pct": 4.3,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -8853,14 +8907,14 @@
         "color": "green"
       },
       {
-        "action": "CAUTION (overextended)",
+        "action": "STERK KOOP",
         "n": 3,
         "pct": 3.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "STERK KOOP",
+        "action": "NEUTRAAL",
         "n": 2,
         "pct": 2.2,
         "verdict": "zeldzaam (weinig observaties)",
@@ -8883,10 +8937,10 @@
         "cells": [
           1.0,
           0.29,
-          0.23,
+          0.27,
           0.34,
-          -0.17,
-          0.77,
+          -0.14,
+          0.78,
           0.57
         ]
       },
@@ -8898,22 +8952,22 @@
           1.0,
           0.13,
           -0.15,
-          0.29,
+          0.32,
           0.77,
-          0.78
+          0.79
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.23,
+          0.27,
           0.13,
           1.0,
-          0.61,
-          0.14,
-          0.46,
-          0.09
+          0.65,
+          0.1,
+          0.48,
+          0.07
         ]
       },
       {
@@ -8922,23 +8976,23 @@
         "cells": [
           0.34,
           -0.15,
-          0.61,
+          0.65,
           1.0,
-          -0.63,
-          0.27,
-          -0.34
+          -0.62,
+          0.28,
+          -0.32
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.17,
-          0.29,
-          0.14,
-          -0.63,
+          -0.14,
+          0.32,
+          0.1,
+          -0.62,
           1.0,
-          0.11,
+          0.13,
           0.59
         ]
       },
@@ -8946,11 +9000,11 @@
         "label": "Composiet",
         "key": "comp",
         "cells": [
+          0.78,
           0.77,
-          0.77,
-          0.46,
-          0.27,
-          0.11,
+          0.48,
+          0.28,
+          0.13,
           1.0,
           0.76
         ]
@@ -8960,9 +9014,9 @@
         "key": "opp",
         "cells": [
           0.57,
-          0.78,
-          0.09,
-          -0.34,
+          0.79,
+          0.07,
+          -0.32,
           0.59,
           0.76,
           1.0
@@ -9028,7 +9082,7 @@
     "COPX": null,
     "ROBO": null,
     "MSTR": null,
-    "AAPL": null,
+    "AAPL": "sig:strong_signal:BUY",
     "NFLX": null,
     "DIS": null,
     "BLK": null,
@@ -9044,7 +9098,7 @@
     "ISRG": null,
     "CGNX": null,
     "NOVT": null,
-    "ANET": null,
+    "ANET": "sig:caution:SELL",
     "HOOD": null,
     "TSCO": null,
     "ODFL": null,
@@ -10193,7 +10247,7 @@
         "COPX": "VERKOOP",
         "ROBO": "VERKOOP",
         "MSTR": "LICHT VERKOOP",
-        "AAPL": "KOOP",
+        "AAPL": "STERK KOOP",
         "NFLX": "HOLD",
         "DIS": "LICHT KOOP",
         "BLK": "KOOP",
@@ -10204,12 +10258,12 @@
         "FANUC": "VERKOOP",
         "YASKAWA": "HOLD",
         "SOFTBANK": "HOLD",
-        "ROK": "NEUTRAAL",
+        "ROK": "LICHT KOOP",
         "TER": "HOLD",
         "ISRG": "KOOP",
         "CGNX": "VERKOOP",
-        "NOVT": "LICHT KOOP",
-        "ANET": "HOLD",
+        "NOVT": "KOOP",
+        "ANET": "CAUTION (overextended)",
         "HOOD": "HOLD",
         "TSCO": "VERKOOP",
         "ODFL": "HOLD",
