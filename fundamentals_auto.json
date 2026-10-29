@@ -86,16 +86,16 @@
    "opMargin": null,
    "opMarginDelta": null
   },
-  "dilutionPct": -1.6,
-  "fcfGrowing": false,
+  "dilutionPct": -1.7,
+  "fcfGrowing": true,
   "fcfPositive": true,
-  "grossMargin": 46.5,
-  "grossMarginPrev": 43.2,
-  "grossMarginTrend": 3.3,
+  "grossMargin": 44.5,
+  "grossMarginPrev": 43.5,
+  "grossMarginTrend": 1.0,
   "netCash": false,
-  "netCashUsd": -14.61,
-  "opMargin": 23.8,
-  "opMarginDelta": 0.9
+  "netCashUsd": -13.63,
+  "opMargin": 22.0,
+  "opMarginDelta": 0.8
  },
  "ARCC": {
   "_bron": "yfinance",
@@ -194,6 +194,7 @@
   "_opgehaald": "2026-10-29",
   "_rapport": "2026-10-29",
   "_vorige": {
+   "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
    "grossMargin": null,
@@ -204,6 +205,7 @@
    "opMargin": null,
    "opMarginDelta": null
   },
+  "dilutionPct": -1.9,
   "fcfGrowing": true,
   "fcfPositive": true,
   "grossMargin": 36.0,
@@ -438,24 +440,14 @@
    "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
-   "grossMargin": null,
-   "grossMarginPrev": null,
-   "grossMarginTrend": null,
    "netCash": null,
-   "netCashUsd": null,
-   "opMargin": null,
-   "opMarginDelta": null
+   "netCashUsd": null
   },
-  "dilutionPct": 0.9,
+  "dilutionPct": 1.4,
   "fcfGrowing": false,
   "fcfPositive": false,
-  "grossMargin": 61.6,
-  "grossMarginPrev": 59.5,
-  "grossMarginTrend": 2.1,
   "netCash": true,
-  "netCashUsd": 129.72,
-  "opMargin": 34.0,
-  "opMarginDelta": 1.6
+  "netCashUsd": 129.72
  },
  "HOOD": {
   "_bron": "yfinance",
@@ -781,16 +773,16 @@
    "opMargin": null,
    "opMarginDelta": null
   },
-  "dilutionPct": 0.5,
+  "dilutionPct": 0.6,
   "fcfGrowing": true,
   "fcfPositive": true,
-  "grossMargin": 27.3,
+  "grossMargin": 31.1,
   "grossMarginPrev": 27.5,
-  "grossMarginTrend": -0.2,
+  "grossMarginTrend": 3.6,
   "netCash": false,
-  "netCashUsd": -0.93,
-  "opMargin": 11.8,
-  "opMarginDelta": 1.3
+  "netCashUsd": -0.84,
+  "opMargin": 14.6,
+  "opMarginDelta": 3.8
  },
  "MSFT": {
   "_bron": "yfinance",
@@ -851,6 +843,7 @@
   "_opgehaald": "2026-10-29",
   "_rapport": "2026-10-28",
   "_vorige": {
+   "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
    "grossMargin": null,
@@ -861,15 +854,16 @@
    "opMargin": null,
    "opMarginDelta": null
   },
+  "dilutionPct": -1.7,
   "fcfGrowing": true,
   "fcfPositive": true,
-  "grossMargin": 56.8,
-  "grossMarginPrev": 58.3,
-  "grossMarginTrend": -1.5,
+  "grossMargin": 57.7,
+  "grossMarginPrev": 56.8,
+  "grossMarginTrend": 0.9,
   "netCash": true,
-  "netCashUsd": 0.07,
-  "opMargin": 5.1,
-  "opMarginDelta": 0.9
+  "netCashUsd": 0.08,
+  "opMargin": 2.0,
+  "opMarginDelta": -1.8
  },
  "MU": {
   "_bron": "yfinance",
@@ -1022,16 +1016,16 @@
    "opMargin": null,
    "opMarginDelta": null
   },
-  "dilutionPct": -1.1,
-  "fcfGrowing": false,
+  "dilutionPct": -0.4,
+  "fcfGrowing": true,
   "fcfPositive": true,
-  "grossMargin": 70.7,
-  "grossMarginPrev": 77.5,
+  "grossMargin": 70.5,
+  "grossMarginPrev": 77.3,
   "grossMarginTrend": -6.8,
   "netCash": false,
-  "netCashUsd": -3.79,
-  "opMargin": 4.1,
-  "opMarginDelta": -7.0
+  "netCashUsd": -3.81,
+  "opMargin": 9.4,
+  "opMarginDelta": -7.4
  },
  "NU": {
   "_bron": "yfinance",
@@ -1734,13 +1728,23 @@
    "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
+   "grossMargin": null,
+   "grossMarginPrev": null,
+   "grossMarginTrend": null,
    "netCash": null,
-   "netCashUsd": null
+   "netCashUsd": null,
+   "opMargin": null,
+   "opMarginDelta": null
   },
   "dilutionPct": -1.1,
   "fcfGrowing": true,
   "fcfPositive": true,
+  "grossMargin": 40.2,
+  "grossMarginPrev": 40.5,
+  "grossMarginTrend": -0.3,
   "netCash": false,
-  "netCashUsd": -22.8
+  "netCashUsd": -23.12,
+  "opMargin": 19.1,
+  "opMarginDelta": 0.2
  }
 }
