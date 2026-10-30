@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-10-30T15:30:01.170612+01:00"
+    "lastUpdate": "2026-10-30T19:57:32.462639+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -8820,7 +8820,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 13
+      "episodeDays": 14
     },
     "caution:DDOG:2026-10-26": {
       "ticker": "DDOG",
@@ -8997,7 +8997,7 @@
         "sellWeight": 17
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:HWM:2026-10-30": {
       "ticker": "HWM",
@@ -9140,8 +9140,8 @@
       },
       {
         "action": "HOLD",
-        "n": 22,
-        "pct": 23.9,
+        "n": 23,
+        "pct": 25.0,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -9160,16 +9160,16 @@
         "color": "green"
       },
       {
-        "action": "LICHT KOOP",
+        "action": "LICHT VERKOOP",
         "n": 4,
         "pct": 4.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "LICHT VERKOOP",
-        "n": 4,
-        "pct": 4.3,
+        "action": "LICHT KOOP",
+        "n": 3,
+        "pct": 3.3,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -9204,11 +9204,11 @@
         "cells": [
           1.0,
           0.31,
-          0.21,
+          0.26,
           0.33,
-          -0.13,
-          0.77,
-          0.57
+          -0.14,
+          0.78,
+          0.58
         ]
       },
       {
@@ -9220,7 +9220,7 @@
           0.11,
           -0.14,
           0.23,
-          0.77,
+          0.76,
           0.79
         ]
       },
@@ -9228,13 +9228,13 @@
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.21,
+          0.26,
           0.11,
           1.0,
-          0.57,
-          0.37,
-          0.46,
-          0.08
+          0.62,
+          0.3,
+          0.49,
+          0.06
         ]
       },
       {
@@ -9243,35 +9243,35 @@
         "cells": [
           0.33,
           -0.14,
-          0.57,
+          0.62,
           1.0,
-          -0.42,
-          0.27,
-          -0.37
+          -0.43,
+          0.29,
+          -0.36
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.13,
+          -0.14,
           0.23,
-          0.37,
-          -0.42,
+          0.3,
+          -0.43,
           1.0,
-          0.18,
-          0.58
+          0.15,
+          0.57
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.77,
-          0.77,
-          0.46,
-          0.27,
-          0.18,
+          0.78,
+          0.76,
+          0.49,
+          0.29,
+          0.15,
           1.0,
           0.76
         ]
@@ -9280,11 +9280,11 @@
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.57,
-          0.79,
-          0.08,
-          -0.37,
           0.58,
+          0.79,
+          0.06,
+          -0.36,
+          0.57,
           0.76,
           1.0
         ]
@@ -10550,7 +10550,7 @@
         "DDOG": "HOLD",
         "ARCC": "VERKOOP",
         "ONON": "VERKOOP",
-        "ARCG": "LICHT KOOP"
+        "ARCG": "HOLD"
       },
       "pick": "MNST"
     }
