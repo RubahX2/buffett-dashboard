@@ -34,14 +34,24 @@
    "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
+   "grossMargin": null,
+   "grossMarginPrev": null,
+   "grossMarginTrend": null,
    "netCash": null,
-   "netCashUsd": null
+   "netCashUsd": null,
+   "opMargin": null,
+   "opMarginDelta": null
   },
   "dilutionPct": 0.8,
   "fcfGrowing": false,
   "fcfPositive": false,
+  "grossMargin": 53.2,
+  "grossMarginPrev": 50.8,
+  "grossMarginTrend": 2.4,
   "netCash": false,
-  "netCashUsd": -66.8
+  "netCashUsd": -157.72,
+  "opMargin": 13.9,
+  "opMarginDelta": 4.2
  },
  "ANET": {
   "_bron": "yfinance",
@@ -376,14 +386,24 @@
    "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
+   "grossMargin": null,
+   "grossMarginPrev": null,
+   "grossMarginTrend": null,
    "netCash": null,
-   "netCashUsd": null
+   "netCashUsd": null,
+   "opMargin": null,
+   "opMarginDelta": null
   },
   "dilutionPct": -0.2,
   "fcfGrowing": true,
   "fcfPositive": true,
+  "grossMargin": 81.1,
+  "grossMarginPrev": 79.8,
+  "grossMarginTrend": 1.3,
   "netCash": false,
-  "netCashUsd": -23.07
+  "netCashUsd": -19.79,
+  "opMargin": 41.9,
+  "opMarginDelta": -3.1
  },
  "GLBE": {
   "_bron": "yfinance",
@@ -603,14 +623,24 @@
    "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
+   "grossMargin": null,
+   "grossMarginPrev": null,
+   "grossMarginTrend": null,
    "netCash": null,
-   "netCashUsd": null
+   "netCashUsd": null,
+   "opMargin": null,
+   "opMarginDelta": null
   },
   "dilutionPct": 0.0,
-  "fcfGrowing": true,
+  "fcfGrowing": false,
   "fcfPositive": true,
+  "grossMargin": 63.2,
+  "grossMarginPrev": 61.5,
+  "grossMarginTrend": 1.7,
   "netCash": false,
-  "netCashUsd": -27.17
+  "netCashUsd": -25.02,
+  "opMargin": 33.4,
+  "opMarginDelta": 1.2
  },
  "KTOS": {
   "_bron": "yfinance",
@@ -763,16 +793,16 @@
    "opMargin": null,
    "opMarginDelta": null
   },
-  "dilutionPct": 0.5,
+  "dilutionPct": 0.6,
   "fcfGrowing": true,
   "fcfPositive": true,
-  "grossMargin": 27.3,
+  "grossMargin": 31.1,
   "grossMarginPrev": 27.5,
-  "grossMarginTrend": -0.2,
+  "grossMarginTrend": 3.6,
   "netCash": false,
-  "netCashUsd": -0.93,
-  "opMargin": 11.8,
-  "opMarginDelta": 1.3
+  "netCashUsd": -0.84,
+  "opMargin": 14.6,
+  "opMarginDelta": 3.8
  },
  "MSFT": {
   "_bron": "yfinance",
@@ -1063,24 +1093,14 @@
    "dilutionPct": null,
    "fcfGrowing": null,
    "fcfPositive": null,
-   "grossMargin": null,
-   "grossMarginPrev": null,
-   "grossMarginTrend": null,
    "netCash": null,
-   "netCashUsd": null,
-   "opMargin": null,
-   "opMarginDelta": null
+   "netCashUsd": null
   },
-  "dilutionPct": -1.6,
+  "dilutionPct": -1.3,
   "fcfGrowing": true,
   "fcfPositive": true,
-  "grossMargin": 36.3,
-  "grossMarginPrev": 33.7,
-  "grossMarginTrend": 2.6,
   "netCash": true,
-  "netCashUsd": 0.26,
-  "opMargin": 29.9,
-  "opMarginDelta": 4.5
+  "netCashUsd": 0.26
  },
  "ONON": {
   "_bron": "yfinance",
@@ -1700,8 +1720,8 @@
   "fcfGrowing": true,
   "fcfPositive": true,
   "grossMargin": 40.2,
-  "grossMarginPrev": 40.5,
-  "grossMarginTrend": -0.3,
+  "grossMarginPrev": 41.1,
+  "grossMarginTrend": -0.9,
   "netCash": false,
   "netCashUsd": -23.12,
   "opMargin": 19.1,
