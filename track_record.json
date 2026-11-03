@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-03T16:27:41.593032+01:00"
+    "lastUpdate": "2026-11-03T21:23:41.870224+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -9134,7 +9134,7 @@
         "sellWeight": 14
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:GLBE:2026-11-02": {
       "ticker": "GLBE",
@@ -9188,7 +9188,7 @@
         "sellWeight": 28
       },
       "outcomes": {},
-      "episodeDays": 4
+      "episodeDays": 5
     },
     "strong_signal:FANUC:2026-11-02": {
       "ticker": "FANUC",
@@ -9215,7 +9215,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 4
+      "episodeDays": 5
     },
     "strong_signal:ARCC:2026-11-02": {
       "ticker": "ARCC",
@@ -9269,7 +9269,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     }
   },
   "accuracy": {
@@ -9378,8 +9378,8 @@
     "baseRates": [
       {
         "action": "VERKOOP",
-        "n": 28,
-        "pct": 30.4,
+        "n": 29,
+        "pct": 31.5,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
@@ -9392,8 +9392,8 @@
       },
       {
         "action": "STERK VERKOOP",
-        "n": 16,
-        "pct": 17.4,
+        "n": 15,
+        "pct": 16.3,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -9412,14 +9412,14 @@
         "color": "green"
       },
       {
-        "action": "LICHT KOOP",
+        "action": "NEUTRAAL",
         "n": 3,
         "pct": 3.3,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
-        "action": "NEUTRAAL",
+        "action": "LICHT KOOP",
         "n": 2,
         "pct": 2.2,
         "verdict": "zeldzaam (weinig observaties)",
@@ -9448,24 +9448,24 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.32,
-          0.14,
-          0.25,
-          -0.16,
+          0.31,
+          0.19,
+          0.26,
+          -0.15,
           0.78,
-          0.64
+          0.63
         ]
       },
       {
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.32,
+          0.31,
           1.0,
-          0.02,
+          0.03,
           -0.21,
-          0.19,
-          0.76,
+          0.21,
+          0.75,
           0.77
         ]
       },
@@ -9473,12 +9473,12 @@
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.14,
-          0.02,
+          0.19,
+          0.03,
           1.0,
-          0.57,
-          0.32,
-          0.4,
+          0.6,
+          0.28,
+          0.44,
           0.04
         ]
       },
@@ -9486,12 +9486,12 @@
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.25,
+          0.26,
           -0.21,
-          0.57,
+          0.6,
           1.0,
-          -0.52,
-          0.19,
+          -0.5,
+          0.21,
           -0.42
         ]
       },
@@ -9499,12 +9499,12 @@
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.16,
-          0.19,
-          0.32,
-          -0.52,
+          -0.15,
+          0.21,
+          0.28,
+          -0.5,
           1.0,
-          0.13,
+          0.14,
           0.5
         ]
       },
@@ -9513,24 +9513,24 @@
         "key": "comp",
         "cells": [
           0.78,
-          0.76,
-          0.4,
-          0.19,
-          0.13,
+          0.75,
+          0.44,
+          0.21,
+          0.14,
           1.0,
-          0.78
+          0.77
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.64,
+          0.63,
           0.77,
           0.04,
           -0.42,
           0.5,
-          0.78,
+          0.77,
           1.0
         ]
       }
@@ -9628,7 +9628,7 @@
     "NOW": null,
     "GILD": null,
     "DDOG": null,
-    "ARCC": "sig:strong_signal:SELL",
+    "ARCC": null,
     "ONON": null,
     "ARCG": null,
     "pick::MNST": "pick:MNST"
@@ -10709,7 +10709,7 @@
         "RELY": "LICHT KOOP",
         "DLO": "KOOP",
         "GLBE": "KOOP",
-        "TOST": "LICHT KOOP",
+        "TOST": "NEUTRAAL",
         "IOT": "KOOP",
         "KNSL": "LICHT VERKOOP",
         "WM": "STERK VERKOOP",
@@ -10793,7 +10793,7 @@
         "NOW": "HOLD",
         "GILD": "KOOP",
         "DDOG": "LICHT VERKOOP",
-        "ARCC": "STERK VERKOOP",
+        "ARCC": "VERKOOP",
         "ONON": "VERKOOP",
         "ARCG": "HOLD"
       },
