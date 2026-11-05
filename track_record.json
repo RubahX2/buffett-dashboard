@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-05T16:47:39.148023+01:00"
+    "lastUpdate": "2026-11-05T21:55:26.226436+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -9186,7 +9186,7 @@
         "sellWeight": 14
       },
       "outcomes": {},
-      "episodeDays": 11
+      "episodeDays": 12
     },
     "strong_signal:GLBE:2026-11-02": {
       "ticker": "GLBE",
@@ -9213,7 +9213,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "strong_signal:AMZN:2026-11-02": {
       "ticker": "AMZN",
@@ -9240,7 +9240,7 @@
         "sellWeight": 28
       },
       "outcomes": {},
-      "episodeDays": 10
+      "episodeDays": 11
     },
     "strong_signal:FANUC:2026-11-02": {
       "ticker": "FANUC",
@@ -9267,7 +9267,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 10
+      "episodeDays": 11
     },
     "strong_signal:ARCC:2026-11-02": {
       "ticker": "ARCC",
@@ -9294,7 +9294,7 @@
         "sellWeight": 14
       },
       "outcomes": {},
-      "episodeDays": 8
+      "episodeDays": 9
     },
     "caution:SOF:2026-11-03": {
       "ticker": "SOF",
@@ -9321,7 +9321,7 @@
         "sellWeight": 19
       },
       "outcomes": {},
-      "episodeDays": 7
+      "episodeDays": 8
     }
   },
   "accuracy": {
@@ -9437,8 +9437,8 @@
       },
       {
         "action": "VERKOOP",
-        "n": 22,
-        "pct": 23.9,
+        "n": 23,
+        "pct": 25.0,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -9451,20 +9451,13 @@
       },
       {
         "action": "KOOP",
-        "n": 12,
-        "pct": 13.0,
+        "n": 14,
+        "pct": 15.2,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "NEUTRAAL",
-        "n": 4,
-        "pct": 4.3,
-        "verdict": "discriminerend",
-        "color": "green"
-      },
-      {
-        "action": "LICHT KOOP",
         "n": 3,
         "pct": 3.3,
         "verdict": "discriminerend",
@@ -9490,6 +9483,13 @@
         "pct": 1.1,
         "verdict": "zeldzaam (weinig observaties)",
         "color": "gray"
+      },
+      {
+        "action": "LICHT KOOP",
+        "n": 1,
+        "pct": 1.1,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
       }
     ],
     "corrLabels": [
@@ -9508,9 +9508,9 @@
         "cells": [
           1.0,
           0.33,
-          0.17,
+          0.18,
           0.26,
-          -0.18,
+          -0.17,
           0.78,
           0.57
         ]
@@ -9521,24 +9521,24 @@
         "cells": [
           0.33,
           1.0,
-          0.05,
+          0.0,
           -0.22,
-          0.25,
-          0.76,
-          0.76
+          0.22,
+          0.75,
+          0.74
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.17,
-          0.05,
+          0.18,
+          0.0,
           1.0,
-          0.55,
-          0.34,
-          0.43,
-          0.1
+          0.58,
+          0.33,
+          0.42,
+          0.07
         ]
       },
       {
@@ -9547,24 +9547,24 @@
         "cells": [
           0.26,
           -0.22,
-          0.55,
+          0.58,
           1.0,
-          -0.54,
-          0.17,
-          -0.49
+          -0.51,
+          0.2,
+          -0.48
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.18,
-          0.25,
-          0.34,
-          -0.54,
+          -0.17,
+          0.22,
+          0.33,
+          -0.51,
           1.0,
-          0.17,
-          0.65
+          0.16,
+          0.64
         ]
       },
       {
@@ -9572,12 +9572,12 @@
         "key": "comp",
         "cells": [
           0.78,
-          0.76,
-          0.43,
-          0.17,
-          0.17,
+          0.75,
+          0.42,
+          0.2,
+          0.16,
           1.0,
-          0.75
+          0.74
         ]
       },
       {
@@ -9585,11 +9585,11 @@
         "key": "opp",
         "cells": [
           0.57,
-          0.76,
-          0.1,
-          -0.49,
-          0.65,
-          0.75,
+          0.74,
+          0.07,
+          -0.48,
+          0.64,
+          0.74,
           1.0
         ]
       }
@@ -10806,7 +10806,7 @@
         "SNAP": "HOLD",
         "NVDA": "HOLD",
         "NKE": "VERKOOP",
-        "DIE": "NEUTRAAL",
+        "DIE": "VERKOOP",
         "SOF": "CAUTION (overextended)",
         "AIR": "STERK VERKOOP",
         "ALFEN": "STERK VERKOOP",
@@ -10820,7 +10820,7 @@
         "MSTR": "HOLD",
         "AAPL": "KOOP",
         "NFLX": "HOLD",
-        "DIS": "LICHT KOOP",
+        "DIS": "KOOP",
         "BLK": "KOOP",
         "BABA": "STERK VERKOOP",
         "NABTESCO": "VERKOOP",
@@ -10829,7 +10829,7 @@
         "FANUC": "STERK VERKOOP",
         "YASKAWA": "NEUTRAAL",
         "SOFTBANK": "NEUTRAAL",
-        "ROK": "LICHT KOOP",
+        "ROK": "KOOP",
         "TER": "HOLD",
         "ISRG": "LICHT VERKOOP",
         "CGNX": "HOLD",
