@@ -127,6 +127,73 @@ def main():
     _rw_fout = [f"{k}/{f}" for k, f, v in _gevallen if _rw(k, f) != v]
     check("runway-berekening (8 gevallen)", not _rw_fout, ", ".join(_rw_fout))
 
+    # ── LIVE P/E ─────────────────────────────────────────────────────────────
+    # Er stonden twee P/E's in de uitvoer: een handmatige onder de Buffett-score
+    # en een live berekende onderaan bij de waardering. Die spraken elkaar tegen
+    # zodra de koers bewoog (MU: 22,1 getoond, 14,7 werkelijk), en de frontend
+    # scoorde op de bevroren versie -- 20 van de 92 aandelen in het verkeerde
+    # vakje. Nu één getal. De plausibiliteitsgrens is geen theorie: GAW had een
+    # koers in pence en een eps in ponden.
+    _lp = _az.live_pe
+    _pe_gevallen = [
+        # (koers, eps, opgeslagen) -> (pe, bruikbaar)
+        ((657.67, 44.6,  22.1),  (14.7, True)),    # MU: de aanleiding
+        ((16100.0, 6.24, 31.6),  (2580.1, False)), # GAW: pence vs ponden = 82x
+        ((16100.0, 624.0, 31.6), (25.8, True)),    # GAW na de eenheidscorrectie
+        ((2573.0, 420.0, 9.8),   (6.1, True)),     # III: beide in pence, klopt
+        # Extreem maar ECHT -- mag niet weggefilterd worden. Een eerdere versie
+        # kapte alles boven 200 af en hield dan SYM's opgeslagen 0 aan.
+        ((35.13, 0.05, 0),       (702.6, True)),   # SYM: verdient 5 dollarcent
+        ((173.76, 0.39, 683.0),  (445.5, True)),   # DDOG: hoog op GAAP, klopt
+        ((100.0, 0.0,  20.0),    (None, False)),   # geen winst
+        ((100.0, -2.0, 20.0),    (None, False)),   # verlies
+        ((100.0, None, 20.0),    (None, False)),   # geen eps
+        ((0.0,   5.0,  20.0),    (None, False)),   # geen koers
+    ]
+    _pe_fout = [f"{a[0]}/{a[1]}" for a, v in _pe_gevallen if _lp(*a) != v]
+    check("live P/E (10 gevallen)", not _pe_fout, ", ".join(_pe_fout))
+
+    # ── VEROUDERD-CONTROLE MAG NIET STIL KUNNEN WEGVALLEN ────────────────────
+    # Yahoo gaf voor 46 van de 88 namen geen LAATSTE rapportdatum, alleen de
+    # volgende. De hele controle hing aan die laatste datum, dus bij die 46 kon
+    # `verouderd` nooit aan: geen badge, en de automatische verversing (die op
+    # die vlag draait) sloeg ze elke run over. MU's omzetgroei stond daardoor in
+    # november nog op de 144% van juli terwijl de koers een derde was gezakt.
+    _eo, _fo = _az.EARNINGS, _az.FUNDAMENTALS
+    try:
+        _az.EARNINGS = {
+            "HARD":    {"laatste": "2026-09-23", "volgende": None},
+            "AFGELEID":{"laatste": None, "volgende": "2026-12-23"},  # MU's geval
+            "NIETS":   {"laatste": None, "volgende": None},
+            "VERS":    {"laatste": None, "volgende": "2026-12-23"},
+        }
+        _oud  = {"lastUpdated": "2026-07"}        # ruim voor het rapport
+        _vers = {"lastUpdated": _az.TODAY.isoformat()[:7]}
+        _h = _az.cijfer_status("HARD", _oud)
+        _a = _az.cijfer_status("AFGELEID", _oud)
+        _n = _az.cijfer_status("NIETS", _oud)
+        _v = _az.cijfer_status("VERS", _vers)
+        _fouten = []
+        # 1. bekende datum: ongewijzigd gedrag, en niet als afgeleid gemarkeerd
+        if not (_h and _h["verouderd"] and not _h["laatsteAfgeleid"]):
+            _fouten.append("harde datum")
+        # 2. alleen een VOLGENDE datum: vorige afleiden op 91 dagen ervoor.
+        #    Dit is het geval van de 46 namen -- moet nu wel vuren, en als
+        #    onzeker gelden omdat de datum geschat is.
+        if not (_a and _a["verouderd"] and _a["laatsteAfgeleid"]
+                and _a["laatsteRapport"] == "2026-09-23" and _a["onzeker"]):
+            _fouten.append(f"afgeleid ({_a})")
+        # 3. helemaal geen datum: terugvallen op de leeftijd van de cijfers.
+        #    Deze laag hangt van niets externs af en kan dus niet stilvallen.
+        if not (_n and _n["oud"] and _n["dagenOud"] and _n["dagenOud"] > 100):
+            _fouten.append(f"geen datum ({_n})")
+        # 4. verse cijfers blijven vers -- de controle mag niet alles markeren
+        if not (_v and not _v["verouderd"] and not _v["oud"]):
+            _fouten.append(f"vers ({_v})")
+        check("verouderd-controle: 3 lagen", not _fouten, "; ".join(_fouten))
+    finally:
+        _az.EARNINGS, _az.FUNDAMENTALS = _eo, _fo
+
     # ── MARKTWAARDE-TOP: splitsingscorrectie ─────────────────────────────────
     # Marktwaarde is splitsings-ongevoelig (koers /f, aandelen *f), maar Yahoo
     # levert de koers GECORRIGEERD en het aandelenaantal zoals gerapporteerd.

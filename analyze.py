@@ -486,7 +486,7 @@ FUNDAMENTALS = {
     "BNGO":  {"pe":0,      "roe":-85.0,"fcfYield":-40.0,"debtEquity":0.85, "netMargin":-180.0,"divYield":0,   "revenueGrowth":-12.0, "revenueGrowthPrev":-20.0,"eps":-2.10, "mktCap":"$0.05B", "beta":2.95, "lastUpdated":"2026-07"},
     # ── Uitbreiding juli 2026 — INDICATIEF per 2026-01 (CRWV: 2026-05), VERIFIEER per kwartaal ──
     # Let op eenheden: eps in noteringsvaluta (LSE in PENCE, Tokio in ¥, Brussel/Parijs/Adam in €, HK in HK$)
-    "GAW":   {"pe":31.6,  "roe":67.9, "fcfYield":3.2,  "debtEquity":0.16, "netMargin":31.8, "divYield":3.4,  "revenueGrowth":10.6,  "revenueGrowthPrev":11.0, "eps":6.24,  "mktCap":"GBP6.5B","beta":0.95, "lastUpdated":"2026-07"},
+    "GAW":   {"pe":31.6,  "roe":67.9, "fcfYield":3.2,  "debtEquity":0.16, "netMargin":31.8, "divYield":3.4,  "revenueGrowth":10.6,  "revenueGrowthPrev":11.0, "eps":624.0,  "mktCap":"GBP6.5B","beta":0.95, "lastUpdated":"2026-07"},   # eps in PENCE, net als de koers (stond op 6,24 pond -> live P/E werd 2580 i.p.v. ~26)
     "MNST":  {"pe":38.4,  "roe":22.3, "fcfYield":2.3,  "debtEquity":0.02, "netMargin":23.1, "divYield":0,    "revenueGrowth":18.1,  "revenueGrowthPrev":10.7, "eps":2.10,  "mktCap":"$95B",   "beta":0.82, "lastUpdated":"2026-07"},
     "V":     {"pe":28.5,  "roe":60.4, "fcfYield":3.4,  "debtEquity":0.67, "netMargin":51.7, "divYield":0.8,  "revenueGrowth":14.4,  "revenueGrowthPrev":11.6, "eps":11.70, "mktCap":"$582B",  "beta":0.76, "lastUpdated":"2026-07"},
     "KPG":   {"pe":52.0,  "roe":28.0, "fcfYield":3.5,  "debtEquity":3.60, "netMargin":5.5,  "divYield":1.0,  "revenueGrowth":18.0,  "revenueGrowthPrev":25.0, "eps":0.08,  "mktCap":"A$0.2B", "beta":1.15, "lastUpdated":"2026-07"},
@@ -3702,6 +3702,44 @@ def percentile_rank(values, target):
     equal = sum(1 for v in values if v == target)
     return round((below + 0.5 * equal) / len(values) * 100, 1)
 
+_PE_EENHEIDSFACTOR = (40.0, 250.0)
+
+def live_pe(price, eps, opgeslagen=None):
+    """(pe, bruikbaar) — koers gedeeld door winst per aandeel.
+
+    EEN P/E voor het hele dashboard. Er stonden er twee: een met de hand ingetikte
+    in FUNDAMENTALS (getoond onder de Buffett-score, waar Ruben naar kijkt) en een
+    live berekende in de waarderingsmodule (onderaan de kaart). Die spraken elkaar
+    tegen zodra de koers bewoog: MU stond op 22,1 terwijl de koers in twee maanden
+    van $977 naar $658 zakte en de echte verhouding 14,7 was. Erger nog, de
+    Buffett-score in de frontend rekende op de bevroren versie -- 20 van de 92
+    aandelen kregen daardoor een score uit het verkeerde vakje, MU vijftien punten
+    te laag.
+
+    WANNEER NIET VERVANGEN. Eerst stond hier een bovengrens van 200: alles daarboven
+    gold als onmogelijk. Getest op de echte data bleek dat fout. Het hield drie
+    namen tegen en maar een daarvan was kapot:
+        GAW   2580  -- echt fout: koers in pence, eps in ponden
+        SYM    703  -- klopt. Symbotic verdient 5 dollarcent per aandeel.
+        DDOG   446  -- klopt ook, op GAAP-winst.
+    Bij SYM zou de grens de opgeslagen waarde aanhouden, en die is 0. Een extreme
+    P/E is informatie, geen meetfout; hem wegfilteren maakt het dashboard dommer.
+
+    Een EENHEIDSfout ziet er anders uit: die zit er een factor honderd naast, omdat
+    pence en ponden zich zo tot elkaar verhouden. Daarom toetsen we niet op de
+    hoogte van de uitkomst maar op de verhouding tot wat er met de hand stond. Zit
+    de live waarde tussen 40x en 250x het handmatige cijfer, dan is het de eenheid
+    en niet de werkelijkheid."""
+    if not eps or eps <= 0 or not price or price <= 0:
+        return None, False
+    pe = round(price / eps, 1)
+    if opgeslagen and opgeslagen > 0:
+        _factor = pe / opgeslagen
+        if _PE_EENHEIDSFACTOR[0] <= _factor <= _PE_EENHEIDSFACTOR[1]:
+            return pe, False
+    return pe, True
+
+
 def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=None) -> dict:
     """Bereken waarderingspositie met eerlijke, niet-circulaire methodes."""
     close = daily["Close"]
@@ -3712,10 +3750,14 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
 
     # P/E live berekenen: koers (live) ÷ laatst bekende EPS. Zo beweegt de waardering
     # mee met de koers en veroudert alleen de EPS (kwartaal-update) — niet de hele P/E.
+    _pe, _ok = live_pe(current_price, current_eps, fund.get("pe"))
     pe_live = False
-    if current_eps and current_eps > 0 and current_price > 0:
-        current_pe = round(current_price / current_eps, 1)
+    if _pe is not None and _ok:
+        current_pe = _pe
         pe_live = True
+    # De berekening lukte maar gaf iets onmogelijks: eenheden komen niet overeen.
+    # Handmatige waarde aanhouden EN het hardop zeggen.
+    _pe_mismatch = (_pe is not None and not _ok)
 
     out = {
         "currentPE": current_pe, "peg": None, "pegNormalized": None, "normalizedGrowth": None,
@@ -3726,6 +3768,12 @@ def compute_valuation(name: str, daily: pd.DataFrame, fund: dict, hist_pe_fmp=No
     }
     if pe_live:
         out["notes"].append("P/E live: koers ÷ laatst bekende EPS")
+    if _pe_mismatch:
+        out["peMismatch"] = _pe
+        out["notes"].append(
+            f"P/E handmatig aangehouden: koers ÷ eps geeft {_pe:.0f}, wat niet kan — "
+            f"koers en eps staan waarschijnlijk niet in dezelfde eenheid "
+            f"(koers {current_price:.0f}, eps {current_eps})")
 
     # PEG — primaire groei-gecorrigeerde maatstaf (Lynch)
     if current_pe and growth and growth > 0:
@@ -6572,24 +6620,68 @@ def ververs_earnings_cache(paren):
     return nieuw
 
 
+_CIJFERS_OUD_DAGEN = 100      # een kwartaal plus marge
+_KWARTAAL_DAGEN    = 91
+
 def cijfer_status(naam, fund):
-    """Zijn de handmatige cijfers in FUNDAMENTALS achterhaald door een nieuw rapport?
+    """Zijn de handmatige cijfers in FUNDAMENTALS achterhaald?
 
     Vergelijkt het `lastUpdated`-veld (formaat "YYYY-MM", eventueel met een suffix
     als "2026-07 (Q2'26)") met de laatste rapportagedatum. Rapporteerde het bedrijf
-    in een LATERE maand dan je laatste update, dan staan er verouderde cijfers in."""
+    in een LATERE maand dan je laatste update, dan staan er verouderde cijfers in.
+
+    DRIE LAGEN, want de controle mocht niet afhangen van één veld dat kan
+    ontbreken. Dat was precies de fout: Yahoo geeft voor 46 van de 88 namen geen
+    LAATSTE rapportdatum, alleen de volgende. Beide takken hieronder vereisten die
+    laatste datum, dus `verouderd` bleef bij die 46 eeuwig False -- geen badge, en
+    de automatische verversing (die op deze vlag draait) sloeg ze elke run over.
+    MU's omzetgroei stond daardoor in november nog op de 144% van juli, terwijl de
+    koers een derde was gezakt. Stil, en daarom erger dan luidruchtig fout.
+
+      1. Is de laatste rapportdatum bekend -> exact vergelijken (ongewijzigd).
+      2. Alleen de VOLGENDE datum bekend -> de vorige ligt bij een kwartaalrapporteur
+         ongeveer 91 dagen daarvoor. Afgeleid, en als zodanig gemarkeerd.
+      3. Geen van beide -> terugvallen op de leeftijd van de cijfers zelf. Die
+         hangt alleen af van ons eigen `lastUpdated` en de datum van vandaag, en
+         kan dus nooit stilvallen door ontbrekende externe data.
+
+    `verouderd` en `oud` zijn bewust twee velden. Het eerste beweert dat er
+    sindsdien gerapporteerd IS; het tweede alleen dat de cijfers oud zijn. Bij een
+    halfjaarrapporteur als GAW is het tweede waar en het eerste niet, en dan hoort
+    er niet te staan dat er een rapport gemist is."""
     e = EARNINGS.get(naam) or {}
     laatste, volgende = e.get("laatste"), e.get("volgende")
-    if not (laatste or volgende):
-        return None
-    verouderd, maanden = False, None
     lu = (fund or {}).get("lastUpdated") or ""
+    verwerkt = (fund or {}).get("rapportVerwerkt")
+
+    # Laag 2: laatste rapportdatum afleiden uit de volgende.
+    laatste_afgeleid = False
+    if not laatste and volgende:
+        try:
+            _vorig = date.fromisoformat(volgende) - timedelta(days=_KWARTAAL_DAGEN)
+            if _vorig < TODAY:            # alleen als het echt al geweest is
+                laatste, laatste_afgeleid = _vorig.isoformat(), True
+        except (ValueError, TypeError):
+            pass
+
+    # Laag 3: hoe oud zijn de cijfers zelf? Hangt van niets externs af.
+    dagen_oud = None
+    if len(lu) >= 7:
+        try:
+            dagen_oud = (TODAY - date(int(lu[:4]), int(lu[5:7]), 1)).days
+        except (ValueError, IndexError, TypeError):
+            dagen_oud = None
+    oud = bool(dagen_oud is not None and dagen_oud > _CIJFERS_OUD_DAGEN)
+
+    if not (laatste or volgende or dagen_oud is not None):
+        return None                       # echt niets om op te oordelen
+
+    verouderd, maanden = False, None
     # EXACTE vergelijking waar mogelijk: "rapportVerwerkt" bevat de DATUM van het
     # rapport dat in deze cijfers verwerkt zit. Vergelijken op maandniveau was te
     # grof -- cijfers ingevoerd op 5 juli golden dan als actueel terwijl het bedrijf
     # op 28 juli rapporteerde. Alleen als dat veld ontbreekt vallen we terug op de
     # maandvergelijking, met een expliciete "onzeker"-vlag.
-    verwerkt = (fund or {}).get("rapportVerwerkt")
     onzeker = False
     if laatste and verwerkt:
         verouderd = str(verwerkt) < str(laatste)
@@ -6601,6 +6693,8 @@ def cijfer_status(naam, fund):
             onzeker = not verouderd and (r_jaar, r_maand) == (lu_jaar, lu_maand)
         except (ValueError, IndexError):
             verouderd = False
+    if laatste_afgeleid and verouderd:
+        onzeker = True                    # afgeleide datum -> geen harde bewering
     if volgende:
         try:
             maanden = (date.fromisoformat(volgende) - TODAY).days
@@ -6609,7 +6703,9 @@ def cijfer_status(naam, fund):
     return {"laatsteRapport": laatste, "volgendRapport": volgende,
             "verouderd": bool(verouderd), "dagenTotRapport": maanden,
             "cijfersVan": lu or None, "rapportVerwerkt": verwerkt,
-            "onzeker": bool(onzeker)}
+            "onzeker": bool(onzeker),
+            "laatsteAfgeleid": laatste_afgeleid,
+            "dagenOud": dagen_oud, "oud": oud}
 
 
 AUTO_FUND_FILE = "fundamentals_auto.json"
@@ -6846,7 +6942,22 @@ def ververs_fundamentals_auto(paren):
         print("  Fundamentals-auto: geen FMP_API_KEY — yfinance wordt gebruikt")
     bijgewerkt = 0
     _mislukt = 0
+    # GESPREID BIJWERKEN. Zodra de verouderd-controle ook zonder rapportdatum
+    # werkt, gelden er in een klap ~89 namen als verouderd -- die zouden dan
+    # allemaal in dezelfde run met yfinance-cijfers overschreven worden. Dat is
+    # een te grote klap voor een bron die soms rommel teruggeeft: gaat er iets
+    # mis, dan is het hele universum tegelijk besmet en zie je niet meer welke
+    # verandering ergens vandaan kwam.
+    #
+    # Daarom per run een maximum, en de beurt gaat naar wie het langst niet
+    # ververst is (nooit opgehaald = eerst). Zo rouleert het universum vanzelf
+    # en blijft elke run klein genoeg om de wijzigingen na te kijken. Zelfde
+    # principe als het spreiden van de jaarrekeningen.
+    MAX_AUTO_PER_RUN = 15
+    paren = sorted(paren, key=lambda p: (cache.get(p[0]) or {}).get("_opgehaald") or "")
     for naam, sym, _fb in paren:
+        if bijgewerkt >= MAX_AUTO_PER_RUN:
+            break
         if naam in ETF_TICKERS or "." in sym:
             continue
         _f = FUNDAMENTALS.get(naam) or {}
@@ -6856,10 +6967,21 @@ def ververs_fundamentals_auto(paren):
         # duurt het een heel kwartaal voordat de compounder-ranking bruikbare data
         # heeft, en rankt hij intussen op wie toevallig het eerst rapporteerde.
         _mist_compounder = _f.get("grossMargin") is None or _f.get("dilutionPct") is None
-        if not (st and st.get("verouderd")) and not _mist_compounder:
+        # Ook op `oud` draaien, niet alleen op `verouderd`. Zonder laatste
+        # rapportdatum kon `verouderd` nooit aan, en dan werd een naam hier
+        # eeuwig overgeslagen -- dat is hoe MU's cijfers van juli in november
+        # nog steeds in het dashboard stonden.
+        if not (st and (st.get("verouderd") or st.get("oud"))) and not _mist_compounder:
             continue
         _al = cache.get(naam) or {}
-        _zelfde_rapport = st and _al.get("_rapport") == st.get("laatsteRapport")
+        # TWEEDE VAL, zelfde oorzaak: de sleutel was `laatsteRapport`, en die is
+        # None bij de namen zonder rapportdatum. None == None is True, dus gold
+        # het rapport als "al verwerkt" en sloeg de verversing over -- voor
+        # altijd. De sleutel mag dus nooit None kunnen zijn.
+        _sleutel = st.get("laatsteRapport") if st else None
+        if not _sleutel:
+            _sleutel = f"oud:{(st or {}).get('cijfersVan')}:{TODAY.isoformat()[:7]}"
+        _zelfde_rapport = _al.get("_rapport") == _sleutel
         if _zelfde_rapport and not _mist_compounder:
             continue                     # dit rapport al verwerkt
         nieuw = fetch_fundamentals_fmp(sym)      # eerste keus als er een sleutel is
@@ -6872,7 +6994,7 @@ def ververs_fundamentals_auto(paren):
             continue
         oud = {v: (FUNDAMENTALS.get(naam) or {}).get(v) for v in nieuw}
         nieuw["_bron"] = _bron
-        nieuw["_rapport"] = st.get("laatsteRapport")
+        nieuw["_rapport"] = _sleutel
         nieuw["_opgehaald"] = str(TODAY)
         nieuw["_vorige"] = oud
         cache[naam] = nieuw
@@ -6889,7 +7011,9 @@ def ververs_fundamentals_auto(paren):
         if isinstance(_v, dict) and _v.get("_bron"):
             _bronnen[_v["_bron"]] = _bronnen.get(_v["_bron"], 0) + 1
     print(f"  Fundamentals-auto: {bijgewerkt} bijgewerkt, {_mislukt} mislukt "
-          f"({len(cache)} in cache; bronnen: {_bronnen or 'geen'})")
+          f"({len(cache)} in cache; bronnen: {_bronnen or 'geen'}"
+          + (f"; maximum {MAX_AUTO_PER_RUN} per run bereikt, rest volgt"
+             if bijgewerkt >= MAX_AUTO_PER_RUN else "") + ")")
     return cache
 
 
@@ -7017,7 +7141,7 @@ def main():
             "generatedAt": NOW.isoformat(),
             "generatedAtHuman": NOW.strftime("%A %d %B %Y om %H:%M"),
             "isFriday": IS_FRIDAY, "isWeekend": IS_WEEKEND,
-            "version": "11.7-diagnose",
+            "version": "11.9-verouderd-kan-niet-stilvallen",
             "fundamentalsNote": "Fundamentals handmatig bijgehouden — controleer bij elk kwartaalrapport.",
         },
         "stocks": {}, "errors": [],
@@ -7090,6 +7214,31 @@ def main():
             fund = FUNDAMENTALS.get(name, {})
             hist_pe = fetch_historical_pe_fmp(entry["ticker"])
             valuation = compute_valuation(name, entry["daily"], fund, hist_pe)
+
+            # ── EEN P/E IN DE HELE UITVOER ──────────────────────────────────
+            # fund["pe"] was een met de hand ingetikt getal dat nooit meebewoog.
+            # Dat is precies het getal dat onder de Buffett-score staat -- de
+            # prominentste plek op de kaart -- terwijl de live berekende P/E
+            # onderaan bij de waardering stond. Twee getallen voor hetzelfde,
+            # en degene die je het eerst ziet was de verkeerde.
+            #
+            # De frontend rekent zijn Buffett-score rechtstreeks op dit veld
+            # (bScore: pe<15 -> +22, <20 -> +14, <28 -> +7), dus het is niet
+            # alleen weergave: 20 van de 92 aandelen vielen in het verkeerde
+            # vakje. Door hier terug te schrijven kloppen kaart, score en
+            # waarderingsmodule per definitie met elkaar.
+            _pe_nieuw = valuation.get("currentPE")
+            if (_pe_nieuw is not None
+                    and "P/E live: koers ÷ laatst bekende EPS" in (valuation.get("notes") or [])):
+                if fund.get("peHandmatig") is None:
+                    fund["peHandmatig"] = fund.get("pe")   # bewaren wat er stond
+                fund["pe"] = _pe_nieuw
+                fund["peBron"] = "live"
+            elif valuation.get("peMismatch"):
+                fund["peBron"] = "handmatig (eenheden kloppen niet)"
+                fund["peWaarschuwing"] = valuation["peMismatch"]
+            else:
+                fund["peBron"] = "handmatig (geen bruikbare eps)"
 
             # Multi-timeframe timing (daily/weekly/monthly) + kwaliteit + composiet
             fib_daily = analysis.get("indicators", {}).get("fib")
