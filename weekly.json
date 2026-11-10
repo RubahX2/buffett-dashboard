@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-10T00:15:37.749017+01:00",
-  "generatedAtHuman": "Tuesday 10 November 2026 om 00:15",
+  "generatedAt": "2026-11-10T03:49:20.544202+01:00",
+  "generatedAtHuman": "Tuesday 10 November 2026 om 03:49",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
     {
@@ -26,32 +26,6 @@
           "type": "price",
           "dir": "down",
           "text": "Koers -18.8% deze week ($802\u2192$651)"
-        }
-      ]
-    },
-    {
-      "ticker": "NABTESCO",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "up",
-          "text": "Composiet 34 \u2191 40"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
-        },
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: VERKOOP \u2192 HOLD"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.4% deze week ($4283\u2192$3922)"
         }
       ]
     },
@@ -193,18 +167,18 @@
       ]
     },
     {
-      "ticker": "GAW",
+      "ticker": "ADM",
       "daysAgo": 7,
       "changes": [
         {
           "type": "composite",
-          "dir": "up",
-          "text": "Composiet 44 \u2191 52"
+          "dir": "down",
+          "text": "Composiet 60 \u2193 48"
         },
         {
           "type": "valuation",
           "dir": "neutral",
-          "text": "Waardering: Duur (PEG > 3.5) \u2192 Aan de dure kant (PEG 2.5\u20133.5)"
+          "text": "Waardering: Neutraal (PEG 1.5\u20132.5) \u2192 Duur (PEG > 3.5)"
         }
       ]
     },
@@ -221,6 +195,22 @@
           "type": "price",
           "dir": "down",
           "text": "Koers -8.4% deze week ($1673\u2192$1533)"
+        }
+      ]
+    },
+    {
+      "ticker": "III",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "down",
+          "text": "Composiet 67 \u2193 43"
+        },
+        {
+          "type": "valuation",
+          "dir": "neutral",
+          "text": "Waardering: Aantrekkelijk (PEG < 1) \u2192 Duur (PEG > 3.5)"
         }
       ]
     },
@@ -269,22 +259,6 @@
           "type": "signal",
           "dir": "up",
           "text": "Signaal: CAUTION (overextended) \u2192 KOOP"
-        }
-      ]
-    },
-    {
-      "ticker": "HARMONIC",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: VERKOOP \u2192 HOLD"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -15.5% deze week ($5204\u2192$4397)"
         }
       ]
     },
@@ -483,6 +457,17 @@
       ]
     },
     {
+      "ticker": "KPG",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "composite",
+          "dir": "up",
+          "text": "Composiet 35 \u2191 41"
+        }
+      ]
+    },
+    {
       "ticker": "AON",
       "daysAgo": 7,
       "changes": [
@@ -571,6 +556,28 @@
       ]
     },
     {
+      "ticker": "NABTESCO",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: VERKOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
+      "ticker": "HARMONIC",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "signal",
+          "dir": "neutral",
+          "text": "Signaal: VERKOOP \u2192 HOLD"
+        }
+      ]
+    },
+    {
       "ticker": "KEYENCE",
       "daysAgo": 7,
       "changes": [
@@ -582,24 +589,13 @@
       ]
     },
     {
-      "ticker": "YASKAWA",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -8.6% deze week ($3917\u2192$3579)"
-        }
-      ]
-    },
-    {
       "ticker": "SOFTBANK",
       "daysAgo": 7,
       "changes": [
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -22.9% deze week ($4410\u2192$3400)"
+          "text": "Koers -11.7% deze week ($4410\u2192$3895)"
         }
       ]
     },
@@ -643,7 +639,7 @@
         {
           "type": "price",
           "dir": "up",
-          "text": "Koers +9.1% deze week ($64\u2192$70)"
+          "text": "Koers +18.3% deze week ($64\u2192$76)"
         }
       ]
     },
@@ -769,6 +765,6 @@
       ]
     }
   ],
-  "changedCount": 55,
+  "changedCount": 56,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }

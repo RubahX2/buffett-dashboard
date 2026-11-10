@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-10T00:15:37.749017+01:00"
+    "lastUpdate": "2026-11-10T03:49:20.544202+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -9473,7 +9473,7 @@
         "sellWeight": 22
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "caution:AMZN:2026-11-09": {
       "ticker": "AMZN",
@@ -9499,7 +9499,7 @@
         "sellWeight": 9
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:MSFT:2026-11-09": {
       "ticker": "MSFT",
@@ -9526,7 +9526,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:SYM:2026-11-09": {
       "ticker": "SYM",
@@ -9553,7 +9553,7 @@
         "sellWeight": 31
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "strong_signal:GILD:2026-11-09": {
       "ticker": "GILD",
@@ -9580,7 +9580,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     }
   },
   "accuracy": {
@@ -9766,11 +9766,11 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.25,
-          0.15,
-          0.24,
-          -0.18,
-          0.78,
+          0.19,
+          0.18,
+          0.23,
+          -0.13,
+          0.75,
           0.56
         ]
       },
@@ -9778,63 +9778,63 @@
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.25,
+          0.19,
           1.0,
-          -0.17,
-          -0.24,
-          0.12,
-          0.72,
-          0.75
+          -0.13,
+          -0.23,
+          0.16,
+          0.7,
+          0.72
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.15,
-          -0.17,
+          0.18,
+          -0.13,
           1.0,
-          0.68,
-          0.21,
-          0.3,
-          -0.15
+          0.69,
+          0.17,
+          0.33,
+          -0.14
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.24,
-          -0.24,
-          0.68,
+          0.23,
+          -0.23,
+          0.69,
           1.0,
-          -0.51,
+          -0.53,
           0.19,
-          -0.54
+          -0.51
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.18,
-          0.12,
-          0.21,
-          -0.51,
+          -0.13,
+          0.16,
+          0.17,
+          -0.53,
           1.0,
-          0.04,
-          0.52
+          0.09,
+          0.54
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.78,
-          0.72,
-          0.3,
+          0.75,
+          0.7,
+          0.33,
           0.19,
-          0.04,
+          0.09,
           1.0,
           0.73
         ]
@@ -9844,10 +9844,10 @@
         "key": "opp",
         "cells": [
           0.56,
-          0.75,
-          -0.15,
-          -0.54,
-          0.52,
+          0.72,
+          -0.14,
+          -0.51,
+          0.54,
           0.73,
           1.0
         ]
