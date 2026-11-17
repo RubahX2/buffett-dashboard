@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-17T00:10:55.105417+01:00"
+    "lastUpdate": "2026-11-17T04:00:33.597939+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -5973,6 +5973,13 @@
           "return": 7.7,
           "relativeReturn": null,
           "success": true
+        },
+        "13w": {
+          "exitDate": "2026-11-17",
+          "exitPrice": 3204.0,
+          "return": -45.04,
+          "relativeReturn": null,
+          "success": false
         }
       },
       "episodeDays": 1
@@ -9795,7 +9802,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "monthly_pick:MU:2026-11-12": {
       "ticker": "MU",
@@ -9839,7 +9846,7 @@
         "sellWeight": 18
       },
       "outcomes": {},
-      "episodeDays": 6
+      "episodeDays": 7
     },
     "strong_signal:CAT:2026-11-12": {
       "ticker": "CAT",
@@ -9866,7 +9873,7 @@
         "sellWeight": 23
       },
       "outcomes": {},
-      "episodeDays": 6
+      "episodeDays": 7
     },
     "strong_signal:NVDA:2026-11-12": {
       "ticker": "NVDA",
@@ -9920,7 +9927,7 @@
         "sellWeight": 18
       },
       "outcomes": {},
-      "episodeDays": 6
+      "episodeDays": 7
     },
     "strong_signal:HOOD:2026-11-12": {
       "ticker": "HOOD",
@@ -10039,10 +10046,10 @@
         "accuracyShown": true
       },
       "13w": {
-        "n": 9,
-        "avgReturn": 3.86,
+        "n": 10,
+        "avgReturn": -1.03,
         "avgRelativeReturn": 2.48,
-        "status": "te weinig data (9/20)",
+        "status": "te weinig data (10/20)",
         "accuracyShown": false
       },
       "26w": {
@@ -10204,25 +10211,25 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.27,
+          0.19,
           0.15,
           0.28,
-          -0.29,
-          0.78,
-          0.56
+          -0.28,
+          0.75,
+          0.53
         ]
       },
       {
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.27,
+          0.19,
           1.0,
-          -0.13,
-          -0.24,
-          0.18,
-          0.73,
-          0.75
+          -0.12,
+          -0.25,
+          0.23,
+          0.72,
+          0.73
         ]
       },
       {
@@ -10230,12 +10237,12 @@
         "key": "tim",
         "cells": [
           0.15,
-          -0.13,
+          -0.12,
           1.0,
           0.72,
-          0.0,
-          0.29,
-          -0.19
+          -0.02,
+          0.3,
+          -0.18
         ]
       },
       {
@@ -10243,50 +10250,50 @@
         "key": "trd",
         "cells": [
           0.28,
-          -0.24,
+          -0.25,
           0.72,
           1.0,
-          -0.59,
-          0.22,
-          -0.5
+          -0.61,
+          0.21,
+          -0.51
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.29,
-          0.18,
-          0.0,
-          -0.59,
+          -0.28,
+          0.23,
+          -0.02,
+          -0.61,
           1.0,
-          -0.04,
-          0.54
+          -0.01,
+          0.58
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.78,
-          0.73,
-          0.29,
-          0.22,
-          -0.04,
+          0.75,
+          0.72,
+          0.3,
+          0.21,
+          -0.01,
           1.0,
-          0.74
+          0.73
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.56,
-          0.75,
-          -0.19,
-          -0.5,
-          0.54,
-          0.74,
+          0.53,
+          0.73,
+          -0.18,
+          -0.51,
+          0.58,
+          0.73,
           1.0
         ]
       }
