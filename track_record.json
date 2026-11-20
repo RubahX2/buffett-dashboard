@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-20T17:21:06.982367+01:00"
+    "lastUpdate": "2026-11-20T22:39:58.430820+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -10298,7 +10298,7 @@
         "sellWeight": 9
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     }
   },
   "accuracy": {
@@ -10404,49 +10404,49 @@
     26
   ],
   "diagnostics": {
-    "n": 92,
+    "n": 91,
     "baseRates": [
       {
         "action": "HOLD",
-        "n": 32,
-        "pct": 34.8,
+        "n": 36,
+        "pct": 39.6,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
       {
         "action": "VERKOOP",
-        "n": 27,
-        "pct": 29.3,
+        "n": 25,
+        "pct": 27.5,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "STERK VERKOOP",
         "n": 14,
-        "pct": 15.2,
+        "pct": 15.4,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "KOOP",
-        "n": 11,
-        "pct": 12.0,
+        "n": 10,
+        "pct": 11.0,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "LICHT VERKOOP",
-        "n": 3,
-        "pct": 3.3,
-        "verdict": "discriminerend",
-        "color": "green"
+        "n": 2,
+        "pct": 2.2,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
       },
       {
-        "action": "NEUTRAAL",
-        "n": 3,
-        "pct": 3.3,
-        "verdict": "discriminerend",
-        "color": "green"
+        "action": "LICHT KOOP",
+        "n": 1,
+        "pct": 1.1,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
       },
       {
         "action": "CAUTION (overextended)",
@@ -10457,6 +10457,13 @@
       },
       {
         "action": "STERK KOOP",
+        "n": 1,
+        "pct": 1.1,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
+      },
+      {
+        "action": "NEUTRAAL",
         "n": 1,
         "pct": 1.1,
         "verdict": "zeldzaam (weinig observaties)",
@@ -10478,11 +10485,11 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.38,
-          0.17,
-          0.28,
-          -0.22,
-          0.81,
+          0.39,
+          0.11,
+          0.29,
+          -0.31,
+          0.8,
           0.64
         ]
       },
@@ -10490,11 +10497,11 @@
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.38,
+          0.39,
           1.0,
-          -0.03,
-          -0.22,
-          0.29,
+          -0.02,
+          -0.2,
+          0.24,
           0.78,
           0.81
         ]
@@ -10503,52 +10510,52 @@
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.17,
-          -0.03,
+          0.11,
+          -0.02,
           1.0,
-          0.72,
+          0.76,
           0.07,
-          0.35,
-          -0.03
+          0.33,
+          -0.02
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.28,
-          -0.22,
-          0.72,
+          0.29,
+          -0.2,
+          0.76,
           1.0,
-          -0.54,
-          0.22,
-          -0.39
+          -0.5,
+          0.25,
+          -0.35
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.22,
-          0.29,
+          -0.31,
+          0.24,
           0.07,
-          -0.54,
+          -0.5,
           1.0,
-          0.08,
-          0.57
+          0.01,
+          0.52
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.81,
+          0.8,
           0.78,
-          0.35,
-          0.22,
-          0.08,
+          0.33,
+          0.25,
+          0.01,
           1.0,
-          0.79
+          0.81
         ]
       },
       {
@@ -10557,10 +10564,10 @@
         "cells": [
           0.64,
           0.81,
-          -0.03,
-          -0.39,
-          0.57,
-          0.79,
+          -0.02,
+          -0.35,
+          0.52,
+          0.81,
           1.0
         ]
       }
@@ -11748,8 +11755,8 @@
         "ASML": "HOLD",
         "ASMI": "VERKOOP",
         "MU": "HOLD",
-        "GOOGL": "HOLD",
-        "AMZN": "NEUTRAAL",
+        "GOOGL": null,
+        "AMZN": "VERKOOP",
         "ORCL": "VERKOOP",
         "KO": "KOOP",
         "MC": "VERKOOP",
@@ -11762,7 +11769,7 @@
         "SDGR": "HOLD",
         "BNGO": "HOLD",
         "GAW": "STERK VERKOOP",
-        "MNST": "KOOP",
+        "MNST": "LICHT KOOP",
         "V": "STERK VERKOOP",
         "KPG": "VERKOOP",
         "ADM": "CAUTION (overextended)",
@@ -11794,18 +11801,18 @@
         "DIS": "KOOP",
         "BLK": "KOOP",
         "BABA": "HOLD",
-        "NABTESCO": "VERKOOP",
-        "HARMONIC": "VERKOOP",
+        "NABTESCO": "HOLD",
+        "HARMONIC": "HOLD",
         "KEYENCE": "VERKOOP",
         "FANUC": "STERK VERKOOP",
-        "YASKAWA": "NEUTRAAL",
-        "SOFTBANK": "NEUTRAAL",
-        "ROK": "VERKOOP",
+        "YASKAWA": "HOLD",
+        "SOFTBANK": "HOLD",
+        "ROK": "HOLD",
         "TER": "HOLD",
         "ISRG": "LICHT VERKOOP",
         "CGNX": "HOLD",
         "NOVT": "HOLD",
-        "ANET": "VERKOOP",
+        "ANET": "NEUTRAAL",
         "HOOD": "HOLD",
         "TSCO": "KOOP",
         "ODFL": "HOLD",
@@ -11823,7 +11830,7 @@
         "NOW": "HOLD",
         "GILD": "KOOP",
         "DDOG": "HOLD",
-        "ARCC": "LICHT VERKOOP",
+        "ARCC": "VERKOOP",
         "ONON": "VERKOOP",
         "ARCG": "HOLD"
       },
