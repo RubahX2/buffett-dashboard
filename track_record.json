@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-25T00:21:49.080406+01:00"
+    "lastUpdate": "2026-11-25T04:37:19.730882+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -10271,7 +10271,7 @@
         "sellWeight": 14
       },
       "outcomes": {},
-      "episodeDays": 5
+      "episodeDays": 6
     },
     "monthly_pick:DLO:2026-11-19": {
       "ticker": "DLO",
@@ -10395,7 +10395,7 @@
         "sellWeight": 25
       },
       "outcomes": {},
-      "episodeDays": 2
+      "episodeDays": 3
     },
     "monthly_pick:MSFT:2026-11-24": {
       "ticker": "MSFT",
@@ -10738,15 +10738,15 @@
     "baseRates": [
       {
         "action": "HOLD",
-        "n": 33,
-        "pct": 35.9,
+        "n": 32,
+        "pct": 34.8,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
       {
         "action": "VERKOOP",
-        "n": 23,
-        "pct": 25.0,
+        "n": 24,
+        "pct": 26.1,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -10801,38 +10801,38 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.28,
-          0.01,
+          0.17,
+          0.03,
           0.26,
           -0.36,
-          0.77,
-          0.56
+          0.72,
+          0.52
         ]
       },
       {
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.28,
+          0.17,
           1.0,
-          -0.13,
-          -0.28,
-          0.22,
-          0.76,
-          0.77
+          -0.11,
+          -0.25,
+          0.24,
+          0.73,
+          0.74
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.01,
-          -0.13,
+          0.03,
+          -0.11,
           1.0,
-          0.67,
+          0.68,
           0.14,
-          0.2,
-          -0.12
+          0.22,
+          -0.17
         ]
       },
       {
@@ -10840,12 +10840,12 @@
         "key": "trd",
         "cells": [
           0.26,
-          -0.28,
-          0.67,
+          -0.25,
+          0.68,
           1.0,
           -0.57,
-          0.15,
-          -0.45
+          0.17,
+          -0.47
         ]
       },
       {
@@ -10853,37 +10853,37 @@
         "key": "ent",
         "cells": [
           -0.36,
-          0.22,
+          0.24,
           0.14,
           -0.57,
           1.0,
           -0.01,
-          0.48
+          0.5
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.77,
-          0.76,
-          0.2,
-          0.15,
+          0.72,
+          0.73,
+          0.22,
+          0.17,
           -0.01,
           1.0,
-          0.79
+          0.76
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.56,
-          0.77,
-          -0.12,
-          -0.45,
-          0.48,
-          0.79,
+          0.52,
+          0.74,
+          -0.17,
+          -0.47,
+          0.5,
+          0.76,
           1.0
         ]
       }
@@ -12133,7 +12133,7 @@
         "TSCO": "VERKOOP",
         "ODFL": "HOLD",
         "HWM": "STERK VERKOOP",
-        "SNDK": "HOLD",
+        "SNDK": "VERKOOP",
         "IONQ": "STERK VERKOOP",
         "RGTI": "STERK VERKOOP",
         "QBTS": "STERK VERKOOP",
