@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-26T03:57:16.622737+01:00"
+    "lastUpdate": "2026-11-26T18:53:12.638060+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -9467,6 +9467,13 @@
           "return": -7.57,
           "relativeReturn": -11.09,
           "success": false
+        },
+        "4w": {
+          "exitDate": "2026-11-26",
+          "exitPrice": 184.3,
+          "return": -8.09,
+          "relativeReturn": null,
+          "success": false
         }
       },
       "episodeDays": 1
@@ -9501,6 +9508,13 @@
           "return": -0.47,
           "relativeReturn": -3.99,
           "success": false
+        },
+        "4w": {
+          "exitDate": "2026-11-26",
+          "exitPrice": 193.84,
+          "return": 1.95,
+          "relativeReturn": null,
+          "success": true
         }
       },
       "episodeDays": 8
@@ -10687,10 +10701,10 @@
         "accuracyShown": true
       },
       "4w": {
-        "n": 170,
-        "avgReturn": -1.86,
+        "n": 172,
+        "avgReturn": -1.87,
         "avgRelativeReturn": -0.99,
-        "accuracy": 44.7,
+        "accuracy": 44.8,
         "status": "ok",
         "accuracyShown": true
       },
@@ -10753,8 +10767,8 @@
     "baseRates": [
       {
         "action": "HOLD",
-        "n": 35,
-        "pct": 38.0,
+        "n": 36,
+        "pct": 39.1,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
@@ -10767,15 +10781,15 @@
       },
       {
         "action": "STERK VERKOOP",
-        "n": 15,
-        "pct": 16.3,
+        "n": 14,
+        "pct": 15.2,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "KOOP",
-        "n": 10,
-        "pct": 10.9,
+        "n": 11,
+        "pct": 12.0,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -10806,13 +10820,6 @@
         "pct": 1.1,
         "verdict": "zeldzaam (weinig observaties)",
         "color": "gray"
-      },
-      {
-        "action": "STERK KOOP",
-        "n": 1,
-        "pct": 1.1,
-        "verdict": "zeldzaam (weinig observaties)",
-        "color": "gray"
       }
     ],
     "corrLabels": [
@@ -10830,89 +10837,89 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.16,
-          -0.0,
-          0.26,
-          -0.36,
-          0.72,
-          0.53
+          0.33,
+          0.02,
+          0.25,
+          -0.32,
+          0.78,
+          0.62
         ]
       },
       {
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.16,
+          0.33,
           1.0,
-          -0.1,
-          -0.24,
-          0.25,
-          0.74,
-          0.73
+          -0.13,
+          -0.25,
+          0.16,
+          0.77,
+          0.77
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          -0.0,
-          -0.1,
+          0.02,
+          -0.13,
           1.0,
-          0.68,
-          0.15,
-          0.2,
-          -0.13
+          0.64,
+          0.19,
+          0.21,
+          -0.08
         ]
       },
       {
         "label": "Trend",
         "key": "trd",
         "cells": [
-          0.26,
-          -0.24,
-          0.68,
+          0.25,
+          -0.25,
+          0.64,
           1.0,
-          -0.56,
-          0.18,
-          -0.43
+          -0.57,
+          0.16,
+          -0.47
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.36,
-          0.25,
-          0.15,
-          -0.56,
+          -0.32,
+          0.16,
+          0.19,
+          -0.57,
           1.0,
-          -0.0,
-          0.5
+          -0.01,
+          0.51
         ]
       },
       {
         "label": "Composiet",
         "key": "comp",
         "cells": [
-          0.72,
-          0.74,
-          0.2,
-          0.18,
-          -0.0,
+          0.78,
+          0.77,
+          0.21,
+          0.16,
+          -0.01,
           1.0,
-          0.77
+          0.78
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.53,
-          0.73,
-          -0.13,
-          -0.43,
-          0.5,
+          0.62,
           0.77,
+          -0.08,
+          -0.47,
+          0.51,
+          0.78,
           1.0
         ]
       }
@@ -10964,10 +10971,10 @@
     "SNAP": null,
     "NVDA": null,
     "NKE": null,
-    "DIE": "sig:strong_signal:BUY",
+    "DIE": null,
     "SOF": null,
     "AIR": null,
-    "ALFEN": "sig:strong_signal:SELL",
+    "ALFEN": null,
     "LOTB": null,
     "VOW": null,
     "EL": null,
@@ -12097,8 +12104,8 @@
         "WM": "STERK VERKOOP",
         "PLTR": "HOLD",
         "CAT": "HOLD",
-        "ASML": "NEUTRAAL",
-        "ASMI": "NEUTRAAL",
+        "ASML": "HOLD",
+        "ASMI": "HOLD",
         "MU": "HOLD",
         "GOOGL": "HOLD",
         "AMZN": "VERKOOP",
@@ -12129,29 +12136,29 @@
         "SNAP": "HOLD",
         "NVDA": "HOLD",
         "NKE": "VERKOOP",
-        "DIE": "STERK KOOP",
+        "DIE": "KOOP",
         "SOF": "KOOP",
         "AIR": "VERKOOP",
-        "ALFEN": "STERK VERKOOP",
+        "ALFEN": "HOLD",
         "LOTB": "KOOP",
         "VOW": "VERKOOP",
         "EL": "KOOP",
         "META": "HOLD",
         "VST": "STERK VERKOOP",
-        "COPX": "NEUTRAAL",
-        "ROBO": "NEUTRAAL",
+        "COPX": "HOLD",
+        "ROBO": "HOLD",
         "MSTR": "HOLD",
         "AAPL": "KOOP",
         "NFLX": "VERKOOP",
         "DIS": "KOOP",
         "BLK": "KOOP",
         "BABA": "HOLD",
-        "NABTESCO": "HOLD",
-        "HARMONIC": "HOLD",
+        "NABTESCO": "NEUTRAAL",
+        "HARMONIC": "NEUTRAAL",
         "KEYENCE": "VERKOOP",
         "FANUC": "STERK VERKOOP",
-        "YASKAWA": "HOLD",
-        "SOFTBANK": "HOLD",
+        "YASKAWA": "NEUTRAAL",
+        "SOFTBANK": "NEUTRAAL",
         "ROK": "HOLD",
         "TER": "HOLD",
         "ISRG": "LICHT VERKOOP",
