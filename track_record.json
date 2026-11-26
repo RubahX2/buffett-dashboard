@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-26T18:53:12.638060+01:00"
+    "lastUpdate": "2026-11-26T23:46:10.233461+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -10767,8 +10767,8 @@
     "baseRates": [
       {
         "action": "HOLD",
-        "n": 36,
-        "pct": 39.1,
+        "n": 40,
+        "pct": 43.5,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
@@ -10790,13 +10790,6 @@
         "action": "KOOP",
         "n": 11,
         "pct": 12.0,
-        "verdict": "discriminerend",
-        "color": "green"
-      },
-      {
-        "action": "NEUTRAAL",
-        "n": 4,
-        "pct": 4.3,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -10837,23 +10830,23 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.33,
-          0.02,
+          0.32,
+          0.01,
           0.25,
-          -0.32,
+          -0.33,
           0.78,
-          0.62
+          0.59
         ]
       },
       {
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.33,
+          0.32,
           1.0,
-          -0.13,
-          -0.25,
-          0.16,
+          -0.07,
+          -0.23,
+          0.19,
           0.77,
           0.77
         ]
@@ -10862,13 +10855,13 @@
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.02,
-          -0.13,
+          0.01,
+          -0.07,
           1.0,
           0.64,
           0.19,
-          0.21,
-          -0.08
+          0.24,
+          -0.06
         ]
       },
       {
@@ -10876,25 +10869,25 @@
         "key": "trd",
         "cells": [
           0.25,
-          -0.25,
+          -0.23,
           0.64,
           1.0,
           -0.57,
-          0.16,
-          -0.47
+          0.18,
+          -0.46
         ]
       },
       {
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.32,
-          0.16,
+          -0.33,
+          0.19,
           0.19,
           -0.57,
           1.0,
-          -0.01,
-          0.51
+          -0.0,
+          0.52
         ]
       },
       {
@@ -10903,23 +10896,23 @@
         "cells": [
           0.78,
           0.77,
-          0.21,
-          0.16,
-          -0.01,
+          0.24,
+          0.18,
+          -0.0,
           1.0,
-          0.78
+          0.79
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.62,
+          0.59,
           0.77,
-          -0.08,
-          -0.47,
-          0.51,
-          0.78,
+          -0.06,
+          -0.46,
+          0.52,
+          0.79,
           1.0
         ]
       }
@@ -12153,12 +12146,12 @@
         "DIS": "KOOP",
         "BLK": "KOOP",
         "BABA": "HOLD",
-        "NABTESCO": "NEUTRAAL",
-        "HARMONIC": "NEUTRAAL",
+        "NABTESCO": "HOLD",
+        "HARMONIC": "HOLD",
         "KEYENCE": "VERKOOP",
         "FANUC": "STERK VERKOOP",
-        "YASKAWA": "NEUTRAAL",
-        "SOFTBANK": "NEUTRAAL",
+        "YASKAWA": "HOLD",
+        "SOFTBANK": "HOLD",
         "ROK": "HOLD",
         "TER": "HOLD",
         "ISRG": "LICHT VERKOOP",

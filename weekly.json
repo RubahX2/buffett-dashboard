@@ -1,34 +1,8 @@
 {
-  "generatedAt": "2026-11-26T18:53:12.638060+01:00",
-  "generatedAtHuman": "Thursday 26 November 2026 om 18:53",
+  "generatedAt": "2026-11-26T23:46:10.233461+01:00",
+  "generatedAtHuman": "Thursday 26 November 2026 om 23:46",
   "periodLabel": "sinds ~1 week geleden",
   "changes": [
-    {
-      "ticker": "SOFTBANK",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 62 \u2193 39"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Aantrekkelijk (PEG < 1) \u2192 Duur (PEG > 3.5)"
-        },
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: HOLD \u2192 NEUTRAAL"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -23.8% deze week ($3537\u2192$2696)"
-        }
-      ]
-    },
     {
       "ticker": "ASML",
       "daysAgo": 7,
@@ -47,27 +21,6 @@
           "type": "price",
           "dir": "down",
           "text": "Koers -9.3% deze week ($1288\u2192$1168)"
-        }
-      ]
-    },
-    {
-      "ticker": "NABTESCO",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 45 \u2193 34"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Aan de dure kant (PEG 2.5\u20133.5) \u2192 Duur (PEG > 3.5)"
-        },
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: HOLD \u2192 NEUTRAAL"
         }
       ]
     },
@@ -132,38 +85,6 @@
           "type": "signal",
           "dir": "neutral",
           "text": "Signaal: LICHT KOOP \u2192 HOLD"
-        }
-      ]
-    },
-    {
-      "ticker": "HARMONIC",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: HOLD \u2192 NEUTRAAL"
-        },
-        {
-          "type": "price",
-          "dir": "down",
-          "text": "Koers -11.5% deze week ($4142\u2192$3665)"
-        }
-      ]
-    },
-    {
-      "ticker": "KEYENCE",
-      "daysAgo": 7,
-      "changes": [
-        {
-          "type": "composite",
-          "dir": "down",
-          "text": "Composiet 67 \u2193 39"
-        },
-        {
-          "type": "valuation",
-          "dir": "neutral",
-          "text": "Waardering: Aantrekkelijk (PEG < 1) \u2192 Duur (PEG > 3.5)"
         }
       ]
     },
@@ -429,13 +350,24 @@
       ]
     },
     {
-      "ticker": "YASKAWA",
+      "ticker": "HARMONIC",
       "daysAgo": 7,
       "changes": [
         {
-          "type": "signal",
-          "dir": "neutral",
-          "text": "Signaal: HOLD \u2192 NEUTRAAL"
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -11.6% deze week ($4142\u2192$3663)"
+        }
+      ]
+    },
+    {
+      "ticker": "SOFTBANK",
+      "daysAgo": 7,
+      "changes": [
+        {
+          "type": "price",
+          "dir": "down",
+          "text": "Koers -18.2% deze week ($3537\u2192$2894)"
         }
       ]
     },
@@ -490,7 +422,7 @@
         {
           "type": "price",
           "dir": "down",
-          "text": "Koers -16.8% deze week ($67\u2192$56)"
+          "text": "Koers -19.8% deze week ($67\u2192$54)"
         }
       ]
     },
@@ -605,6 +537,6 @@
       ]
     }
   ],
-  "changedCount": 46,
+  "changedCount": 43,
   "note": "Toont enkel wat veranderde t.o.v. ~7 dagen geleden. Geen wijzigingen = stabiele week."
 }
