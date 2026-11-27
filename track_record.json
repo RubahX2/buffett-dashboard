@@ -1,7 +1,7 @@
 {
   "_meta": {
     "created": "2026-07-02T21:36:20.214972+02:00",
-    "lastUpdate": "2026-11-27T18:38:24.964715+01:00"
+    "lastUpdate": "2026-11-27T23:27:59.264751+01:00"
   },
   "records": {
     "monthly_pick:MU:2026-07-02": {
@@ -10484,7 +10484,7 @@
         "sellWeight": 25
       },
       "outcomes": {},
-      "episodeDays": 4
+      "episodeDays": 5
     },
     "monthly_pick:MSFT:2026-11-24": {
       "ticker": "MSFT",
@@ -10744,7 +10744,7 @@
         "sellWeight": 0
       },
       "outcomes": {},
-      "episodeDays": 1
+      "episodeDays": 2
     },
     "strong_signal:ARCC:2026-11-27": {
       "ticker": "ARCC",
@@ -10881,22 +10881,22 @@
     "baseRates": [
       {
         "action": "HOLD",
-        "n": 36,
-        "pct": 39.1,
+        "n": 40,
+        "pct": 43.5,
         "verdict": "weinig discriminerend",
         "color": "orange"
       },
       {
         "action": "VERKOOP",
-        "n": 20,
-        "pct": 21.7,
+        "n": 21,
+        "pct": 22.8,
         "verdict": "discriminerend",
         "color": "green"
       },
       {
         "action": "STERK VERKOOP",
-        "n": 16,
-        "pct": 17.4,
+        "n": 15,
+        "pct": 16.3,
         "verdict": "discriminerend",
         "color": "green"
       },
@@ -10909,10 +10909,10 @@
       },
       {
         "action": "NEUTRAAL",
-        "n": 6,
-        "pct": 6.5,
-        "verdict": "discriminerend",
-        "color": "green"
+        "n": 2,
+        "pct": 2.2,
+        "verdict": "zeldzaam (weinig observaties)",
+        "color": "gray"
       },
       {
         "action": "LICHT VERKOOP",
@@ -10958,37 +10958,37 @@
         "key": "qual",
         "cells": [
           1.0,
-          0.37,
-          0.03,
+          0.36,
+          0.05,
           0.26,
-          -0.3,
+          -0.29,
           0.8,
-          0.58
+          0.55
         ]
       },
       {
         "label": "Waardering",
         "key": "val",
         "cells": [
-          0.37,
+          0.36,
           1.0,
-          -0.13,
-          -0.31,
-          0.22,
+          -0.07,
+          -0.29,
+          0.25,
           0.78,
-          0.81
+          0.82
         ]
       },
       {
         "label": "Timing",
         "key": "tim",
         "cells": [
-          0.03,
-          -0.13,
+          0.05,
+          -0.07,
           1.0,
-          0.6,
-          0.2,
-          0.21,
+          0.62,
+          0.18,
+          0.26,
           -0.08
         ]
       },
@@ -10997,11 +10997,11 @@
         "key": "trd",
         "cells": [
           0.26,
-          -0.31,
-          0.6,
+          -0.29,
+          0.62,
           1.0,
-          -0.61,
-          0.12,
+          -0.6,
+          0.13,
           -0.54
         ]
       },
@@ -11009,12 +11009,12 @@
         "label": "Instap",
         "key": "ent",
         "cells": [
-          -0.3,
-          0.22,
-          0.2,
-          -0.61,
+          -0.29,
+          0.25,
+          0.18,
+          -0.6,
           1.0,
-          0.02,
+          0.04,
           0.57
         ]
       },
@@ -11024,23 +11024,23 @@
         "cells": [
           0.8,
           0.78,
-          0.21,
-          0.12,
-          0.02,
+          0.26,
+          0.13,
+          0.04,
           1.0,
-          0.77
+          0.78
         ]
       },
       {
         "label": "Koopkans",
         "key": "opp",
         "cells": [
-          0.58,
-          0.81,
+          0.55,
+          0.82,
           -0.08,
           -0.54,
           0.57,
-          0.77,
+          0.78,
           1.0
         ]
       }
@@ -11138,7 +11138,7 @@
     "NOW": null,
     "GILD": "sig:strong_signal:BUY",
     "DDOG": null,
-    "ARCC": "sig:strong_signal:SELL",
+    "ARCC": null,
     "ONON": null,
     "ARCG": null,
     "pick::MNST": "pick:MNST"
@@ -12274,12 +12274,12 @@
         "DIS": "LICHT KOOP",
         "BLK": "KOOP",
         "BABA": "HOLD",
-        "NABTESCO": "NEUTRAAL",
-        "HARMONIC": "NEUTRAAL",
+        "NABTESCO": "HOLD",
+        "HARMONIC": "HOLD",
         "KEYENCE": "VERKOOP",
         "FANUC": "STERK VERKOOP",
-        "YASKAWA": "NEUTRAAL",
-        "SOFTBANK": "NEUTRAAL",
+        "YASKAWA": "HOLD",
+        "SOFTBANK": "HOLD",
         "ROK": "HOLD",
         "TER": "HOLD",
         "ISRG": "LICHT VERKOOP",
@@ -12303,7 +12303,7 @@
         "NOW": "HOLD",
         "GILD": "STERK KOOP",
         "DDOG": "HOLD",
-        "ARCC": "STERK VERKOOP",
+        "ARCC": "VERKOOP",
         "ONON": "VERKOOP",
         "ARCG": "HOLD"
       },
